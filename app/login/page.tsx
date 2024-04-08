@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { updateToken } from '../utils/http';
 import { useMutation } from 'react-query';
+import Image from 'next/image';
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -39,7 +40,7 @@ export default function Login() {
   const form = useForm<IAuthentication>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name:  '',
+      name: '',
       password: '',
       remember: false,
     },
@@ -63,7 +64,7 @@ export default function Login() {
     checkUserAuthentication();
   }, [router]);
 
-  
+
 
   const { mutate: userLogin, isLoading } = useMutation(
     (userData: IAuthentication) => LoginAPI(userData),
@@ -76,10 +77,10 @@ export default function Login() {
         storeUserId(response?.user?.id);
         updateToken(response?.token);
         reset();
-      
+
       },
       onError: (error: any) => {
-       console.log(error, 'Error =====> log')
+        console.log(error, 'Error =====> log')
       },
     },
   );
@@ -87,14 +88,20 @@ export default function Login() {
   const onSubmit: SubmitHandler<IAuthentication> = async (
     data: IAuthentication,
   ) => {
-      userLogin(data);
+    userLogin(data);
   };
 
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 h-screen items-center">
-      <div className="flex justify-end items-center">
-        <div className="bg-secondary-light mx-auto w-4/12 px-2 md:px-0">
+    <div className="grid grid-cols-1 md:grid-cols-1 h-screen items-center bg-[#EEF3FE]">
+      <div className="flex justify-center items-center bg-white rounded-md shadow-md pt-[24px] px-[40px] pb-[45px] w-1/2 mx-auto">
+        <div className="bg-secondary-light w-10/12 flex flex-col gap-[30px]  ">
+          <div className='flex items-center justify-center' >
+            <Image alt='logo' width={150} height={150} src='/logo.svg' />
+          </div>
+          <div className='text-center' >
+            <h1 className='font-semibold text-lg' >Login</h1>
+            <p>login to your admin account</p></div>
           <Form  {...form}>
             <form
               onSubmit={(e) => {
@@ -109,13 +116,40 @@ export default function Login() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="mb-2">
-                        Email Address or Username
+                        Username
                       </FormLabel>
                       <FormControl className="mb-6">
                         <Input
                           placeholder="Enter your Email or Username!"
                           {...field}
                           {...register('name')}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              {error && (
+                <div>
+                  <FormMessage>{error}</FormMessage>
+                </div>
+              )}
+              <div className="mb-6">
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="mb-2">
+                        Password
+                      </FormLabel>
+                      <FormControl className="mb-6">
+                        <Input
+                          placeholder="Enter your password!"
+                          type='password'
+                          {...field}
+                          {...register('password')}
                         />
                       </FormControl>
                       <FormMessage />
@@ -135,15 +169,15 @@ export default function Login() {
                   size={'lg'}
                   disabled={isLoading || !isValid}
                 >
-                    Sign In
+                  Sign In
                 </Button>
               </div>
-             
+
             </form>
           </Form>
         </div>
       </div>
-     
+
     </div>
   );
 }

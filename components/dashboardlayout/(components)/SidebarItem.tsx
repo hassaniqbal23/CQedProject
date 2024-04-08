@@ -18,17 +18,19 @@ const SidebarItem: FC<IProps> = ({
   openMenu,
   pathname,
 }) => {
-  const activeClass = 'text-primary bg-primary/[0.1]';
+  const activeClass = 'text-white bg-[#3F1C9F]';
   const inactiveClass = 'text-primary';
   const router = useRouter();
   const isSubmenuActive = (submenuPath: string) => pathname === submenuPath;
+
+  console.log(item)
 
   return (
     <div>
       {item.permissions ? (
         <div
-          className={`mb-3 group hover:bg-primary/[0.1] rounded-md ${
-            openMenu === item.title ? 'bg-primary/[0.1]' : ''
+          className={`mb-3 group hover:bg-[#3F1C9F] rounded-md ${
+            openMenu === item.title ? 'bg-[#6a5c90]' : ''
           } ${item.path ? 'cursor-pointer' : ''} ${
             isActive ? activeClass : inactiveClass
           }`}
@@ -44,13 +46,13 @@ const SidebarItem: FC<IProps> = ({
         >
           <div className="flex items-center justify-start py-2 px-3 cursor-pointer ">
             <item.Icon
-              className={`text-2xl group-hover:text-primary ${
-                isActive ? 'text-primary' : 'text-foreground'
+              className={`text-2xl text-white group-hover:text-gray-100 ${
+                isActive ? 'text-white' : 'text-foreground'
               }`}
             />
             <p
-              className={`ml-4 text-sm group-hover:text-primary ${
-                isActive ? 'text-primary' : 'text-foreground'
+              className={`ml-4 text-white text-sm group-hover:text-gray-100 ${
+                isActive ? 'text-white' : 'text-foreground'
               }`}
             >
               {item.title}
