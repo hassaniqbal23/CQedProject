@@ -7,8 +7,6 @@ export type IIcons = {
     Icon: IconType;
     title: string;
     path: string;
-    permissions: boolean;
   }[];
   path?: string;
-  permissions?: boolean;
 };

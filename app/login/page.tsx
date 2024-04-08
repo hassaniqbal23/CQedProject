@@ -123,26 +123,6 @@ export default function Login() {
                   )}
                 />
               </div>
-              <div className="mb-[18px]">
-                <FormField
-                  name="password"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="mb-2">Password</FormLabel>
-                      <FormControl className="mb-6">
-                        <Input
-                          type="password"
-                          placeholder="Enter your Password!"
-                          {...field}
-                          {...register('password')}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
               {error && (
                 <div>
                   <FormMessage>{error}</FormMessage>
@@ -155,14 +135,7 @@ export default function Login() {
                   size={'lg'}
                   disabled={isLoading || !isValid}
                 >
-                  {isLoading ? (
-                    <span className="flex items-center">
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Loading
-                    </span>
-                  ) : (
-                    'Sign In'
-                  )}
+                    Sign In
                 </Button>
               </div>
              
