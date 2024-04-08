@@ -3,56 +3,36 @@
 import { FC } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
-import usePermissions from '@/app/hooks/singleAccessPage';
 
 interface IAccountSetting {
   heading: string;
   path: string;
-  access: boolean;
 }
 
 export const Setting: FC = () => {
   const pathname = usePathname();
   const route = useRouter();
-  const permissions = {
-    profile: usePermissions('accountsetting', 'read'),
-    workspace: usePermissions('workspaces', 'read'),
-    security: usePermissions('security', 'read'),
-    billing: usePermissions('billing', 'read'),
-    notifications: usePermissions('notifications', 'read'),
-    connections: usePermissions('connections', 'read'),
-  };
 
   const accountSetting: IAccountSetting[] = [
     {
       heading: 'Profile',
-      path: '/dashboard/accountsetting/profile',
-      access: permissions.profile,
-    },
-    {
-      heading: 'Workspace',
-      path: '/dashboard/accountsetting/workspace',
-      access: permissions.workspace,
+      path: '/accountsetting/profile',
     },
     {
       heading: 'Security',
-      path: '/dashboard/accountsetting/security',
-      access: permissions.security,
+      path: '/accountsetting/security',
     },
     {
       heading: 'Billing & plans',
-      path: '/dashboard/accountsetting/billing',
-      access: permissions.billing,
+      path: '/accountsetting/billing',
     },
     {
       heading: 'Notifications',
-      path: '/dashboard/accountsetting/notifications',
-      access: permissions.notifications,
+      path: '/accountsetting/notifications',
     },
     {
       heading: 'Connections',
-      path: '/dashboard/accountsetting/connections',
-      access: permissions.connections,
+      path: '/accountsetting/connections',
     },
   ];
 
@@ -67,7 +47,7 @@ export const Setting: FC = () => {
   return (
     <div className="sm:flex items-center pl-4 mt-6 w-full h-200px sm:h-[59px] bg-slate-100 dark:bg-[#131730] rounded-md">
       {accountSetting?.map((item: IAccountSetting, index: number) => {
-        if (item.access) {
+        if (true) {
           return (
             <Button
               key={index}

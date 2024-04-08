@@ -1,3 +1,5 @@
+'use client'
+
 import { FC } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { SmallHeading } from '../common/SmallHeading';
@@ -47,14 +49,14 @@ export const Navbar: FC<IProps> = ({ }) => {
                         <AvatarImage
                           src={items.src || 'https://github.com/shadcn.png'}
                         />
-                        <AvatarFallback>CN</AvatarFallback>
+                        <AvatarFallback>CQED</AvatarFallback>
                       </Avatar>
                     ) : (
                       <items.src className="text-base sm:text-sm cursor-pointer text-[#B0BABF] dark:text-foreground" />
                     )}
                   </PopoverTrigger>
                   <PopoverContent className="mt-1 w-[13.1rem] relative right-10 p-0">
-                    {items.alt === 'Notifications' && submodules && (
+                    {items.alt  && submodules && (
                       <div className="my-2">
                         <div className="flex gap-4 items-center">
                           <BsFillBellFill className="text-4xl text-[#B0BABF] dark:text-foreground" />
