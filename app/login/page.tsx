@@ -39,7 +39,7 @@ export default function Login() {
 
   const form = useForm<IAuthentication>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: { 
       name: '',
       password: '',
       remember: false,
@@ -72,7 +72,7 @@ export default function Login() {
       onSuccess: (res) => {
         toast.success('Login Successful, redirecting...');
         const response = res.data.result;
-        router.push('/dashboard/main');
+        router.push('/dashboard');
         storeToken(response?.token);
         storeUserId(response?.user?.id);
         updateToken(response?.token);
