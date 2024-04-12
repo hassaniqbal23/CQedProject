@@ -74,7 +74,7 @@ export const Input: FC<IProps> = ({
           max={max}
           autoComplete="false"
           type={type}
-          className={`${className} block w-full border focus:outline-blue-500 p-2 rounded-md`}
+          className={`${className} block w-full border focus:outline-primary p-2 rounded-md`}
           placeholder={placeholder}
           {...register(name, validations ? validations : '')}
           {...props}

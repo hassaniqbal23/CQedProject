@@ -58,7 +58,7 @@ export const NewSidebar = () => {
         style={{ backgroundImage: 'linear-gradient(to bottom, #5429E8, #70369A)' }}
       >
         <div className='flex items-center justify-center py-7' >
-          <Image alt='logo' width={150} height={150} src='/logo.svg' />
+          <Image alt='logo' width={150} height={150} src='/logo-white.svg' />
         </div>
         <div className="flex justify-between flex-col h-full pt-6 pb-[16px] overflow-y-auto">
           <SidebarMenu

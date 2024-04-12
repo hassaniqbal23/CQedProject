@@ -46,7 +46,7 @@ export const Navbar: FC<IProps> = ({ }) => {
             {navPopLinks?.map((items: ILinks, index: number) => {
               const submodules = items.submodules;
               return (
-                <div>
+                <div key={index} >
                   {items.alt === 'notification' ? <div className="my-2 cursor-pointer">
                     <div className="flex gap-4 items-center p-2 bg-[#F0F0F0] rounded-full">
                       <BsFillBellFill className="text-2xl text-black " />

@@ -11,9 +11,17 @@ import { getAccessToken } from './utils/encryption';
 import { updateToken } from './utils/http';
 import { GlobalProvider } from './gobalContext/globalContext';
 import { Toaster } from '@/components/ui/toaster';
+import localFont from 'next/font/local'
+
+const myFont = localFont({
+	src: '../public/fonts/Montserrat-Regular.ttf', 
+	display: 'swap',
+})
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
+
+  
 
   // useEffect(() => {
   //   // Redirect to login if no access token
@@ -44,7 +52,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body suppressHydrationWarning={false}>
+      <body suppressHydrationWarning={false} className={myFont.className} >
         <Toaster />
         <QueryClientProvider client={queryClient}>
           <GlobalProvider>

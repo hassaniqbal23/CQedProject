@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 /* violet color theme */
 @layer base {
   :root {
@@ -11,10 +14,34 @@
     --card-foreground: 224 71.4% 4.1%;
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
-    --primary: 262.1 83.3% 57.8%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
+    --primary: #4146B8;
+    --primary-50: #ECEDF8;
+    --primary-100: #C4C6E9;
+    --primary-200: #A8AADE;
+    --primary-300: #8083CF;
+    --primary-400: #676BC6;
+    --primary-500: #4146B8;
+    --primary-600: #3B40A7;
+    --primary-700: #2E3283;
+    --primary-800: #242765;
+    --primary-900: #1B1D4D;
+    --secondary: #FFD249;
+    --secondary-50: #FFFBED;
+    --secondary-100: #FFF1C7;
+    --secondary-200: #FFEAAB;
+    --secondary-300: #FFE185;
+    --secondary-400: #FFDB6D;
+    --secondary-500: #FFD249;
+    --secondary-600: #E8BF42;
+    --secondary-700: #B59534;
+    --secondary-800: #8C7428;
+    --secondary-900: #6B581F;
+    --primary-foreground: #12121B;
+    --secondary-foreground: #282931;
+    --success: #54D62C;
+    --warning: #FF4842;
+    --t-foreground: #464650;
+    --q-foregrount: #5D5E68;
     --muted: 220 14.3% 95.9%;
     --muted-foreground: 220 8.9% 46.1%;
     --accent: 220 14.3% 95.9%;
@@ -26,7 +53,7 @@
     --ring: 262.1 83.3% 57.8%;
     --radius: 0.5rem;
   }
- 
+
   .dark {
     --background: 224 71.4% 4.1%;
     --foreground: 210 20% 98%;
@@ -48,6 +75,10 @@
     --input: 215 27.9% 16.9%;
     --ring: 263.4 70% 50.4%;
   }
+}
+
+html, body {
+  font-family: 'Montserrat'
 }
 
 /* green color theme */
@@ -152,6 +183,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
