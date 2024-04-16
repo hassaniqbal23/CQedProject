@@ -6,7 +6,6 @@ export * from './breadcrumb/breadcrumb'
 export * from './button/button'
 export * from './calendar/calendar';
 export * from './card/card';
-export * from './carousel/carousel';
 export * from './checkbox/checkbox';
 export * from './command/command';
 export * from './dialog/dialog';
