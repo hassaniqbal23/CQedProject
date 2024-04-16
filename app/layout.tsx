@@ -10,18 +10,18 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { getAccessToken } from './utils/encryption';
 import { updateToken } from './utils/http';
 import { GlobalProvider } from './gobalContext/globalContext';
-import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from '@/components/ui';
 import localFont from 'next/font/local'
 
 const myFont = localFont({
-	src: '../public/fonts/Montserrat-Regular.ttf', 
+	src: '../public/fonts/Montserrat-Regular.ttf',
 	display: 'swap',
 })
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
 
-  
+
 
   // useEffect(() => {
   //   // Redirect to login if no access token

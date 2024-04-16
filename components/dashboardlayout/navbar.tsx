@@ -1,12 +1,12 @@
 'use client'
 
 import { FC } from 'react';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/';
 import { SmallHeading } from '../common/SmallHeading';
 import {
   BsFillBellFill
 } from 'react-icons/bs';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
 
 
 interface ILinks {
