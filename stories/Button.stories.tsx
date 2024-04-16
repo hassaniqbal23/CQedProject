@@ -1,6 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {fn} from '@storybook/test';
-import {Button} from './button';
+import {Button} from '@/components/ui/button/button';
+import {GoArrowLeft} from 'react-icons/go';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -21,28 +22,57 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
+	render: (args) => {
+		return (
+			<div>
+				<Button {...args}>Button CTA</Button>
+				<Button {...args}>
+					{' '}
+					<GoArrowLeft /> Button CTA
+				</Button>
+			</div>
+		);
+	},
 	args: {
 		variant: 'default',
-		children: 'Button',
 	},
 };
 
 export const Secondary: Story = {
 	args: {
-		children: 'Button',
+		variant: 'secondary',
+		children: 'Button CTA',
 	},
 };
 
 export const Large: Story = {
 	args: {
 		size: 'lg',
-		children: 'Button',
+		children: 'Button CTA',
 	},
 };
 
+// export const Small: Story = {
+// 	args: {
+// 		size: 'sm',
+// 		children: 'Button',
+// 	},
+// };
+
 export const Small: Story = {
+	render: (args) => {
+		return (
+			<div>
+				<Button
+					{...args}
+					disabled={true}
+				>
+					Button CTA
+				</Button>
+			</div>
+		);
+	},
 	args: {
-		size: 'sm',
-		children: 'Button',
+		variant: 'default',
 	},
 };
