@@ -1,7 +1,8 @@
 import type {Meta, StoryObj} from '@storybook/react';
 import {fn} from '@storybook/test';
 import {Button} from './button';
-import {GoArrowLeft} from 'react-icons/go';
+import {ArrowLeft, ArrowRight} from 'lucide-react';
+// import {arrowLeft} from './img/Icons.png';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -24,11 +25,29 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
 	render: (args) => {
 		return (
-			<div>
-				<Button {...args}>Button CTA</Button>
-				<Button {...args}>
+			<div className="flex flex-col gap-2">
+				<Button
+					{...args}
+					size={'sm'}
+				>
+					Button CTA
+				</Button>
+				<Button {...args}> Button CTA</Button>
+				<Button
+					{...args}
+					size={'lg'}
+					className="flex text-center gap-[10px]"
+				>
 					{' '}
-					<GoArrowLeft /> Button CTA
+					<ArrowLeft size={20} /> Button CTA
+				</Button>
+				<Button
+					{...args}
+					className="flex gap-[10px]"
+				>
+					{' '}
+					Button CTA
+					<ArrowRight size={20} />
 				</Button>
 			</div>
 		);
@@ -38,6 +57,44 @@ export const Primary: Story = {
 	},
 };
 
+export const primaryOutline: Story = {
+	render: (args) => {
+		return (
+			<div>
+				<Button {...args}>Button CTA</Button>
+			</div>
+		);
+	},
+	args: {
+		variant: 'primaryOutline',
+	},
+};
+
+export const primary_400: Story = {
+	render: (args) => {
+		return (
+			<div>
+				<Button {...args}>Button CTA</Button>
+			</div>
+		);
+	},
+	args: {
+		variant: 'primary400',
+	},
+};
+
+export const primaryOutline400: Story = {
+	render: (args) => {
+		return (
+			<div>
+				<Button {...args}>Button CTA</Button>
+			</div>
+		);
+	},
+	args: {
+		variant: 'primaryOutline-400',
+	},
+};
 export const Secondary: Story = {
 	args: {
 		variant: 'secondary',
@@ -45,27 +102,181 @@ export const Secondary: Story = {
 	},
 };
 
-export const Large: Story = {
-	args: {
-		size: 'lg',
-		children: 'Button CTA',
-	},
-};
-
-export const Disabled: Story = {
+export const OutlineSecondary: Story = {
 	render: (args) => {
 		return (
 			<div>
-				<Button
-					{...args}
-					disabled={true}
-				>
-					Button CTA
-				</Button>
+				<Button {...args}>Button CTA</Button>
 			</div>
 		);
 	},
 	args: {
+		variant: 'secondary-outline',
+	},
+};
+
+// export const Large: Story = {
+// 	args: {
+// 		size: 'lg',
+// 		children: 'Button CTA',
+// 	},
+// };
+
+export const Disabled: Story = {
+	args: {
 		variant: 'default',
+		disabled: true,
+		children: 'Button',
+	},
+};
+
+export const DisabledOutline: Story = {
+	args: {
+		variant: 'default',
+		disabled: true,
+		children: 'Button',
+	},
+};
+
+export const Outline: Story = {
+	render: (args) => {
+		return (
+			<div>
+				<Button {...args}>Button CTA</Button>
+			</div>
+		);
+	},
+	args: {
+		variant: 'outline',
+	},
+};
+
+export const error: Story = {
+	render: (args) => {
+		return (
+			<div className="flex flex-col gap-[20px]">
+				<Button {...args}>Button CTA</Button>
+				<Button
+					{...args}
+					size={'lg'}
+				>
+					Button CTA
+				</Button>
+				<Button
+					{...args}
+					size={'sm'}
+				>
+					Button CTA
+				</Button>
+				<Button {...args}>Button CTA</Button>
+			</div>
+		);
+	},
+	args: {
+		variant: 'error',
+	},
+};
+
+export const errorOutline: Story = {
+	render: (args) => {
+		return (
+			<div>
+				<Button {...args}>Button CTA</Button>
+			</div>
+		);
+	},
+	args: {
+		variant: 'error-outline',
+	},
+};
+
+export const sucess: Story = {
+	render: (args) => {
+		return (
+			<div>
+				<Button {...args}>Button CTA</Button>
+			</div>
+		);
+	},
+	args: {
+		variant: 'sucess',
+	},
+};
+
+export const sucessOutline: Story = {
+	render: (args) => {
+		return (
+			<div>
+				<Button {...args}>Button CTA</Button>
+			</div>
+		);
+	},
+	args: {
+		variant: 'sucess-outline',
+	},
+};
+
+// export const warning: Story = {
+// 	render: (args) => {
+// 		return (
+// 			<div>
+// 				<Button {...args}>Button CTA</Button>
+// 			</div>
+// 		);
+// 	},
+// 	args: {
+// 		variant: 'warning',
+// 	},
+// };
+
+export const info: Story = {
+	render: (args) => {
+		return (
+			<div>
+				<Button {...args}>Button CTA</Button>
+			</div>
+		);
+	},
+	args: {
+		variant: 'info',
+	},
+};
+
+export const infoOutline: Story = {
+	render: (args) => {
+		return (
+			<div>
+				<Button {...args}>Button CTA</Button>
+			</div>
+		);
+	},
+	args: {
+		variant: 'infoOutline',
+	},
+};
+
+export const warning: Story = {
+	render: (args) => {
+		return (
+			<div>
+				<Button {...args}>Button CTA</Button>
+			</div>
+		);
+	},
+	args: {
+		variant: 'warning',
+	},
+};
+
+export const warningOutline: Story = {
+	render: (args) => {
+		return (
+			<div>
+				<Button {...args}>Button CTA</Button>
+			</div>
+		);
+	},
+	args: {
+		variant: 'warningOutline',
 	},
 };

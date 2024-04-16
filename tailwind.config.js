@@ -54,6 +54,20 @@ module.exports = {
 					800: 'var(--secondary-800)',
 					900: 'var(--secondary-900)',
 				},
+				error: {
+					DEFAULT: 'var(--error)',
+				},
+
+				sucess: {
+					DEFAULT: 'var(--success)',
+				},
+
+				info: {
+					DEFAULT: 'var(--info)',
+				},
+				warning: {
+					DEFAULT: 'var(--warning)',
+				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))',

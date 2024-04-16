@@ -10,12 +10,31 @@ const buttonVariants = cva(
 		variants: {
 			variant: {
 				default: 'bg-primary text-white hover:bg-primary/90',
+				primaryOutline:
+					'border border-primary text-primary bg-background hover:bg-primary hover:text-white',
+				primary400: 'bg-primary-400 text-white hover:bg-primary/90',
+				'primaryOutline-400':
+					'border border-primary-400 text-primary-400  hover:bg-primary-400 hover:text-white',
 				destructive:
 					'bg-destructive text-destructive-foreground hover:bg-destructive/90',
 				outline:
-					'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+					'border border-primary text-primary bg-background hover:bg-accent hover:text-accent-foreground',
 				secondary:
 					'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+				'secondary-outline':
+					'border border-secondary text-secondary bg-background hover:bg-secondary hover:text-white',
+				error: 'bg-error text-white hover:bg-primary/90',
+				'error-outline':
+					'border border-error text-error  hover:bg-error hover:text-white',
+				sucess: 'bg-sucess text-white hover:bg-primary/90',
+				'sucess-outline':
+					'border border-sucess text-sucess bg-background hover:bg-sucess hover:text-white',
+				info: 'bg-info text-white hover:bg-primary/90',
+				infoOutline:
+					'border border-info text-info  hover:bg-info hover:text-white',
+				warning: 'bg-warning text-white hover:bg-primary/90',
+				warningOutline:
+					'border border-warning text-warning  hover:bg-warning hover:text-white',
 				ghost: 'hover:bg-accent hover:text-accent-foreground',
 				link: 'text-primary underline-offset-4 hover:underline',
 			},
