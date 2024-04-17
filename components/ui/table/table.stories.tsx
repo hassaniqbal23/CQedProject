@@ -1,62 +1,63 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { DataTable as NewTable} from './table';
+import DataTable from './table';
 import Link from 'next/link';
-
+import { IoEllipsisVertical } from 'react-icons/io5';
 import React from 'react';
+import Image from 'next/image';
 
 interface Schools {
   id: number;
-  schoolName: string;
-  schoolCountry: string;
-  schoolEmail: string;
-  numberOfTeachers: number;
+  SchoolName: string;
+  Country: string;
+  EmailAddress: string;
+  NumberOfTeachers: number;
   ImagePath: string;
 }
 
 const data: Schools[] = [
   {
     id: 1,
-    schoolName: 'St. Marys High School',
-    schoolCountry: 'United States',
-    schoolEmail: 'example@gmail.com',
-    numberOfTeachers: 20,
+    SchoolName: 'St. Marys High School',
+    Country: 'United States',
+    EmailAddress: 'example@gmail.com',
+    NumberOfTeachers: 20,
     ImagePath: '/assets/images/school1.svg',
   },
   {
     id: 1,
-    schoolName: 'Tokyo International School',
-    schoolCountry: 'Japan',
-    schoolEmail: 'example@gmail.com',
-    numberOfTeachers: 20,
+    SchoolName: 'Tokyo International School',
+    Country: 'Japan',
+    EmailAddress: 'example@gmail.com',
+    NumberOfTeachers: 20,
     ImagePath: '/assets/images/school2.svg',
   },
   {
     id: 1,
-    schoolName: 'Westminster Academy',
-    schoolCountry: 'United Kingdom',
-    schoolEmail: 'example@gmail.com',
-    numberOfTeachers: 20,
+    SchoolName: 'Westminster Academy',
+    Country: 'United Kingdom',
+    EmailAddress: 'example@gmail.com',
+    NumberOfTeachers: 20,
     ImagePath: '/assets/images/school3.svg',
   },
   {
     id: 1,
-    schoolName: 'Sydney Grammar School',
-    schoolCountry: 'Australia',
-    schoolEmail: 'example@gmail.com',
-    numberOfTeachers: 20,
+    SchoolName: 'Sydney Grammar School',
+    Country: 'Australia',
+    EmailAddress: 'example@gmail.com',
+    NumberOfTeachers: 20,
     ImagePath: '/assets/images/school4.svg',
   },
-]
+];
 
 const meta = {
-  title: 'Example/Table',
-  component: NewTable,
+  title: 'Forms/Table',
+  component: DataTable,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  args: { },
-} satisfies Meta<typeof NewTable>;
+  args: {},
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -74,13 +75,47 @@ export const Primary: Story = {
               View All
             </Link>
           </div>
-            <NewTable data={data} columns={["schoolName","schoolCountry", "schoolEmail","numberOfTeachers"]} ></NewTable>
-          </div>
+
+          <DataTable
+            data={data}
+            columns={[
+              'School Name',
+              'Country',
+              'EmailAddress',
+              'NumberOfTeachers',
+            ]}
+            actions={(data) => {
+              return (
+                <>
+                  <div onClick={() => console.log(data)}>
+                    <IoEllipsisVertical />
+                  </div>
+                </>
+              );
+            }}
+            tableCell={{
+              columnIndex: 0,
+              element(tableData) {
+                return (
+                  <>
+                    <Image
+                      src={tableData.ImagePath}
+                      alt={tableData.ImagePath}
+                      width={30}
+                      height={30}
+                    />
+                    <h2>{tableData['SchoolName']}</h2>
+                  </>
+                );
+              },
+            }}
+          />
+        </div>
       </>
     );
   },
   args: {
     columns: [],
     data: [],
-  }
+  },
 };
