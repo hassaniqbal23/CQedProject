@@ -1,5 +1,5 @@
 {
-  "name": "auotmo-kit-frontend",
+  "name": "cqed-front-end",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "start-staging": "next start -p 3003",
-    "start-dev": "next dev | npx local-ssl-proxy --source 3001 --target 3000",
     "lint": "next lint",
     "test": "jest --config=jest.config.ts",
     "storybook": "storybook dev  --debug-webpack -p 6006",
@@ -44,6 +43,7 @@
     "@types/node": "18.14.0",
     "add": "^2.0.6",
     "axios": "^1.3.4",
+    "class-variance-authority": "^0.7.0",
     "clsx": "^1.2.1",
     "cmdk": "^1.0.0",
     "crypto-js": "^4.1.1",

@@ -17,6 +17,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|dashboard.png|Group.png|firebase-messaging-sw.js|assets/images).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|dashboard.png|Group.png|assets/images).*)',
   ],
 };
