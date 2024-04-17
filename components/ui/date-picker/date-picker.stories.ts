@@ -10,9 +10,14 @@ const meta: Meta<typeof DatePickerDemo> = {
 export default meta;
 type Story = StoryObj<typeof DatePickerDemo>;
 
-export const calendar: Story = {
+export const DatePicker: Story = {
   args: {
-    label: "BirthDay",
-    variant: "calendar",
+  },
+};
+
+
+export const DatePickerRange: Story = {
+  args: {
+    mode: "range"
   },
 };
