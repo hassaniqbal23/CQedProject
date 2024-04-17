@@ -120,7 +120,7 @@ export const Primary: Story = {
 
 // PRIMARYOUTLINE BUTTONS
 
-export const primaryOutline: Story = {
+export const outlined: Story = {
 	render: (args) => {
 		return (
 			<div className="flex  gap-[10px]">
@@ -217,7 +217,7 @@ export const primaryOutline: Story = {
 		);
 	},
 	args: {
-		variant: 'primaryOutline',
+		variant: 'outline',
 	},
 };
 // __________________________________________________________
