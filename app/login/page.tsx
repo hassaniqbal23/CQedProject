@@ -15,9 +15,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+} from '@/components/ui';
+import { Input } from '@/components/ui';
+import { Button } from '@/components/ui';
 import { Loader2 } from 'lucide-react';
 import { updateToken } from '../utils/http';
 import { useMutation } from 'react-query';
@@ -39,7 +39,7 @@ export default function Login() {
 
   const form = useForm<IAuthentication>({
     resolver: zodResolver(formSchema),
-    defaultValues: { 
+    defaultValues: {
       name: '',
       password: '',
       remember: false,
