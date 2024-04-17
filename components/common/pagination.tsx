@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui';
 import {
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
@@ -12,7 +12,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/components/ui/';
 
 interface PaginationProps {
   currentPage: number;
@@ -43,7 +43,6 @@ function Pagination({
         buttons.push(
           <Button
             key={i}
-            variant="outline"
             type="button"
             disabled={i === currentPage}
             className={`mx-1 ${
@@ -64,7 +63,6 @@ function Pagination({
         buttons.push(
           <Button
             key={i}
-            variant="outline"
             type="button"
             className={`mx-1 hover.bg-[#4F46E5] text-lg`}
             onClick={() => onPageChange(i)}
@@ -98,7 +96,6 @@ function Pagination({
       </div>
       <Button
         type="button"
-        variant="outline"
         className="hover-bg-[#4F46E5] mr-1"
         disabled={currentPage - 10 < 1}
         onClick={() => onPageChange(Math.max(currentPage - 10, 1))}
@@ -108,7 +105,6 @@ function Pagination({
 
       <Button
         type="button"
-        variant="outline"
         className="hover-bg-[#4F46E5] mr-1"
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
@@ -120,7 +116,6 @@ function Pagination({
 
       <Button
         type="button"
-        variant="outline"
         className="hover-bg-[#4F46E5] ml-1"
         disabled={currentPage === totalPages}
         onClick={() => onPageChange(currentPage + 1)}
@@ -130,7 +125,6 @@ function Pagination({
 
       <Button
         type="button"
-        variant="outline"
         className="hover-bg-[#4F46E5] ml-1"
         disabled={currentPage + 10 > totalPages}
         onClick={() => onPageChange(Math.min(currentPage + 10, totalPages))}
