@@ -1,20 +1,30 @@
 "use client";
 
 import * as React from "react";
-import { format } from "date-fns";
+import {addDays, format} from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button/button";
-import { Calendar } from "@/components/ui/calender/calender";
+import {Calendar, CalendarProps} from "@/components/ui/calender/calender";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover/popover";
 
-export function DatePickerDemo() {
+
+interface DatePickerProps {
+    mode?: undefined | 'default' | "range" | "single";
+}
+
+export function DatePickerDemo(props: DatePickerProps) {
   const [date, setDate] = React.useState<Date>();
+
+    const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
+        from: new Date(2022, 0, 20),
+        to: addDays(new Date(2022, 0, 20), 20),
+    })
 
   return (
     <Popover>
@@ -32,9 +42,8 @@ export function DatePickerDemo() {
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
         <Calendar
-          mode="single"
+          mode={props.mode || "single"}
           selected={date}
-          onSelect={setDate}
           initialFocus
         />
       </PopoverContent>
