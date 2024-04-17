@@ -2,7 +2,6 @@
 
 import { FC } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/';
-import { SmallHeading } from '../common/SmallHeading';
 import {
   BsFillBellFill
 } from 'react-icons/bs';
@@ -76,7 +75,6 @@ export const Navbar: FC<IProps> = ({ }) => {
                           <div className="flex gap-4 items-center">
                             <BsFillBellFill className="text-4xl text-[#B0BABF] dark:text-foreground" />
                             <span>
-                              <SmallHeading className="" text="Notifications" />
                               <p className="text-gray-500 text-sm">
                                 {1}
                               </p>

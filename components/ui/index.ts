@@ -33,4 +33,3 @@ export * from './toast/toast';
 export * from './toaster/toaster';
 export * from './tooltip/tooltip';
 export * from './use-toast/use-toast';
-// export * from './yearly-calendar/yearly-calendar';

@@ -166,7 +166,7 @@ export default function Login() {
                 <Button
                   className="bg-primary w-full disabled:invalid:cursor-pointer hover:disabled:cursor-not-allowed"
                   type="submit"
-                  size={'lg'}
+                  // size={'lg'}
                   disabled={isLoading || !isValid}
                 >
                   Sign In

@@ -9,7 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+} from '@/components/ui';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import Image from 'next/image';
 interface AlertDelete {
