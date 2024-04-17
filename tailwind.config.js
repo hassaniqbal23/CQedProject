@@ -65,6 +65,10 @@ module.exports = {
 				info: {
 					DEFAULT: 'var(--info)',
 				},
+				disable: {
+					DEFAULT: 'var(--primary-50)',
+					foreground: 'hsl(var(--card-foreground))',
+				},
 				warning: {
 					DEFAULT: 'var(--warning)',
 				},

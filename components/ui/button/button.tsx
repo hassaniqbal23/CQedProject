@@ -17,8 +17,8 @@ const buttonVariants = cva(
 					'border border-primary-400 text-primary-400  hover:bg-primary-400 hover:text-white',
 				destructive:
 					'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-				outline:
-					'border border-primary text-primary bg-background hover:bg-accent hover:text-accent-foreground',
+				// outline:
+				// 	'border border-primary text-primary bg-background hover:bg-accent hover:text-accent-foreground',
 				secondary:
 					'bg-secondary text-secondary-foreground hover:bg-secondary/80',
 				'secondary-outline':
@@ -35,13 +35,14 @@ const buttonVariants = cva(
 				warning: 'bg-warning text-white hover:bg-primary/90',
 				warningOutline:
 					'border border-warning text-warning  hover:bg-warning hover:text-white',
+				disable: 'bg-disable text-foreground hover:bg-primary/90',
 				ghost: 'hover:bg-accent hover:text-accent-foreground',
 				link: 'text-primary underline-offset-4 hover:underline',
 			},
 			size: {
-				default: 'h-10 px-4 py-2',
-				sm: 'h-9 rounded-md px-3',
-				lg: 'h-11 rounded-md px-8',
+				default: 'py-[14px] px-[10px] font-[600] text-[16px] rounded-[4px] ',
+				sm: 'p-[10px] rounded-[4px]  font-[500]',
+				lg: 'rounded-md py-[14px] px-[10px] font-[600] text-[20px]',
 				icon: 'h-10 w-10',
 			},
 		},
