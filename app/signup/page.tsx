@@ -18,9 +18,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+} from '@/components/ui';
+import { Input } from '@/components/ui';
+import { Button } from '@/components/ui';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { IRegisterFrom } from '../api/types';
@@ -80,7 +80,7 @@ const SignUp: FC = () => {
     <div className="grid grid-cols-1 md:grid-cols-1 h-screen">
       <div className="flex justify-end items-center">
         <div className="bg-secondary-light mx-auto w-4/12 px-2 md:px-0">
-          
+
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-6">
@@ -103,7 +103,7 @@ const SignUp: FC = () => {
                   )}
                 />
               </div>
-             
+
               <div className="py-2 mt-2">
                 <Button
                   className="bg-primary w-full"
@@ -115,7 +115,7 @@ const SignUp: FC = () => {
               </div>
               <div className="mt-2 sm:mt-8 mb-4">
                 <div className="sm:flex sm:justify-center text-center items-baseline">
-                 
+
                   <Link
                     href={'/login'}
                     className="text-primary hover:no-underline text-base p-0"

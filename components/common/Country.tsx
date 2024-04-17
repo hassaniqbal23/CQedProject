@@ -7,24 +7,24 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../ui/form';
+} from '../ui';
 import Asterisk from './Asterisk';
 import countries from '@/components/countries.json';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui';
 import {
   Command,
   CommandEmpty,
   CommandInput,
   CommandItem,
-} from '@/components/ui/command';
+} from '@/components/ui';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { ScrollArea } from '../ui/scroll-area';
+} from '@/components/ui';
+import { ScrollArea } from '../ui';
 
 type CounrtyProps = {
   name: string;
