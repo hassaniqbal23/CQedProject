@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Heading } from '../common/Heading';
 import { Span } from '../common/Span';
 import { RxCross2 } from 'react-icons/rx';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui';
 import { Loader2 } from 'lucide-react';
 interface ModelProps {
   children?: React.ReactNode;

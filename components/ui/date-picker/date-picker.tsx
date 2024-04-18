@@ -1,30 +1,32 @@
-"use client";
-
 import * as React from "react";
-import {addDays, format} from "date-fns";
+import { addDays, format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button/button";
-import {Calendar, CalendarProps} from "@/components/ui/calender/calender";
+import { Calendar } from "@/components/ui/calender/calender";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover/popover";
+import { DateRange } from "react-day-picker";
+import { da } from "date-fns/locale";
 
-
-interface DatePickerProps {
-    mode?: undefined | 'default' | "range" | "single";
+interface IProps {
+  mode?: string;
 }
 
-export function DatePickerDemo(props: DatePickerProps) {
+const DatePickerDemo: React.FC<IProps> = ({ mode }) => {
   const [date, setDate] = React.useState<Date>();
+  const [rangeDate, setRangeDate] = React.useState<DateRange | undefined>({
+    from: new Date(2022, 0, 20),
+    to: addDays(new Date(2022, 0, 20), 20),
+  });
 
-    const [dateRange, setDateRange] = React.useState<DateRange | undefined>({
-        from: new Date(2022, 0, 20),
-        to: addDays(new Date(2022, 0, 20), 20),
-    })
+  console.log(date, "single");
+
+  console.log(rangeDate, "range date");
 
   return (
     <Popover>
@@ -36,17 +38,47 @@ export function DatePickerDemo(props: DatePickerProps) {
             !date && "text-muted-foreground"
           )}
         >
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
-          <CalendarIcon className="ml-auto h-4 w-4" />
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {mode === "range" ? (
+            <>
+              {rangeDate?.from ? (
+                rangeDate.to ? (
+                  <>
+                    {format(rangeDate.from, "LLL dd, y")} -{" "}
+                    {format(rangeDate.to, "LLL dd, y")}
+                  </>
+                ) : (
+                  format(rangeDate.from, "LLL dd, y")
+                )
+              ) : (
+                <span>Pick a date</span>
+              )}
+            </>
+          ) : (
+            <>{date ? format(date, "PPP") : <span>Pick a date</span>}</>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode={props.mode || "single"}
-          selected={date}
-          initialFocus
-        />
+        {mode === "range" ? (
+          <Calendar
+            mode="range"
+            selected={rangeDate}
+            onSelect={setRangeDate}
+            numberOfMonths={2}
+            initialFocus
+          />
+        ) : (
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            initialFocus
+          />
+        )}
       </PopoverContent>
     </Popover>
   );
-}
+};
+
+export default DatePickerDemo;

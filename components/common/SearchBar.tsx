@@ -1,7 +1,7 @@
 import { FC, ChangeEvent } from 'react';
 import { IoSearchOutline } from 'react-icons/io5';
 import { cn } from '@/lib/utils';
-import { Input } from '../ui/input';
+import { Input } from '../ui/';
 
 interface IProps {
   setSearchTerm?: (value: string) => void;

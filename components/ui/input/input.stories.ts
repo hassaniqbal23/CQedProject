@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Input } from "@/components/ui/input/input";
-
+import Input from "./input";
 const meta: Meta<typeof Input> = {
   title: "Forms/Input",
   component: Input,
@@ -13,32 +12,26 @@ type Story = StoryObj<typeof Input>;
 export const Default: Story = {
   args: {
     label: "Full Name",
-    isIcon: false,
   },
 };
-
 
 export const Error: Story = {
   args: {
-    label: "Full Name",
-    isIcon: false,
+    label: "Email",
+    error: "Please enter a valid email address.",
   },
 };
-
 
 export const Disabled: Story = {
   args: {
-    label: "Full Name",
-    isIcon: false,
+    label: "Username",
+    disabled: true,
   },
 };
-
-
 
 export const Loading: Story = {
   args: {
-    label: "Full Name",
-    isIcon: false,
+    label: "Password",
+    loading: true,
   },
 };
-

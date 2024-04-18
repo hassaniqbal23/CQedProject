@@ -2,7 +2,7 @@
 
 import { FC } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { Button } from '../ui/button';
+import { Button } from '../ui/button/button';
 
 interface IAccountSetting {
   heading: string;
@@ -22,18 +22,12 @@ export const Setting: FC = () => {
       heading: 'Security',
       path: '/accountsetting/security',
     },
-    {
-      heading: 'Billing & plans',
-      path: '/accountsetting/billing',
-    },
+  
     {
       heading: 'Notifications',
       path: '/accountsetting/notifications',
     },
-    {
-      heading: 'Connections',
-      path: '/accountsetting/connections',
-    },
+   
   ];
 
   const handleRouteChange = (
@@ -51,8 +45,8 @@ export const Setting: FC = () => {
           return (
             <Button
               key={index}
-              variant={'link'}
-              onClick={(e) => handleRouteChange(e, item.path)}
+              // variant={'link'}
+              onClick={(e: any) => handleRouteChange(e, item.path)}
               className={`block sm:inline hover:no-underline md:py-[10px] md:px-[28px] mx-1 rounded-md font-normal  whitespace-nowrap ${
                 pathname === item.path
                   ? 'text-foreground bg-white dark:bg-primary shadow-md'

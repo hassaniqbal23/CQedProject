@@ -1,39 +1,59 @@
-import { forwardRef, useState, useEffect } from "react";
+// Input.tsx
+import React from "react";
 import { cn } from "@/lib/utils";
+import { LoaderIcon, EyeIcon, EyeOffIcon } from "lucide-react";
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps {
   label?: string;
-  username?: string;
-  isIcon?: boolean;
+  error?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  type?: "text" | "password" | "number";
+  id?: string;
+  inputClassName?: string;
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, label, isIcon, ...props }, ref) => {
-    return (
-      <div>
-        {label && (
-          <label
-            htmlFor={props.id}
-            className="text-foreground-primary font-montserrat font-semibold text-base leading-[26.9px]"
-          >
-            {label}
-          </label>
-        )}
+const Input: React.FC<InputProps> = ({
+  label,
+  error,
+  disabled,
+  loading,
+  type = "text",
+  id,
+  inputClassName,
+}) => {
+  const showIcon = type === "text";
+
+  return (
+    <div>
+      {label && (
+        <label
+          htmlFor={id}
+          className="text-foreground-primary font-montserrat font-semibold text-base leading-[26.9px]"
+        >
+          {label}
+        </label>
+      )}
+      <div className="relative">
         <input
-          type={type || "text"}
+          type={type}
+          id={id}
           className={cn(
             "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-            className
+            inputClassName
           )}
-          ref={ref}
-          {...props}
+          disabled={disabled}
         />
+        {showIcon && (
+          <span className="absolute inset-y-0 right-0 flex items-center pr-3">
+            {type === "text" ? <LoaderIcon /> : <EyeOffIcon />}
+          </span>
+        )}
       </div>
-    );
-  }
-);
+      {error && <div style={{ color: "red" }}>{error}</div>}
+      {loading && <div className="mt-6 text-center">Loading...</div>}
+    </div>
+  );
+};
 
-Input.displayName = "Input";
-
-export { Input };
+export default Input;
