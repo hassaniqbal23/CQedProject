@@ -77,45 +77,43 @@ export const Primary: Story = {
           </div>
 
           <DataTable
-            data={data}
-            columns={[
-              { heading: 'School Name', dataKey: 'SchoolName' },
-              { heading: 'Country', dataKey: 'Country' },
-              { heading: 'Email Address', dataKey: 'EmailAddress' },
-              { heading: 'Number Of Teachers', dataKey: 'NumberOfTeachers' },
-            ]}
-            actions={(data) => {
-              return (
-                <>
-                  <div onClick={() => console.log(data)}>
-                    <IoEllipsisVertical />
-                  </div>
-                </>
-              );
-            }}
-            tableCell={{
-              columnIndex: 0,
-              element(tableData) {
-                return (
-                  <>
-                    <Image
-                      src={tableData.ImagePath}
-                      alt={tableData.ImagePath}
-                      width={30}
-                      height={30}
-                    />
-                    <h2>{tableData['SchoolName']}</h2>
-                  </>
-                );
-              },
-            }}
+            {...args}
           />
         </div>
       </>
     );
   },
   args: {
-    columns: [],
-    data: [],
-  },
+    selection: true,
+    data: data,
+    columns: [
+          { label: 'School Name',
+            key: 'SchoolName',
+            render: (data) => {
+              return (
+                  <>
+                    <Image
+                        src={data.ImagePath}
+                        alt={data.ImagePath}
+                        width={30}
+                        height={30}
+                    />
+                    <h2>{data['SchoolName']}</h2>
+                  </>
+              );
+            }
+          },
+{ label: 'Country', key: 'Country' },
+{ label: 'Email Address', key: 'EmailAddress' },
+{ label: 'Number Of Teachers', key: 'NumberOfTeachers' },
+{ label: 'Actions', key: 'actions',  render: (data) => {
+  return (
+      <>
+        <div onClick={() => console .log(data)}>
+          <IoEllipsisVertical />
+        </div>
+      </>
+  )}
+},
+]}
 };

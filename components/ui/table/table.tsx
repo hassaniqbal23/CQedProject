@@ -108,13 +108,13 @@ const TableCaption = forwardRef<
 TableCaption.displayName = 'TableCaption';
 
 interface DataTableProps {
-  columns: { heading: string; dataKey: string }[];
+  columns: {
+      label: string;
+      key: string,
+      render?: (data: any) => React.ReactNode;
+  }[];
   data: any[];
-  actions?: (data: any) => React.ReactNode;
-  tableCell?: {
-    columnIndex: number;
-    element: (tableData: any) => React.ReactNode;
-  };
+  selection?: boolean;
 }
 
 const DataTable = (props: DataTableProps) => {
@@ -122,32 +122,27 @@ const DataTable = (props: DataTableProps) => {
     <Table className=" w-[1117px] border">
       <TableHeader className="text-center">
         <TableRow className="bg-[#E0E0E0] ">
-          <TableHead>
-            <Checkbox id="terms" />
-          </TableHead>
+            {props.selection ? <TableHead>
+                <Checkbox id="checkbox" />
+            </TableHead> : null}
           {props.columns.map((c, i) => (
-            <TableHead className="text-blue-950 text-[13px] font-semibold text-left dark:text-white rounded-t-sm ">
-              {c.heading}
+            <TableHead key={i} className="text-blue-950 text-[13px] font-semibold text-left dark:text-white">
+              {c.label}
             </TableHead>
           ))}
-          {props.actions ? (
-            <TableHead className="text-blue-950 text-[13px] font-semibold text-left dark:text-white rounded-t-sm ">
-              Action
-            </TableHead>
-          ) : (
-            ''
-          )}
         </TableRow>
       </TableHeader>
       <TableBody>
         {props.data.map((item, index: number) => (
-          <TableRow>
-            <TableCell
-              className=" text-[#282931] text-[13px] font-normal dark:text-white flex justify-center "
-              key={index}
-            >
-              <Checkbox id="terms" className="bg-[#E0E0E0]" />
-            </TableCell>
+          <TableRow key={index} >
+              {
+                  props.selection ? <TableCell
+                      className=" text-[#282931] text-[13px] font-normal dark:text-white flex justify-center "
+                      key={index}
+                  >
+                      <Checkbox id="terms" className="bg-[#E0E0E0]" />
+                  </TableCell> : <></>
+              }
             {props.columns.map((c, i) => (
               <>
                 <TableCell
@@ -155,16 +150,11 @@ const DataTable = (props: DataTableProps) => {
                   key={index}
                 >
                   <div className="flex justify-start gap-2 items-center ">
-                    {props.tableCell && props.tableCell.columnIndex === i ? (
-                      props.tableCell.element(item)
-                    ) : (
-                      <>{item[c.dataKey]}</>
-                    )}
+                    {  c.render ? c.render(item)  : item[c.key]   }
                   </div>
                 </TableCell>
               </>
             ))}
-            {props.actions ? props.actions(item) : ''}
           </TableRow>
         ))}
       </TableBody>
