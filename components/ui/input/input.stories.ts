@@ -24,14 +24,21 @@ export const Error: Story = {
 
 export const Disabled: Story = {
   args: {
-    label: "Username",
+    label: "Disable",
     disabled: true,
   },
 };
 
 export const Loading: Story = {
   args: {
-    label: "Password",
+    label: "loding",
+    loading: true,
+  },
+};
+
+export const Inputpassword: Story = {
+  args: {
+    label: "input password",
     loading: true,
   },
 };

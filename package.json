@@ -64,7 +64,7 @@
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-auth-code-input": "^3.2.1",
-    "react-day-picker": "^8.8.0",
+    "react-day-picker": "^8.10.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.1",
     "react-icons": "^4.11.0",

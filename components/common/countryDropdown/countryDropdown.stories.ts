@@ -1,21 +1,41 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import countyDropdown from "./countyDropdown";
+import CountrySelectDropdown from "./countyDropdown";
 
-const meta: Meta<typeof countyDropdown> = {
-  title: "Forms/countyDropdown",
-  component: countyDropdown,
+const meta: Meta<typeof CountrySelectDropdown> = {
+  title: "Forms/coutryDropdown",
+  component: CountrySelectDropdown,
 };
 
 export default meta;
-type Story = StoryObj<typeof countyDropdown>;
+type Story = StoryObj<typeof CountrySelectDropdown>;
 
-export const DatePicker: Story = {
-  args: {},
-};
-
-export const DatePickerRange: Story = {
+export const Default: Story = {
   args: {
-    mode: "range",
+    options: [
+      {
+        name: "Pakistan",
+        countryCode: "US",
+        flagUrl: "/asserts/flags/pakistanFlagLogo.svg",
+      },
+      {
+        name: "India",
+        countryCode: "GB",
+        flagUrl: "/asserts/flags/indiaFlagLogo.svg",
+      },
+      {
+        name: "United Kingdom",
+        countryCode: "IN",
+        flagUrl: "/asserts/flags/UnFlag.svg",
+      },
+      {
+        name: "Sudia Arab",
+        countryCode: "CN",
+        flagUrl: "/asserts/flags/sudiaFlag.svg",
+      },
+    ],
+
+    onChange: (country) => console.log("Selected country:", country),
+    label: "Select your country",
   },
 };

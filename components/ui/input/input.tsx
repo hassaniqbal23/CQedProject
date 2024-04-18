@@ -1,7 +1,6 @@
-// Input.tsx
-import React from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
-import { LoaderIcon, EyeIcon, EyeOffIcon } from "lucide-react";
+import { ShieldAlert, LoaderIcon, Eye, EyeOff } from "lucide-react";
 
 interface InputProps {
   label?: string;
@@ -22,6 +21,14 @@ const Input: React.FC<InputProps> = ({
   id,
   inputClassName,
 }) => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
+  const inputType = showPassword ? "text" : type;
+  const isError = !!error;
 
   return (
     <div>
@@ -35,19 +42,38 @@ const Input: React.FC<InputProps> = ({
       )}
       <div className="relative">
         <input
-          type={type}
+          type={inputType}
           id={id}
           className={cn(
-            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+            isError && "border-red-500",
             inputClassName
           )}
           disabled={disabled}
         />
-        {loading && (
-          <span className="absolute inset-y-0 right-0 flex items-center pr-3"><LoaderIcon className={"animate-spin "}  /></span>
+        {type === "password" && (
+          <button
+            type="button"
+            className="absolute inset-y-0 right-0 flex items-center pr-3 focus:outline-none"
+            onClick={togglePasswordVisibility}
+          >
+            {showPassword ? <Eye /> : <EyeOff />}
+          </button>
+        )}
+        {isError && (
+          <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-red-500">
+            <ShieldAlert />
+          </span>
+        )}
+        {loading && type !== "password" && (
+          <span className="absolute inset-y-0 right-0 flex items-center pr-3">
+            <LoaderIcon className={"animate-spin "} />
+          </span>
         )}
       </div>
-      {error && <div style={{ color: "red" }}>{error}</div>}
+      {error && (
+        <div className="text-red-500 mt-7 text-bold text-lg ">{error}</div>
+      )}
     </div>
   );
 };

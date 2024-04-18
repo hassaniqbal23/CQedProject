@@ -11,7 +11,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover/popover";
 import { DateRange } from "react-day-picker";
-import { da } from "date-fns/locale";
 
 interface IProps {
   mode?: string;
@@ -19,10 +18,7 @@ interface IProps {
 
 const DatePickerDemo: React.FC<IProps> = ({ mode }) => {
   const [date, setDate] = React.useState<Date>();
-  const [rangeDate, setRangeDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
-  });
+  const [rangeDate, setRangeDate] = React.useState<DateRange | undefined>();
 
   console.log(date, "single");
 
@@ -69,12 +65,7 @@ const DatePickerDemo: React.FC<IProps> = ({ mode }) => {
             initialFocus
           />
         ) : (
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            initialFocus
-          />
+          <Calendar selected={date} onSelect={setDate} initialFocus />
         )}
       </PopoverContent>
     </Popover>
