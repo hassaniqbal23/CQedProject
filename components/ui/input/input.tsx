@@ -22,7 +22,6 @@ const Input: React.FC<InputProps> = ({
   id,
   inputClassName,
 }) => {
-  const showIcon = type === "text";
 
   return (
     <div>
@@ -44,14 +43,11 @@ const Input: React.FC<InputProps> = ({
           )}
           disabled={disabled}
         />
-        {showIcon && (
-          <span className="absolute inset-y-0 right-0 flex items-center pr-3">
-            {type === "text" ? <LoaderIcon /> : <EyeOffIcon />}
-          </span>
+        {loading && (
+          <span className="absolute inset-y-0 right-0 flex items-center pr-3"><LoaderIcon className={"animate-spin "}  /></span>
         )}
       </div>
       {error && <div style={{ color: "red" }}>{error}</div>}
-      {loading && <div className="mt-6 text-center">Loading...</div>}
     </div>
   );
 };
