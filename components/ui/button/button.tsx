@@ -1,4 +1,4 @@
-import {forwardRef} from 'react';
+import {ReactElement, forwardRef} from 'react';
 import {Slot} from '@radix-ui/react-slot';
 import {cva, type VariantProps} from 'class-variance-authority';
 
@@ -33,7 +33,6 @@ const buttonVariants = cva(
 				warning: 'bg-warning text-white hover:bg-primary/90',
 				warningOutline:
 					'border border-warning text-warning  hover:bg-warning hover:text-white',
-				disable: 'bg-disable text-foreground hover:bg-primary/90',
 				ghost: 'hover:bg-accent hover:text-accent-foreground',
 				link: 'text-primary underline-offset-4 hover:underline',
 			},
@@ -55,6 +54,9 @@ export interface ButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
 		VariantProps<typeof buttonVariants> {
 	asChild?: boolean;
+	icon?: ReactElement;
+	iconPosition?: 'left' | 'right';
+	loading?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -65,7 +67,13 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 				className={cn(buttonVariants({variant, size, className}))}
 				ref={ref}
 				{...props}
-			/>
+				disabled={props.loading ? true : props.disabled}
+			>
+				{props.iconPosition === 'left' && props.icon}
+				{props.children}
+
+				{props.iconPosition === 'right' && props.icon}
+			</Comp>
 		);
 	}
 );

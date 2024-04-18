@@ -2,6 +2,8 @@ import type {Meta, StoryObj} from '@storybook/react';
 import {fn} from '@storybook/test';
 import {Button} from './button';
 import {ArrowLeft, ArrowRight} from 'lucide-react';
+// import {Spin} from 'antd';
+// import {LoadingOutlined} from '@ant-design/icons';
 
 const meta = {
 	title: 'Ui/Button',
@@ -37,16 +39,20 @@ export const Primary: Story = {
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 
@@ -67,16 +73,20 @@ export const Primary: Story = {
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 
@@ -97,16 +107,20 @@ export const Primary: Story = {
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 			</div>
@@ -139,16 +153,18 @@ export const outlined: Story = {
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
-					>
-						Button CTA <ArrowRight size={20} />
-					</Button>
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
+					></Button>
 
 					<Button
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 
@@ -169,16 +185,20 @@ export const outlined: Story = {
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 
@@ -199,16 +219,20 @@ export const outlined: Story = {
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 
@@ -242,16 +266,20 @@ export const primary_400: Story = {
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -269,16 +297,20 @@ export const primary_400: Story = {
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -296,16 +328,20 @@ export const primary_400: Story = {
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>{' '}
 			</div>
@@ -337,16 +373,20 @@ export const primaryOutline400: Story = {
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 
@@ -367,16 +407,20 @@ export const primaryOutline400: Story = {
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 
@@ -397,16 +441,20 @@ export const primaryOutline400: Story = {
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 
@@ -438,16 +486,20 @@ export const Secondary: Story = {
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -465,16 +517,20 @@ export const Secondary: Story = {
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -492,16 +548,20 @@ export const Secondary: Story = {
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>{' '}
 			</div>
@@ -532,16 +592,20 @@ export const OutlineSecondary: Story = {
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -559,16 +623,20 @@ export const OutlineSecondary: Story = {
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -586,16 +654,20 @@ export const OutlineSecondary: Story = {
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>{' '}
 			</div>
@@ -626,16 +698,18 @@ export const error: Story = {
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
-					>
-						Button CTA <ArrowRight size={20} />
-					</Button>
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
+					></Button>
 
 					<Button
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -653,16 +727,20 @@ export const error: Story = {
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -680,16 +758,20 @@ export const error: Story = {
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>{' '}
 			</div>
@@ -720,16 +802,20 @@ export const errorOutline: Story = {
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -747,16 +833,20 @@ export const errorOutline: Story = {
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -774,16 +864,20 @@ export const errorOutline: Story = {
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>{' '}
 			</div>
@@ -813,16 +907,20 @@ export const sucess: Story = {
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -840,16 +938,20 @@ export const sucess: Story = {
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -867,16 +969,20 @@ export const sucess: Story = {
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>{' '}
 			</div>
@@ -907,16 +1013,20 @@ export const sucessOutline: Story = {
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -934,16 +1044,20 @@ export const sucessOutline: Story = {
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -961,16 +1075,20 @@ export const sucessOutline: Story = {
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>{' '}
 			</div>
@@ -1001,16 +1119,20 @@ export const info: Story = {
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -1028,16 +1150,20 @@ export const info: Story = {
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -1055,16 +1181,20 @@ export const info: Story = {
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>{' '}
 			</div>
@@ -1094,16 +1224,20 @@ export const infoOutline: Story = {
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -1121,16 +1255,20 @@ export const infoOutline: Story = {
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -1148,16 +1286,20 @@ export const infoOutline: Story = {
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>{' '}
 			</div>
@@ -1188,16 +1330,20 @@ export const warning: Story = {
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -1215,16 +1361,20 @@ export const warning: Story = {
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -1242,16 +1392,20 @@ export const warning: Story = {
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>{' '}
 			</div>
@@ -1282,16 +1436,20 @@ export const warningOutline: Story = {
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'default'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -1309,16 +1467,20 @@ export const warningOutline: Story = {
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'sm'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>
 				{/* _____________________________________________ */}
@@ -1336,16 +1498,20 @@ export const warningOutline: Story = {
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
 					>
-						Button CTA <ArrowRight size={20} />
+						Button CTA
 					</Button>
 
 					<Button
 						{...args}
 						size={'lg'}
 						className="flex gap-[10px]"
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
 					>
-						<ArrowLeft size={20} /> Button CTA
+						Button CTA
 					</Button>
 				</div>{' '}
 			</div>
@@ -1358,13 +1524,13 @@ export const warningOutline: Story = {
 
 // DISABLE BUTTONS
 
-export const Disabled: Story = {
-	args: {
-		variant: 'disable',
-		disabled: true,
-		children: 'Button',
-	},
-};
+// export const Disabled: Story = {
+// 	args: {
+// 		variant: 'disable',
+// 		disabled: true,
+// 		children: 'Button',
+// 	},
+// };
 
 // export const DisabledOutline: Story = {
 // 	args: {
@@ -1373,3 +1539,137 @@ export const Disabled: Story = {
 // 		children: 'Button',
 // 	},
 // };
+
+export const Disable: Story = {
+	render: (args) => {
+		return (
+			<div className="flex gap-[10px]">
+				{/* Default BUTTONS WARNING_OUTLINE   */}
+				<div className="flex flex-col gap-[10px]">
+					<h2>Default buttons </h2>
+					<Button
+						{...args}
+						size={'default'}
+						disabled={true}
+					>
+						Button CTA
+					</Button>
+
+					<Button
+						{...args}
+						size={'default'}
+						className="flex gap-[10px]"
+						disabled={true}
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
+					>
+						Button CTA
+					</Button>
+
+					<Button
+						{...args}
+						size={'default'}
+						className="flex gap-[10px]"
+						disabled={true}
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
+					>
+						Button CTA
+					</Button>
+				</div>
+				{/* _____________________________________________ */}
+				{/* SMALL BUTTONS WARNING_OUTLINE   */}
+				<div className="flex flex-col gap-[10px]">
+					<h2>small buttons </h2>
+					<Button
+						{...args}
+						size={'sm'}
+						disabled={true}
+					>
+						Button CTA
+					</Button>
+
+					<Button
+						{...args}
+						size={'sm'}
+						className="flex gap-[10px]"
+						disabled={true}
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
+					>
+						Button CTA
+					</Button>
+
+					<Button
+						{...args}
+						size={'sm'}
+						className="flex gap-[10px]"
+						disabled={true}
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
+					>
+						Button CTA
+					</Button>
+				</div>
+				{/* _____________________________________________ */}
+				{/* Large BUTTONS WARNING_OUTLINE   */}
+				<div className="flex flex-col gap-[10px]">
+					<h2>Large buttons</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						disabled={true}
+					>
+						Button CTA
+					</Button>
+
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						disabled={true}
+						icon={<ArrowRight size={20} />}
+						iconPosition="right"
+					>
+						Button CTA
+					</Button>
+
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						disabled={true}
+						icon={<ArrowLeft size={20} />}
+						iconPosition="left"
+					>
+						Button CTA
+					</Button>
+				</div>{' '}
+			</div>
+		);
+	},
+	args: {
+		variant: 'warning',
+	},
+};
+
+export const LoadingButton: Story = {
+	render: (args) => {
+		return (
+			<div className="flex flex-col gap-[10px]">
+				<h2>Loading button</h2>
+				<Button
+					{...args}
+					loading={true}
+					size={'lg'}
+				>
+					{/* <Spin indicator={<LoadingOutlined spin />} /> */}
+					Loading...
+				</Button>
+			</div>
+		);
+	},
+	args: {
+		variant: 'warning',
+	},
+};
