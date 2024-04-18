@@ -108,7 +108,7 @@ const TableCaption = forwardRef<
 TableCaption.displayName = 'TableCaption';
 
 interface DataTableProps {
-  columns: string[];
+  columns: { heading: string; dataKey: string }[];
   data: any[];
   actions?: (data: any) => React.ReactNode;
   tableCell?: {
@@ -127,7 +127,7 @@ const DataTable = (props: DataTableProps) => {
           </TableHead>
           {props.columns.map((c, i) => (
             <TableHead className="text-blue-950 text-[13px] font-semibold text-left dark:text-white rounded-t-sm ">
-              {c}
+              {c.heading}
             </TableHead>
           ))}
           {props.actions ? (
@@ -158,7 +158,7 @@ const DataTable = (props: DataTableProps) => {
                     {props.tableCell && props.tableCell.columnIndex === i ? (
                       props.tableCell.element(item)
                     ) : (
-                      <>{item[c]}</>
+                      <>{item[c.dataKey]}</>
                     )}
                   </div>
                 </TableCell>

@@ -79,10 +79,10 @@ export const Primary: Story = {
           <DataTable
             data={data}
             columns={[
-              'School Name',
-              'Country',
-              'EmailAddress',
-              'NumberOfTeachers',
+              { heading: 'School Name', dataKey: 'SchoolName' },
+              { heading: 'Country', dataKey: 'Country' },
+              { heading: 'Email Address', dataKey: 'EmailAddress' },
+              { heading: 'Number Of Teachers', dataKey: 'NumberOfTeachers' },
             ]}
             actions={(data) => {
               return (
