@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import navbar from "./navbar";
+import Navbar from "./navbar";
 
 const meta: Meta<typeof navbar> = {
-  title: "navbar",
-  component: navbar,
+  title: "Navbar",
+  component: Navbar,
 };
 
 export default meta;
-type Story = StoryObj<typeof navbar>;
+type Story = StoryObj<typeof Navbar>;
 
 export const Default: Story = {
   args: {},
@@ -16,14 +16,14 @@ export const Default: Story = {
 
 export const bottom: Story = {
   args: {
-    variant: "Bottom navigation bar",
+    variant: "BOTTOM",
     onClick: () => console.log("Bottom navigation bar"),
   },
 };
 
 export const TopBar: Story = {
   args: {
-    variant: "Top bar",
+    variant: "TOP",
     onClick: () => alert("open top bar"),
   },
 };
