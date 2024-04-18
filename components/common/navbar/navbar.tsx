@@ -7,6 +7,7 @@ interface NavbarProps {
   onClick: () => void;
 }
 
+
 function Navbar(props: NavbarProps) {
   return (
     <>
