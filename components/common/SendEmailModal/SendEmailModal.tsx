@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Model from '../Model/Model'
+import Modal from '@/components/common/Modal/Modal'
 import { Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Textarea } from '@/components/ui'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -8,7 +8,6 @@ import { z } from 'zod';
 interface SendEmailProps {
     onSubmit: (data: any) => void
 }
-
 
 const schema = z.object({
     email: z.string().email('Invalid email format').min(2, 'Name must be at least 2 characters')
@@ -31,7 +30,7 @@ function SendEmail({ onSubmit }: SendEmailProps) {
     } = form;
 
     return (
-        <Model headerTitle='Invite School' footerOkButton='Send Email' showFooterCloseButton={false} openModelButton={<Button>Open Send Email</Button>} footer={true} >
+        <Modal header={true} headerTitle='Invite School' footerOkButton='Invite School' showFooterCloseButton={false} openModalButton={<Button>Open Send Email</Button>} footer={true} >
             <Form  {...form}>
                 <form
                     onSubmit={(e) => {
@@ -65,10 +64,9 @@ function SendEmail({ onSubmit }: SendEmailProps) {
                             <FormMessage>{error}</FormMessage>
                         </div>
                     )}
-
                 </form>
             </Form>
-        </Model>
+        </Modal>
     )
 }
 

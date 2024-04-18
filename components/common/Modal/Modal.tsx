@@ -1,9 +1,9 @@
 import { Button, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, Input, Label } from '@/components/ui'
 import React from 'react'
 
-interface ModelProps {
+interface ModalProps {
     children: React.ReactNode
-    openModelButton?: string | React.ReactNode
+    openModalButton?: string | React.ReactNode
     header?: boolean | React.ReactNode
     footer?: boolean | React.ReactNode
     isVisible?: boolean
@@ -14,16 +14,17 @@ interface ModelProps {
     footerOkButton?: React.ReactNode | string
 }
 
-function Model({ children, openModelButton, header, onOkClick, footer, headerTitle, headerDescription, showFooterCloseButton = true, footerOkButton }: ModelProps) {
+function Modal({ children, openModalButton, header, onOkClick, footer, headerTitle, headerDescription, showFooterCloseButton = true, footerOkButton }: ModalProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                {openModelButton}
+                {openModalButton}
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     {header === true ? (
-                        <><DialogTitle>{headerTitle}</DialogTitle>
+                        <>
+                            <DialogTitle>{headerTitle}</DialogTitle>
                             <DialogDescription>
                                 {headerDescription}
                             </DialogDescription>
@@ -50,4 +51,4 @@ function Model({ children, openModelButton, header, onOkClick, footer, headerTit
     )
 }
 
-export default Model
+export default Modal

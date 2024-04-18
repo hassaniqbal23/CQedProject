@@ -1,27 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import SendEmailModel from './SendEmail'
-import { GoArrowLeft } from 'react-icons/go';
-import { Button } from '@/components/ui';
+import SendEmailModal from './SendEmailModal'
 
 const meta = {
-    title: 'Ui/SendEmailModel',
-    component: SendEmailModel,
+    title: 'UI/Modal',
+    component: SendEmailModal,
     parameters: {
         layout: 'centered',
     },
 
     tags: ['autodocs'],
-} satisfies Meta<typeof SendEmailModel>;
+} satisfies Meta<typeof SendEmailModal>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const InviteSchoolModal: Story = {
     render: (args) => {
         return (
             <div>
-                <SendEmailModel {...args} ></SendEmailModel>
+                <SendEmailModal {...args} ></SendEmailModal>
             </div>
         );
     },
