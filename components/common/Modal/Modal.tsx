@@ -42,9 +42,7 @@ function Modal({ children, openModalButton, header, onOkClick, footer, headerTit
                         {typeof footerOkButton === 'string' ? <Button type="button" onClick={onOkClick}>
                             {footerOkButton}
                         </Button> : footerOkButton}
-
                     </DialogClose>
-
                 </DialogFooter> : footer}
             </DialogContent>
         </Dialog>
