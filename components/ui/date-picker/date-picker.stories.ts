@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
-import { DatePickerDemo } from "@/components/ui/date-picker/date-picker";
+import DatePickerDemo from "./date-picker";
 
 const meta: Meta<typeof DatePickerDemo> = {
   title: "Forms/DatePicker",
@@ -11,13 +10,11 @@ export default meta;
 type Story = StoryObj<typeof DatePickerDemo>;
 
 export const DatePicker: Story = {
-  args: {
-  },
+  args: {},
 };
-
 
 export const DatePickerRange: Story = {
   args: {
-    mode: "range"
+    mode: "range",
   },
 };
