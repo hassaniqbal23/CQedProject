@@ -10,7 +10,7 @@ interface NavbarProps {
 function Navbar(props: NavbarProps) {
   return (
     <>
-      {props.variant === "BOTTOM_BAR" ? (
+      {props.variant === "BOTTOM" ? (
         <div>
           <div className=" bg-[#4146B8] shadow-top md:shadow-none shadow-opacity-10 px-10 flex justify-between items-center h-20">
             <div className="flex justify-center  items-center">
@@ -34,7 +34,7 @@ function Navbar(props: NavbarProps) {
             </button>
           </div>
         </div>
-      ) : props.variant === "TOP-BAR" ? (
+      ) : props.variant === "TOP" ? (
         <div className="flex justify-between items-center w-full h-[78px] py-[14px] md:px-[60px] sm:px-[30px] px-[20px] bg-white shadow-line border-b border-gray-200">
           <div className="flex justify-center  items-center">
             USELOGOHERE
