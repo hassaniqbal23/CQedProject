@@ -48,10 +48,7 @@ const TabsContent = forwardRef<
 >(({className, ...props}, ref) => (
 	<TabsPrimitive.Content
 		ref={ref}
-		className={cn(
-			'inline-flex items-center justify-center whitespace-nowrap rounded-md py-2.5 px-7 text-base font-medium hover:ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
-			className
-		)}
+		className={cn('inline-flex items-center justify-center', className)}
 		{...props}
 	/>
 ));
