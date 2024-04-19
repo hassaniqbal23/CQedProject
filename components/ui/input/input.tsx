@@ -72,7 +72,7 @@ const Input: React.FC<InputProps> = ({
         )}
       </div>
       {error && (
-        <div className="text-red-500 mt-7 text-bold text-lg ">{error}</div>
+        <div className="text-red-500 mt-1 text-bold text-sm ">{error}</div>
       )}
     </div>
   );

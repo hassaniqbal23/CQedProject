@@ -31,14 +31,15 @@ export const Disabled: Story = {
 
 export const Loading: Story = {
   args: {
-    label: "loding",
+    label: "Loading",
     loading: true,
   },
 };
 
-export const Inputpassword: Story = {
+export const Password: Story = {
   args: {
-    label: "input password",
+    label: "Password",
     loading: true,
+    type: "password",
   },
 };
