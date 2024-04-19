@@ -1,11 +1,8 @@
 'use client';
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 import { Checkbox } from '@/components/ui';
-import Image from 'next/image';
-import { IoEllipsisVertical } from 'react-icons/io5';
-import { Loader2 } from 'lucide-react';
 
 const Table = forwardRef<
   HTMLTableElement,
@@ -109,24 +106,52 @@ TableCaption.displayName = 'TableCaption';
 
 interface DataTableProps {
   columns: {
-      label: string;
-      key: string,
-      render?: (data: any) => React.ReactNode;
+    label: string;
+    key: string;
+    render?: (data: any) => React.ReactNode;
   }[];
   data: any[];
   selection?: boolean;
 }
 
 const DataTable = (props: DataTableProps) => {
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+
+  const handleHeaderCheckboxChange = () => {
+    if (selectedItems.length === props.data.length) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(props.data.map((_, index) => index));
+    }
+  };
+
+  const handleCellCheckboxChange = (index: number) => {
+    setSelectedItems((prevSelectedItems) => {
+      if (prevSelectedItems.includes(index)) {
+        return prevSelectedItems.filter((itemIndex) => itemIndex !== index);
+      } else {
+        return [...prevSelectedItems, index];
+      }
+    });
+  };
   return (
-    <Table className=" w-[1117px] border">
-      <TableHeader className="text-center">
-        <TableRow className="bg-[#E0E0E0] ">
-            {props.selection ? <TableHead>
-                <Checkbox id="checkbox" />
-            </TableHead> : null}
+    <Table className=" border ">
+      <TableHeader className="bg-[#F7F6F6] dark:bg-primary/[0.1]">
+        <TableRow>
+          {props.selection ? (
+            <TableHead>
+              <Checkbox
+                id="checkbox-header"
+                onCheckedChange={handleHeaderCheckboxChange}
+                checked={selectedItems.length === props.data.length}
+              />
+            </TableHead>
+          ) : null}
           {props.columns.map((c, i) => (
-            <TableHead key={i} className="text-blue-950 text-[13px] font-semibold text-left dark:text-white">
+            <TableHead
+              key={i}
+              className="text-blue-950 text-[13px] font-semibold  dark:text-white "
+            >
               {c.label}
             </TableHead>
           ))}
@@ -134,26 +159,29 @@ const DataTable = (props: DataTableProps) => {
       </TableHeader>
       <TableBody>
         {props.data.map((item, index: number) => (
-          <TableRow key={index} >
-              {
-                  props.selection ? <TableCell
-                      className=" text-[#282931] text-[13px] font-normal dark:text-white flex justify-center "
-                      key={index}
-                  >
-                      <Checkbox id="terms" className="bg-[#E0E0E0]" />
-                  </TableCell> : <></>
-              }
+          <TableRow key={index}>
+            {props.selection && (
+              <TableCell
+                className="text-[#282931] text-[13px] font-normal dark:text-white"
+                key={index}
+              >
+                <Checkbox
+                  id={`checkbox-${index}`}
+                  onCheckedChange={() => handleCellCheckboxChange(index)}
+                  checked={selectedItems.includes(index)}
+                  className="bg-[#E0E0E0]"
+                />
+              </TableCell>
+            )}
             {props.columns.map((c, i) => (
-              <>
-                <TableCell
-                  className="text-[#282931]  text-[13px] font-normal dark:text-white "
-                  key={index}
-                >
-                  <div className="flex justify-start gap-2 items-center ">
-                    {  c.render ? c.render(item)  : item[c.key]   }
-                  </div>
-                </TableCell>
-              </>
+              <TableCell
+                className="text-[#282931] text-[13px] font-normal dark:text-white"
+                key={`${index}-${i}`}
+              >
+                <div className="flex gap-1 justify-center items-center">
+                  {c.render ? c.render(item) : item[c.key]}
+                </div>
+              </TableCell>
             ))}
           </TableRow>
         ))}
