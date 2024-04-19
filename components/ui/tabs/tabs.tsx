@@ -24,12 +24,17 @@ TabsList.displayName = 'TabsList';
 
 const TabsTrigger = forwardRef<
 	HTMLButtonElement,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
+	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> & {
+		enableBottomBorder?: boolean;
+	}
 >(({className, enableBottomBorder, ...props}, ref) => (
 	<TabsPrimitive.Trigger
 		ref={ref}
 		className={cn(
-			`{${enableBottomBorder === true ? '' : 'inline-flex items-center justify-center whitespace-nowrap rounded-md  py-2.5 px-7  text-base font-medium hover: ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:font-semibold  data-[state=active]:border  data-[state=active]:shadow'}}`,
+			`inline-flex items-center justify-center whitespace-nowrap rounded-md py-2.5 px-7 text-base font-medium hover:ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50`,
+			enableBottomBorder
+				? 'data-[state=active]:border-b border-primary'
+				: 'data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:font-semibold data-[state=active]:border data-[state=active]:shadow',
 			className
 		)}
 		{...props}
