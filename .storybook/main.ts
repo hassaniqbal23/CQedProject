@@ -3,15 +3,15 @@ import path from 'path';
 
 const config: StorybookConfig = {
 	stories: [
-		"../components/**/*.mdx",
-		"../components/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+		'../components/**/*.mdx',
+		'../components/**/*.stories.@(js|jsx|mjs|ts|tsx)',
 	],
 	addons: [
-		"@storybook/addon-onboarding",
-		"@storybook/addon-links",
-		"@storybook/addon-essentials",
-		"@chromatic-com/storybook",
-		"@storybook/addon-interactions",
+		'@storybook/addon-onboarding',
+		'@storybook/addon-links',
+		'@storybook/addon-essentials',
+		'@chromatic-com/storybook',
+		'@storybook/addon-interactions',
 		{
 			name: '@storybook/addon-postcss',
 			options: {
@@ -22,20 +22,20 @@ const config: StorybookConfig = {
 		},
 	],
 	framework: {
-		name: "@storybook/nextjs",
+		name: '@storybook/nextjs',
 		options: {},
 	},
 	docs: {
-		autodocs: "tag",
+		autodocs: 'tag',
 	},
-	staticDirs: ["../public"],
+	staticDirs: ['../public'],
 	webpackFinal: async (config) => {
 		// Add PostCSS as a loader
 		config?.module?.rules?.push({
 			test: /\.css$/,
 			use: [
-				{ loader: 'style-loader' },
-				{ loader: 'css-loader' },
+				{loader: 'style-loader'},
+				{loader: 'css-loader'},
 				{
 					loader: 'postcss-loader',
 					options: {
