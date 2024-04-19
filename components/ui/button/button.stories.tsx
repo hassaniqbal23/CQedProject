@@ -119,6 +119,7 @@ export const Primary: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowLeft size={20} />}
 						iconPosition="left"
+						disabled={true}
 					>
 						Button CTA
 					</Button>
@@ -155,7 +156,9 @@ export const outlined: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowRight size={20} />}
 						iconPosition="right"
-					></Button>
+					>
+						Button CTA
+					</Button>
 
 					<Button
 						{...args}
@@ -231,6 +234,7 @@ export const outlined: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowLeft size={20} />}
 						iconPosition="left"
+						disabled={true}
 					>
 						Button CTA
 					</Button>
@@ -340,6 +344,7 @@ export const primary_400: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowLeft size={20} />}
 						iconPosition="left"
+						disabled={true}
 					>
 						Button CTA
 					</Button>
@@ -453,6 +458,7 @@ export const primaryOutline400: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowLeft size={20} />}
 						iconPosition="left"
+						disabled={true}
 					>
 						Button CTA
 					</Button>
@@ -560,6 +566,7 @@ export const Secondary: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowLeft size={20} />}
 						iconPosition="left"
+						disabled={true}
 					>
 						Button CTA
 					</Button>
@@ -700,7 +707,9 @@ export const error: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowRight size={20} />}
 						iconPosition="right"
-					></Button>
+					>
+						Button CTA
+					</Button>
 
 					<Button
 						{...args}
@@ -770,6 +779,7 @@ export const error: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowLeft size={20} />}
 						iconPosition="left"
+						disabled={true}
 					>
 						Button CTA
 					</Button>
@@ -876,6 +886,7 @@ export const errorOutline: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowLeft size={20} />}
 						iconPosition="left"
+						disabled={true}
 					>
 						Button CTA
 					</Button>
@@ -899,6 +910,7 @@ export const sucess: Story = {
 					<Button
 						{...args}
 						size={'default'}
+						loading={true}
 					>
 						Button CTA
 					</Button>
@@ -981,6 +993,7 @@ export const sucess: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowLeft size={20} />}
 						iconPosition="left"
+						disabled={true}
 					>
 						Button CTA
 					</Button>
@@ -1087,6 +1100,7 @@ export const sucessOutline: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowLeft size={20} />}
 						iconPosition="left"
+						disabled={true}
 					>
 						Button CTA
 					</Button>
@@ -1193,6 +1207,7 @@ export const info: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowLeft size={20} />}
 						iconPosition="left"
+						disabled={true}
 					>
 						Button CTA
 					</Button>
@@ -1298,6 +1313,7 @@ export const infoOutline: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowLeft size={20} />}
 						iconPosition="left"
+						disabled={true}
 					>
 						Button CTA
 					</Button>
@@ -1404,6 +1420,7 @@ export const warning: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowLeft size={20} />}
 						iconPosition="left"
+						disabled={true}
 					>
 						Button CTA
 					</Button>
@@ -1510,6 +1527,7 @@ export const warningOutline: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowLeft size={20} />}
 						iconPosition="left"
+						disabled={true}
 					>
 						Button CTA
 					</Button>
@@ -1663,7 +1681,7 @@ export const LoadingButton: Story = {
 					loading={true}
 					size={'lg'}
 				>
-					{/* <Spin indicator={<LoadingOutlined spin />} /> */}
+					{/* <LoadingOutlined /> */}
 					Loading...
 				</Button>
 			</div>

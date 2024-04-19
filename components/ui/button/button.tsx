@@ -1,7 +1,7 @@
 import {ReactElement, forwardRef} from 'react';
 import {Slot} from '@radix-ui/react-slot';
 import {cva, type VariantProps} from 'class-variance-authority';
-
+// import {LoaderCircle} from 'lucide-react';
 import {cn} from '@/lib/utils';
 
 const buttonVariants = cva(
@@ -37,7 +37,7 @@ const buttonVariants = cva(
 				link: 'text-primary underline-offset-4 hover:underline',
 			},
 			size: {
-				default: 'py-[14px] px-[10px] font-[600] text-[16px] rounded-[4px] ',
+				default: 'py-[14px] px-[10px] font-[600] text-[16px] rounded-[4px]',
 				sm: 'p-[10px] rounded-[4px]  font-[500]',
 				lg: 'rounded-md py-[14px] px-[10px] font-[600] text-[20px]',
 				icon: 'h-10 w-10',
@@ -56,27 +56,61 @@ export interface ButtonProps
 	asChild?: boolean;
 	icon?: ReactElement;
 	iconPosition?: 'left' | 'right';
+	loadingIcon?: ReactElement; // Update to accept ReactElement for loadingIcon
 	loading?: boolean;
 }
 
+// Define Button component
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-	({className, variant, size, asChild = false, ...props}, ref) => {
+	(
+		{
+			className,
+			variant,
+			size,
+			asChild = false,
+			icon,
+			iconPosition,
+			// Default loadingIcon is the provided SVG icon
+			loadingIcon = (
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					strokeWidth="2"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					className="animate-spin lucide lucide-loader-circle"
+				>
+					<path d="M21 12a9 9 0 1 1-6.219-8.56" />
+				</svg>
+			),
+			loading = false,
+			children,
+			...props
+		},
+		ref
+	) => {
 		const Comp = asChild ? Slot : 'button';
+
 		return (
 			<Comp
 				className={cn(buttonVariants({variant, size, className}))}
 				ref={ref}
 				{...props}
-				disabled={props.loading ? true : props.disabled}
 			>
-				{props.iconPosition === 'left' && props.icon}
-				{props.children}
-
-				{props.iconPosition === 'right' && props.icon}
+				{iconPosition === 'left' && icon}
+				{children}
+				{loading && <div style={{marginLeft: '5px'}}>{loadingIcon}</div>}{' '}
+				{/* Render loadingIcon with margin if loading is true */}
+				{iconPosition === 'right' && icon}
 			</Comp>
 		);
 	}
 );
+
 Button.displayName = 'Button';
 
 export {Button, buttonVariants};
