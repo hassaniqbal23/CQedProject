@@ -116,6 +116,7 @@ interface DataTableProps {
 
 const DataTable = (props: DataTableProps) => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [lastClickedIndex, setLastClickedIndex] = useState<number | null>(null);
 
   const handleHeaderCheckboxChange = () => {
     if (selectedItems.length === props.data.length) {
@@ -125,15 +126,21 @@ const DataTable = (props: DataTableProps) => {
     }
   };
 
-  const handleCellCheckboxChange = (index: number) => {
-    setSelectedItems((prevSelectedItems) => {
-      if (prevSelectedItems.includes(index)) {
-        return prevSelectedItems.filter((itemIndex) => itemIndex !== index);
-      } else {
-        return [...prevSelectedItems, index];
-      }
-    });
+  const handleCheckboxClick = (index: number, e: any) => {
+    if (e.shiftKey && lastClickedIndex !== null) {
+      const minIndex = Math.min(index, lastClickedIndex);
+      const maxIndex = Math.max(index, lastClickedIndex);
+      const selectedRange = Array.from(
+        { length: maxIndex - minIndex + 1 },
+        (_, i) => i + minIndex
+      );
+      setSelectedItems([...selectedRange]);
+    } else {
+      setSelectedItems([...selectedItems, index]);
+    }
+    setLastClickedIndex(index);
   };
+
   return (
     <Table className=" border ">
       <TableHeader className="bg-[#F7F6F6] dark:bg-primary/[0.1]">
@@ -167,8 +174,8 @@ const DataTable = (props: DataTableProps) => {
               >
                 <Checkbox
                   id={`checkbox-${index}`}
-                  onCheckedChange={() => handleCellCheckboxChange(index)}
                   checked={selectedItems.includes(index)}
+                  onClick={(e) => handleCheckboxClick(index, e)}
                   className="bg-[#E0E0E0]"
                 />
               </TableCell>
