@@ -119,9 +119,20 @@ export const Primary: Story = {
 						className="flex gap-[10px]"
 						icon={<ArrowLeft size={20} />}
 						iconPosition="left"
-						disabled={true}
 					>
 						Button CTA
+					</Button>
+				</div>
+				{/* LOADING BUTTON  */}
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
 					</Button>
 				</div>
 			</div>
@@ -239,6 +250,17 @@ export const outlined: Story = {
 						Button CTA
 					</Button>
 				</div>
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
+					</Button>
+				</div>
 
 				{/* _____________________________________________ */}
 			</div>
@@ -349,6 +371,17 @@ export const primary_400: Story = {
 						Button CTA
 					</Button>
 				</div>{' '}
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
+					</Button>
+				</div>
 			</div>
 		);
 	},
@@ -463,6 +496,17 @@ export const primaryOutline400: Story = {
 						Button CTA
 					</Button>
 				</div>
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
+					</Button>
+				</div>
 
 				{/* _____________________________________________ */}
 			</div>
@@ -571,6 +615,17 @@ export const Secondary: Story = {
 						Button CTA
 					</Button>
 				</div>{' '}
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
+					</Button>
+				</div>
 			</div>
 		);
 	},
@@ -677,6 +732,17 @@ export const OutlineSecondary: Story = {
 						Button CTA
 					</Button>
 				</div>{' '}
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
+					</Button>
+				</div>
 			</div>
 		);
 	},
@@ -784,6 +850,17 @@ export const error: Story = {
 						Button CTA
 					</Button>
 				</div>{' '}
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
+					</Button>
+				</div>
 			</div>
 		);
 	},
@@ -891,6 +968,17 @@ export const errorOutline: Story = {
 						Button CTA
 					</Button>
 				</div>{' '}
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
+					</Button>
+				</div>
 			</div>
 		);
 	},
@@ -998,6 +1086,17 @@ export const sucess: Story = {
 						Button CTA
 					</Button>
 				</div>{' '}
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
+					</Button>
+				</div>
 			</div>
 		);
 	},
@@ -1105,6 +1204,17 @@ export const sucessOutline: Story = {
 						Button CTA
 					</Button>
 				</div>{' '}
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
+					</Button>
+				</div>
 			</div>
 		);
 	},
@@ -1212,6 +1322,17 @@ export const info: Story = {
 						Button CTA
 					</Button>
 				</div>{' '}
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
+					</Button>
+				</div>
 			</div>
 		);
 	},
@@ -1318,6 +1439,17 @@ export const infoOutline: Story = {
 						Button CTA
 					</Button>
 				</div>{' '}
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
+					</Button>
+				</div>
 			</div>
 		);
 	},
@@ -1425,6 +1557,17 @@ export const warning: Story = {
 						Button CTA
 					</Button>
 				</div>{' '}
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
+					</Button>
+				</div>
 			</div>
 		);
 	},
@@ -1532,6 +1675,17 @@ export const warningOutline: Story = {
 						Button CTA
 					</Button>
 				</div>{' '}
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
+					</Button>
+				</div>
 			</div>
 		);
 	},
@@ -1663,6 +1817,17 @@ export const Disable: Story = {
 						Button CTA
 					</Button>
 				</div>{' '}
+				<div className="flex flex-col gap-[10px] ">
+					<h2>loading button</h2>
+					<Button
+						{...args}
+						size={'lg'}
+						className="flex gap-[10px]"
+						loading={true}
+					>
+						loading
+					</Button>
+				</div>
 			</div>
 		);
 	},
