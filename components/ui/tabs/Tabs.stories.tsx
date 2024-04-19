@@ -13,6 +13,47 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+export const Default: Story = {
+	render: (args) => {
+		return (
+			<div>
+				<Tabs {...args} />
+			</div>
+		);
+	},
+	args: {
+		defaultValue: 'pal-comunity',
+		tabs: [
+			{
+				label: 'Pal Comunity',
+				value: 'pal-comunity',
+			},
+			{
+				label: 'Auto Match',
+				value: 'auto-match',
+			},
+			{
+				label: 'pal id search',
+				value: 'pal_id',
+			},
+		],
+		tabContent: [
+			{
+				value: 'pal-comunity',
+				content: <div>Pal comunity</div>,
+			},
+			{
+				value: 'auto-match',
+				content: <div>auto match</div>,
+			},
+			{
+				value: 'pal_id',
+				content: <div>pl id search</div>,
+			},
+		],
+	},
+};
+
 export const Primary: Story = {
 	render: (args) => {
 		return (
@@ -22,6 +63,7 @@ export const Primary: Story = {
 		);
 	},
 	args: {
+		enableBottomBorder: true,
 		defaultValue: 'pal-comunity',
 		tabs: [
 			{
