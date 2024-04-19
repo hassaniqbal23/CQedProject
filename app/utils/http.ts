@@ -9,10 +9,10 @@ const host =
     : '';
 const getBaseUrl = () => {
   let baseURL = '';
-  if (host && host === 'cloud.quohr.com') {
-    baseURL = 'https://api.cloud.quohr.com';
-  } else if (host && host === 'staging.quohr.com') {
-    baseURL = 'https://api.staging.quohr.com';
+  if (host && host === 'cloud.cqed.com') {
+    baseURL = 'https://api.cloud.cqed.com';
+  } else if (host && host === 'staging.cqed.com') {
+    baseURL = 'https://api.staging.cqed.com';
   } else {
     baseURL = localIP;
   }

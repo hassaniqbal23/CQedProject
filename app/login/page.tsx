@@ -18,7 +18,6 @@ import {
 } from '@/components/ui';
 import { Input } from '@/components/ui';
 import { Button } from '@/components/ui';
-import { Loader2 } from 'lucide-react';
 import { updateToken } from '../utils/http';
 import { useMutation } from 'react-query';
 import Image from 'next/image';
