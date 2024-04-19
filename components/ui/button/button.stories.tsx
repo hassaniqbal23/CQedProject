@@ -378,8 +378,9 @@ export const primary_400: Story = {
 						size={'lg'}
 						className="flex gap-[10px]"
 						loading={true}
+						disabled={true}
 					>
-						loading
+						Disabled Loading
 					</Button>
 				</div>
 			</div>
@@ -1824,6 +1825,7 @@ export const Disable: Story = {
 						size={'lg'}
 						className="flex gap-[10px]"
 						loading={true}
+						disabled={true}
 					>
 						loading
 					</Button>
