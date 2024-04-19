@@ -116,29 +116,27 @@ interface DataTableProps {
 
 const DataTable = (props: DataTableProps) => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
-  const [lastClickedIndex, setLastClickedIndex] = useState<number | null>(null);
 
   const handleHeaderCheckboxChange = () => {
     if (selectedItems.length === props.data.length) {
+      // If all items are selected, unselect all
       setSelectedItems([]);
     } else {
+      // Otherwise, select all items
       setSelectedItems(props.data.map((_, index) => index));
     }
   };
 
-  const handleCheckboxClick = (index: number, e: any) => {
-    if (e.shiftKey && lastClickedIndex !== null) {
-      const minIndex = Math.min(index, lastClickedIndex);
-      const maxIndex = Math.max(index, lastClickedIndex);
-      const selectedRange = Array.from(
-        { length: maxIndex - minIndex + 1 },
-        (_, i) => i + minIndex
-      );
-      setSelectedItems([...selectedRange]);
-    } else {
-      setSelectedItems([...selectedItems, index]);
-    }
-    setLastClickedIndex(index);
+  const handleCellCheckboxChange = (index: number) => {
+    setSelectedItems((prevSelectedItems) => {
+      if (prevSelectedItems.includes(index)) {
+        // If the item is already selected, remove it from the selection
+        return prevSelectedItems.filter((itemIndex) => itemIndex !== index);
+      } else {
+        // Otherwise, add it to the selection
+        return [...prevSelectedItems, index];
+      }
+    });
   };
 
   return (
@@ -174,8 +172,8 @@ const DataTable = (props: DataTableProps) => {
               >
                 <Checkbox
                   id={`checkbox-${index}`}
+                  onCheckedChange={() => handleCellCheckboxChange(index)}
                   checked={selectedItems.includes(index)}
-                  onClick={(e) => handleCheckboxClick(index, e)}
                   className="bg-[#E0E0E0]"
                 />
               </TableCell>
