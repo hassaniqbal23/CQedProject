@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import CountrySelectDropdown from "./countyDropdown";
 
 const meta: Meta<typeof CountrySelectDropdown> = {
-  title: "Forms/coutryDropdown",
+  title: "Forms/CountryDropdown",
   component: CountrySelectDropdown,
 };
 
