@@ -124,12 +124,12 @@ export const Navbar: FC<IProps> = () => {
                   <Popover>
                     <PopoverTrigger>
                       {item.alt === "Profile" ? (
-                        <div className="flex gap-2 items-center justify-center mr-2">
-                          <span className="notification-text w-h-10 h-10 md:w-16 md:h-16 p-3 flex justify-center items-center rounded-full bg-gray-300">
-                            <MessageCircle className="text-black" />
+                        <div className="flex gap-2 items-center justify-center mr-2 mt-3">
+                          <span className="notification-text w-h-10 h-10  p-[13px] flex justify-center items-center rounded-full bg-gray-300">
+                            <MessageCircle className="text-black h-10 w-h-10" />
                           </span>
-                          <span className="notification-text w-11 h-11 md:w-16 md:h-16 p-3 flex justify-center items-center rounded-full bg-gray-300">
-                            <Bell className="text-black" />
+                          <span className="notification-text w-11 h-11  p-[13px] flex justify-center items-center rounded-full bg-gray-300">
+                            <Bell className="text-black h-10 w-h-10" />
                           </span>
                           <Avatar className="h-10 w-h-10">
                             <AvatarImage
