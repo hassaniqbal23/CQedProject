@@ -40,7 +40,7 @@ const CountrySelectDropdown: React.FC<CountrySelectDropdownProps> = ({
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button className="flex justify-between w-96  px-3 py-6 items-center rounded-md bg-gray-100 shadow-inner text-[#5D5E68] text-bold">
+          <Button className="flex justify-between w-96  px-3 py-6 items-center rounded-md bg-gray-100 shadow-inner text-[#5D5E68] text-bold cursor-pointer">
             {selectedCountry ? (
               <div className=" flex items-center">
                 <Image
@@ -57,12 +57,12 @@ const CountrySelectDropdown: React.FC<CountrySelectDropdownProps> = ({
             <ChevronDown />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-96 p-4  items-center rounded-md bg-gray-100 shadow-inner text-[#5D5E68] mt-3 mx-auto">
+        <DropdownMenuContent className="w-96 p-4  items-center rounded-md bg-gray-100 shadow-inner text-[#5D5E68] mt-2 mx-auto  ">
           {options.map((country) => (
             <DropdownMenuItem
               key={country.countryCode}
               onClick={() => handleItemClick(country)}
-              className="py-4 text-[#5D5E68] text-bold"
+              className=" text-[#5D5E68] text-bold border-b border-[#C8C8C8] items-center mt-2 hover:bg-gray-200 cursor-pointer"
             >
               <div className="flex mr-4 mb-4 items-center">
                 <Image
@@ -74,7 +74,7 @@ const CountrySelectDropdown: React.FC<CountrySelectDropdownProps> = ({
                 />
                 <span className="ml-2">{country.name}</span>
               </div>
-              <DropdownMenuSeparator className="border  border-[#C8C8C8]  mb-3" />
+              {/* <DropdownMenuSeparator className="border  border-[#C8C8C8]  mb-2" /> */}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
