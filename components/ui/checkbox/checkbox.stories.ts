@@ -10,5 +10,10 @@ export default meta;
 type Story = StoryObj<typeof Checkbox>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    label: "checkbox",
+    // checked: false,
+    // disabled: false,
+    onChange: () => {},
+  },
 };
