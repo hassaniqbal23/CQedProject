@@ -58,6 +58,18 @@ module.exports = {
 					DEFAULT: 'var(--success)',
 					50: 'var(--success-50)'
 				},
+				error: {
+					DEFAULT: 'var(--error)',
+				},
+
+				info: {
+					DEFAULT: 'var(--info)',
+				},
+
+				warning: {
+					DEFAULT: 'var(--warning)',
+				},
+
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))',
