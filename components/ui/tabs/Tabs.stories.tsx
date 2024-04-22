@@ -1,5 +1,6 @@
-import type {Meta, StoryObj} from '@storybook/react';
-import {TabsComponent as Tabs} from '@/components/ui/tabs/tabs';
+import React from 'react'
+import type { Meta, StoryObj } from '@storybook/react';
+import { TabsComponent as Tabs } from './tabs';
 
 const meta = {
 	title: 'Ui/Tabs',
@@ -66,7 +67,7 @@ export const Primary: Story = {
 		);
 	},
 	args: {
-		enableBottomBorder: true,
+		variant: 'primary',
 		onValueChange: (value: string) => {
 			console.log(value);
 		},
@@ -129,6 +130,7 @@ export const secondry: Story = {
 				value: 'tab_three',
 			},
 		],
+		variant: 'secondary',
 		tabContent: [
 			{
 				value: 'tab_one',
