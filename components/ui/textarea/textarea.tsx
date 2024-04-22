@@ -27,7 +27,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           disabled={disabled}
           {...props}
         />
-        {isError && <p className="text-red-500">{error}</p>}
+        {isError && <p className="text-red-500 mt-1">{error}</p>}
       </div>
     );
   }
