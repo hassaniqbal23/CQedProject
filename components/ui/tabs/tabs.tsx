@@ -14,7 +14,7 @@ const TabsList = forwardRef<
 	<TabsPrimitive.List
 		ref={ref}
 		className={cn(
-			'inline-flex w-[500px] items-start rounded-md bg-muted p-1 text-muted-foreground',
+			'inline-flex items-start rounded-md bg-muted  text-muted-foreground',
 			className
 		)}
 		{...props}
@@ -69,6 +69,7 @@ interface TabsComponentProps {
 	tabContent: TabContent[];
 	defaultValue?: string;
 	enableBottomBorder?: boolean;
+	onValueChange: (value: string) => void;
 }
 
 const TabsComponent = ({
@@ -76,13 +77,15 @@ const TabsComponent = ({
 	tabContent,
 	defaultValue,
 	enableBottomBorder,
+	onValueChange
 }: TabsComponentProps) => {
 	return (
 		<Tabs
 			defaultValue={defaultValue}
 			className="w-full"
+			onValueChange={onValueChange}
 		>
-			<TabsList className="flex w-[1220px] gap-1 items-start p-[10px]">
+			<TabsList className="flex w-full gap-1 items-start p-2">
 				{tabs.map((item: TabsProps, index) => (
 					<TabsTrigger
 						value={item.value}

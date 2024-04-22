@@ -23,6 +23,9 @@ export const Default: Story = {
 	},
 	args: {
 		defaultValue: 'pal-comunity',
+		onValueChange: (value: string) => {
+			console.log(value);
+		},
 		tabs: [
 			{
 				label: 'Pal Comunity',
@@ -64,6 +67,9 @@ export const Primary: Story = {
 	},
 	args: {
 		enableBottomBorder: true,
+		onValueChange: (value: string) => {
+			console.log(value);
+		},
 		defaultValue: 'pal-comunity',
 		tabs: [
 			{
@@ -105,18 +111,21 @@ export const secondry: Story = {
 		);
 	},
 	args: {
-		defaultValue: 'tab one',
+		onValueChange: (value: string) => {
+			console.log(value);
+		},
+		defaultValue: 'tab_one',
 		tabs: [
 			{
-				label: 'tab one',
+				label: 'Tab one',
 				value: 'tab_one',
 			},
 			{
-				label: 'tab two',
+				label: 'Tab two',
 				value: 'tab_two',
 			},
 			{
-				label: 'tab three',
+				label: 'Tab three',
 				value: 'tab_three',
 			},
 		],
