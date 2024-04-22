@@ -21,17 +21,15 @@ const myFont = localFont({
 export default function RootLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
 
-
-
-  // useEffect(() => {
-  //   // Redirect to login if no access token
-  //   const token = getAccessToken();
-  //   if (token) {
-  //     updateToken(token);
-  //   } else if (!window.location.search) {
-  //     router.push('/login');
-  //   }
-  // }, [router]);
+  useEffect(() => {
+    // Redirect to login if no access token
+    const token = getAccessToken();
+    if (token) {
+      updateToken(token);
+    } else if (!window.location.search) {
+      router.push('/login');
+    }
+  }, [router]);
 
 
   const [queryClient] = useState(
@@ -57,13 +55,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <QueryClientProvider client={queryClient}>
           <GlobalProvider>
             <FormProvider {...methods}>
-              <ThemeProvider
+              {/* <ThemeProvider
                 attribute="class"
                 defaultTheme="system"
                 enableSystem
-              >
+              > */}
                 {children}
-              </ThemeProvider>
+              {/* </ThemeProvider> */}
               <ToastContainer autoClose={1000} />
             </FormProvider>
           </GlobalProvider>

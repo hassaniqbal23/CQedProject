@@ -1,12 +1,15 @@
 'use client'
 
 import { FC } from 'react';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/';
-import { SmallHeading } from '../common/SmallHeading';
+import { Button, Popover, PopoverContent, PopoverTrigger } from '../ui/';
 import {
   BsFillBellFill
 } from 'react-icons/bs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
+import { MdLogout } from 'react-icons/md';
+import { removeToken, removeUserId } from '@/app/utils/encryption';
+import { useRouter } from 'next/navigation';
+
 
 
 interface ILinks {
@@ -20,6 +23,7 @@ interface ILinks {
 interface IProps { }
 
 export const Navbar: FC<IProps> = ({ }) => {
+  const router =  useRouter()
 
   const navPopLinks: ILinks[] = [
     {
@@ -72,16 +76,19 @@ export const Navbar: FC<IProps> = ({ }) => {
                     </PopoverTrigger>
                     <PopoverContent className="mt-1 w-[13.1rem] relative right-10 p-0">
                       {items.alt && submodules && (
-                        <div className="my-2">
-                          <div className="flex gap-4 items-center">
-                            <BsFillBellFill className="text-4xl text-[#B0BABF] dark:text-foreground" />
-                            <span>
-                              <SmallHeading className="" text="Notifications" />
-                              <p className="text-gray-500 text-sm">
-                                {1}
-                              </p>
-                            </span>
-                          </div>
+                          <div className="px-5 py-4 flex">
+                          <MdLogout className="text-base rotate-180 text-primary mr-3" />
+                          <Button
+                            variant={'ghost'}
+                            onClick={() => {
+                              removeUserId();
+                              removeToken();
+                              router.push('/login');
+                            }}
+                            className="text-sm w-min p-0 m-0 capitalize whitespace-nowrap h-min font-normal hover:bg-transparent"
+                          >
+                            log out
+                          </Button>
                         </div>
                       )}
                     </PopoverContent>

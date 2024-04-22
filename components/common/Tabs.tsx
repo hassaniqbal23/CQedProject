@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { Button } from '../ui/button';
+import { Button } from '../ui';
 interface ITab {
   heading: string;
   path: string;
@@ -33,7 +33,6 @@ export const Tabs: FC<IProps> = ({ customTabs }) => {
         return (
           <Button
             key={index}
-            variant={'link'}
             onClick={(e) => handleRouteChange(e, item.path)}
             className={`block sm:inline hover:no-underline md:py-[10px] md:px-[28px] mx-1 rounded-md font-normal  whitespace-nowrap ${
               pathname === item.path

@@ -1,7 +1,6 @@
 'use client';
 import { MainLayout } from '@/components/mainlayout';
 import { Loader2 } from 'lucide-react';
-import mixpanel from 'mixpanel-browser';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getAccessToken } from './utils/encryption';
@@ -11,14 +10,7 @@ export default function Home() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    mixpanel.init('5bc3f54342c086252a27e1ff41264da3' || '', {
-      debug: true,
-      ignore_dnt: true,
-    });
-
-    mixpanel.track('Home page');
-  }, []);
+ 
 
   useEffect(() => {
     const checkUserAuthentication = async () => {

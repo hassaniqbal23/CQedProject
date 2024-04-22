@@ -18,7 +18,6 @@ import {
 } from '@/components/ui';
 import { Input } from '@/components/ui';
 import { Button } from '@/components/ui';
-import { Loader2 } from 'lucide-react';
 import { updateToken } from '../utils/http';
 import { useMutation } from 'react-query';
 import Image from 'next/image';
@@ -166,7 +165,7 @@ export default function Login() {
                 <Button
                   className="bg-primary w-full disabled:invalid:cursor-pointer hover:disabled:cursor-not-allowed"
                   type="submit"
-                  size={'lg'}
+                  // size={'lg'}
                   disabled={isLoading || !isValid}
                 >
                   Sign In
