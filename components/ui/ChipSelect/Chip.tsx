@@ -1,6 +1,4 @@
-// tabs.tsx
-
-import React, {forwardRef} from 'react';
+import React, {forwardRef, useState} from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 
 import {cn} from '@/lib/utils';
@@ -13,10 +11,7 @@ const TabsList = forwardRef<
 >(({className, ...props}, ref) => (
 	<TabsPrimitive.List
 		ref={ref}
-		className={cn(
-			'inline-flex w-[500px] items-start rounded-md bg-muted p-1 text-muted-foreground',
-			className
-		)}
+		className={cn(className)}
 		{...props}
 	/>
 ));
@@ -25,83 +20,60 @@ TabsList.displayName = 'TabsList';
 const TabsTrigger = forwardRef<
 	HTMLButtonElement,
 	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> & {
-		enableBottomBorder?: boolean;
+		onClick?: () => void;
 	}
->(({className, enableBottomBorder, ...props}, ref) => (
+>(({className, onClick, ...props}, ref) => (
 	<TabsPrimitive.Trigger
 		ref={ref}
 		className={cn(
-			`inline-flex items-center justify-center whitespace-nowrap rounded-md py-2.5 px-7 text-base font-medium hover:ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50`,
-			enableBottomBorder
-				? 'data-[state=active]:border-b border-primary'
-				: 'data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:font-semibold data-[state=active]:border data-[state=active]:shadow',
+			'flex items-center justify-center gap-2 w-45 h-12 font-medium text-lg text-center  data-[state=active]:text-primary data-[state=active]:border border-solid border-primary  data-[state=active]:font-medium px-8 py-2  ',
 			className
 		)}
+		onClick={onClick}
 		{...props}
 	/>
 ));
 TabsTrigger.displayName = 'TabsTrigger';
-
-const TabsContent = forwardRef<
-	HTMLDivElement,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
->(({className, ...props}, ref) => (
-	<TabsPrimitive.Content
-		ref={ref}
-		className={cn('inline-flex items-center justify-center', className)}
-		{...props}
-	/>
-));
-TabsContent.displayName = 'TabsContent';
 
 interface TabsProps {
 	label: string;
 	value: string;
 }
 
-interface TabContent {
-	value: string;
-	content: React.ReactNode;
-}
-
 interface TabsComponentProps {
 	tabs: TabsProps[];
-	tabContent: TabContent[];
 	defaultValue?: string;
-	enableBottomBorder?: boolean;
 }
 
-const TabsComponent = ({
-	tabs,
-	tabContent,
-	defaultValue,
-	enableBottomBorder,
-}: TabsComponentProps) => {
+const TabsComponent = ({tabs, defaultValue}: TabsComponentProps) => {
+	const [selectedValue, setSelectedValue] = useState(
+		defaultValue || tabs[0]?.value
+	);
+
+	const handleTabClick = (val) => {
+		setSelectedValue(val);
+		console.log(val, 'tabtriggers'); // Logging the clicked value
+	};
+
 	return (
 		<Tabs
 			defaultValue={defaultValue}
 			className="w-full"
 		>
-			<TabsList className="flex w-[1220px] gap-1 items-start p-[10px]">
+			<TabsList className="flex w-23 gap-4 items-start">
 				{tabs.map((item: TabsProps, index) => (
 					<TabsTrigger
+						onClick={() => handleTabClick(item.value)}
 						value={item.value}
 						key={index}
+						className="border border-solid border-gray-300 "
 					>
 						{item.label}
 					</TabsTrigger>
 				))}
 			</TabsList>
-			{tabContent.map((item: TabContent, index) => (
-				<TabsContent
-					value={item.value}
-					key={index}
-				>
-					{item.content}
-				</TabsContent>
-			))}
 		</Tabs>
 	);
 };
 
-export {TabsComponent, Tabs, TabsList, TabsTrigger, TabsContent};
+export {TabsComponent, Tabs, TabsList, TabsTrigger};
