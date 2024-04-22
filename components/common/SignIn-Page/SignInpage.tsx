@@ -17,7 +17,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form/form';
+} from '@/components/ui';
 import { Separator } from '@/components/ui/separator/separator';
 import { Heading } from '../Heading';
 import { Avatar, AvatarImage } from '@/components/ui/avatar/avatar';

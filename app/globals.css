@@ -38,6 +38,7 @@
     --primary-foreground: #12121b;
     --secondary-foreground: #282931;
     --success: #54d62c;
+    --success-50: #ECFDF3;
     --error: #ff4842;
     --info: #0288d1;
     --warning: #ed6c02;
@@ -83,6 +84,7 @@ body {
   font-family: 'Montserrat';
 }
 
+
 @layer base {
   * {
     @apply border-border;
@@ -98,7 +100,7 @@ body {
 }
 
 .schools-login-image {
-  background-image: url('../public/assets//images/LoginPage.png');
+  background-image: url('../public/assets/images/LoginPage.png');
   background-repeat: no-repeat;
   /* background-position: center; */
   background-size: cover;
