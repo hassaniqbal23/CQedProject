@@ -22,11 +22,6 @@ export const Setting: FC = () => {
       heading: 'Security',
       path: '/accountsetting/security',
     },
-  
-    {
-      heading: 'Notifications',
-      path: '/accountsetting/notifications',
-    },
    
   ];
 
