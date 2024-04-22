@@ -1,7 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-
-import { Button } from '@/components/ui/button/button';
 import {
   Form,
   FormControl,
@@ -12,8 +10,6 @@ import {
 } from '@/components/ui';
 import { Input } from '@/components/ui';
 import { useForm } from 'react-hook-form';
-import BottomNavbar from '../navbar/bottomNavbar';
-import TopNavbar from '../navbar/TopNavbar';
 
 const formSchema = z.object({
   schoolName: z.string().refine((value) => value.trim() !== '', {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { ShieldAlert, LoaderIcon, Eye, EyeOff } from 'lucide-react';
 
-interface InputProps {
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
   disabled?: boolean;
@@ -21,7 +21,7 @@ export const Input: React.FC<InputProps> = ({
   type = 'text',
   id,
   className,
-  placeholder,
+  placeholder = '',
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
