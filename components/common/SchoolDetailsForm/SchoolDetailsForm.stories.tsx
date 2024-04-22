@@ -5,9 +5,6 @@ import { SchoolDetailsForm } from '@/components/common/SchoolDetailsForm/SchoolD
 const meta = {
   title: 'Ui/SchoolForm',
   component: SchoolDetailsForm,
-  parameters: {
-    layout: 'centered',
-  },
   tags: ['autodocs'],
   argTypes: {},
 } satisfies Meta<typeof SchoolDetailsForm>;
