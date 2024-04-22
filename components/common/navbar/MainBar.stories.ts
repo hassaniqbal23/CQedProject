@@ -12,6 +12,5 @@ type Story = StoryObj<typeof Navbar>;
 
 export const Default: Story = {
   args: {
-    // onClick: () => console.log("Bottom navigation bar"),
   },
 };
