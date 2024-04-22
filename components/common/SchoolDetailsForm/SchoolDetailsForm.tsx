@@ -10,8 +10,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui';
-import { Input } from '@/components/ui/input/input';
+import { Input } from '@/components/ui';
 import { useForm } from 'react-hook-form';
+import BottomNavbar from '../navbar/bottomNavbar';
+import TopNavbar from '../navbar/TopNavbar';
 
 const formSchema = z.object({
   schoolName: z.string().refine((value) => value.trim() !== '', {
@@ -50,17 +52,17 @@ export function SchoolDetailsForm() {
     },
   });
 
-  const onSubmit = form.handleSubmit((values) => {
+  const onSubmit = form.handleSubmit((values, field: any) => {
     // ✅ This will be type-safe and validated.
     console.log(values);
   });
 
   return (
     <>
-      <div className="flex flex-col max-w-3xl mx-auto">
+      <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8">
         <div className="flex flex-col justify-center items-center mb-4">
           <h1
-            className="text-[#4146B8] font-bold text-[21px] 
+            className="text-[#4146B8] font-bold text-2xl 
 "
           >
             Add your school details
@@ -165,17 +167,6 @@ export function SchoolDetailsForm() {
                   </FormItem>
                 )}
               />
-              {/* Continue button */}
-              <div className="bg-blue-600 py-2 px-6 flex justify-end">
-                <Button
-                  type="submit"
-                  variant="secondary"
-                  className="text-blue-600"
-                  size="sm"
-                >
-                  Continue
-                </Button>
-              </div>
             </form>
           </Form>
         </div>
