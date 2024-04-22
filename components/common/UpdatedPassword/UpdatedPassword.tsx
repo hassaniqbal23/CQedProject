@@ -48,7 +48,7 @@ export function UpdatedPassword() {
       </div>
       <div className="">
         <Form {...form}>
-          <form onSubmit={onSubmit} className="space-y-8">
+          <form onSubmit={onSubmit} className="space-y-4">
             <FormField
               control={form.control}
               name="newpassword"
@@ -84,11 +84,9 @@ export function UpdatedPassword() {
                 </FormItem>
               )}
             />
-            <div className=" flex flex-col gap-4 items-center justify-center">
-              <Button type="submit" variant={'default'} className="w-full">
+              <Button type="submit" variant={'default'} className="w-full mt-4">
                 Continue
               </Button>
-            </div>
           </form>
         </Form>
       </div>
