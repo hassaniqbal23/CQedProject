@@ -10,10 +10,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form/form';
-import { Input } from '@/components/ui/input/input';
+Input,
+} from '@/components/ui';
 import { useForm } from 'react-hook-form';
-import Navbar from '@/components/common/navbar/navbar';
+import TopNavbar from "@/components/common/navbar/TopNavbar";
+import BottomNavbar from "@/components/common/navbar/bottomNavbar";
 
 const formSchema = z.object({
   schoolName: z.string().refine((value) => value.trim() !== '', {
@@ -59,9 +60,10 @@ export function SchoolDetailsForm() {
 
   return (
     <>
+    <TopNavbar onClick={ () => {} }></TopNavbar>
       <div className="flex flex-col justify-center items-center mb-4">
         <h1
-          className="text-[#4146B8] font-bold text-[21px] 
+          className="text-[#4146B8] font-bold text-[21px]
 "
         >
           Add your school details
@@ -100,8 +102,8 @@ export function SchoolDetailsForm() {
                   <FormControl>
                     <Input
                       placeholder="example@example.com"
-                      {...field}
                       className="w-[300px]"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -181,25 +183,8 @@ export function SchoolDetailsForm() {
               </FormItem>
             )}
           />
-          {/* Continue button */}
-          <div className="bg-blue-600 py-2 px-6 flex justify-end">
-            <Button
-              type="submit"
-              variant="secondary"
-              className="text-blue-600"
-              size="sm"
-            >
-              Continue
-            </Button>
-          </div>
+          <BottomNavbar></BottomNavbar>
         </form>
-
-        {/* Success message */}
-        {form.formState.isSubmitted && (
-          <div className="p-4 bg-green-100 rounded-md">
-            <p className="text-green-800">Check data in console.</p>
-          </div>
-        )}
       </Form>
     </>
   );

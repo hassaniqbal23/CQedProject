@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ShieldAlert, LoaderIcon, Eye, EyeOff } from "lucide-react";
 
-interface InputProps {
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
   disabled?: boolean;
@@ -12,7 +12,7 @@ interface InputProps {
   inputClassName?: string;
 }
 
-const Input: React.FC<InputProps> = ({
+export const Input: React.FC<InputProps> = ({
   label,
   error,
   disabled,
@@ -20,6 +20,7 @@ const Input: React.FC<InputProps> = ({
   type = "text",
   id,
   inputClassName,
+    placeholder= ""
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -49,6 +50,7 @@ const Input: React.FC<InputProps> = ({
             isError && "border-red-500",
             inputClassName
           )}
+          placeholder={placeholder}
           disabled={disabled}
         />
         {type === "password" && (
@@ -77,5 +79,3 @@ const Input: React.FC<InputProps> = ({
     </div>
   );
 };
-
-export default Input;
