@@ -54,12 +54,12 @@ module.exports = {
 					800: 'var(--secondary-800)',
 					900: 'var(--secondary-900)',
 				},
+				success: {
+					DEFAULT: 'var(--success)',
+					50: 'var(--success-50)'
+				},
 				error: {
 					DEFAULT: 'var(--error)',
-				},
-
-				sucess: {
-					DEFAULT: 'var(--success)',
 				},
 
 				info: {
