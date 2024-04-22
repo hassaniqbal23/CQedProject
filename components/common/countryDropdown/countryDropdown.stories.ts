@@ -29,7 +29,7 @@ export const Default: Story = {
         flagUrl: "/asserts/flags/UnFlag.svg",
       },
       {
-        name: "Sudia Arab",
+        name: "Saudi Arabia",
         countryCode: "CN",
         flagUrl: "/asserts/flags/sudiaFlag.svg",
       },
