@@ -39,7 +39,7 @@ function Progressbar({ percentage, heading }: IProgressbarprops) {
                     </div>
                 </div>
             </div>
-            <div className='flex justify-between pt-3 pl-2 ' >
+            <div className='flex justify-between pt-5 pl-2 ' >
                 <h2 className={`font-semibold ` + (percentage === 100 ? 'text-success' : '')} >{heading}</h2>
                 <h2 >{percentage}% Completed</h2>
             </div>
