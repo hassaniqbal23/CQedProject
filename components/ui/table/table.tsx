@@ -1,6 +1,8 @@
-import { forwardRef } from 'react';
+'use client';
+import React, { forwardRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
+import { Checkbox } from '@/components/ui';
 
 const Table = forwardRef<
   HTMLTableElement,
@@ -56,7 +58,7 @@ const TableRow = forwardRef<
     ref={ref}
     className={cn(
       'border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
-      className,
+      className
     )}
     {...props}
   />
@@ -71,7 +73,7 @@ const TableHead = forwardRef<
     ref={ref}
     className={cn(
       'h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0',
-      className,
+      className
     )}
     {...props}
   />
@@ -102,13 +104,95 @@ const TableCaption = forwardRef<
 ));
 TableCaption.displayName = 'TableCaption';
 
-export {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableCaption,
+interface DataTableProps {
+  columns: {
+    label: string;
+    key: string;
+    render?: (data: any) => React.ReactNode;
+  }[];
+  data: any[];
+  selection?: boolean;
+}
+
+const DataTable = (props: DataTableProps) => {
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+
+  const handleHeaderCheckboxChange = () => {
+    if (selectedItems.length === props.data.length) {
+      // If all items are selected, unselect all
+      setSelectedItems([]);
+    } else {
+      // Otherwise, select all items
+      setSelectedItems(props.data.map((_, index) => index));
+    }
+  };
+
+  const handleCellCheckboxChange = (index: number) => {
+    setSelectedItems((prevSelectedItems) => {
+      if (prevSelectedItems.includes(index)) {
+        // If the item is already selected, remove it from the selection
+        return prevSelectedItems.filter((itemIndex) => itemIndex !== index);
+      } else {
+        // Otherwise, add it to the selection
+        return [...prevSelectedItems, index];
+      }
+    });
+  };
+
+  return (
+    <Table className=" border ">
+      <TableHeader className="bg-[#F7F6F6] dark:bg-primary/[0.1]">
+        <TableRow>
+          {props.selection ? (
+            <TableHead>
+              <Checkbox
+                id="checkbox-header"
+                onCheckedChange={handleHeaderCheckboxChange}
+                checked={selectedItems.length === props.data.length}
+              />
+            </TableHead>
+          ) : null}
+          {props.columns.map((c, i) => (
+            <TableHead
+              key={i}
+              className="text-blue-950 text-[13px] font-semibold  dark:text-white "
+            >
+              {c.label}
+            </TableHead>
+          ))}
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {props.data.map((item, index: number) => (
+          <TableRow key={index}>
+            {props.selection && (
+              <TableCell
+                className="text-[#282931] text-[13px] font-normal dark:text-white"
+                key={index}
+              >
+                <Checkbox
+                  id={`checkbox-${index}`}
+                  onCheckedChange={() => handleCellCheckboxChange(index)}
+                  checked={selectedItems.includes(index)}
+                  className="bg-[#E0E0E0]"
+                />
+              </TableCell>
+            )}
+            {props.columns.map((c, i) => (
+              <TableCell
+                className="text-[#282931] text-[13px] font-normal dark:text-white"
+                key={`${index}-${i}`}
+              >
+                <div className="flex gap-1 justify-center items-center">
+                  {c.render ? c.render(item) : item[c.key]}
+                </div>
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
 };
+
+export default DataTable;
