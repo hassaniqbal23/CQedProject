@@ -14,6 +14,8 @@ export const MainLayout: FC<IProps> = ({ children }) => {
   const pathname =  usePathname()
   const router = useRouter()
 
+
+
   const  sidebarLinks =  [
     {
         icon: "/assets/sidebaricons/dashboard.svg",
