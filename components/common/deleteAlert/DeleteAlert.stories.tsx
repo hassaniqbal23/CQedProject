@@ -27,7 +27,6 @@ export const DeleteAlert: Story = {
       onClose: () => setOpen(false),
       onConfirm: () => setOpen(false),
     };
-    console.log(value, "checking");
     return (
       <>
         <h3 onClick={() => setOpen(true)} className={"text-red-700"}>
