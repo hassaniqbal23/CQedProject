@@ -5,7 +5,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { Button } from "@/components/ui";
@@ -40,7 +39,7 @@ const CountrySelectDropdown: React.FC<CountrySelectDropdownProps> = ({
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button className="flex justify-between w-96  px-3 py-6 items-center rounded-md bg-gray-100 shadow-inner text-[#5D5E68] text-bold cursor-pointer">
+          <Button className="flex justify-between w-96  px-3 py-3 items-center rounded-md bg-[#F8F9FB] shadow-inner text-[#5D5E68] font-semibold xt-bold cursor-pointer">
             {selectedCountry ? (
               <div className=" flex items-center">
                 <Image
@@ -57,16 +56,17 @@ const CountrySelectDropdown: React.FC<CountrySelectDropdownProps> = ({
             <ChevronDown />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-96 p-4  items-center rounded-md bg-gray-100 shadow-inner text-[#5D5E68] mt-2 mx-auto  ">
-          {options.map((country) => (
+        <DropdownMenuContent className="w-96 p-3  items-center rounded-md bg-[#F8F9FB] shadow-inner  mt-3.5 mx-auto  ">
+          {options.map((country, index) => (
             <DropdownMenuItem
               key={country.countryCode}
               onClick={() => handleItemClick(country)}
-              className=" text-[#5D5E68] text-bold border-b border-[#C8C8C8] items-center mt-2 hover:bg-gray-200 cursor-pointer"
+              className={`text-[#5D5E68] px-3 py-1.5 text-semibold items-center  bg-[#F8F9FB] hover:bg-gray-200 cursor-pointer ${
+                index === options.length - 1 ? "" : "border-b  "
+              }`}
             >
-              <div className="flex mr-4 mb-4 items-center">
+              <div className="flex  items-center">
                 <Image
-                  className="ml-2"
                   width={30}
                   height={30}
                   src={country.flagUrl}
@@ -74,7 +74,6 @@ const CountrySelectDropdown: React.FC<CountrySelectDropdownProps> = ({
                 />
                 <span className="ml-2">{country.name}</span>
               </div>
-              {/* <DropdownMenuSeparator className="border  border-[#C8C8C8]  mb-2" /> */}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
