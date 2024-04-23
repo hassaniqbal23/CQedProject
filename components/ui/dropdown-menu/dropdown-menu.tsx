@@ -199,6 +199,8 @@ interface IDropdownProps {
 export interface DropdownMenuDemoPropsOptions {
   label: string;
   value: string | boolean | number | unknown;
+  flagUrl: string;
+  altName: string;
 }
 
 export const Dropdown = (props: IDropdownProps) => {
@@ -231,54 +233,64 @@ export const Dropdown = (props: IDropdownProps) => {
   };
 
   return (
-    <div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="flex justify-between w-60 ">
-            {!Array.isArray(selectedItems) && selectedItems.label ? (
-              <h1>{selectedItems.label}</h1>
-            ) : (
-              <h1>{props.label}</h1>
-            )}
-            <ChevronDown />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-60">
-          <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup>
-            {props.options.map((option, index) => {
-              return (
-                <DropdownMenuRadioItem
-                  key={index}
-                  value="urdu"
-                  onClick={() => handleItemClick(option)}
-                >
-                  {option.label}
-                </DropdownMenuRadioItem>
-              );
-            })}
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+    <>
+      <div className="mx-auto">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="flex justify-between w-[350px]  bg-[#F8F9FB]"
+            >
+              {!Array.isArray(selectedItems) && selectedItems.label ? (
+                <h1>{selectedItems.label} </h1>
+              ) : (
+                <h1>{props.label}</h1>
+              )}
+              <ChevronDown />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-[350px] text-[#5D5E68] mt-3.5 px-3 py-2 text-semibold items-center  bg-[#F8F9FB] cursor-pointer">
+            <DropdownMenuRadioGroup>
+              {props.options.map((option, index) => {
+                return (
+                  <DropdownMenuRadioItem
+                    key={option.label}
+                    value="urdu"
+                    onClick={() => handleItemClick(option)}
+                    className={`text-[#5D5E68] px-3 py-1.5 text-semibold items-center  bg-[#F8F9FB] hover:bg-gray-200 cursor-pointer ${
+                      index === props.options.length - 1 ? "" : "border-b "
+                    }`}
+                  >
+                    <img src={option.flagUrl} alt={option.altName} />
+                    {option.label}
+                  </DropdownMenuRadioItem>
+                );
+              })}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       {props.multSelect && (
-        <div className="flex flex-wrap mt-2">
+        <div className="flex justify-start items-center flex-wrap w-[350px] mt-2 mx-auto">
           {Array.isArray(selectedItems) &&
             selectedItems.map((item: DropdownMenuDemoPropsOptions, index) => (
               <div
                 key={index}
-                className="rounded-full border border-gray-300 p-2 flex items-center mt-2 mr-1"
+                className="rounded-full border border-gray-300 mt-4 p-2 flex items-center  mr-1"
               >
                 <span className="mr-1">{item.label}</span>
-                <button
-                  className="ml-2 text-[#737373] "
+                <Button
+                  size={"sm"}
+                  variant={"ghost"}
+                  className="ml-1 text-[#737373] p-0 m-0"
                   onClick={() => handleChipRemove(index)}
                 >
                   &times;
-                </button>
+                </Button>
               </div>
             ))}
         </div>
       )}
-    </div>
+    </>
   );
 };

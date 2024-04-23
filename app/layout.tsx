@@ -1,22 +1,22 @@
-'use client';
-import { useEffect, useState, ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import './globals.css';
-import { FormProvider, useForm } from 'react-hook-form';
-import { ThemeProvider } from '@/components/theme-provider';
-import { getAccessToken } from './utils/encryption';
-import { updateToken } from './utils/http';
-import { GlobalProvider } from './gobalContext/globalContext';
-import { Toaster } from '@/components/ui';
-import localFont from 'next/font/local'
+"use client";
+import { useEffect, useState, ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./globals.css";
+import { FormProvider, useForm } from "react-hook-form";
+import { ThemeProvider } from "@/components/theme-provider";
+import { getAccessToken } from "./utils/encryption";
+import { updateToken } from "./utils/http";
+import { GlobalProvider } from "./gobalContext/globalContext";
+import { Toaster } from "@/components/ui";
+import localFont from "next/font/local";
 
 const myFont = localFont({
-	src: '../public/fonts/Montserrat-Regular.ttf',
-	display: 'swap',
-})
+  src: "../public/fonts/Montserrat-Regular.ttf",
+  display: "swap",
+});
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -27,10 +27,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     if (token) {
       updateToken(token);
     } else if (!window.location.search) {
-      router.push('/login');
+      router.push("/login");
     }
   }, [router]);
-
 
   const [queryClient] = useState(
     () =>
@@ -43,14 +42,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             staleTime: 5 * 1000,
           },
         },
-      }),
+      })
   );
 
   const methods = useForm();
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body suppressHydrationWarning={false} className={myFont.className} >
+      <body suppressHydrationWarning={false} className={myFont.className}>
         <Toaster />
         <QueryClientProvider client={queryClient}>
           <GlobalProvider>
@@ -60,7 +59,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 defaultTheme="system"
                 enableSystem
               > */}
-                {children}
+              {children}
               {/* </ThemeProvider> */}
               <ToastContainer autoClose={1000} />
             </FormProvider>

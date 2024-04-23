@@ -3,19 +3,15 @@ import { cn } from "@/lib/utils";
 import { ShieldAlert, LoaderIcon, Eye, EyeOff } from "lucide-react";
 import { Label } from "../label/label";
 
-interface InputProps {
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
   disabled?: boolean;
   loading?: boolean;
-  type?: "text" | "password" | "number";
+  type?: 'text' | 'password' | 'number';
   id?: string;
   className?: string;
   placeholder?: string;
-  value?: string;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  onBlur?: React.FocusEventHandler<HTMLInputElement>;
-  autocomplete?: string;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -23,7 +19,7 @@ export const Input: React.FC<InputProps> = ({
   error,
   disabled,
   loading,
-  type = "text",
+  type = 'text',
   id,
   className,
   placeholder,
@@ -46,6 +42,7 @@ export const Input: React.FC<InputProps> = ({
       )}
       <div className="relative">
         <input
+          placeholder={placeholder}
           type={inputType}
           placeholder={placeholder}
           id={id}
@@ -60,7 +57,7 @@ export const Input: React.FC<InputProps> = ({
           )}
           disabled={disabled}
         />
-        {type === "password" && (
+        {type === 'password' && (
           <button
             type="button"
             className="absolute inset-y-0 right-0 flex items-center pr-3 focus:outline-none"
@@ -76,7 +73,7 @@ export const Input: React.FC<InputProps> = ({
             <ShieldAlert />
           </span>
         )}
-        {loading && type !== "password" && (
+        {loading && type !== 'password' && (
           <span className="absolute inset-y-0 right-0 flex items-center pr-3">
             <LoaderIcon className="animate-spin" />
           </span>
