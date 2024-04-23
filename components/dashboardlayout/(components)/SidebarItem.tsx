@@ -21,9 +21,8 @@ const SidebarItem: FC<IProps> = ({
   const activeClass = 'text-white bg-[#3F1C9F]';
   const inactiveClass = 'text-primary';
   const router = useRouter();
+  
   const isSubmenuActive = (submenuPath: string) => pathname === submenuPath;
-
-  console.log(item)
 
   return (
     <div>

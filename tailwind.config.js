@@ -54,9 +54,28 @@ module.exports = {
 					800: 'var(--secondary-800)',
 					900: 'var(--secondary-900)',
 				},
+				success: {
+					DEFAULT: 'var(--success)',
+					50: 'var(--success-50)'
+				},
+				error: {
+					DEFAULT: 'var(--error)',
+				},
+
+				info: {
+					DEFAULT: 'var(--info)',
+				},
+
+				warning: {
+					DEFAULT: 'var(--warning)',
+				},
+
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))',
+				},
+				success: {
+					DEFAULT:'var(--success)'
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',

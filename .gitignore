@@ -45,3 +45,4 @@ yarn.lock
 certificates
 *storybook.log
 .idea
+/storybook-static
