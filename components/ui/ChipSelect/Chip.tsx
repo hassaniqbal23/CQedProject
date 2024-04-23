@@ -1,7 +1,6 @@
 // Chip.tsx
 import React from 'react';
 import {cn} from '@/lib/utils';
-import {primary} from './Chip.stories';
 
 interface ChipProps {
 	value: string;
@@ -27,9 +26,8 @@ const Chip = ({
 			className={cn(
 				'flex items-center justify-center gap-2 w-[160px] h-12 font-medium text-lg text-center cursor-pointer border border-solid border-Stroke',
 				active && 'text-primary border border-solid border-primary font-medium',
-				// (className = 'text-primary')
-				rounded ? 'rounded-full' : '',
-				variant ? 'bg-primary' : 'text-white'
+				rounded ? 'rounded-full' : ''
+				// variant === 'secondary' ? 'bg-[red]' : '' // Apply primary variant style
 			)}
 		>
 			{children}

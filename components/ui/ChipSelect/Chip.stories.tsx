@@ -1,7 +1,7 @@
 import React from 'react';
 import {Meta} from '@storybook/react';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
-import maleIcon from 'public/assets/chipsicon/male.svg';
+import Image from 'next/image';
 
 const meta: Meta = {
 	title: 'UI/Chip Selector',
@@ -9,7 +9,7 @@ const meta: Meta = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
+	// tags: ['autodocs'],
 };
 
 export default meta;
@@ -26,25 +26,17 @@ Default.args = {
 		{
 			label: 'Male',
 			value: 'Male',
-			render: (data: any) => (
-				<div>
-					<img
-						src={maleIcon}
-						alt=""
-					/>
-					{data.label}
-				</div>
-			),
+			render: (data: any) => <div>{data.label}</div>,
 		},
 		{
 			label: 'Female',
 			value: 'Female',
-			gender: 'female',
+			render: (data: any) => <div>{data.label}</div>,
 		},
 		{
 			label: 'Non-binary',
 			value: 'Non-binary',
-			gender: 'non-binary',
+			render: (data: any) => <div>{data.label}</div>,
 		},
 	],
 };
@@ -57,23 +49,26 @@ export const Secondary = (args: any) => (
 
 Secondary.args = {
 	defaultValue: 'Female',
-	chips: [
+	options: [
 		{
 			label: 'Male',
 			value: 'Male',
-			gender: 'male',
+			render: (data: any) => <div>{data.label}</div>,
 		},
 		{
 			label: 'Female',
 			value: 'Female',
-			gender: 'female',
+			render: (data: any) => <div>{data.label}</div>,
 		},
 		{
 			label: 'Non-binary',
 			value: 'Non-binary',
-			gender: 'non-binary',
+			render: (data: any) => <div>{data.label}</div>,
 		},
 	],
+	args: {
+		variant: 'secondary',
+	},
 };
 
 export const primary = (args: any) => (
@@ -89,17 +84,20 @@ primary.args = {
 		{
 			label: 'Male',
 			value: 'Male',
+
+			render: (data: any) => {
+				return <div>{data.label}</div>;
+			},
 		},
 		{
 			label: 'Female',
 			value: 'Female',
+			render: (data: any) => <div>{data.label}</div>,
 		},
 		{
 			label: 'Non-binary',
 			value: 'Non-binary',
+			render: (data: any) => <div>{data.label}</div>,
 		},
 	],
-	args: {
-		variant: 'primary',
-	},
 };

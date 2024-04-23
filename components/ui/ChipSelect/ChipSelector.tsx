@@ -21,6 +21,7 @@ const ChipSelector = ({
 	defaultValue,
 	onChange,
 	rounded,
+	variant,
 }: ChipSelectorProps) => {
 	const [selectedValue, setSelectedValue] = useState(defaultValue || '');
 
@@ -37,6 +38,7 @@ const ChipSelector = ({
 					value={chip.value}
 					active={chip.value === selectedValue}
 					rounded={rounded}
+					variant={variant}
 					onClick={(value) => {
 						handleChipClick(value);
 					}}
