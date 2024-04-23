@@ -1,25 +1,27 @@
-import React, { useState } from "react";
-import { cn } from "@/lib/utils";
-import { ShieldAlert, LoaderIcon, Eye, EyeOff } from "lucide-react";
+import React, { useState } from 'react';
+import { cn } from '@/lib/utils';
+import { ShieldAlert, LoaderIcon, Eye, EyeOff } from 'lucide-react';
 
-interface InputProps {
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
   disabled?: boolean;
   loading?: boolean;
-  type?: "text" | "password" | "number";
+  type?: 'text' | 'password' | 'number';
   id?: string;
-  inputClassName?: string;
+  className?: string;
+  placeholder?: string;
 }
 
-const Input: React.FC<InputProps> = ({
+export const Input: React.FC<InputProps> = ({
   label,
   error,
   disabled,
   loading,
-  type = "text",
+  type = 'text',
   id,
-  inputClassName,
+  className,
+  placeholder = '',
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -27,7 +29,7 @@ const Input: React.FC<InputProps> = ({
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  const inputType = showPassword ? "text" : type;
+  const inputType = showPassword ? 'text' : type;
   const isError = !!error;
 
   return (
@@ -42,16 +44,17 @@ const Input: React.FC<InputProps> = ({
       )}
       <div className="relative">
         <input
+          placeholder={placeholder}
           type={inputType}
           id={id}
           className={cn(
-            "flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-            isError && "border-red-500",
-            inputClassName
+            'flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+            isError && 'border-red-500',
+            className
           )}
           disabled={disabled}
         />
-        {type === "password" && (
+        {type === 'password' && (
           <button
             type="button"
             className="absolute inset-y-0 right-0 flex items-center pr-3 focus:outline-none"
@@ -65,9 +68,9 @@ const Input: React.FC<InputProps> = ({
             <ShieldAlert />
           </span>
         )}
-        {loading && type !== "password" && (
+        {loading && type !== 'password' && (
           <span className="absolute inset-y-0 right-0 flex items-center pr-3">
-            <LoaderIcon className={"animate-spin "} />
+            <LoaderIcon className={'animate-spin '} />
           </span>
         )}
       </div>
@@ -77,5 +80,3 @@ const Input: React.FC<InputProps> = ({
     </div>
   );
 };
-
-export default Input;
