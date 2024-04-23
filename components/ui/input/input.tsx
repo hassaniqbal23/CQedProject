@@ -3,15 +3,19 @@ import { cn } from "@/lib/utils";
 import { ShieldAlert, LoaderIcon, Eye, EyeOff } from "lucide-react";
 import { Label } from "../label/label";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps {
   label?: string;
   error?: string;
   disabled?: boolean;
   loading?: boolean;
-  type?: 'text' | 'password' | 'number';
+  type?: "text" | "password" | "number";
   id?: string;
   className?: string;
   placeholder?: string;
+  value?: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  autocomplete?: string;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -44,15 +48,14 @@ export const Input: React.FC<InputProps> = ({
         <input
           placeholder={placeholder}
           type={inputType}
-          placeholder={placeholder}
           id={id}
           value={value}
           onChange={onChange}
           onBlur={onBlur}
           autoComplete={autocomplete}
           className={cn(
-            "flex h-12 w-full rounded-md border  bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-black disabled:cursor-not-allowed disabled:opacity-50",
-            isError ? "border-red-500" : "border-gray-300",
+            "flex h-14 w-full bg-[#F8F9FB] rounded-md border font-medium px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-black disabled:cursor-not-allowed disabled:opacity-50",
+            isError ? "border-red-500" : "border-[#D1D5DB]",
             className
           )}
           disabled={disabled}

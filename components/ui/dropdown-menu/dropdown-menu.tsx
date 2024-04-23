@@ -3,6 +3,7 @@
 import { forwardRef, useState } from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { Check, ChevronDown, ChevronRight, Circle } from "lucide-react";
+import  Image  from "next/image";
 
 import { cn } from "@/lib/utils";
 import { Button } from "../button/button";
@@ -261,7 +262,7 @@ export const Dropdown = (props: IDropdownProps) => {
                       index === props.options.length - 1 ? "" : "border-b "
                     }`}
                   >
-                    <img src={option.flagUrl} alt={option.altName} />
+                    <Image width={30} height={30} src={option.flagUrl} alt={option.altName} />
                     {option.label}
                   </DropdownMenuRadioItem>
                 );
