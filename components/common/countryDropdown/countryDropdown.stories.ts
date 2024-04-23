@@ -5,7 +5,12 @@ import CountrySelectDropdown from "./countyDropdown";
 const meta: Meta<typeof CountrySelectDropdown> = {
   title: "Forms/CountryDropdown",
   component: CountrySelectDropdown,
-};
+  parameters: {
+    layout: "centered",
+  },
+
+  tags: ["autodocs"],
+} satisfies Meta<typeof CountrySelectDropdown>;
 
 export default meta;
 type Story = StoryObj<typeof CountrySelectDropdown>;
