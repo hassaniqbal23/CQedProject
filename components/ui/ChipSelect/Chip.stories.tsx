@@ -1,43 +1,95 @@
-// Import statements...
+import React from 'react';
+import {Meta} from '@storybook/react';
+import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
 
-import type {Meta, StoryObj} from '@storybook/react';
-import {TabsComponent as Tabs} from '@/components/ui/ChipSelect/Chip';
-
-const meta = {
-	title: 'Ui/Chip Selector',
-	component: Tabs,
+const meta: Meta = {
+	title: 'UI/Chip Selector',
+	component: ChipSelector,
 	parameters: {
 		layout: 'centered',
 	},
 	tags: ['autodocs'],
-} as Meta<typeof Tabs>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-	render: (args) => {
-		return (
-			<div>
-				<Tabs {...args} />
-			</div>
-		);
-	},
-	args: {
-		defaultValue: 'Male',
-		tabs: [
-			{
-				label: 'Male',
-				value: 'Male',
-			},
-			{
-				label: 'Female',
-				value: 'Female',
-			},
-			{
-				label: 'Non-binary',
-				value: 'Non-binary',
-			},
-		],
-	},
+export const Default = (args: any) => (
+	<div>
+		<ChipSelector {...args} />
+	</div>
+);
+
+Default.args = {
+	defaultValue: 'Male',
+	chips: [
+		{
+			label: 'Male',
+			value: 'Male',
+			gender: 'male',
+		},
+		{
+			label: 'Female',
+			value: 'Female',
+			gender: 'female',
+		},
+		{
+			label: 'Non-binary',
+			value: 'Non-binary',
+			gender: 'non-binary',
+		},
+	],
+};
+
+export const Secondary = (args: any) => (
+	<div>
+		<ChipSelector {...args} />
+	</div>
+);
+
+Secondary.args = {
+	defaultValue: 'Female',
+	chips: [
+		{
+			label: 'Male',
+			value: 'Male',
+			gender: 'male',
+		},
+		{
+			label: 'Female',
+			value: 'Female',
+			gender: 'female',
+		},
+		{
+			label: 'Non-binary',
+			value: 'Non-binary',
+			gender: 'non-binary',
+		},
+	],
+};
+
+export const primary = (args: any) => (
+	<div>
+		<ChipSelector {...args} />
+	</div>
+);
+
+primary.args = {
+	defaultValue: 'Non-binary',
+	chips: [
+		{
+			label: 'Male',
+			value: 'Male',
+			gender: 'male',
+		},
+		{
+			label: 'Female',
+			value: 'Female',
+			gender: 'female',
+		},
+		{
+			label: 'Non-binary',
+			value: 'Non-binary',
+			gender: 'non-binary',
+		},
+	],
 };
