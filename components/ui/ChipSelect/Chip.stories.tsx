@@ -1,6 +1,7 @@
 import React from 'react';
 import {Meta} from '@storybook/react';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
+import maleIcon from 'public/assets/chipsicon/male.svg';
 
 const meta: Meta = {
 	title: 'UI/Chip Selector',
@@ -21,11 +22,19 @@ export const Default = (args: any) => (
 
 Default.args = {
 	defaultValue: 'Male',
-	chips: [
+	options: [
 		{
 			label: 'Male',
 			value: 'Male',
-			gender: 'male',
+			render: (data: any) => (
+				<div>
+					<img
+						src={maleIcon}
+						alt=""
+					/>
+					{data.label}
+				</div>
+			),
 		},
 		{
 			label: 'Female',
@@ -75,21 +84,22 @@ export const primary = (args: any) => (
 
 primary.args = {
 	defaultValue: 'Non-binary',
-	chips: [
+	rounded: true,
+	options: [
 		{
 			label: 'Male',
 			value: 'Male',
-			gender: 'male',
 		},
 		{
 			label: 'Female',
 			value: 'Female',
-			gender: 'female',
 		},
 		{
 			label: 'Non-binary',
 			value: 'Non-binary',
-			gender: 'non-binary',
 		},
 	],
+	args: {
+		variant: 'primary',
+	},
 };

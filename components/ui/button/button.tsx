@@ -4,13 +4,36 @@ import {cva, type VariantProps} from 'class-variance-authority';
 import {cn} from '@/lib/utils';
 
 const buttonVariants = cva(
-	'inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm',
+	'inline-flex gap-1 items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
 	{
 		variants: {
 			variant: {
 				default: 'bg-primary text-white hover:bg-primary/90',
+				outline:
+					'border border-primary text-primary bg-background hover:bg-primary hover:text-white',
+				primary400: 'bg-primary-400 text-white hover:bg-primary/90',
+				'primaryOutline-400':
+					'border border-primary-400 text-primary-400  hover:bg-primary-400 hover:text-white',
+				destructive:
+					'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+				secondary:
+					'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+				'secondary-outline':
+					'border border-secondary text-secondary bg-background hover:bg-secondary hover:text-white',
+				error: 'bg-error text-white hover:bg-primary/90',
+				'error-outline':
+					'border border-error text-error  hover:bg-error hover:text-white',
+				sucess: 'bg-sucess text-white hover:bg-primary/90',
+				'sucess-outline':
+					'border border-sucess text-sucess bg-background hover:bg-sucess hover:text-white',
+				info: 'bg-info text-white hover:bg-primary/90',
 				infoOutline:
-					'inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm',
+					'border border-info text-info  hover:bg-info hover:text-white',
+				warning: 'bg-warning text-white hover:bg-primary/90',
+				warningOutline:
+					'border border-warning text-warning  hover:bg-warning hover:text-white',
+				ghost: 'hover:bg-accent hover:text-accent-foreground',
+				link: 'text-primary underline-offset-4 hover:underline',
 			},
 			size: {
 				default: 'py-[14px] px-[10px] font-[600] text-[16px] rounded-[4px]',
