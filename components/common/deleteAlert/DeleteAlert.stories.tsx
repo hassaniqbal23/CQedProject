@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import Delete from "./deleteAlert";
+import Delete from "./DeleteAlert";
 import { Button } from "@/components/ui";
 import Modal from "../Modal/Modal";
 import { useState } from "react";
 
 const meta: Meta<typeof Delete> = {
-  title: "deleteAlert",
+  title: "UI/Modal",
   component: Delete,
   parameters: {
     layout: "centered",
@@ -18,7 +18,7 @@ const meta: Meta<typeof Delete> = {
 export default meta;
 type Story = StoryObj<typeof Delete>;
 
-export const Default: Story = {
+export const DeleteAlert: Story = {
   render(args) {
     const [open, setOpen] = useState(false);
     const value = {
