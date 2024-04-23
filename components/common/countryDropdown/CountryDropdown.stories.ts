@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import CountrySelectDropdown from "./countyDropdown";
+import CountrySelectDropdown from "./CountryDropdown";
 
 const meta: Meta<typeof CountrySelectDropdown> = {
   title: "Forms/CountryDropdown",
