@@ -11,5 +11,13 @@ export default meta;
 type Story = StoryObj<typeof BottomNavbar>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    isBackButton: true,
+    onBackButton: () => {
+      console.log("Back button")
+    },
+    onContinue: () => {
+      console.log("Continue button")
+    }
+  },
 };

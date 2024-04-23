@@ -1,11 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import CountrySelectDropdown from "./countyDropdown";
+import CountrySelectDropdown from "./CountryDropdown";
 
 const meta: Meta<typeof CountrySelectDropdown> = {
   title: "Forms/CountryDropdown",
   component: CountrySelectDropdown,
-};
+  parameters: {
+    layout: "centered",
+  },
+
+  tags: ["autodocs"],
+} satisfies Meta<typeof CountrySelectDropdown>;
 
 export default meta;
 type Story = StoryObj<typeof CountrySelectDropdown>;
@@ -16,22 +21,22 @@ export const Default: Story = {
       {
         name: "Pakistan",
         countryCode: "US",
-        flagUrl: "/asserts/flags/pakistanFlagLogo.svg",
+        flagUrl: "/assets/flags/pakistanFlagLogo.svg",
       },
       {
         name: "India",
         countryCode: "GB",
-        flagUrl: "/asserts/flags/indiaFlagLogo.svg",
+        flagUrl: "/assets/flags/indiaFlagLogo.svg",
       },
       {
         name: "United Kingdom",
         countryCode: "IN",
-        flagUrl: "/asserts/flags/UnFlag.svg",
+        flagUrl: "/assets/flags/UnFlag.svg",
       },
       {
         name: "Saudi Arabia",
         countryCode: "CN",
-        flagUrl: "/asserts/flags/sudiaFlag.svg",
+        flagUrl: "/assets/flags/sudiaFlag.svg",
       },
     ],
 

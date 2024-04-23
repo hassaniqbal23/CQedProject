@@ -1,8 +1,10 @@
 'use client';
 import { FC, ReactNode } from 'react';
 import Sidebar from './common/sidebar/sidebar';
-import Navbar from './common/navbar/navbar';
 import { usePathname } from 'next/navigation';
+import Navbar from './common/navbar/MainBar';
+import { useRouter } from "next/navigation";
+import { removeToken, removeUserId } from "@/app/utils/encryption";
 
 interface IProps {
   children: ReactNode;
@@ -10,30 +12,31 @@ interface IProps {
 
 export const MainLayout: FC<IProps> = ({ children }) => {
   const pathname =  usePathname()
+  const router = useRouter()
 
   const  sidebarLinks =  [
     {
-        icon: "/asserts/sidebaricons/dashboard.svg",
+        icon: "/assets/sidebaricons/dashboard.svg",
         title: 'Dashboard',
         path: '/admin/dashboard',
     },
     {
-        icon: "/asserts/sidebaricons/classroom.svg",
+        icon: "/assets/sidebaricons/classroom.svg",
         title: 'Classrooms',
         path: '/admin/classrooms',
     },
     {
-        icon: "/asserts/sidebaricons/students.svg",
+        icon: "/assets/sidebaricons/students.svg",
         title: 'Students',
         path: '/admin/students',
     },
     {
-        icon: "/asserts/sidebaricons/teachers.svg",
+        icon: "/assets/sidebaricons/teachers.svg",
         title: 'Teachers',
         path: '/admin/teachers',
     },
     {
-        icon: "/asserts/sidebaricons/managements.svg",
+        icon: "/assets/sidebaricons/managements.svg",
         title: 'Management',
         path: '/admin/management',
     },
@@ -43,7 +46,11 @@ export const MainLayout: FC<IProps> = ({ children }) => {
       <div className=" block w-[70px] md:w-[240px] bg-[#F6F8F9] dark:bg-slate-900">
         <div className='flex '>
           <Sidebar isVerticalIcon={false} pathname={pathname as string} sidebarLinks={sidebarLinks}  />
-          <Navbar onClick={() => console.log("ok")}/>
+          <Navbar onLogout={() =>{
+            removeToken();
+            removeUserId()
+            router.push("/login")
+          }}/>
         </div>
       </div>
       <div className="block md:w-full pl-0 md:pl-8 pt-[60px] overflow-hidden">
