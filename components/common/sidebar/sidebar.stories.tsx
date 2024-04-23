@@ -111,27 +111,27 @@ export const Horizontal:Story  = {
         pathname:"/admin/dashboard",
         sidebarLinks: [
             {
-                icon: "/asserts/sidebaricons/dashboard.svg",
+                icon: "/assets/sidebaricons/dashboard.svg",
                 title: 'Dashboard',
                 path: '/admin/dashboard',
             },
             {
-                icon: "/asserts/sidebaricons/classroom.svg",
+                icon: "/assets/sidebaricons/classroom.svg",
                 title: 'Classrooms',
                 path: '/admin/classrooms',
             },
             {
-                icon: "/asserts/sidebaricons/students.svg",
+                icon: "/assets/sidebaricons/students.svg",
                 title: 'Students',
                 path: '/admin/students',
             },
             {
-                icon: "/asserts/sidebaricons/teachers.svg",
+                icon: "/assets/sidebaricons/teachers.svg",
                 title: 'Teachers',
                 path: '/admin/teachers',
             },
             {
-                icon: "/asserts/sidebaricons/managements.svg",
+                icon: "/assets/sidebaricons/managements.svg",
                 title: 'Management',
                 path: '/admin/management',
             },

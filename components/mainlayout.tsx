@@ -6,6 +6,7 @@ import Navbar from './common/navbar/MainBar';
 import { useRouter } from "next/navigation";
 import { removeToken, removeUserId } from "@/app/utils/encryption";
 
+import { useResponsive } from '@/lib/hooks';
 interface IProps {
   children: ReactNode;
 }
@@ -13,6 +14,7 @@ interface IProps {
 export const MainLayout: FC<IProps> = ({ children }) => {
   const pathname =  usePathname()
   const router = useRouter()
+  const { isMobile } = useResponsive()
 
 
 
@@ -47,7 +49,7 @@ export const MainLayout: FC<IProps> = ({ children }) => {
     <div className="md:flex md:justify-stretch min-h-screen">
       <div className=" block w-[70px] md:w-[240px] bg-[#F6F8F9] dark:bg-slate-900">
         <div className='flex '>
-          <Sidebar isVerticalIcon={false} pathname={pathname as string} sidebarLinks={sidebarLinks}  />
+          <Sidebar isMobileSidebar={isMobile} isVerticalIcon={false} pathname={pathname as string} sidebarLinks={sidebarLinks}  />
           <Navbar onLogout={() =>{
             removeToken();
             removeUserId()

@@ -222,7 +222,6 @@ export const Dropdown = (props: IDropdownProps) => {
     props.onChange && props.onChange(selectedItems);
   };
 
-  console.log(selectedItems);
 
   const handleChipRemove = (index: number) => {
     if (Array.isArray(selectedItems) && props.multSelect) {
@@ -247,9 +246,10 @@ export const Dropdown = (props: IDropdownProps) => {
         <DropdownMenuContent className="w-60">
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup>
-            {props.options.map((option) => {
+            {props.options.map((option, index) => {
               return (
                 <DropdownMenuRadioItem
+                  key={index}
                   value="urdu"
                   onClick={() => handleItemClick(option)}
                 >
