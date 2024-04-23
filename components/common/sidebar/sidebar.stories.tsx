@@ -97,3 +97,45 @@ export const VerticalSidebar: Story = {
 };
 
 
+export const Horizontal:Story  = {
+    render: (args)=>{
+        return (
+            <div className=''>
+            <Sidebar {...args} />
+        </div>
+        )
+    },
+    args: {
+        isVerticalIcon: false,
+        isMobileSidebar: true,
+        pathname:"/admin/dashboard",
+        sidebarLinks: [
+            {
+                icon: "/assets/sidebaricons/dashboard.svg",
+                title: 'Dashboard',
+                path: '/admin/dashboard',
+            },
+            {
+                icon: "/assets/sidebaricons/classroom.svg",
+                title: 'Classrooms',
+                path: '/admin/classrooms',
+            },
+            {
+                icon: "/assets/sidebaricons/students.svg",
+                title: 'Students',
+                path: '/admin/students',
+            },
+            {
+                icon: "/assets/sidebaricons/teachers.svg",
+                title: 'Teachers',
+                path: '/admin/teachers',
+            },
+            {
+                icon: "/assets/sidebaricons/managements.svg",
+                title: 'Management',
+                path: '/admin/management',
+            },
+        ]
+    }
+
+}

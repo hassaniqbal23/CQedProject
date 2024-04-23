@@ -224,7 +224,6 @@ export const Dropdown = (props: IDropdownProps) => {
     props.onChange && props.onChange(selectedItems);
   };
 
-  console.log(selectedItems);
 
   const handleChipRemove = (index: number) => {
     if (Array.isArray(selectedItems) && props.multSelect) {

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { cn } from '@/lib/utils';
-import { ShieldAlert, LoaderIcon, Eye, EyeOff } from 'lucide-react';
+import React, { useState } from "react";
+import { cn } from "@/lib/utils";
+import { ShieldAlert, LoaderIcon, Eye, EyeOff } from "lucide-react";
+import { Label } from "../label/label";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -21,35 +22,37 @@ export const Input: React.FC<InputProps> = ({
   type = 'text',
   id,
   className,
-  placeholder = '',
+  placeholder,
+  value,
+  onChange,
+  onBlur,
+  autocomplete = "off"
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
-
-  const inputType = showPassword ? 'text' : type;
+  const inputType = showPassword ? "text" : type;
   const isError = !!error;
 
   return (
     <div>
       {label && (
-        <label
-          htmlFor={id}
-          className="text-foreground-primary font-montserrat font-semibold text-base leading-[26.9px]"
-        >
+        <Label htmlFor={id} className="text-foreground-primary font-montserrat font-semibold text-base leading-[26.9px]">
           {label}
-        </label>
+        </Label>
       )}
       <div className="relative">
         <input
           placeholder={placeholder}
           type={inputType}
+          placeholder={placeholder}
           id={id}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          autoComplete={autocomplete}
           className={cn(
-            'flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
-            isError && 'border-red-500',
+            "flex h-12 w-full rounded-md border  bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-black disabled:cursor-not-allowed disabled:opacity-50",
+            isError ? "border-red-500" : "border-gray-300",
             className
           )}
           disabled={disabled}
@@ -58,9 +61,11 @@ export const Input: React.FC<InputProps> = ({
           <button
             type="button"
             className="absolute inset-y-0 right-0 flex items-center pr-3 focus:outline-none"
-            onClick={togglePasswordVisibility}
+            onClick={() =>{
+              setShowPassword(!showPassword)
+            }}
           >
-            {showPassword ? <Eye /> : <EyeOff />}
+            {showPassword ? <EyeOff /> : <Eye />}
           </button>
         )}
         {isError && (
@@ -70,13 +75,11 @@ export const Input: React.FC<InputProps> = ({
         )}
         {loading && type !== 'password' && (
           <span className="absolute inset-y-0 right-0 flex items-center pr-3">
-            <LoaderIcon className={'animate-spin '} />
+            <LoaderIcon className="animate-spin" />
           </span>
         )}
       </div>
-      {error && (
-        <div className="text-red-500 mt-1 text-bold text-sm ">{error}</div>
-      )}
+      {error && <div className="text-red-500 mt-1 text-bold text-sm">{error}</div>}
     </div>
   );
 };
