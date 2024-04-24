@@ -6,7 +6,7 @@ import {cn} from '@/lib/utils';
 
 export interface CheckboxProps
 	extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
-	label: string;
+	label?: string;
 	disabled?: boolean;
 	error?: string;
 }

@@ -1,4 +1,5 @@
-// ChipSelector.tsx
+"use client"
+
 import React, {useState} from 'react';
 import Chip from './Chip'; // Assuming Chip component is in the same directory
 
@@ -12,7 +13,7 @@ interface ChipSelectorProps {
 	options: ChipItem[];
 	defaultValue?: string;
 	rounded?: boolean;
-	variant?: 'primary' | 'secondary' | 'outlined' | 'secondary-outlined';
+	variant?: 'primary' | 'secondary' | 'outlined' | 'secondary-outlined' | 'link';
 	onChange?: (value: string) => void;
 }
 
@@ -31,7 +32,7 @@ const ChipSelector = ({
 	};
 
 	return (
-		<div className="flex w-full gap-4 items-start">
+		<div className="flex gap-2 items-start">
 			{options.map((chip, index) => (
 				<Chip
 					key={index}
