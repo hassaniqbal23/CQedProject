@@ -1,10 +1,8 @@
-import React from 'react'
+import React from 'react';
 import type {Meta, StoryObj} from '@storybook/react';
 import {fn} from '@storybook/test';
 import {Button} from './button';
 import {ArrowLeft, ArrowRight} from 'lucide-react';
-// import {Spin} from 'antd';
-// import {LoadingOutlined} from '@ant-design/icons';
 
 const meta = {
 	title: 'Ui/Button',
@@ -1856,6 +1854,6 @@ export const LoadingButton: Story = {
 		);
 	},
 	args: {
-		variant: 'warning',
+		variant: 'infoOutline',
 	},
 };
