@@ -25,7 +25,7 @@ const Checkbox = forwardRef<
 				checked={checked}
 				disabled={disabled}
 				className={cn(
-					'peer h-4 w-4 shrink-0 rounded-sm border border-[#D1D5DB] ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground',
+					'peer h-4 w-4 shrink-0 rounded-sm border border-[#D1D5DB] ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-white',
 					isError && 'border-red-500',
 					className
 				)}
