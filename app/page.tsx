@@ -4,6 +4,7 @@ import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getAccessToken } from './utils/encryption';
+import { AdminLayout } from '@/components/layouts/admin';
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -40,8 +41,8 @@ export default function Home() {
 
 
   return (
-    <MainLayout>
+    <AdminLayout>
       <h3 className="text-center text-5xl font-bold pt-20">Coming Soon!</h3>
-    </MainLayout>
+    </AdminLayout>
   );
 }
