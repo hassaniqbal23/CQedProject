@@ -47,7 +47,7 @@ export const MainLayout: FC<IProps> = ({ children }) => {
 ]
   return (
     <div className="md:flex md:justify-stretch min-h-screen">
-      <div className=" block w-[70px] md:w-[240px] bg-[#F6F8F9] dark:bg-slate-900">
+      <div className=" block w-[70px] md:w-[240px] bg-[#D1D5DB] dark:bg-slate-900">
         <div className='flex '>
           <Sidebar isMobileSidebar={isMobile} isVerticalIcon={false} pathname={pathname as string} sidebarLinks={sidebarLinks}  />
           <Navbar onLogout={() =>{
