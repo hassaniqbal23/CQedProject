@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import TopNavbar from "../navbar/TopNavbar";
 import Progressbar from "../Progressbar/Progressbar";
@@ -21,6 +22,7 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { DropdownMenuDemo } from "../LanguageDropdown/LanguageDropdown";
 import ChipSelector from "@/components/ui/ChipSelect/ChipSelector";
+import { FormInput } from "../From/FormInput";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50).nonempty("Username is required"),
@@ -147,17 +149,13 @@ const TeacherLogin: React.FC = () => {
                   name="username"
                   render={({ field }) => {
                     return (
-                      <FormItem>
-                        <FormLabel className="">Full Name</FormLabel>
-                        <FormMessage />
-                        <FormControl>
-                          <Input
-                            placeholder="Enter username"
-                            {...field}
-                            className="h-[54px] md:w-[600px] w-full"
-                          />
-                        </FormControl>
-                      </FormItem>
+                     
+                      <FormInput
+                        required={true}
+                        form={form}
+                        name="name"
+                        label="Full Name"
+                      />
                     );
                   }}
                 />
@@ -166,17 +164,12 @@ const TeacherLogin: React.FC = () => {
                   name="emailAddress"
                   render={({ field }) => {
                     return (
-                      <FormItem>
-                        <FormLabel>Email Address</FormLabel>
-                        <FormMessage />
-                        <FormControl>
-                          <Input
-                            placeholder="e.g example@12"
-                            {...field}
-                            className="h-[54px] md:w-[600px] w-full"
-                          />
-                        </FormControl>
-                      </FormItem>
+                      <FormInput
+                      type='password'
+                      form={form}
+                      name='email'
+                      label='Email'
+                    />
                     );
                   }}
                 />
