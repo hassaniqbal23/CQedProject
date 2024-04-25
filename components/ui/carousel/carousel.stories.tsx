@@ -28,17 +28,17 @@ export const Primary: Story = {
     carouselItems: [
       {
         title: 'Join the Future',
-        description: 'Shaping Global Citizens T hrough Cultural Intelligence',
+        description: 'Shaping Global Citizens Through Cultural Intelligence',
         imgPath: '/assets/images/slider1.jpeg',
       },
       {
         title: 'Join the Future',
-        description: 'Shaping Global Citizens T hrough Cultural Intelligence',
+        description: 'Shaping Global Citizens Through Cultural Intelligence',
         imgPath: '/assets/images/slider2.jpeg',
       },
       {
         title: 'Join the Future',
-        description: 'Shaping Global Citizens T hrough Cultural Intelligence',
+        description: 'Shaping Global Citizens Through Cultural Intelligence',
         imgPath: '/assets/images/slider3.jpeg',
       },
     ],
