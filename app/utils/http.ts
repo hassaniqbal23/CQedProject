@@ -1,26 +1,9 @@
 import axios from 'axios';
 import { getAccessToken, removeToken, removeUserId } from './encryption';
 
-const localIP = process.env.NEXT_PUBLIC_API_HOST || 'http://0.0.0.0:3423';
-
-const host =
-  typeof window !== 'undefined' && window.location.hostname
-    ? window.location.hostname
-    : '';
-const getBaseUrl = () => {
-  let baseURL = '';
-  if (host && host === 'cloud.cqed.com') {
-    baseURL = 'https://api.cloud.cqed.com';
-  } else if (host && host === 'staging.cqed.com') {
-    baseURL = 'https://api.staging.cqed.com';
-  } else {
-    baseURL = localIP;
-  }
-  return baseURL;
-};
 
 const createHttpInstance = () => {
-  const baseURL = getBaseUrl();
+  const baseURL = "";
   const http = axios.create({
     baseURL,
   });
@@ -54,7 +37,9 @@ export const updateToken = (token: string) => {
   http.defaults.headers['Authorization'] = `Bearer ${token}`;
   http.defaults.headers['Access-Control-Allow-Origin'] = '*';
   // set cookie for the token for 1 day
-  document.cookie = `token=${token}; max-age=86400; path=/`;
+  if (typeof window !== 'undefined') {
+    document.cookie = `token=${token}; max-age=86400; path=/`;
+  }
 };
 
 export default http;
