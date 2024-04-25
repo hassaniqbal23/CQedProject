@@ -8,8 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  Input,
-  Label,
+  Separator
 } from "@/components/ui";
 import React from "react";
 
@@ -24,6 +23,7 @@ interface ModalProps {
   onOkClick?: () => void;
   showFooterCloseButton?: boolean;
   footerOkButton?: React.ReactNode | string;
+  onOpenChange?: () => void;
 }
 
 function Modal({
@@ -37,9 +37,10 @@ function Modal({
   showFooterCloseButton = true,
   footerOkButton,
   isVisible,
+  onOpenChange,
 }: ModalProps) {
   return (
-    <Dialog open={isVisible}>
+    <Dialog open={isVisible } onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{openModalButton}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -52,7 +53,8 @@ function Modal({
             header
           )}
         </DialogHeader>
-        {children}
+        <Separator className="mb-3" />
+           {children}
         {footer === true ? (
           <DialogFooter>
             {showFooterCloseButton && (
