@@ -4,4 +4,4 @@ import {
 } from './types';
 
 export const LoginAPI = (payload: IAuthentication) =>
-  http.post('/auth/login', payload);
+  http.post('/api/auth/login', payload);
