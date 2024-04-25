@@ -234,12 +234,12 @@ export const Dropdown = (props: IDropdownProps) => {
 
   return (
     <>
-      <div className="mx-auto">
+      <div className="w-full">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="flex justify-between w-[350px]  bg-[#F8F9FB]"
+              className="flex justify-between w-full bg-[#F8F9FB]"
             >
               {!Array.isArray(selectedItems) && selectedItems.label ? (
                 <h1>{selectedItems.label} </h1>

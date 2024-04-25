@@ -1,5 +1,5 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import {
   Form,
   FormControl,
@@ -7,31 +7,31 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui';
-import { Input } from '@/components/ui';
-import { useForm } from 'react-hook-form';
+} from "@/components/ui";
+import { Input } from "@/components/ui";
+import { useForm } from "react-hook-form";
 
 const formSchema = z.object({
-  schoolName: z.string().refine((value) => value.trim() !== '', {
-    message: 'Please enter your School name',
+  schoolName: z.string().refine((value) => value.trim() !== "", {
+    message: "Please enter your School name",
   }),
   emailAddress: z
     .string()
     .email()
-    .refine((value) => value.trim() !== '', {
-      message: 'Please enter your email address.',
+    .refine((value) => value.trim() !== "", {
+      message: "Please enter your email address.",
     }),
-  phoneNumber: z.string().refine((value) => value.trim() !== '', {
-    message: 'Please enter your phone number.',
+  phoneNumber: z.string().refine((value) => value.trim() !== "", {
+    message: "Please enter your phone number.",
   }),
-  country: z.string().refine((value) => value.trim() !== '', {
-    message: 'Please select your Country.',
+  country: z.string().refine((value) => value.trim() !== "", {
+    message: "Please select your Country.",
   }),
-  state: z.string().refine((value) => value.trim() !== '', {
-    message: ' Please select your State.',
+  state: z.string().refine((value) => value.trim() !== "", {
+    message: " Please select your State.",
   }),
-  schoolAddress: z.string().refine((value) => value.trim() !== '', {
-    message: ' Please enter School address.',
+  schoolAddress: z.string().refine((value) => value.trim() !== "", {
+    message: " Please enter School address.",
   }),
 });
 
@@ -39,12 +39,12 @@ export function SchoolDetailsForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      schoolName: '',
-      emailAddress: '',
-      phoneNumber: '',
-      country: '',
-      state: '',
-      schoolAddress: '',
+      schoolName: "",
+      emailAddress: "",
+      phoneNumber: "",
+      country: "",
+      state: "",
+      schoolAddress: "",
     },
   });
 

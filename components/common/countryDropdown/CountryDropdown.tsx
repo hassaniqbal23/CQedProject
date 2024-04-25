@@ -39,7 +39,7 @@ const CountrySelectDropdown: React.FC<CountrySelectDropdownProps> = ({
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button className="flex justify-between w-96  px-3 py-3 items-center rounded-md bg-[#F8F9FB] shadow-inner text-[#5D5E68] font-semibold xt-bold cursor-pointer">
+          <Button className="flex justify-between w-full px-3 py-3 items-center rounded-md bg-[#F8F9FB] shadow-inner text-[#5D5E68] font-semibold xt-bold cursor-pointer">
             {selectedCountry ? (
               <div className=" flex items-center">
                 <Image
