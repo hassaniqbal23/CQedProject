@@ -51,9 +51,9 @@ export const removeToken = (): void => {
   }
 };
 
-export const storeUserId = (userId: string): void => {
+export const storeUserId = (userId: string | number): void => {
   if (typeof window !== 'undefined') {
-    localStorage.setItem(NEXT_AUTH_USERID, userId);
+    localStorage.setItem(NEXT_AUTH_USERID, userId as string);
   }
 };
 export const getUserId = (): void => {

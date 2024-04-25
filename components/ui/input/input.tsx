@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import { cn } from "@/lib/utils";
 import { ShieldAlert, LoaderIcon, Eye, EyeOff } from "lucide-react";
 import { Label } from "../label/label";
@@ -8,17 +8,19 @@ interface InputProps {
   error?: string;
   disabled?: boolean;
   loading?: boolean;
-  type?: "text" | "password" | "number";
+  type?: React.HTMLInputTypeAttribute | undefined
   id?: string;
   className?: string;
+  name?: string;
   placeholder?: string;
-  value?: string;
+  value?: string | number;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   autocomplete?: string;
+  required?: boolean
 }
 
-export const Input: React.FC<InputProps> = ({
+export const Input = forwardRef<HTMLInputElement, InputProps>(({
   label,
   error,
   disabled,
@@ -30,8 +32,11 @@ export const Input: React.FC<InputProps> = ({
   value,
   onChange,
   onBlur,
-  autocomplete = "off"
-}) => {
+  name,
+  required,
+  autocomplete = "off",
+  ...props
+}, ref) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const inputType = showPassword ? "text" : type;
@@ -39,19 +44,19 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <div>
-      {label && (
-        <Label htmlFor={id} className="text-foreground-primary font-montserrat font-semibold text-base leading-[26.9px]">
-          {label}
-        </Label>
-      )}
+      {label && <Label htmlFor={id} className="text-foreground-primary font-montserrat font-semibold text-base leading-[26.9px]">{label}</Label>}
       <div className="relative">
         <input
+          ref={ref}
+          {...props}
           placeholder={placeholder}
           type={inputType}
           id={id}
+          name={name}
           value={value}
           onChange={onChange}
           onBlur={onBlur}
+          required={required}
           autoComplete={autocomplete}
           className={cn(
             "flex h-14 w-full bg-[#F8F9FB] rounded-md border font-medium px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-black disabled:cursor-not-allowed disabled:opacity-50",
@@ -60,15 +65,13 @@ export const Input: React.FC<InputProps> = ({
           )}
           disabled={disabled}
         />
-        {type === 'password' && (
+        {(type === 'password' && !error) && (
           <button
             type="button"
             className="absolute inset-y-0 right-0 flex items-center pr-3 focus:outline-none"
-            onClick={() =>{
-              setShowPassword(!showPassword)
-            }}
+            onClick={() => setShowPassword(!showPassword)}
           >
-            {showPassword ? <EyeOff /> : <Eye />}
+            {!showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         )}
         {isError && (
@@ -82,7 +85,10 @@ export const Input: React.FC<InputProps> = ({
           </span>
         )}
       </div>
-      {error && <div className="text-red-500 mt-1 text-bold text-sm">{error}</div>}
+      {error && <div className="text-red-500 mt-0 text-bold text-sm">{error}</div>}
     </div>
   );
-};
+});
+
+Input.displayName = "Input";
+
