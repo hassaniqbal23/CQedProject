@@ -10,14 +10,15 @@ const Tabs = TabsPrimitive.Root;
 const TabsList = forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> & {
-    variant?: 'primary' | 'secondary';
+    variant?: 'primary' | 'secondary' | 'linked';
   }
 >(({ className, variant, ...props }, ref) => (
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      'inline-flex items-start text-muted-foreground ',
-      variant === 'secondary' ? 'bg-white border-b-2 ' : 'bg-muted rounded-md ',
+      'inline-flex items-start text-muted-foreground bg-white',
+      variant === 'secondary' ? 'bg-muted rounded-md' : '',
+      variant === 'linked' ? ' border-b-2 ' : '',
       className
     )}
     {...props}
@@ -28,17 +29,18 @@ TabsList.displayName = 'TabsList';
 const TabsTrigger = forwardRef<
   HTMLButtonElement,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> & {
-    variant?: 'primary' | 'secondary';
+    variant?: 'primary' | 'secondary' | 'linked';
   }
 >(({ className, variant, ...props }, ref) => {
   return (
     <TabsPrimitive.Trigger
       ref={ref}
       className={cn(
-        `border-b-2 border-transparent inline-flex items-center justify-center whitespace-nowrap py-2.5 px-7 text-base font-medium hover:ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:text-primary data-[state=active]:font-semibold `,
+        `border-b-2 border-transparent inline-flex items-center justify-center whitespace-nowrap py-2.5 px-7 text-base font-medium hover:ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded data-[state=active]:text-white data-[state=active]:font-semibold data-[state=active]:bg-primary data-[state=active]:shadow  `,
+        variant === 'linked' ? 'data-[state=active]:border-primary' : '',
         variant === 'secondary'
-          ? 'data-[state=active]:border-primary'
-          : 'rounded-md data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow',
+          ? 'rounded-md data-[state=active]:bg-background data-[state=active]:shadow'
+          : '',
         className
       )}
       {...props}
@@ -73,8 +75,8 @@ interface TabsComponentProps {
   tabs: TabsProps[];
   tabContent: TabContent[];
   defaultValue?: string;
-  variant?: 'primary' | 'secondary';
-  onValueChange: (value: string) => void;
+  variant?: 'primary' | 'secondary' | 'linked';
+  onValueChange?: (value: string) => void;
 }
 
 const TabsComponent = ({
@@ -101,7 +103,7 @@ const TabsComponent = ({
         ))}
       </TabsList>
       {tabContent.map((item: TabContent, index) => (
-        <TabsContent value={item.value} key={index}>
+        <TabsContent value={item.value} key={index} className="w-full">
           {item.content}
         </TabsContent>
       ))}
