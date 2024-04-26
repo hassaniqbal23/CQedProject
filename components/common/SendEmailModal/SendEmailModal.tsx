@@ -22,7 +22,7 @@ const emailValidation = (emails: string) => {
 const schema = z.object({
   emails: z
     .string()
-    .nonempty({ message: 'Emails is required' })
+    .nonempty({ message: 'Please enter at least 1 email' })
     .refine(
       (value) => {
         const emails = value.split(',').map((email) => email.trim());

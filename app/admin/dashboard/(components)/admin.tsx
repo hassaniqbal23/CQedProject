@@ -32,7 +32,7 @@ export const AdminWelCome = () => {
   );
 
   const onSubmit = ({ emails }: { emails: string }) => {
-    schoolInvite({ emails, type: 'school-invite' });
+    schoolInvite({ emails, type: 'SCHOOL' });
   };
 
   return (
