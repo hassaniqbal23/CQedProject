@@ -41,7 +41,7 @@ function ProfileSettings() {
             <h1 className='text-xl font-bold' >Basic Information</h1>
             <div className='mt-8 flex flex-col items-center w-1/5' >
                 <div className='relative' >
-                    <Image src={'https://s3-alpha-sig.figma.com/img/5bdf/b719/b248f47e16db4f0b1de054e692fc0345?Expires=1714953600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=RRyfe9tfplIcAoeFC2z6t1NtpuOf9hYzsEQQXGr~blZCOTCFex8Ul4WkIzFbQIGrZ92S869Wmi9onG3T5u5N~IRptJPqNDmypfpWyo7KWL8nMDswFy~cZ-irxkq4hEI1MFPqIiosBfsCuPM1xtnKWzuahXTQBD3FJUwqTYLjBFmyzDMJB7ToauZItBNuV-kdUl5EpCECcnduE2z9EsGpO2NOwGjdYg~u4Q5PjnQMOmut2jOE9lnoHQ2zZ5suNmlgRA~pYlfMAbTdgMvXx9fEWs1x5pfuYtayNil55Tqwen2i7OeUrA5qoPwDRQjCPUhvjouoQWIp2g5YtN3FYNCXpA__'} alt='user image' width={200} height={200} className='rounded-full' />
+                    {/* <Image src={'https://s3-alpha-sig.figma.com/img/5bdf/b719/b248f47e16db4f0b1de054e692fc0345?Expires=1714953600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=RRyfe9tfplIcAoeFC2z6t1NtpuOf9hYzsEQQXGr~blZCOTCFex8Ul4WkIzFbQIGrZ92S869Wmi9onG3T5u5N~IRptJPqNDmypfpWyo7KWL8nMDswFy~cZ-irxkq4hEI1MFPqIiosBfsCuPM1xtnKWzuahXTQBD3FJUwqTYLjBFmyzDMJB7ToauZItBNuV-kdUl5EpCECcnduE2z9EsGpO2NOwGjdYg~u4Q5PjnQMOmut2jOE9lnoHQ2zZ5suNmlgRA~pYlfMAbTdgMvXx9fEWs1x5pfuYtayNil55Tqwen2i7OeUrA5qoPwDRQjCPUhvjouoQWIp2g5YtN3FYNCXpA__'} alt='user image' width={200} height={200} className='rounded-full' /> */}
                     <div className='absolute p-2 bg-white border right-1 bottom-4 rounded-full cursor-pointer' >
                         <Camera />
                     </div>

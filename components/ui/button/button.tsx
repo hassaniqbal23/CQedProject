@@ -2,6 +2,7 @@ import {ReactElement, forwardRef} from 'react';
 import {Slot} from '@radix-ui/react-slot';
 import {cva, type VariantProps} from 'class-variance-authority';
 import {cn} from '@/lib/utils';
+import Loading from './loading';
 
 const buttonVariants = cva(
 	'inline-flex gap-1 items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
@@ -59,7 +60,6 @@ export interface ButtonProps
 	loading?: boolean;
 }
 
-// Define Button component
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 	(
 		{
@@ -69,23 +69,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 			asChild = false,
 			icon,
 			iconPosition,
-			// Default loadingIcon is the provided SVG icon
-			loadingIcon = (
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="24"
-					height="24"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					strokeWidth="2"
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					className="animate-spin lucide lucide-loader-circle"
-				>
-					<path d="M21 12a9 9 0 1 1-6.219-8.56" />
-				</svg>
-			),
+			loadingIcon = (<Loading/>),
 			loading = false,
 			children,
 			...props

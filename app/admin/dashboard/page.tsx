@@ -1,10 +1,13 @@
-'use client'
-import React from 'react'
+'use client';
+import React from 'react';
+import { AdminWelCome } from './(components)/admin';
 
 const Dashboard = () => {
   return (
-    <div>Admin Dashboard</div>
-  )
-}
+    <>
+      <AdminWelCome />
+    </>
+  );
+};
 
-export default Dashboard
+export default Dashboard;
