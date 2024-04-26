@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import SendEmailModal from './SendEmailModal'
+import {SendEmail} from './SendEmailModal'
 
 const meta = {
     title: 'UI/Modal',
-    component: SendEmailModal,
+    component: SendEmail,
     parameters: {
         layout: 'centered',
     },
 
     tags: ['autodocs'],
-} satisfies Meta<typeof SendEmailModal>;
+} satisfies Meta<typeof SendEmail>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -18,7 +18,7 @@ export const InviteSchoolModal: Story = {
     render: (args) => {
         return (
             <div>
-                <SendEmailModal {...args} ></SendEmailModal>
+                <SendEmail {...args} ></SendEmail>
             </div>
         );
     },

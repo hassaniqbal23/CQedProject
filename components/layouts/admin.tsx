@@ -27,17 +27,17 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
     {
         icon: "/assets/sidebaricons/schools.svg",
         title: 'Schools',
-        path: '/admin/classrooms',
+        path: '/admin/schools',
     },
     {
         icon: "/assets/sidebaricons/accounts.svg",
         title: 'Accounts',
-        path: '/admin/students',
+        path: '/admin/accounts',
     },
     {
         icon: "/assets/sidebaricons/settings.svg",
         title: 'Settings',
-        path: '/admin/teachers',
+        path: '/admin/settings',
     },
   
 ]
