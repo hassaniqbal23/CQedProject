@@ -9,6 +9,7 @@ import useEmblaCarousel, {
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui';
 import { useState } from 'react';
+import Autoplay from 'embla-carousel-autoplay';
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -263,6 +264,10 @@ export const LoginCarousel: React.FC<IProps> = ({ carouselItems }) => {
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
 
+  const plugin = React.useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: true })
+  );
+
   React.useEffect(() => {
     setCount(carouselItems.length);
     setCurrent(currentSlide + 0);
@@ -281,7 +286,11 @@ export const LoginCarousel: React.FC<IProps> = ({ carouselItems }) => {
 
   return (
     <div className="relative isolate flex flex-col justify-end p-0 max-w-xl mx-auto">
-      <Carousel setApi={setApi} className="w-full max-w-xl p-0 relative">
+      <Carousel
+        plugins={[plugin.current]}
+        setApi={setApi}
+        className="w-full max-w-xl p-0 relative"
+      >
         <CarouselContent className="w-full h-full">
           {carouselItems.map((item, index) => (
             <CarouselItem key={index}>
@@ -313,7 +322,7 @@ export const LoginCarousel: React.FC<IProps> = ({ carouselItems }) => {
                 key={index + 1}
                 type="button"
                 style={{ marginRight: '3px' }}
-                className={`w-2 h-2 rounded-full ${
+                className={`w-2 h-2 rounded-full transition-all duration-300  ${
                   index + 1 === current
                     ? 'bg-yellow-400 w-6 h-[6px]'
                     : 'w-[6px] h-[6px] rounded-full bg-white'
