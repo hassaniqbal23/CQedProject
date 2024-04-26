@@ -11,8 +11,6 @@ export default function Home() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const router = useRouter();
 
- 
-
   useEffect(() => {
     const checkUserAuthentication = async () => {
       const isLoginUser = getAccessToken();
@@ -39,7 +37,7 @@ export default function Home() {
     );
   }
 
-
+  // need to rendering layouts according to user role
   return (
     <AdminLayout>
       <h3 className="text-center text-5xl font-bold pt-20">Coming Soon!</h3>

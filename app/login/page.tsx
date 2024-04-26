@@ -27,7 +27,6 @@ const formSchema = z.object({
 
 export default function Login() {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<IAuthentication>({
     resolver: zodResolver(formSchema),
@@ -54,62 +53,58 @@ export default function Login() {
     checkUserAuthentication();
   }, [router]);
 
-
   const { mutate: userLogin, isLoading } = useMutation(
     (userData: IAuthentication) => LoginAPI(userData),
     {
       onSuccess: (res) => {
         toast.success(res.data.message);
         const response = res.data.result;
-        router.push('/dashboard');
+        router.push('/admin/dashboard');
         storeToken(response?.token);
         storeUserId(response?.user?.id);
         updateToken(response?.token);
         reset();
-
       },
       onError: (error: any) => {
-        console.log(error, 'Error =====> log')
+        console.log(error, 'Error =====> log');
       },
-    },
+    }
   );
 
   const onSubmit: SubmitHandler<IAuthentication> = async (
-    data: IAuthentication,
+    data: IAuthentication
   ) => {
     userLogin(data);
   };
-
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-1 h-screen items-center bg-[#EEF3FE]">
       <div className="flex justify-center items-center bg-white rounded-md shadow-md pt-[24px] px-[40px] pb-[45px] w-4/6 md:w-2/5 lg:w-2/6 mx-auto">
         <div className="bg-secondary-light w-full md:w-10/12  flex flex-col gap-[30px]  ">
-          <div className='flex items-center justify-center' >
-            <Image alt='logo' width={150} height={150} src='/logo.svg' />
+          <div className="flex items-center justify-center">
+            <Image alt="logo" width={150} height={150} src="/logo.svg" />
           </div>
-          <div className='text-center' >
-            <h1 className='font-semibold text-lg' >Login</h1>
-            <p>login to your admin account</p></div>
-           <Form  {...form}>
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-            >
+          <div className="text-center">
+            <h1 className="font-semibold text-lg">Login</h1>
+            <p>login to your admin account</p>
+          </div>
+          <Form {...form}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-6">
                 <FormInput
                   required={true}
                   form={form}
-                  name='name'
-                  label='Username'
+                  name="name"
+                  label="Username"
                 />
               </div>
               <div className="mb-6">
                 <div className="mb-6">
                   <FormInput
-                    type='password'
+                    type="password"
                     form={form}
-                    name='password'
-                    label='Password'
+                    name="password"
+                    label="Password"
                   />
                 </div>
               </div>
@@ -117,7 +112,7 @@ export default function Login() {
                 <Button
                   className="bg-primary w-full disabled:invalid:cursor-pointer hover:disabled:cursor-not-allowed"
                   type="submit"
-                  size={"lg"}
+                  size={'lg'}
                   loading={isLoading}
                   disabled={isLoading || !isValid}
                 >
