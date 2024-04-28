@@ -1,5 +1,5 @@
 import React from 'react';
-import {Meta} from '@storybook/react';
+import { Meta } from '@storybook/react';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
 import Image from 'next/image';
 
@@ -49,6 +49,7 @@ export const Secondary = (args: any) => (
 
 Secondary.args = {
 	defaultValue: 'Female',
+	variant: 'secondary',
 	options: [
 		{
 			label: 'Male',
