@@ -86,7 +86,7 @@ export default function Login() {
           </div>
           <div className="text-center">
             <h1 className="font-semibold text-lg">Login</h1>
-            <p>login to your admin account</p>
+            <p>Admin login</p>
           </div>
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)}>
