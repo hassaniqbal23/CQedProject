@@ -25,7 +25,7 @@ const formSchema = z.object({
   }),
 });
 
-export function UpdatedPassword() {
+export function UpdatePassword() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

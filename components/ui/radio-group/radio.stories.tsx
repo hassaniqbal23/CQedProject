@@ -5,7 +5,7 @@ import { Label } from "../label/label";
 import { RadioGroup, RadioGroupItem } from "./radio-group";
 
 const meta: Meta<typeof RadioGroup> = {
-  title: "CHE/RadioGroup",
+  title: "Forms/RadioGroup",
   component: RadioGroup,
 };
 

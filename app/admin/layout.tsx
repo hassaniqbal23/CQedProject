@@ -1,4 +1,4 @@
-import { AdminLayout } from '@/components/layouts/admin';
+import { AdminLayout } from '@/components/layouts/AdminLayout';
 
 interface IProps {
   children: React.ReactNode;

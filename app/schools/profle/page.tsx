@@ -1,7 +1,9 @@
 import React from 'react'
 
-export const Profile = () => {
+export default function SchoolProfile() {
   return (
-    <div>Profile</div>
+    <div>
+      School Profile
+    </div>
   )
 }

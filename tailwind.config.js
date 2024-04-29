@@ -14,13 +14,9 @@ module.exports = {
 			padding: '2rem',
 			screens: {
 				'sm': '640px',
-	
 				'md': '768px',
-	
 				'lg': '1024px',
-	
 				'xl': '1280px',
-	
 				'2xl': '1536px',
 			},
 		},
@@ -81,9 +77,6 @@ module.exports = {
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))',
-				},
-				success: {
-					DEFAULT:'var(--success)'
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
