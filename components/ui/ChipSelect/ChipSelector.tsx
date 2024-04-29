@@ -1,10 +1,12 @@
+'use client';
+
 import React, { useState } from 'react';
 import Chip from './Chip'; // Assuming Chip component is in the same directory
 
 interface ChipItem {
-	label: string;
-	value: string;
-	render?: (data: any) => React.ReactNode;
+  label: string;
+  value: string;
+  render?: (data: any) => React.ReactNode;
 }
 
 interface ChipSelectorProps {
