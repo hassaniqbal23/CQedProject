@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Card, CardContent } from '../card/card';
 
 const meta = {
-  title: 'Ui/LoginCarousel',
+  title: 'UI/Carousel',
   component: LoginCarousel,
   parameters: {
     layout: 'centered',
@@ -16,7 +16,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const Login: Story = {
   render: (args) => {
     return (
       <>

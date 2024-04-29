@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react';
-import StaticCard from './StaticCard'
+import { StaticCard } from './StaticCard'
 
 const meta = {
     title: 'Ui/StaticCard',
