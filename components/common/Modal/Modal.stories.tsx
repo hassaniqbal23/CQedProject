@@ -18,15 +18,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-    render: () => {
+    render: (args) => {
         return (
             <div>
-                <Modal header={true} openModalButton={<Button> open</Button>}>Model</Modal>
+                <Modal {...args}></Modal>
             </div>
         );
     },
-    args : {
-
+    args: {
+        header: true,
+        openModalButton: <Button>open</Button>,
+        children : 'Model'
     }
 };
 

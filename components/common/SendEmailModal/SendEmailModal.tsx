@@ -9,10 +9,10 @@ import { FormTextArea } from '../From/FormTextArea';
 
 interface SendEmailProps {
   onSubmit: (data: any) => void;
-  open: boolean;
-  setOpen: (value: boolean) => void;
+  open?: boolean;
+  setOpen?: (value: boolean) => void;
   inviteButtonTitle?: string;
-  inviteLoading: boolean;
+  inviteLoading?: boolean;
 }
 
 const emailValidation = (emails: string) => {
@@ -58,7 +58,8 @@ export const SendEmail: FC<SendEmailProps> = ({
       isVisible={open}
       onOpenChange={() => {
         form.reset();
-        setOpen(false);
+
+        setOpen && setOpen(false);
       }}
       header={true}
       headerTitle="Invite School"
