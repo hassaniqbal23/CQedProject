@@ -16,11 +16,17 @@ export const SchoolLayout: FC<IProps> = ({ children }) => {
   const router = useRouter()
   const { isMobile } = useResponsive()
 
-  const isAcceptInvite = useMemo(() => {
+  const showLayout = useMemo(() => {
     if (!pathname) return  false
-    return pathname.includes('accept-invite')
-  }, [pathname])
 
+    const routes = [
+        '/schools/onboarding',
+        '/schools/forget-password'
+    ]
+
+    return routes.some(route => pathname.startsWith(route))
+
+  }, [pathname])
 
   const sidebarLinks = [
     {
@@ -50,7 +56,7 @@ export const SchoolLayout: FC<IProps> = ({ children }) => {
     },
   ]
 
-  if (isAcceptInvite) {
+  if (showLayout) {
     return <>{children}</>
   }
 

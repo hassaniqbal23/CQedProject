@@ -17,7 +17,7 @@ import {
 import { ChevronLeft } from 'lucide-react';
 
 const formSchema = z.object({
-  emailAddress: z
+  email: z
     .string()
     .email()
     .refine((value) => value.trim() !== '', {
@@ -27,18 +27,19 @@ const formSchema = z.object({
 
 interface ForgetPasswordProp {
   onClick: () => void;
+  onSubmit?: (values: {email: string}) => void;
 }
 
 export function ForgetPassword(props: ForgetPasswordProp) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      emailAddress: '',
+      email: '',
     },
   });
 
   const onSubmit = form.handleSubmit((values) => {
-    console.log(values);
+    if (props.onSubmit) props.onSubmit(values);
   });
 
   return (
@@ -46,15 +47,15 @@ export function ForgetPassword(props: ForgetPasswordProp) {
       <div className="text-center flex flex-col ">
         <h1 className="mb-2 font-bold text-3xl ">Forget password</h1>
         <p className="mb-2 text-sm font-semibold text-gray-500">
-          No worries, We will send you reset instructions.
+          Please enter your email address to reset your password
         </p>
       </div>
-      <div className="w-[500px] ">
+      <div className="">
         <Form {...form}>
           <form onSubmit={onSubmit} className="space-y-8">
             <FormField
               control={form.control}
-              name="emailAddress"
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-semibold">Email</FormLabel>
