@@ -1,19 +1,19 @@
 // tabs.tsx
 
 import React, { forwardRef } from 'react';
-import * as TabsPrimitive from '@radix-ui/react-tabs';
+import * as RadixUITabs from '@radix-ui/react-tabs';
 
 import { cn } from '@/lib/utils';
 
-const Tabs = TabsPrimitive.Root;
+const Tabs = RadixUITabs.Root;
 
 const TabsList = forwardRef<
 	HTMLDivElement,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> & {
+	React.ComponentPropsWithoutRef<typeof RadixUITabs.List> & {
 		variant?: "primary" | 'secondary' | 'linked'
 	}
 >(({ className, variant, ...props }, ref) => (
-	<TabsPrimitive.List
+	<RadixUITabs.List
 		ref={ref}
 		className={cn(
 			'inline-flex items-start text-muted-foreground bg-white',
@@ -28,12 +28,12 @@ TabsList.displayName = 'TabsList';
 
 const TabsTrigger = forwardRef<
 	HTMLButtonElement,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> & {
+	React.ComponentPropsWithoutRef<typeof RadixUITabs.Trigger> & {
 		variant?: "primary" | 'secondary' | 'linked'
 	}
 >(({ className, variant, ...props }, ref) => {
 	return (
-		<TabsPrimitive.Trigger
+		<RadixUITabs.Trigger
 			ref={ref}
 			className={cn(
 				`border-b-2 border-transparent inline-flex items-center justify-center whitespace-nowrap py-2.5 px-7 text-base font-medium hover:ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded data-[state=active]:text-white data-[state=active]:font-semibold data-[state=active]:bg-primary data-[state=active]:shadow  `,
@@ -51,9 +51,9 @@ TabsTrigger.displayName = 'TabsTrigger';
 
 const TabsContent = forwardRef<
 	HTMLDivElement,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
+	React.ComponentPropsWithoutRef<typeof RadixUITabs.Content>
 >(({ className, ...props }, ref) => (
-	<TabsPrimitive.Content
+	<RadixUITabs.Content
 		ref={ref}
 		className={cn('inline-flex items-center justify-center', className)}
 		{...props}
