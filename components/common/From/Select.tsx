@@ -7,19 +7,21 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-  Separator,
 } from '@/components/ui';
+import Image from 'next/image';
 
 interface ISelectItem {
   value: string;
   label: string;
+  flag?: string;
 }
 
 interface SelectInputProps {
-  placeholder: string;
+  placeholder?: string;
   label?: string;
   options: ISelectItem[];
   onChange: (value: string) => void;
+  value?: string;
 }
 
 export const SelectInput: React.FC<SelectInputProps> = ({
@@ -27,26 +29,30 @@ export const SelectInput: React.FC<SelectInputProps> = ({
   label,
   options,
   onChange,
+  value,
 }) => {
   return (
-    <Select>
-      <SelectTrigger>
+    <Select value={value}>
+      <SelectTrigger className="w-full">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-      <SelectContent className="mt-3.4">
+      <SelectContent className="mt-3.4 w-full">
         <SelectGroup>
           {label && <SelectLabel>{label}</SelectLabel>}
-          {options.map((item) => (
-            <>
-              <SelectItem
-                key={item.value}
-                value={item.value}
-                onSelect={() => onChange(item.value)}
-              >
-                {item.label}
-              </SelectItem>
-              <Separator />
-            </>
+          {options.map((item, index) => (
+            <SelectItem
+              className={`border-b border-gray-200 ${index === options.length - 3 || options.length - 0 ? '' : 'border-b  '}`}
+              key={item.value}
+              value={item.value}
+              onSelect={() => onChange(item.value)}
+            >
+              <div className="flex items-center">
+                {item.flag && (
+                  <Image height={30} width={30} src={item.flag} alt="flag" />
+                )}
+                <span className="ml-2">{item.label}</span>
+              </div>
+            </SelectItem>
           ))}
         </SelectGroup>
       </SelectContent>
