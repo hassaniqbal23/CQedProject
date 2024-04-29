@@ -55,6 +55,15 @@ jobs:
           username: root
 
           script: |
+            echo "Initializing nvm..."
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+            echo "Checking Node.js version..."
+            node -v
+            echo "Checking npm version..."
+            npm -v
+            echo "Checking PM2 version..."
+            pm2 -v
             cd /root/apps/cqed-frontend
             npm install --production
             pm2 delete cqed-frontend
