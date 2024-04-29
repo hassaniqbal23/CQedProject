@@ -1,8 +1,8 @@
-import { SchoolLayout } from '@/components/layouts/SchoolLayout';
+import { StudentsLayout } from '@/components/layouts/StudentsLayout';
 
 interface IProps {
   children: React.ReactNode;
 }
 export default function Layout({ children }: IProps) {
-  return <SchoolLayout>{children}</SchoolLayout>;
+  return <StudentsLayout>{children}</StudentsLayout>;
 }

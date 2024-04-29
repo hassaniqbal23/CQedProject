@@ -218,11 +218,12 @@ export const Dropdown = (props: IDropdownProps) => {
           selectedItems.filter((selectedItem) => selectedItem !== item)
         );
       }
+      props.onChange && props.onChange(selectedItems)
     } else {
       setSelectedItems(item);
+      props.onChange && props.onChange(item);
     }
 
-    props.onChange && props.onChange(selectedItems);
   };
 
   const handleChipRemove = (index: number) => {
@@ -239,10 +240,10 @@ export const Dropdown = (props: IDropdownProps) => {
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="flex justify-between w-[350px]  bg-[#F8F9FB]"
+              className="flex justify-between w-full  bg-[#F8F9FB]"
             >
-              {!Array.isArray(selectedItems) && selectedItems.label ? (
-                <h1>{selectedItems.label} </h1>
+              {!Array.isArray(selectedItems) && selectedItems?.label ? (
+                <h1>{selectedItems?.label} </h1>
               ) : (
                 <h1>{props.label}</h1>
               )}
@@ -257,9 +258,8 @@ export const Dropdown = (props: IDropdownProps) => {
                     key={option.label}
                     value="urdu"
                     onClick={() => handleItemClick(option)}
-                    className={`text-[#5D5E68] px-3 py-1.5 text-semibold items-center  bg-[#F8F9FB] hover:bg-gray-200 cursor-pointer ${
-                      index === props.options.length - 1 ? '' : 'border-b '
-                    }`}
+                    className={`text-[#5D5E68] px-3 py-1.5 text-semibold items-center  bg-[#F8F9FB] hover:bg-gray-200 cursor-pointer ${index === props.options.length - 1 ? '' : 'border-b '
+                      }`}
                   >
                     <Image
                       width={30}

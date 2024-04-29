@@ -3,7 +3,7 @@ import { ChevronLeft } from "lucide-react";
 import React from "react";
 
 interface BottomNavbarProps {
-  onBackButton: () => void;
+  onBackButton?: () => void;
   onContinue: () => void;
   isBackButton?: boolean;
 }
