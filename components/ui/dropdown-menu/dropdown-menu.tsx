@@ -190,26 +190,26 @@ interface IDropdownProps {
   id?: string;
   label?: string;
   onChange?: (
-    value: DropdownMenuDemoPropsOptions | DropdownMenuDemoPropsOptions[]
+    value: DropdownMenuOptionProps | DropdownMenuOptionProps[]
   ) => void;
-  value?: DropdownMenuDemoPropsOptions | DropdownMenuDemoPropsOptions[];
+  value?: DropdownMenuOptionProps | DropdownMenuOptionProps[];
   multSelect?: boolean;
-  options: DropdownMenuDemoPropsOptions[];
+  options: DropdownMenuOptionProps[];
 }
 
-export interface DropdownMenuDemoPropsOptions {
+export interface DropdownMenuOptionProps {
   label: string;
-  value: string | boolean | number | unknown;
+  value: string;
   flagUrl: string;
   altName: string;
 }
 
 export const Dropdown = (props: IDropdownProps) => {
   const [selectedItems, setSelectedItems] = useState<
-    DropdownMenuDemoPropsOptions | DropdownMenuDemoPropsOptions[]
+    DropdownMenuOptionProps | DropdownMenuOptionProps[]
   >([]);
 
-  const handleItemClick = (item: DropdownMenuDemoPropsOptions) => {
+  const handleItemClick = (item: DropdownMenuOptionProps) => {
     if (Array.isArray(selectedItems) && props.multSelect) {
       if (!selectedItems.includes(item)) {
         setSelectedItems([...selectedItems, item]);
@@ -234,30 +234,36 @@ export const Dropdown = (props: IDropdownProps) => {
 
   return (
     <>
-      <div className="w-full">
+      <div className={`${props.className}`}>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="flex justify-between w-full bg-[#F8F9FB]"
-            >
+          <DropdownMenuTrigger asChild className="w-full">
+            <div className="flex justify-between py-4 px-2  border-1 border rounded-md bg-[#F8F9FB] outer-shadow">
               {!Array.isArray(selectedItems) && selectedItems.label ? (
-                <h1>{selectedItems.label} </h1>
+                <div className="flex mr-1 justify-center items-center">
+                  <Image
+                    width={30}
+                    height={30}
+                    src={selectedItems.flagUrl}
+                    alt={selectedItems.altName}
+                    className="mr-2"
+                  />
+                  <h1>{selectedItems.label} </h1>
+                </div>
               ) : (
                 <h1>{props.label}</h1>
               )}
               <ChevronDown />
-            </Button>
+            </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[350px] text-[#5D5E68] mt-3.5 px-3 py-2 text-semibold items-center  bg-[#F8F9FB] cursor-pointer">
-            <DropdownMenuRadioGroup>
+          <DropdownMenuContent className=" w-[430px] text-[#5D5E68] mt-3.5 px-3 py-2 text-semibold items-center bg-[#F8F9FB] cursor-pointer">
+            <DropdownMenuRadioGroup className="">
               {props.options.map((option, index) => {
                 return (
                   <DropdownMenuRadioItem
                     key={option.label}
-                    value="urdu"
+                    value={option.value}
                     onClick={() => handleItemClick(option)}
-                    className={`text-[#5D5E68] px-3 py-1.5 text-semibold items-center  bg-[#F8F9FB] hover:bg-gray-200 cursor-pointer ${
+                    className={`text-[#5D5E68] px-3 py-2.5 text-semibold items-center bg-[#F8F9FB] hover:bg-gray-200 cursor-pointer ${
                       index === props.options.length - 1 ? '' : 'border-b '
                     }`}
                   >
@@ -278,7 +284,7 @@ export const Dropdown = (props: IDropdownProps) => {
       {props.multSelect && (
         <div className="flex justify-start items-center flex-wrap w-[350px] mt-2 mx-auto">
           {Array.isArray(selectedItems) &&
-            selectedItems.map((item: DropdownMenuDemoPropsOptions, index) => (
+            selectedItems.map((item: DropdownMenuOptionProps, index) => (
               <div
                 key={index}
                 className="rounded-full border border-gray-300 mt-4 p-2 flex items-center  mr-1"

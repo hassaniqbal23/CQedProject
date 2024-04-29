@@ -6,12 +6,15 @@ import React, { useState, useEffect } from 'react';
 
 interface TopNavbarProps {
   onLogout?: () => void;
+  className?: string;
   showLogout?: boolean;
 }
 
-const TopNavbar: React.FC<TopNavbarProps> = ({ onLogout }) => {
+const TopNavbar: React.FC<TopNavbarProps> = ({ onLogout, className }) => {
   return (
-    <div className="w-full h-20 md:h-20 bg-white shadow-line border-b border-gray-200 flex justify-between items-center px-6">
+    <div
+      className={`w-full h-20 md:h-20 bg-white shadow-line border-b border-gray-200 flex justify-between items-center px-6 ${className}`}
+    >
       <div className="flex items-center">
         <Image
           src={'/assets/logos/topnavLogo.svg'}

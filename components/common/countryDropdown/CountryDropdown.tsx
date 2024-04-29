@@ -1,15 +1,15 @@
-"use client"
-import React, { useState } from "react";
-import { ChevronDown } from "lucide-react";
+'use client';
+import React, { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
-import { Button } from "@/components/ui";
-import Image from "next/image";
+} from '@radix-ui/react-dropdown-menu';
+import { Button } from '@/components/ui';
+import Image from 'next/image';
 
 export interface CountrySelectOption {
   name: string;
@@ -57,13 +57,13 @@ const CountrySelectDropdown: React.FC<CountrySelectDropdownProps> = ({
             <ChevronDown />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-96 p-3  items-center rounded-md bg-[#F8F9FB] shadow-inner  mt-3.5 mx-auto  ">
+        <DropdownMenuContent className="w-full p-3  items-center rounded-md bg-[#F8F9FB] shadow-inner  mt-3.5 mx-auto  ">
           {options.map((country, index) => (
             <DropdownMenuItem
               key={country.countryCode}
               onClick={() => handleItemClick(country)}
               className={`text-[#5D5E68] px-3 py-1.5 text-semibold items-center  bg-[#F8F9FB] hover:bg-gray-200 cursor-pointer ${
-                index === options.length - 1 ? "" : "border-b  "
+                index === options.length - 1 ? '' : 'border-b  '
               }`}
             >
               <div className="flex  items-center">
