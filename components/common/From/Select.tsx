@@ -32,8 +32,13 @@ export const SelectInput: React.FC<SelectInputProps> = ({
   value,
 }) => {
   return (
-    <Select value={value}>
-      <SelectTrigger className="w-full">
+    <Select
+      value={value}
+      onValueChange={(value) => {
+        onChange(value);
+      }}
+    >
+      <SelectTrigger className="w-full py-7">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent className="mt-3.4 w-full">
@@ -42,9 +47,8 @@ export const SelectInput: React.FC<SelectInputProps> = ({
           {options.map((item, index) => (
             <SelectItem
               className={`border-b border-gray-200 ${index === options.length - 3 || options.length - 0 ? '' : 'border-b  '}`}
-              key={item.value}
+              key={item.label}
               value={item.value}
-              onSelect={() => onChange(item.value)}
             >
               <div className="flex items-center">
                 {item.flag && (

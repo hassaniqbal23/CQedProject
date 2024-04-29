@@ -16,17 +16,18 @@ import * as z from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormInput } from '../From/FormInput';
 import { ITeacherLogin } from './type';
-import { countrySelectDropdownProps } from './constant';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
+import { SelectInput } from '../From/Select';
+import { DropdownMenuPropsOptions, countrySelectOptions } from '@/lib/constant';
 
 const formSchema = z.object({
-  name: z.string().min(2).max(50).nonempty('Name is required'),
+  fullname: z.string().min(2).max(50).nonempty('Name is required'),
   email: z
     .string()
     .email('Invalid email address')
     .nonempty('Email address is required'),
   country: z.string().nonempty('Country is required'),
-  language: z.string().min(1, 'Language is required').optional(),
+  languages: z.string().min(1, 'Language is required').optional(),
   gender: z.string().nonempty('Gender is required'),
 });
 
@@ -34,11 +35,11 @@ export const CreateProfile: React.FC = () => {
   const form = useForm<ITeacherLogin>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
+      fullname: '',
       email: '',
       country: '',
       gender: '',
-      languages: [],
+      languages: '',
     },
   });
 
@@ -83,7 +84,7 @@ export const CreateProfile: React.FC = () => {
                   <FormInput
                     required={true}
                     form={form}
-                    name="name"
+                    name="fullname"
                     placeholder="e.g John, Emma"
                     label="Full Name"
                   />
@@ -105,15 +106,16 @@ export const CreateProfile: React.FC = () => {
                       return (
                         <>
                           <FormLabel className="text-sm">Country</FormLabel>
-                          <Dropdown
-                            className="mt-2"
-                            label="Select your country"
-                            {...countrySelectDropdownProps}
-                            onChange={(value: any) => {
-                              field.onChange(value?.value);
-                            }}
-                          />
-                          <FormMessage />
+                          <div className="mt-2.5">
+                            <SelectInput
+                              placeholder="Select your country"
+                              options={countrySelectOptions}
+                              onChange={(value) => {
+                                field.onChange(value);
+                              }}
+                            />
+                            <FormMessage />
+                          </div>
                         </>
                       );
                     }}
@@ -170,12 +172,13 @@ export const CreateProfile: React.FC = () => {
                             className="mt-2"
                             multSelect={true}
                             label="Add language"
-                            value={field.value}
-                            {...countrySelectDropdownProps}
+                            value={field.value as any}
+                            options={DropdownMenuPropsOptions.options}
                             onChange={(value: any) => {
-                              const selectlanguage = value.map(
-                                (item: any) => item.value
-                              );
+                              const selectlanguage = value
+                                .map((item: any) => item.value)
+                                .join(',');
+                              form.setValue('languages', selectlanguage);
                               field.onChange(selectlanguage);
                             }}
                           />
