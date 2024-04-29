@@ -1,17 +1,24 @@
-"use client"
+'use client';
 
-import {ForgetPassword} from "@/components/common/ForgetPassword/ForgetPassword";
-import TopNavbar from "@/components/common/navbar/TopNavbar";
-import {useRouter} from "next/navigation";
+import { ForgetPassword } from '@/components/common/ForgetPassword/ForgetPassword';
+import TopNavbar from '@/components/common/navbar/TopNavbar';
+import { useRouter } from 'next/navigation';
 
 export default function SchoolForgetPassword() {
-    const router = useRouter();
-    return (
-        <>
-            <TopNavbar showLogout={false} ></TopNavbar>
-            <ForgetPassword onSubmit={  () => {
-                router.push("/schools/forget-password/email-sent")
-            } } onClick={() => {}}></ForgetPassword>
-        </>
-    )
+  const router = useRouter();
+  return (
+    <>
+      <div className="w-full h-screen">
+        <TopNavbar showLogout={false}></TopNavbar>
+        <div className="max-w-md mx-auto flex justify-center items-center h-[80vh] p-5 ">
+          <ForgetPassword
+            onSubmit={() => {
+              router.push('/schools/forget-password/email-sent');
+            }}
+            onClick={() => {}}
+          ></ForgetPassword>
+        </div>
+      </div>
+    </>
+  );
 }
