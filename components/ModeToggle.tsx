@@ -1,20 +1,20 @@
 "use client";
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
-import { Button } from "@/components/ui";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui";
+// import { Moon, Sun } from "lucide-react";
+// import { useTheme } from "next-themes";
+// import { Button } from "@/components/ui";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "@/components/ui";
 
 export function ModeToggle() {
-  const { theme, setTheme } = useTheme();
+  // const { theme, setTheme } = useTheme();
 
   return (
     <div className="block text-left">
-      <DropdownMenu>
+      {/* <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon">
             <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -33,7 +33,7 @@ export function ModeToggle() {
             System
           </DropdownMenuItem>
         </DropdownMenuContent>
-      </DropdownMenu>
+      </DropdownMenu> */}
     </div>
   );
 }

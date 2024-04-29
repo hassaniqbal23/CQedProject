@@ -41,7 +41,7 @@ const icons = [
 ];
 
 interface SignInProps {
-  forgetPasswordLink: string;
+  forgetPasswordLink: string | URL;
 }
 
 export function SignIn(props: SignInProps) {
