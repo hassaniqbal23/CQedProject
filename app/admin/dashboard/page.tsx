@@ -118,7 +118,7 @@ const cardData = [
 const Dashboard = () => {
   return (
     <div>
-      {!data ? <><AdminWelCome /></> : <><p>Thursday, January 18</p>
+      {data ? <><AdminWelCome /></> : <><p>Thursday, January 18</p>
         <h1 className='text-2xl font-bold' >
           Welcome to your Dashboard
         </h1>
@@ -159,7 +159,7 @@ const Dashboard = () => {
         <div className='w-full py-3 mt-7' >
           <div className='w-full flex justify-between mb-4' >
             <h2 className='font-semibold' >Schools</h2>
-            <Link href={'/dashboard/schools'} className='text-primary font-semibold' >
+            <Link href={'/admin/schools'} className='text-primary font-semibold' >
               view all
             </Link>
           </div>
