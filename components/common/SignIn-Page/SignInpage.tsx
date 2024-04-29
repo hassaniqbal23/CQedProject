@@ -21,6 +21,17 @@ import {
 import { Separator } from '@/components/ui/separator/separator';
 import { Heading } from '../Heading';
 import { Avatar, AvatarImage } from '@/components/ui/avatar/avatar';
+import { LoginCarousel } from '@/components/ui/carousel/carousel';
+
+interface ICarouselItems {
+  title: string;
+  description: string;
+  imgPath: string;
+}
+
+interface IProps {
+  carouselItems: ICarouselItems[];
+}
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -60,13 +71,23 @@ export function SignIn() {
   return (
     <>
       <div className="flex flex-col md:flex-row items-stretch justify-stretch h-screen">
-        <div className="w-full md:w-6/12 h-full schools-login-image pl-4 hidden md:flex flex-col m-auto">
-          <h1 className="text-white font-bold text-3xl mt-auto overflow-hidden ">
-            Teach the Future
-          </h1>
-          <p className="text-white mb-16 ">
-            Shaping Global Citizens Through Cultural Intelligence
-          </p>
+        <div className="hidden md:block w-full md:w-1/2 ">
+          <LoginCarousel
+            carouselItems={[
+              {
+                title: 'Teach the Future',
+                description:
+                  'Shaping Global Citizens Through Cultural Intelligence',
+                imgPath: '/assets/images/LoginPage.png',
+              },
+              {
+                title: 'Join the Future',
+                description:
+                  'Shaping Global Citizens Through Cultural Intelligence',
+                imgPath: '/assets/images/slider3.jpeg',
+              },
+            ]}
+          />
         </div>
         <div className="w-full md:w-6/12 h-screen flex flex-col justify-center items-center ">
           <div className="text-center mb-4 mt-12">
@@ -77,7 +98,7 @@ export function SignIn() {
           </div>
           <div className="flex items-center justify-center mb-2  ">
             {icons.map((icon, index) => (
-              <div key={index} className="-ml-2  z-2 ">
+              <div key={index} className="-ml-2  z-2 mb-5">
                 <Avatar className="h-6 w-6">
                   <Image
                     src={icon}
@@ -100,7 +121,7 @@ export function SignIn() {
                       <Input
                         placeholder="Moin Haikal"
                         {...field}
-                        className="w-[300px]"
+                        className="w-96"
                       />
                     </FormControl>
                     <FormMessage />
@@ -116,7 +137,7 @@ export function SignIn() {
                       <Input
                         placeholder="Enter your password"
                         {...field}
-                        className="text-[#5D5E68] w-[300px]"
+                        className="text-[#5D5E68] w-96"
                         type="password"
                       />
                     </FormControl>
@@ -134,7 +155,7 @@ export function SignIn() {
                 type="submit"
                 variant="default"
                 size="sm"
-                className="w-[300px] text-white flex items-center"
+                className="w-96 text-white flex items-center"
               >
                 Login
               </Button>

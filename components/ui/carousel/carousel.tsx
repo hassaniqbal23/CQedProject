@@ -164,7 +164,7 @@ const CarouselContent = React.forwardRef<
         ref={ref}
         className={cn(
           'flex',
-          orientation === 'horizontal' ? '-ml-4' : '-mt-4 flex-col',
+          orientation === 'horizontal' ? '-ml-2' : '-mt-4 flex-col',
           className
         )}
         {...props}
@@ -283,27 +283,27 @@ export const LoginCarousel: React.FC<IProps> = ({ carouselItems }) => {
       setCurrent(api.selectedScrollSnap() + 1);
     });
   }, [api, currentSlide]);
+  console.log(carouselItems);
 
   return (
-    <div className="relative isolate flex flex-col justify-end p-0 max-w-xl mx-auto">
+    <div className="relative isolate flex flex-col p-0 max-w-full">
       <Carousel
         plugins={[plugin.current]}
         setApi={setApi}
-        className="w-full max-w-xl p-0 relative"
+        className="w-full h-full max-w-full p-0 relative"
       >
         <CarouselContent className="w-full h-full">
           {carouselItems.map((item, index) => (
-            <CarouselItem key={index}>
+            <CarouselItem key={index} className="h-full w-full flex">
               <div
                 key={index}
-                className={`duration-700 ease-in-out relative`}
+                className={`duration-700 ease-in-out relative h-screen w-full `}
                 data-carousel-item
               >
                 <img
                   src={item.imgPath}
-                  className="xl:w-full md:w-full lg:w-full md:h-[300px] lg:h-[380px] brightness-50 inset-0 h-full w-full object-cover filter"
+                  className=" h-full brightness-50 inset-0  w-full filter object-cover xl:object-left "
                   alt={`Slide ${index + 1}`}
-                  height={0}
                 />
               </div>
             </CarouselItem>
@@ -311,9 +311,9 @@ export const LoginCarousel: React.FC<IProps> = ({ carouselItems }) => {
         </CarouselContent>
         <div className="absolute bottom-16 md:bottom-14 lg:bottom-16 left-4  text-white ">
           <h1 className="font-semibold text-xl md:text-3xl">
-            {carouselItems[currentSlide].title}
+            {carouselItems[currentSlide]?.title}
           </h1>
-          <p className="text-xs md:text-sm mt-1">{`${carouselItems[currentSlide].description}`}</p>
+          <p className="text-xs md:text-sm mt-1">{`${carouselItems[currentSlide]?.description}`}</p>
         </div>
         <div className="absolute bottom-[40PX] md:bottom-8 lg:bottom-10 left-4 md:left-4">
           <div className="text-white mb-1 ">
