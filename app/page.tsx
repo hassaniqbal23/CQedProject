@@ -1,10 +1,10 @@
 'use client';
-import { MainLayout } from '@/components/mainlayout';
+import { SchoolLayout } from '@/components/layouts/schoolLayout';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getAccessToken } from './utils/encryption';
-import { AdminLayout } from '@/components/layouts/admin';
+import { AdminLayout } from '@/components/layouts/AdminLayout';
 
 export default function Home() {
   const [loading, setLoading] = useState(true);

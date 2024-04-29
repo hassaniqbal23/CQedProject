@@ -1,8 +1,8 @@
 'use client';
 import { FC, ReactNode } from 'react';
-import Sidebar from './common/sidebar/sidebar';
+import Sidebar from '../common/sidebar/sidebar';
 import { usePathname } from 'next/navigation';
-import Navbar from './common/navbar/MainBar';
+import Navbar from '../common/navbar/MainBar';
 import { useRouter } from "next/navigation";
 import { removeToken, removeUserId } from "@/app/utils/encryption";
 
@@ -11,7 +11,7 @@ interface IProps {
   children: ReactNode;
 }
 
-export const MainLayout: FC<IProps> = ({ children }) => {
+export const SchoolLayout: FC<IProps> = ({ children }) => {
   const pathname = usePathname()
   const router = useRouter()
   const { isMobile } = useResponsive()
@@ -22,22 +22,22 @@ export const MainLayout: FC<IProps> = ({ children }) => {
     {
       icon: "/assets/sidebaricons/dashboard.svg",
       title: 'Dashboard',
-      path: '/admin/dashboard',
+      path: '/schools/dashboard',
     },
     {
       icon: "/assets/sidebaricons/classroom.svg",
       title: 'Classrooms',
-      path: '/admin/classrooms',
+      path: '/schools/classrooms',
     },
     {
       icon: "/assets/sidebaricons/students.svg",
       title: 'Students',
-      path: '/admin/students',
+      path: '/schools/students',
     },
     {
       icon: "/assets/sidebaricons/teachers.svg",
       title: 'Teachers',
-      path: '/admin/teachers',
+      path: '/schools/teachers',
     },
     {
       icon: "/assets/sidebaricons/managements.svg",
