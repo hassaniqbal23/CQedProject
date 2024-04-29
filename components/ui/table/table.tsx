@@ -183,7 +183,7 @@ const DataTable = (props: DataTableProps) => {
                 className="text-[#282931] text-[13px] font-normal dark:text-white"
                 key={`${index}-${i}`}
               >
-                <div className="flex gap-1 justify-center items-center">
+                <div className="">
                   {c.render ? c.render(item) : item[c.key]}
                 </div>
               </TableCell>
