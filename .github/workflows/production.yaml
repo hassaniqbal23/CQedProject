@@ -1,4 +1,4 @@
-name: cqed-frontend
+name: quohr
 
 on:
   push:
@@ -14,12 +14,22 @@ jobs:
         node-version: [20.x]
 
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'yarn'  # Enable caching for Yarn
+          cache: 'yarn'
+
+      - name: Cache Yarn Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            .yarn/cache
+            node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -39,7 +49,8 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.PROD_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy with rsync
-        run: rsync -avz .next public yarn.lock root@${{ secrets.PROD_HOST }}:/root/apps/cqed-frontend
+        run: rsync -avz --exclude 'node_modules' --exclude '.next/cache' .next public yarn.lock root@${{ secrets.PROD_HOST }}:/root/apps/cqed-frontend
+
       - name: SSH into server
         uses: appleboy/ssh-action@master
         with:
@@ -47,13 +58,16 @@ jobs:
           key: ${{ secrets.PROD_PVT_KEY }}
           username: root
           script: |
+            set -e
             echo "Initializing nvm..."
             export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-            echo "Checking Node.js version..."
-            node -v
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             cd /root/apps/cqed-frontend
             yarn install --production
-            pm2 delete cqed-frontend
+            pm2 describe cqed-frontend > /dev/null
+            EXIT_CODE=$?
+            if [ $EXIT_CODE -eq 0 ]; then
+              pm2 delete cqed-frontend
+            fi
             export NEXT_PUBLIC_API_HOST=${{ secrets.NEXT_PUBLIC_API_HOST }}
             pm2 start yarn --name "cqed-frontend" -- start
