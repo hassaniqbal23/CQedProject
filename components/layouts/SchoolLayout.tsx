@@ -21,7 +21,8 @@ export const SchoolLayout: FC<IProps> = ({ children }) => {
 
     const routes = [
         '/schools/onboarding',
-        '/schools/forget-password'
+        '/schools/forget-password',
+        '/schools/sign-in'
     ]
 
     return routes.some(route => pathname.startsWith(route))
