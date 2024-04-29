@@ -1,12 +1,13 @@
 'use client';
 
-import { forwardRef, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 import { Check, ChevronDown, ChevronRight, Circle } from 'lucide-react';
 import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
 import { Button } from '../button/button';
+import { MultiSelect } from '@/components/common/From/MultiSelect';
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
@@ -220,10 +221,17 @@ export const Dropdown = (props: IDropdownProps) => {
       }
     } else {
       setSelectedItems(item);
+      props.onChange && props.onChange(item);
     }
 
-    props.onChange && props.onChange(selectedItems);
   };
+
+
+  useEffect(() => {
+    if (Array.isArray(selectedItems) && selectedItems?.length > 0 && props.multSelect) {
+      props.onChange && props.onChange(selectedItems)
+    }
+  }, [selectedItems])
 
   const handleChipRemove = (index: number) => {
     if (Array.isArray(selectedItems) && props.multSelect) {
@@ -263,9 +271,8 @@ export const Dropdown = (props: IDropdownProps) => {
                     key={option.label}
                     value={option.value}
                     onClick={() => handleItemClick(option)}
-                    className={`text-[#5D5E68] px-3 py-2.5 text-semibold items-center bg-[#F8F9FB] hover:bg-gray-200 cursor-pointer ${
-                      index === props.options.length - 1 ? '' : 'border-b '
-                    }`}
+                    className={`text-[#5D5E68] px-3 py-2.5 text-semibold items-center bg-[#F8F9FB] hover:bg-gray-200 cursor-pointer ${index === props.options.length - 1 ? '' : 'border-b '
+                      }`}
                   >
                     <Image
                       width={30}

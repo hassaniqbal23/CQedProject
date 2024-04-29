@@ -10,3 +10,12 @@ export interface IRegisterFrom {
   email: string,
   password: string,
 }
+
+export interface IStudentInfo {
+  fullName: string,
+  nickname : string,
+  birthday : Date,
+  country: any;
+  gender: string;
+  language: any[]
+}

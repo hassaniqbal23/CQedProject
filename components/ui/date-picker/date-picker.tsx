@@ -2,7 +2,7 @@ import * as React from "react";
 import { addDays, format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "../../../lib/utils";
 import { Button } from "@/components/ui/button/button";
 import { Calendar } from "@/components/ui/calender/calender";
 import {
@@ -14,15 +14,31 @@ import { DateRange } from "react-day-picker";
 
 interface IProps {
   mode?: string;
+  selectDate?: (data: any) => void
+  defaultValue?: Date | DateRange | undefined
 }
 
-const DatePickerDemo: React.FC<IProps> = ({ mode }) => {
+const DatePickerDemo: React.FC<IProps> = ({ mode, defaultValue, selectDate }) => {
   const [date, setDate] = React.useState<Date>();
   const [rangeDate, setRangeDate] = React.useState<DateRange | undefined>();
 
-  console.log(date, "single");
+  React.useEffect(() => {
+    if (defaultValue) {
+      if (mode === 'range') {
+        setRangeDate(defaultValue as DateRange)
+      } else {
+        setDate(defaultValue as Date)
+      }
+    }
+  }, [defaultValue])
 
-  console.log(rangeDate, "range date");
+  React.useEffect(() => {
+    if (mode === 'range') {
+      selectDate && selectDate(rangeDate)
+    } else {
+      selectDate && selectDate(date)
+    }
+  }, [date, rangeDate])
 
   return (
     <Popover>
@@ -30,7 +46,7 @@ const DatePickerDemo: React.FC<IProps> = ({ mode }) => {
         <Button
           variant={"outline"}
           className={cn(
-            "w-[280px] justify-start text-left font-normal",
+            "w-full justify-start text-left font-normal",
             !date && "text-muted-foreground"
           )}
         >
@@ -65,7 +81,7 @@ const DatePickerDemo: React.FC<IProps> = ({ mode }) => {
             initialFocus
           />
         ) : (
-          <Calendar selected={date} onSelect={setDate} initialFocus />
+          <Calendar mode='single' selected={date} onSelect={setDate} initialFocus />
         )}
       </PopoverContent>
     </Popover>

@@ -10,50 +10,53 @@ interface ChipItem {
 }
 
 interface ChipSelectorProps {
-  options: ChipItem[];
-  defaultValue?: string;
-  rounded?: boolean;
-  variant?:
-    | 'primary'
-    | 'secondary'
-    | 'outlined'
-    | 'secondary-outlined'
-    | 'link';
-  onChange?: (value: string) => void;
+	options: ChipItem[];
+	defaultValue?: string[];
+	rounded?: boolean;
+	variant?: 'primary' | 'secondary' | 'outlined' | 'secondary-outlined' | 'link';
+	onChange?: (value: string[] | string) => void;
+	multiSelect?: boolean;
 }
 
 const ChipSelector = ({
-  options,
-  defaultValue,
-  onChange,
-  rounded,
-  variant,
+	options,
+	defaultValue,
+	onChange,
+	rounded,
+	variant,
+	multiSelect,
 }: ChipSelectorProps) => {
-  const [selectedValue, setSelectedValue] = useState(defaultValue || '');
+	const [selectedValue, setSelectedValue] = useState(defaultValue || []);
 
-  const handleChipClick = (value: string) => {
-    setSelectedValue(value);
-    if (onChange) onChange(value);
-  };
+	const handleChipClick = (value: string) => {
+		const isSelected = selectedValue.includes(value);
 
-  return (
-    <div className="flex gap-2 items-start">
-      {options.map((chip, index) => (
-        <Chip
-          key={index}
-          value={chip.value}
-          active={chip.value === selectedValue}
-          rounded={rounded}
-          variant={variant}
-          onClick={(value) => {
-            handleChipClick(value);
-          }}
-        >
-          {chip.render ? chip.render(chip) : chip.label}
-        </Chip>
-      ))}
-    </div>
-  );
+		if (multiSelect) {
+			setSelectedValue(isSelected ? selectedValue.filter(v => v !== value) : [...selectedValue, value]); // Toggle selection
+			if (onChange) onChange(selectedValue);
+		} else {
+			setSelectedValue([value]);
+			if (onChange) onChange(value);
+		}
+
+	};
+
+	return (
+		<div className={`flex gap-2 items-start ${multiSelect && 'flex-wrap'}`}>
+			{options.map((chip, index) => (
+				<Chip
+					key={index}
+					value={chip.value}
+					active={selectedValue.length > 0 && selectedValue.includes(chip.value) ? true : false}
+					rounded={rounded}
+					variant={variant}
+					onClick={() => handleChipClick(chip.value)}
+				>
+					{chip.render ? chip.render(chip) : chip.label}
+				</Chip>
+			))}
+		</div>
+	);
 };
 
 export default ChipSelector;
