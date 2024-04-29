@@ -17,12 +17,12 @@ import {
 
 const formSchema = z.object({
   password: z.string().min(8, {
-    message: 'Empty Field',
+    message: 'Password should be at least 8 characters',
   }),
 
   confirmPassword: z.string().min(8, {
-    message: 'Empty Field',
-  }),
+    message: 'Confirm Password should be at least 8 characters',
+  })
 });
 
 export function UpdatePassword() {
@@ -56,6 +56,7 @@ export function UpdatePassword() {
                 <FormItem>
                   <FormControl>
                     <Input
+                        type={"password"}
                       placeholder="New Password"
                       {...field}
                       className="font-semibold"
@@ -74,6 +75,7 @@ export function UpdatePassword() {
                 <FormItem>
                   <FormControl>
                     <Input
+                        type={"password"}
                       placeholder="Conform Password"
                       {...field}
                       className="font-semibold"

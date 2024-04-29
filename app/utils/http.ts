@@ -20,7 +20,7 @@ const createHttpInstance = () => {
     (response) => response,
     (error) => {
       if (error.response && error.response.status === 401) {
-        redirectToLoginPage();
+        // redirectToLoginPage();
       }
       return Promise.reject(error);
     },

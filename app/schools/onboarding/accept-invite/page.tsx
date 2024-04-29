@@ -9,10 +9,6 @@ export default function SchoolAcceptInvite() {
     <div className="flex flex-col justify-between h-screen ">
       <TopNavbar onLogout={() => {}}></TopNavbar>
       <SchoolDetailsForm></SchoolDetailsForm>
-      <BottomNavbar
-        onBackButton={() => {}}
-        onContinue={() => {}}
-      ></BottomNavbar>
     </div>
   );
 }
