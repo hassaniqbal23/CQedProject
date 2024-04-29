@@ -5,6 +5,9 @@ const nextConfig = {
   experimental: {
     forceSwcTransforms: true,
   },
+  images: {
+    domains: ['s3-alpha-sig.figma.com'],
+  },
   async rewrites() {
     return [
       {
@@ -12,9 +15,6 @@ const nextConfig = {
         destination: `${process.env.NEXT_PUBLIC_API_HOST}/:path*`,
       },
     ];
-  },
-  images: {
-    domains: ['s3-alpha-sig.figma.com'],
   },
 };
 
