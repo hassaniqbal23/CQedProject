@@ -10,46 +10,66 @@ import {
 } from '@/components/ui';
 import { Input } from '@/components/ui';
 import { useForm } from 'react-hook-form';
+import {useMutation} from "react-query";
+import {AcceptInvite} from "@/app/api/schools";
+import {useRouter, useSearchParams} from 'next/navigation'
+import {useEffect} from "react";
+import BottomNavbar from "@/components/common/navbar/bottomNavbar";
 
 const formSchema = z.object({
-  schoolName: z.string().refine((value) => value.trim() !== '', {
+  name: z.string().refine((value) => value.trim() !== '', {
     message: 'Please enter your School name',
   }),
-  emailAddress: z
+  email: z
     .string()
     .email()
     .refine((value) => value.trim() !== '', {
       message: 'Please enter your email address.',
     }),
-  phoneNumber: z.string().refine((value) => value.trim() !== '', {
+  phone: z.string().refine((value) => value.trim() !== '', {
     message: 'Please enter your phone number.',
   }),
-  country: z.string().refine((value) => value.trim() !== '', {
+    country: z.string().refine((value) => value.trim() !== '', {
     message: 'Please select your Country.',
   }),
   state: z.string().refine((value) => value.trim() !== '', {
     message: ' Please select your State.',
   }),
-  schoolAddress: z.string().refine((value) => value.trim() !== '', {
+  address: z.string().refine((value) => value.trim() !== '', {
     message: ' Please enter School address.',
   }),
 });
 
 export function SchoolDetailsForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
+    const params = useSearchParams()
+    const router = useRouter()
+    const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      schoolName: '',
-      emailAddress: '',
-      phoneNumber: '',
+      name: '',
+      email: '',
+      phone: '',
       country: '',
       state: '',
-      schoolAddress: '',
+      address: '',
     },
   });
 
+    const { mutate: acceptSchoolInvite, isLoading } = useMutation(
+        (data: AcceptInvite) => AcceptInvite(data),
+        {
+            onSuccess: (res) => {
+                // const response = res.data.result;
+                // router.push('/admin/dashboard');
+                // form.reset();
+            },
+            onError: (error: any) => {
+                console.log(error, 'Error =====> log');
+            },
+        }
+    );
+
   const onSubmit = form.handleSubmit((values, field: any) => {
-    // ✅ This will be type-safe and validated.
     console.log(values);
   });
 
@@ -58,7 +78,7 @@ export function SchoolDetailsForm() {
       <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8">
         <div className="flex flex-col justify-center items-center mb-4">
           <h1
-            className="text-[#4146B8] font-bold text-2xl 
+            className="text-[#4146B8] font-bold text-2xl
 "
           >
             Add your school details
@@ -72,7 +92,7 @@ export function SchoolDetailsForm() {
             <form onSubmit={onSubmit} className="space-y-6">
               <FormField
                 control={form.control}
-                name="schoolName"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>School Name</FormLabel>
@@ -91,7 +111,7 @@ export function SchoolDetailsForm() {
               <div className=" grid md:grid-cols-2 md:gap-6">
                 <FormField
                   control={form.control}
-                  name="emailAddress"
+                  name="email"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Email Address</FormLabel>
@@ -104,7 +124,7 @@ export function SchoolDetailsForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="phoneNumber"
+                  name="phone"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Phone</FormLabel>
@@ -148,7 +168,7 @@ export function SchoolDetailsForm() {
               {/* School Address input with width of */}
               <FormField
                 control={form.control}
-                name="schoolAddress"
+                name="address"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>School Address</FormLabel>
@@ -164,9 +184,24 @@ export function SchoolDetailsForm() {
                 )}
               />
             </form>
+
           </Form>
         </div>
       </div>
+        <BottomNavbar
+            onBackButton={() => {}}
+            onContinue={async() => {
+                let validate =await form.trigger()
+                let token = params?.get('token')
+
+                if (validate && token) {
+                    acceptSchoolInvite({
+                        ...form.getValues(),
+                        inviteToken: token
+                    })
+                }
+            }}
+        ></BottomNavbar>
     </>
   );
 }
