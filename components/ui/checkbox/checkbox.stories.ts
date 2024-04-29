@@ -21,9 +21,8 @@ export const Default: Story = {
 export const error: Story = {
   args: {
     label: "checkbox",
-
     onChange: () => {},
-    error: true,
+    error: "",
   },
 };
 

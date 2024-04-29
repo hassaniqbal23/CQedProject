@@ -11,7 +11,5 @@ export default meta;
 type Story = StoryObj<typeof TopNavbar>;
 
 export const Default: Story = {
-  args: {
-    onClick: () => console.log("Bottom navigation bar"),
-  },
+  args: {},
 };
