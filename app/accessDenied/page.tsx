@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui';
 import { useRouter } from 'next/navigation';
 
- export const  AccessDenied = () =>  {
+ const  AccessDenied = () =>  {
   const router = useRouter();
 
   return (

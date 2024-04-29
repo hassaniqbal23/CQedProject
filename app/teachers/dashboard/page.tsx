@@ -1,7 +1,6 @@
 import React from 'react'
-
-export const Dashboard = () => {
-  return (
-    <div>Teachers Dashboard</div>
-  )
+export default function TeacherDashboardPage() {
+  return <div>
+    <h1>TeacherDashboardPage</h1>
+  </div>
 }
