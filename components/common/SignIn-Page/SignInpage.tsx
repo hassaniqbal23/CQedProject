@@ -83,7 +83,7 @@ export function SignIn(props: SignInProps) {
                 imgPath: '/assets/images/LoginPage.png',
               },
               {
-                title: 'Join the Future',
+                title: 'Teach the Future',
                 description:
                   'Shaping Global Citizens Through Cultural Intelligence',
                 imgPath: '/assets/images/slider3.jpeg',
@@ -114,7 +114,7 @@ export function SignIn(props: SignInProps) {
             ))}
           </div>
           <Form {...form}>
-            <form onSubmit={onSubmit} className="space-y-8 ">
+            <form onSubmit={onSubmit} className="space-y-8  ">
               <FormField
                 control={form.control}
                 name="username"
