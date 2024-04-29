@@ -121,7 +121,7 @@ export function SignIn(props: SignInProps) {
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Moin Haikal"
+                        placeholder="Username"
                         {...field}
                         className="w-96"
                       />
@@ -137,7 +137,7 @@ export function SignIn(props: SignInProps) {
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Enter your password"
+                        placeholder="Password"
                         {...field}
                         className="text-[#5D5E68] w-96"
                         type="password"
