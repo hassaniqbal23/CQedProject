@@ -7,7 +7,7 @@ export default function SchoolForgetPassword() {
     return (
         <>
             <TopNavbar showLogout={false} ></TopNavbar>
-            <ForgetPasswordSuccess email={"jonhn@gmail.com"} onBack={() => {}}></ForgetPasswordSuccess>
+            <ForgetPasswordSuccess email={"jonhn@gmail.com"} backLink={"/schools/sign-in"}></ForgetPasswordSuccess>
         </>
     )
 }

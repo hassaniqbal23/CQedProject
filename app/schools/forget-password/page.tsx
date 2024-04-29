@@ -2,12 +2,16 @@
 
 import {ForgetPassword} from "@/components/common/ForgetPassword/ForgetPassword";
 import TopNavbar from "@/components/common/navbar/TopNavbar";
+import {useRouter} from "next/navigation";
 
 export default function SchoolForgetPassword() {
+    const router = useRouter();
     return (
         <>
             <TopNavbar showLogout={false} ></TopNavbar>
-            <ForgetPassword onClick={() => {}}></ForgetPassword>
+            <ForgetPassword onSubmit={  () => {
+                router.push("/schools/forget-password/email-sent")
+            } } onClick={() => {}}></ForgetPassword>
         </>
     )
 }
