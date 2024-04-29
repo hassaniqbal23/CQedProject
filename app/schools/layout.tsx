@@ -1,4 +1,4 @@
-import { SchoolLayout } from '@/components/layouts/schoolLayout';
+import { SchoolLayout } from '@/components/layouts/SchoolLayout';
 
 interface IProps {
   children: React.ReactNode;

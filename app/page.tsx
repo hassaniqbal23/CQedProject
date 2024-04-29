@@ -1,5 +1,5 @@
 'use client';
-import { SchoolLayout } from '@/components/layouts/schoolLayout';
+import { SchoolLayout } from '@/components/layouts/SchoolLayout';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';

@@ -1,5 +1,5 @@
 'use client';
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode,useMemo } from 'react';
 import Sidebar from '../common/sidebar/sidebar';
 import { usePathname } from 'next/navigation';
 import Navbar from '../common/navbar/MainBar';
@@ -16,6 +16,10 @@ export const SchoolLayout: FC<IProps> = ({ children }) => {
   const router = useRouter()
   const { isMobile } = useResponsive()
 
+  const isAcceptInvite = useMemo(() => {
+    if (!pathname) return  false
+    return pathname.includes('accept-invite')
+  }, [pathname])
 
 
   const sidebarLinks = [
@@ -45,10 +49,15 @@ export const SchoolLayout: FC<IProps> = ({ children }) => {
       path: '/admin/management',
     },
   ]
+
+  if (isAcceptInvite) {
+    return <>{children}</>
+  }
+
   return (
     <div className="md:flex md:justify-stretch min-h-screen">
-      <div className=" block w-[70px] md:w-[240px] bg-[#F6F8F9] dark:bg-slate-900">
-        <div className='flex '>
+      <div className="block w-[70px] md:w-[240px] bg-[#F6F8F9] dark:bg-slate-900">
+        <div className='flex'>
           <Sidebar isMobileSidebar={isMobile} isVerticalIcon={false} pathname={pathname as string} sidebarLinks={sidebarLinks} />
           <Navbar onLogout={() => {
             removeToken();
