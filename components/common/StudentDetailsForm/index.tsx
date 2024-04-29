@@ -9,6 +9,7 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
+    Select,
 } from '@/components/ui';
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Input } from '@/components/ui';
@@ -21,6 +22,8 @@ import BottomNavbar from '../navbar/bottomNavbar';
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
 import { storeUserId } from '@/app/utils/encryption';
+import { SelectInput } from '../From/Select';
+import { countrySelectOptions, DropdownMenuPropsOptions } from '@/lib/constant';
 
 const formSchema = z.object({
     fullName: z.string().refine((value) => value.trim() !== '', {
@@ -42,12 +45,7 @@ const formSchema = z.object({
     gender: z.string().refine((value) => value.trim() !== '', {
         message: ' Please select your Gender.',
     }),
-    language: z.array(z.object({
-        label: z.string(),
-        value: z.string(),
-        flagUrl: z.string(),
-        altName: z.string(),
-    }).optional()).refine((value) => value.length > 0 ? true : false, {
+    language: z.string().refine((value) => value.trim() !== '', {
         message: 'Please Select one language.',
     }),
 });
@@ -64,7 +62,7 @@ function StudentsDetailsFrom() {
             nickName: '',
             country: '',
             gender: '',
-            language: [],
+            language: '',
         },
     });
 
@@ -85,6 +83,7 @@ function StudentsDetailsFrom() {
     );
 
     const onSubmit: SubmitHandler<any> = form.handleSubmit(async (values) => {
+        console.log(values)
         createStudents(values)
     });
 
@@ -159,31 +158,11 @@ function StudentsDetailsFrom() {
                                         <FormItem>
                                             <FormLabel>Country</FormLabel>
                                             <FormControl>
-                                                <Dropdown label='Country' options={[
-                                                    {
-                                                        label: 'India',
-                                                        value: 'india',
-                                                        flagUrl: '/countries/india.svg',
-                                                        altName: 'flag india',
-                                                    },
-                                                    {
-                                                        label: 'Pakistan',
-                                                        value: 'pakistan',
-                                                        flagUrl: '/countries/pakistan.svg',
-                                                        altName: 'flag pakistan ',
-                                                    },
-                                                    {
-                                                        label: 'UK',
-                                                        value: 'uk',
-                                                        flagUrl: '/countries/uk.svg',
-                                                        altName: 'flag uk',
-                                                    },
-                                                ]}
+                                                <SelectInput placeholder='Country' options={countrySelectOptions}
                                                     onChange={(value: any) => {
                                                         console.log(value)
-                                                        form.setValue('country', value.value)
+                                                        field.onChange(value)
                                                     }}
-                                                    value={field.value}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -199,7 +178,7 @@ function StudentsDetailsFrom() {
                                         <FormItem>
                                             <FormLabel>Gender</FormLabel>
                                             <FormControl>
-                                                <ChipSelector onChange={(data) => form.setValue('gender', data)} options={[
+                                                <ChipSelector onChange={(data: any) => field.onChange(data as string)} options={[
                                                     {
                                                         label: 'Male',
                                                         value: 'Male',
@@ -227,36 +206,13 @@ function StudentsDetailsFrom() {
                                         <FormItem>
                                             <FormLabel>Language</FormLabel>
                                             <FormControl>
-                                                <Dropdown label='Language' multSelect={true} options={[
-                                                    {
-                                                        label: 'Hindi',
-                                                        value: 'hindi',
-                                                        flagUrl: '/countries/india.svg',
-                                                        altName: 'flag india',
-                                                    },
-                                                    {
-                                                        label: 'Urdu',
-                                                        value: 'urdu',
-                                                        flagUrl: '/countries/pakistan.svg',
-                                                        altName: 'flag pakistan ',
-                                                    },
-                                                    {
-                                                        label: 'English(UK)',
-                                                        value: 'english(uk)',
-                                                        flagUrl: '/countries/uk.svg',
-                                                        altName: 'flag uk',
-                                                    },
-                                                    {
-                                                        label: 'English(US)',
-                                                        value: 'english(us)',
-                                                        flagUrl: '/countries/uk.svg',
-                                                        altName: 'flag uk',
-                                                    },
-                                                ]}
+                                                <Dropdown label='Language' multSelect={true} options={DropdownMenuPropsOptions.options}
                                                     onChange={(value: any) => {
-                                                        form.setValue('language', value)
+                                                        const selectedString = value.map((item: any) => {
+                                                            return item.value
+                                                        }).join(',')
+                                                        field.onChange(selectedString)
                                                     }}
-                                                    value={field.value as any[]}
                                                 />
                                             </FormControl>
                                             <FormMessage />

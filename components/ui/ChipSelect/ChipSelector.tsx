@@ -14,7 +14,7 @@ interface ChipSelectorProps {
 	defaultValue?: string[];
 	rounded?: boolean;
 	variant?: 'primary' | 'secondary' | 'outlined' | 'secondary-outlined' | 'link';
-	onChange?: (value: string[]) => void;
+	onChange?: (value: string[] | string) => void;
 	multiSelect?: boolean;
 }
 
@@ -33,11 +33,12 @@ const ChipSelector = ({
 
 		if (multiSelect) {
 			setSelectedValue(isSelected ? selectedValue.filter(v => v !== value) : [...selectedValue, value]); // Toggle selection
+			if (onChange) onChange(selectedValue);
 		} else {
 			setSelectedValue([value]);
+			if (onChange) onChange(value);
 		}
 
-		if (onChange) onChange(selectedValue);
 	};
 
 	return (
