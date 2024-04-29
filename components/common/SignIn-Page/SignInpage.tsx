@@ -12,15 +12,12 @@ import * as z from 'zod';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui';
 import { Separator } from '@/components/ui/separator/separator';
-import { Heading } from '../Heading';
-import { Avatar, AvatarImage } from '@/components/ui/avatar/avatar';
+import { Avatar } from '@/components/ui/avatar/avatar';
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -43,7 +40,11 @@ const icons = [
   '/assets/images/Ellipse 9.svg',
 ];
 
-export function SignIn() {
+interface SignInProps {
+  forgetPasswordLink: string;
+}
+
+export function SignIn(props: SignInProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -125,7 +126,7 @@ export function SignIn() {
                 )}
               />
               <Link
-                href={'/forgetpassword'}
+                href={props.forgetPasswordLink}
                 className="text-sm text-primary hover:no-underline p-0 flex justify-end font-semibold"
               >
                 Forget your password?

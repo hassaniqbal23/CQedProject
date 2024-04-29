@@ -1,7 +1,6 @@
 import React from 'react'
-
-export const Profile = () => {
-  return (
-    <div>Profile</div>
-  )
+export default function TeacherProfilePage() {
+  return <div>
+    <h1>TeacherProfilePage</h1>
+  </div>
 }

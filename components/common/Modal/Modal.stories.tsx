@@ -25,7 +25,9 @@ export const Primary: Story = {
             </div>
         );
     },
-    args : {}
+    args : {
+
+    }
 };
 
 
