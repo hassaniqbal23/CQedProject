@@ -62,9 +62,9 @@ export const CreateProfile: React.FC = () => {
         className="fixed top-0 w-full z-50 "
       />
 
-      <div className=" p-4 mb-36 mx-auto ">
+      <div className=" p-4 mx-auto ">
         <div className="">
-          <div className="mx-auto mt-20 md:mt-20  md:w-96">
+          <div className="mx-auto mt-4 md:w-96">
             <Progressbar heading={'Get Started'} percentage={20} />
           </div>
           <div className="mx-auto w-max mt-4">
