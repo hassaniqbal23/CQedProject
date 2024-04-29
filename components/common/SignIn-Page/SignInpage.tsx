@@ -91,6 +91,7 @@ export function SignIn(props: SignInProps) {
             ]}
           />
         </div>
+
         <div className="w-full md:w-6/12 h-screen flex flex-col justify-center items-center ">
           <div className="text-center mb-4 mt-12">
             <h1 className="font-bold text-3xl">Sign in to your account</h1>
