@@ -24,5 +24,6 @@ export const Primary: Story = {
   },
   args: {
     forgetPasswordLink: "/forget-password",
+    loginSuccessLink: "/"
   }
 };
