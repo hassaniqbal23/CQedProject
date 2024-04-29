@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import Navbar from "./MainBar";
 
 const meta: Meta<typeof Navbar> = {
-  title: "Navbar/MainBar",
+  title: "Navigation/MainBar",
   component: Navbar,
 };
 
