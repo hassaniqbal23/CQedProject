@@ -20,6 +20,12 @@ import { Separator } from '@/components/ui/separator/separator';
 import { Heading } from '../Heading';
 import { Avatar } from '@/components/ui/avatar/avatar';
 import { LoginCarousel } from '@/components/ui/carousel/carousel';
+import {useMutation} from "react-query";
+import {IAuthentication} from "@/app/api/types";
+import {LoginAPI} from "@/app/api/auth";
+import {toast} from "react-toastify";
+import {storeToken, storeUserId} from "@/app/utils/encryption";
+import {updateToken} from "@/app/utils/http";
 
 interface ICarouselItems {
   title: string;
@@ -32,7 +38,7 @@ interface IProps {
 }
 
 const formSchema = z.object({
-  username: z.string().min(2, {
+  name: z.string().min(2, {
     message: 'Username must be at least 12 characters.',
   }),
   password: z.string().min(2, {
@@ -54,21 +60,49 @@ const icons = [
 
 interface SignInProps {
   forgetPasswordLink: string | URL;
+  loginSuccessLink: string;
 }
 
 export function SignIn(props: SignInProps) {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
+      name: '',
       password: '',
     },
   });
+  const {
+    reset,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = form;
 
-  const onSubmit = form.handleSubmit((values) => {
-    // Do something with the form values.
-    console.log(values);
-  });
+  const { mutate: userLogin, isLoading } = useMutation(
+      (userData: IAuthentication) => LoginAPI(userData),
+      {
+        onSuccess: (res) => {
+          toast.success(res.data.message);
+          const response = res.data.result;
+          router.push(props.loginSuccessLink);
+          storeToken(response?.token);
+          storeUserId(response?.user?.id);
+          updateToken(response?.token);
+          reset();
+        },
+        onError: (error: any) => {
+          console.log(error, 'Error =====> log');
+        },
+      }
+  );
+
+
+  const onSubmit: SubmitHandler<IAuthentication> = async (
+      data: IAuthentication
+  ) => {
+    userLogin(data);
+  };
 
   return (
     <>
@@ -114,10 +148,10 @@ export function SignIn(props: SignInProps) {
             ))}
           </div>
           <Form {...form}>
-            <form onSubmit={onSubmit} className="space-y-8  ">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 ">
               <FormField
                 control={form.control}
-                name="username"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
@@ -162,11 +196,11 @@ export function SignIn(props: SignInProps) {
               >
                 Login
               </Button>
-              <div className="flex justify-center py-4 sm:py-6 md:py-10 items-center">
-                <Separator className="text-slate-900 w-3/12 sm:w-4/12" />
-                <p className="text-slate-500 m-1">or</p>
-                <Separator className="text-slate-900 w-3/12 sm:w-4/12" />
-              </div>
+              {/*<div className="flex justify-center py-4 sm:py-6 md:py-10 items-center">*/}
+              {/*  <Separator className="text-slate-900 w-3/12 sm:w-4/12" />*/}
+              {/*  <p className="text-slate-500 m-1">or</p>*/}
+              {/*  <Separator className="text-slate-900 w-3/12 sm:w-4/12" />*/}
+              {/*</div>*/}
             </form>
           </Form>
         </div>

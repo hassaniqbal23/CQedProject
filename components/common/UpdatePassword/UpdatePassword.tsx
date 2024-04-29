@@ -16,11 +16,11 @@ import {
 } from '@/components/ui';
 
 const formSchema = z.object({
-  newpassword: z.string().min(8, {
+  password: z.string().min(8, {
     message: 'Empty Field',
   }),
 
-  conformpassword: z.string().min(8, {
+  confirmPassword: z.string().min(8, {
     message: 'Empty Field',
   }),
 });
@@ -29,8 +29,8 @@ export function UpdatePassword() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      newpassword: '',
-      conformpassword: '',
+      password: '',
+      confirmPassword: '',
     },
   });
 
@@ -51,7 +51,7 @@ export function UpdatePassword() {
           <form onSubmit={onSubmit} className="space-y-4">
             <FormField
               control={form.control}
-              name="newpassword"
+              name="password"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -69,7 +69,7 @@ export function UpdatePassword() {
 
             <FormField
               control={form.control}
-              name="conformpassword"
+              name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
