@@ -161,11 +161,11 @@ export function SignIn(props: SignInProps) {
               >
                 Login
               </Button>
-              <div className="flex justify-center py-4 sm:py-6 md:py-10 items-center">
-                <Separator className="text-slate-900 w-3/12 sm:w-4/12" />
-                <p className="text-slate-500 m-1">or</p>
-                <Separator className="text-slate-900 w-3/12 sm:w-4/12" />
-              </div>
+              {/*<div className="flex justify-center py-4 sm:py-6 md:py-10 items-center">*/}
+              {/*  <Separator className="text-slate-900 w-3/12 sm:w-4/12" />*/}
+              {/*  <p className="text-slate-500 m-1">or</p>*/}
+              {/*  <Separator className="text-slate-900 w-3/12 sm:w-4/12" />*/}
+              {/*</div>*/}
             </form>
           </Form>
         </div>
