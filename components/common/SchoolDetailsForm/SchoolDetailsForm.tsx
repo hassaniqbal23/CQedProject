@@ -1,5 +1,5 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import {
   Form,
   FormControl,
@@ -23,8 +23,8 @@ const formSchema = z.object({
   email: z
     .string()
     .email()
-    .refine((value) => value.trim() !== '', {
-      message: 'Please enter your email address.',
+    .refine((value) => value.trim() !== "", {
+      message: "Please enter your email address.",
     }),
   phone: z.string().refine((value) => value.trim() !== '', {
     message: 'Please enter your phone number.',
@@ -32,8 +32,8 @@ const formSchema = z.object({
     country: z.string().refine((value) => value.trim() !== '', {
     message: 'Please select your Country.',
   }),
-  state: z.string().refine((value) => value.trim() !== '', {
-    message: ' Please select your State.',
+  state: z.string().refine((value) => value.trim() !== "", {
+    message: " Please select your State.",
   }),
   address: z.string().refine((value) => value.trim() !== '', {
     message: ' Please enter School address.',

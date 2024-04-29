@@ -1,6 +1,7 @@
-import React from 'react'
-export default function TeacherDashboardPage() {
-  return <div>
-    <h1>TeacherDashboardPage</h1>
-  </div>
-}
+import React from 'react';
+
+const Dashboard = () => {
+  return <div>Dashboard</div>;
+};
+
+export default Dashboard;

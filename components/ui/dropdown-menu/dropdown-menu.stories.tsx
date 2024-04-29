@@ -23,6 +23,7 @@ export const SelectLanguageSingle: Story = {
     );
   },
   args: {
+    label: 'Select Language',
     value: [
       {
         label: 'UK',
