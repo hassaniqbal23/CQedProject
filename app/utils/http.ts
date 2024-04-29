@@ -3,7 +3,10 @@ import { getAccessToken, removeToken, removeUserId } from './encryption';
 
 
 const createHttpInstance = () => {
-  const baseURL = "";
+  let baseURL = "https://cqed-dev.staginguconnect.com/"
+  if (process.env.NODE_ENV === 'production') {
+    baseURL = ""
+  }
   const http = axios.create({
     baseURL,
   });
