@@ -63,7 +63,7 @@ function AboutStudentsForm() {
   // });
   return (
     <>
-      <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8 h-[calc(100vh_-_30px)] lg:h-[calc(100vh_-_224px)]">
+      <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8">
         <div className="my-8">
           <Progressbar heading="Doing great!" percentage={40} />
         </div>
