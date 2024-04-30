@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 const createHttpInstance = () => {
   let baseURL = process.env.NEXT_PUBLIC_API_HOST || '';
   if (process.env.NODE_ENV === 'production') {
-    baseURL = '';
+    baseURL = '/api';
   }
 
   if (!baseURL.endsWith('/api')) {
