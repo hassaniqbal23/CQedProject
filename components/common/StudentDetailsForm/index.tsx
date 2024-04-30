@@ -79,12 +79,10 @@ function StudentsDetailsFrom() {
     }
   );
 
-  const onSubmit: SubmitHandler<any> = form.handleSubmit(
-    async (values: IStudentInfo) => {
-      console.log(values);
-      createStudents(values);
-    }
-  );
+  const onSubmit = form.handleSubmit(async (values: any) => {
+    console.log(values);
+    createStudents(values);
+  });
 
   return (
     <>
@@ -247,8 +245,8 @@ function StudentsDetailsFrom() {
       </div>
       <BottomNavbar
         isBackButton={false}
-        onContinue={() => {
-          onSubmit(form.getValues());
+        onContinue={async () => {
+          onSubmit(form.getValues() as any);
         }}
       ></BottomNavbar>
     </>
