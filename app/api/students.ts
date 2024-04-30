@@ -7,7 +7,8 @@ export interface IAcceptStudentsInvitation {
 }
 
 export const AcceptStudentsInvitation = (payload: IAcceptStudentsInvitation) =>
-  http.post('/students/accept-invite', payload);
+    http.post('/invitation/accept-invite', payload);
+
 
 export const StudentsCreate = (payload: IStudentInfo) =>
   http.post('/students/create', payload);
