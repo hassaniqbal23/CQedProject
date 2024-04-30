@@ -16,7 +16,7 @@ const TabsList = forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      'inline-flex items-start text-muted-foreground',
+      'inline-flex items-start text-muted-foreground ',
       variant === 'secondary' ? 'bg-white border-b-2 ' : 'bg-muted rounded-md ',
       className
     )}
@@ -53,7 +53,7 @@ const TabsContent = forwardRef<
 >(({ className, ...props }, ref) => (
   <TabsPrimitive.Content
     ref={ref}
-    className={cn('inline-flex items-center justify-center', className)}
+    className={cn('w-full', className)}
     {...props}
   />
 ));
@@ -84,7 +84,6 @@ const TabsComponent = ({
   variant = 'primary',
   onValueChange,
 }: TabsComponentProps) => {
-  console.log(variant);
   return (
     <Tabs
       defaultValue={defaultValue}
