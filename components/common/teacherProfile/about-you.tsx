@@ -32,6 +32,7 @@ const formSchema = z.object({
 });
 
 export const AboutYou: React.FC = () => {
+  const router = useRouter();
   const form = useForm<IAboutYouProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,7 +41,6 @@ export const AboutYou: React.FC = () => {
     },
   });
 
-  const router = useRouter();
   const {
     reset,
     handleSubmit,
@@ -63,8 +63,7 @@ export const AboutYou: React.FC = () => {
   const onSubmit: SubmitHandler<IAboutYouProps> = async (
     data: IAboutYouProps
   ) => {
-    console.log(data);
-    // createTeacher(data);
+    router.push('/teachers/onboarding/update-password');
   };
 
   return (

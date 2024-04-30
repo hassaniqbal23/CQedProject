@@ -129,7 +129,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      {true ? (
+      {data.length == 0 && invitedSchools.length === 0 ? (
         <>
           <AdminWelCome />
         </>

@@ -8,10 +8,6 @@ const createHttpInstance = () => {
     baseURL = '/api';
   }
 
-  if (!baseURL.endsWith('/api')) {
-    baseURL = `${baseURL}/api`;
-  }
-
   const http = axios.create({
     baseURL,
   });

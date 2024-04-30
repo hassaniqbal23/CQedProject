@@ -4,11 +4,13 @@ import React from 'react';
 import Progressbar from '../Progressbar/Progressbar';
 import BottomNavbar from '../navbar/bottomNavbar';
 import ChipSelector from '../../ui/ChipSelect/ChipSelector';
+import { useRouter } from 'next/navigation';
 
 function StudentsQualities() {
+  const router = useRouter();
   return (
     <>
-      <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8">
+      <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8 h-[calc(100vh_-_30px)] lg:h-[calc(100vh_-_224px)] ">
         <div className="my-8">
           <Progressbar heading="You are almost there." percentage={75} />
         </div>
@@ -118,6 +120,7 @@ function StudentsQualities() {
         isBackButton={false}
         onContinue={() => {
           // onSubmit(form.getValues())
+          router.push('/students/onboarding/update-password');
         }}
       ></BottomNavbar>
     </>

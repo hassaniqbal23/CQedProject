@@ -17,19 +17,20 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import Progressbar from '../Progressbar/Progressbar';
 import DatePicker from '@/components/ui/date-picker/date-picker';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
-import { CreateStudentUser, LoginAPI } from '@/app/api/auth';
 import BottomNavbar from '../navbar/bottomNavbar';
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
 import { storeUserId } from '@/app/utils/encryption';
 import { SelectInput } from '../From/Select';
 import { countrySelectOptions, DropdownMenuPropsOptions } from '@/lib/constant';
+import { StudentsCreate } from '@/app/api/students';
+import { IStudentInfo } from '@/app/api/types';
 
 const formSchema = z.object({
-  fullName: z.string().refine((value) => value.trim() !== '', {
+  fullname: z.string().refine((value) => value.trim() !== '', {
     message: 'Please enter your Full name',
   }),
-  nickName: z.string().refine((value) => value.trim() !== '', {
+  nick_name: z.string().refine((value) => value.trim() !== '', {
     message: 'Please enter your Nickname.',
   }),
   birthday: z
@@ -55,8 +56,8 @@ function StudentsDetailsFrom() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: '',
-      nickName: '',
+      fullname: '',
+      nick_name: '',
       country: '',
       gender: '',
       language: '',
@@ -64,13 +65,11 @@ function StudentsDetailsFrom() {
   });
 
   const { mutate: createStudents, isLoading } = useMutation(
-    (studentsData: any) =>
-      CreateStudentUser({ ...studentsData, inviteToken: params?.get('token') }),
+    (studentsData: IStudentInfo) => StudentsCreate(studentsData),
     {
-      onSuccess: (res) => {
-        toast.success(res.data.message);
+      onSuccess: (res: any) => {
         const response = res.data.result;
-        router.push('/student/onboarding/user-bio');
+        router.push('/students/onboarding/about-user');
         storeUserId(response?.user?.id);
         form.reset();
       },
@@ -80,14 +79,14 @@ function StudentsDetailsFrom() {
     }
   );
 
-  const onSubmit: SubmitHandler<any> = form.handleSubmit(async (values) => {
+  const onSubmit = form.handleSubmit(async (values: any) => {
     console.log(values);
     createStudents(values);
   });
 
   return (
     <>
-      <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8">
+      <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8 h-[calc(100vh_-_30px)] lg:h-[calc(100vh_-_224px)] ">
         <div className="my-8">
           <Progressbar heading="Get Started" percentage={20} />
         </div>
@@ -105,7 +104,7 @@ function StudentsDetailsFrom() {
               <div className=" grid md:grid-cols-2 md:gap-6">
                 <FormField
                   control={form.control}
-                  name="fullName"
+                  name="fullname"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Full name</FormLabel>
@@ -122,10 +121,10 @@ function StudentsDetailsFrom() {
                 />
                 <FormField
                   control={form.control}
-                  name="nickName"
+                  name="nick_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Set a Nickname</FormLabel>
+                      <FormLabel>Set nickname</FormLabel>
                       <FormControl>
                         <Input placeholder="e.g example@12" {...field} />
                       </FormControl>
@@ -246,8 +245,8 @@ function StudentsDetailsFrom() {
       </div>
       <BottomNavbar
         isBackButton={false}
-        onContinue={() => {
-          onSubmit(form.getValues());
+        onContinue={async () => {
+          onSubmit(form.getValues() as any);
         }}
       ></BottomNavbar>
     </>

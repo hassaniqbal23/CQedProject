@@ -28,7 +28,6 @@ export default function TeacherAcceptInvite({
       (userData: IAcceptTeacherInvitation) => AcceptTeacherInvitation(userData),
       {
         onSuccess: (res) => {
-          toast.success(res.data.message);
           const response = res;
           setIsLoading(false);
           router.push('/teachers/onboarding/create-profile');
