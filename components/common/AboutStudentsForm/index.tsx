@@ -140,10 +140,7 @@ function AboutStudentsForm() {
                       they may learn.
                     </FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder="Share the richness of your culture. What would you like people to know? What is special about where you live?"
-                        {...field}
-                      />
+                      <Textarea placeholder="Share the richness of your culture. What would you like people to know? What is special about where you live?" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

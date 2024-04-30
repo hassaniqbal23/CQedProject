@@ -57,7 +57,7 @@ export default function TeacherAcceptInvite({
       <div className="flex flex-col md:flex-row justify-center items-center h-screen">
         <Loader2 className="mr-0 md:mr-2 h-10 w-10 animate-spin text-primary text-5xl text-centers" />
         <span className="flex items-center text-center text-foreground text-3xl">
-          Please wait for verfiying your account ...
+          Please wait for verifying your account ...
         </span>
       </div>
     );
