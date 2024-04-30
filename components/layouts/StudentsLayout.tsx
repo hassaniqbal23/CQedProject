@@ -32,27 +32,27 @@ export const StudentsLayout: FC<IProps> = ({ children }) => {
     {
       icon: '/assets/sidebaricons/dashboard.svg',
       title: 'Dashboard',
-      path: '/schools/dashboard',
+      path: '/students/dashboard',
     },
     {
       icon: '/assets/sidebaricons/classroom.svg',
       title: 'Classrooms',
-      path: '/schools/classrooms',
+      path: '/students/classrooms',
     },
     {
       icon: '/assets/sidebaricons/students.svg',
       title: 'Students',
-      path: '/schools/students',
+      path: '/students/chat',
     },
     {
       icon: '/assets/sidebaricons/teachers.svg',
       title: 'Teachers',
-      path: '/schools/teachers',
+      path: '/students/teachers',
     },
     {
       icon: '/assets/sidebaricons/managements.svg',
       title: 'Management',
-      path: '/admin/management',
+      path: '/students/management',
     },
   ];
 

@@ -23,37 +23,26 @@ import { toast } from 'react-toastify';
 import { Camera, CircleUser, ImagePlus } from 'lucide-react';
 
 const formSchema = z.object({
-  fullName: z.string().refine((value) => value.trim() !== '', {
-    message: 'Please enter your Full name',
+  bio: z.string().refine((value) => value.trim() !== '', {
+    message: 'Please add a bio',
   }),
-  nickName: z.string().refine((value) => value.trim() !== '', {
-    message: 'Please enter your Nickname.',
+  avatar: z
+    .string()
+    // .refine((value) => value.trim() !== '', {
+    //   message: 'Please add a profile picture',
+    // })
+    .optional(),
+  culture: z.string().refine((value) => value.trim() !== '', {
+    message: 'Please tell us about your culture',
   }),
-  birthday: z
-    .date()
-    .refine((value) => !isNaN(value.getTime()), {
-      message: 'Please select a valid date.',
-    })
-    .transform((value) => (isNaN(value.getTime()) ? null : value)),
-  country: z.string().refine((value) => value.trim() !== '', {
-    message: 'Please select your Country.',
-  }),
-  gender: z.string().refine((value) => value.trim() !== '', {
-    message: ' Please select your Gender.',
-  }),
-  language: z
+  posts: z
     .array(
-      z
-        .object({
-          label: z.string(),
-          value: z.string(),
-          flagUrl: z.string(),
-          altName: z.string(),
-        })
-        .optional()
+      z.object({
+        image: z.string(),
+      })
     )
-    .refine((value) => (value.length > 0 ? true : false), {
-      message: 'Please Select one language.',
+    .refine((value) => value.length <= 0, {
+      message: 'Please add at least one post',
     }),
 });
 
@@ -62,18 +51,16 @@ function AboutStudentsForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: '',
-      nickName: '',
-      country: '',
-      gender: '',
-      language: [],
+      avatar: '',
+      bio: '',
+      culture: '',
     },
   });
 
-  const onSubmit: SubmitHandler<any> = form.handleSubmit(async (values) => {
-    // createStudents(values)
-    router.push('/students/onboarding/qualities');
-  });
+  // const onSubmit: SubmitHandler<any> = form.handleSubmit(async (values) => {
+  //   // createStudents(values)
+  //
+  // });
   return (
     <>
       <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8">
@@ -94,7 +81,7 @@ function AboutStudentsForm() {
             >
               <FormField
                 control={form.control}
-                name="fullName"
+                name="avatar"
                 render={({ field }) => (
                   <FormItem className="flex justify-center flex-col items-center w-full">
                     <FormControl>
@@ -114,7 +101,7 @@ function AboutStudentsForm() {
               />
               <FormField
                 control={form.control}
-                name="nickName"
+                name="bio"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Write about yourself</FormLabel>
@@ -130,7 +117,7 @@ function AboutStudentsForm() {
               />
               <FormField
                 control={form.control}
-                name="birthday"
+                name="culture"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-1">
                     <FormLabel>
@@ -140,7 +127,10 @@ function AboutStudentsForm() {
                       they may learn.
                     </FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Share the richness of your culture. What would you like people to know? What is special about where you live?" />
+                      <Textarea
+                        placeholder="Share the richness of your culture. What would you like people to know? What is special about where you live?"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -148,7 +138,7 @@ function AboutStudentsForm() {
               />
               <FormField
                 control={form.control}
-                name="country"
+                name="culture"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
@@ -180,7 +170,8 @@ function AboutStudentsForm() {
       <BottomNavbar
         isBackButton={false}
         onContinue={() => {
-          // onSubmit(form.getValues())
+          router.push('/students/onboarding/qualities');
+          // onSubmit(form.getValues());
         }}
       ></BottomNavbar>
     </>

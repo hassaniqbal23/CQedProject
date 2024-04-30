@@ -8,7 +8,7 @@ export default function SchoolOnBoardingUpdatePassword() {
     <div className=" w-full h-screen">
       <TopNavbar showLogout={false} />
       <div className="max-w-xl mx-auto  p-5 flex justify-center items-center h-[80vh]  ">
-        <UpdatePassword />
+        <UpdatePassword updatePasswordSuccessLink={'/schools/dashboard'} />
       </div>
     </div>
   );

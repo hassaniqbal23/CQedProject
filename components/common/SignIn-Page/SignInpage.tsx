@@ -192,6 +192,8 @@ export function SignIn(props: SignInProps) {
                 variant="default"
                 size="sm"
                 className="w-96 text-white flex items-center"
+                loading={isLoading}
+                disabled={isLoading}
               >
                 Login
               </Button>

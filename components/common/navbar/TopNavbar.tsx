@@ -10,7 +10,11 @@ interface TopNavbarProps {
   showLogout?: boolean;
 }
 
-const TopNavbar: React.FC<TopNavbarProps> = ({ onLogout, className }) => {
+const TopNavbar: React.FC<TopNavbarProps> = ({
+  showLogout = true,
+  onLogout,
+  className,
+}) => {
   return (
     <div
       className={`w-full h-20 md:h-20 bg-white shadow-line border-b border-gray-200 flex justify-between items-center px-6 ${className}`}
@@ -23,17 +27,21 @@ const TopNavbar: React.FC<TopNavbarProps> = ({ onLogout, className }) => {
           alt="logo"
         />
       </div>
-      <div className="flex">
-        <Button
-          size={'sm'}
-          icon={<LogOut />}
-          iconPosition="left"
-          onClick={onLogout}
-          className=" font-montserrat font-semibold text-sm md:text-base ml-2 text-[#222] bg-[#ECEDF8] "
-        >
-          Logout
-        </Button>
-      </div>
+      {showLogout ? (
+        <div className="flex">
+          <Button
+            size={'sm'}
+            icon={<LogOut />}
+            iconPosition="left"
+            onClick={onLogout}
+            className=" font-montserrat font-semibold text-sm md:text-base ml-2 text-[#222] bg-[#ECEDF8] "
+          >
+            Logout
+          </Button>
+        </div>
+      ) : (
+        <> </>
+      )}
     </div>
   );
 };

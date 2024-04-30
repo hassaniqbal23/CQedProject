@@ -58,7 +58,6 @@ export const CreateProfile: React.FC = () => {
     (userData: ITeacherCreate) => TeacherCreate(userData),
     {
       onSuccess: (res) => {
-        toast.success(res.data.message);
         router.push('/teachers/onboarding/about-you');
       },
       onError: (error: any) => {
