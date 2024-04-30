@@ -1,7 +1,3 @@
 export default function SchoolTeachers() {
-    return (
-        <div>
-            SchoolTeachers
-        </div>
-    )
+  return <div>SchoolTeachers</div>;
 }

@@ -27,7 +27,7 @@ const formSchema = z.object({
 
 interface ForgetPasswordProp {
   onClick: () => void;
-  onSubmit?: (values: {email: string}) => void;
+  onSubmit?: (values: { email: string }) => void;
 }
 
 export function ForgetPassword(props: ForgetPasswordProp) {

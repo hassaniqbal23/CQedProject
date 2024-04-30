@@ -54,7 +54,7 @@ function Pagination({
             onClick={() => onPageChange(i)}
           >
             {i}
-          </Button>,
+          </Button>
         );
       } else if (
         i >= currentPage - showPagesAroundCurrentPage &&
@@ -68,7 +68,7 @@ function Pagination({
             onClick={() => onPageChange(i)}
           >
             {i}
-          </Button>,
+          </Button>
         );
       }
     }

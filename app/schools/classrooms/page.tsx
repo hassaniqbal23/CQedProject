@@ -1,7 +1,3 @@
 export default function SchoolClassRooms() {
-    return (
-        <div>
-            SchoolClassRooms
-        </div>
-    )
+  return <div>SchoolClassRooms</div>;
 }

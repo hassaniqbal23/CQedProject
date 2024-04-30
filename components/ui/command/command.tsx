@@ -16,7 +16,7 @@ const Command = forwardRef<
     ref={ref}
     className={cn(
       'flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground',
-      className,
+      className
     )}
     {...props}
   />
@@ -46,7 +46,7 @@ const CommandInput = forwardRef(
     }: React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input> & {
       onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     },
-    ref,
+    ref
   ) => (
     <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
       <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
@@ -54,13 +54,13 @@ const CommandInput = forwardRef(
         ref={ref as React.Ref<HTMLInputElement>}
         className={cn(
           'flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50',
-          className,
+          className
         )}
         onChange={onChange}
         {...props}
       />
     </div>
-  ),
+  )
 );
 
 CommandInput.displayName = CommandPrimitive.Input.displayName;
@@ -99,7 +99,7 @@ const CommandGroup = forwardRef<
     ref={ref}
     className={cn(
       'overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground',
-      className,
+      className
     )}
     {...props}
   />
@@ -127,7 +127,7 @@ const CommandItem = forwardRef<
     ref={ref}
     className={cn(
       'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      className,
+      className
     )}
     {...props}
   />
@@ -143,7 +143,7 @@ const CommandShortcut = ({
     <span
       className={cn(
         'ml-auto text-xs tracking-widest text-muted-foreground',
-        className,
+        className
       )}
       {...props}
     />

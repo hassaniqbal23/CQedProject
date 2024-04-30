@@ -1,4 +1,5 @@
 ## Introduction
+
 This is a repo for frontend QuoHR project. It is a web application that allows users to manage their HR processes. It is built using Next.js, a React framework. The backend code is in the `auoto` directory. The frontend code is in the `app` directory.
 
 ## Getting Started

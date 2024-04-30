@@ -20,12 +20,12 @@ import { Separator } from '@/components/ui/separator/separator';
 import { Heading } from '../Heading';
 import { Avatar } from '@/components/ui/avatar/avatar';
 import { LoginCarousel } from '@/components/ui/carousel/carousel';
-import {useMutation} from "react-query";
-import {IAuthentication} from "@/app/api/types";
-import {LoginAPI} from "@/app/api/auth";
-import {toast} from "react-toastify";
-import {storeToken, storeUserId} from "@/app/utils/encryption";
-import {updateToken} from "@/app/utils/http";
+import { useMutation } from 'react-query';
+import { IAuthentication } from '@/app/api/types';
+import { LoginAPI } from '@/app/api/auth';
+import { toast } from 'react-toastify';
+import { storeToken, storeUserId } from '@/app/utils/encryption';
+import { updateToken } from '@/app/utils/http';
 
 interface ICarouselItems {
   title: string;
@@ -80,26 +80,25 @@ export function SignIn(props: SignInProps) {
   } = form;
 
   const { mutate: userLogin, isLoading } = useMutation(
-      (userData: IAuthentication) => LoginAPI(userData),
-      {
-        onSuccess: (res) => {
-          toast.success(res.data.message);
-          const response = res.data.result;
-          router.push(props.loginSuccessLink);
-          storeToken(response?.token);
-          storeUserId(response?.user?.id);
-          updateToken(response?.token);
-          reset();
-        },
-        onError: (error: any) => {
-          console.log(error, 'Error =====> log');
-        },
-      }
+    (userData: IAuthentication) => LoginAPI(userData),
+    {
+      onSuccess: (res) => {
+        toast.success(res.data.message);
+        const response = res.data.result;
+        router.push(props.loginSuccessLink);
+        storeToken(response?.token);
+        storeUserId(response?.user?.id);
+        updateToken(response?.token);
+        reset();
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
   );
 
-
   const onSubmit: SubmitHandler<IAuthentication> = async (
-      data: IAuthentication
+    data: IAuthentication
   ) => {
     userLogin(data);
   };

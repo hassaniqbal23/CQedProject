@@ -1,18 +1,18 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import Delete from "./DeleteAlert";
-import { Button } from "@/components/ui";
-import Modal from "../Modal/Modal";
-import { useState } from "react";
+import Delete from './DeleteAlert';
+import { Button } from '@/components/ui';
+import Modal from '../Modal/Modal';
+import { useState } from 'react';
 
 const meta: Meta<typeof Delete> = {
-  title: "UI/Modal",
+  title: 'UI/Modal',
   component: Delete,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 } satisfies Meta<typeof Delete>;
 
 export default meta;
@@ -29,9 +29,9 @@ export const DeleteAlert: Story = {
     };
     return (
       <>
-        <h3 onClick={() => setOpen(true)} className={"text-red-700"}>
-          {" "}
-          Open Delete Model{" "}
+        <h3 onClick={() => setOpen(true)} className={'text-red-700'}>
+          {' '}
+          Open Delete Model{' '}
         </h3>
         <Delete {...value} />
       </>
@@ -40,10 +40,10 @@ export const DeleteAlert: Story = {
   args: {
     isVisible: false,
     onClose: () => {
-      console.log("close");
+      console.log('close');
     },
     onConfirm() {
-      console.log("confirm");
+      console.log('confirm');
     },
   },
 };

@@ -23,11 +23,11 @@ interface ModelProps {
   color?: string;
   loader?: boolean;
   width?: string;
-  imgParent?: string
-  height?:string;
+  imgParent?: string;
+  height?: string;
   img?: React.ReactNode;
-  MainHeadingClass?:string;
-  crossIcon?:string;
+  MainHeadingClass?: string;
+  crossIcon?: string;
 }
 export const Model: FC<ModelProps> = ({
   show,
@@ -68,14 +68,12 @@ export const Model: FC<ModelProps> = ({
         className={`${width} ${height} fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white dark:bg-slate-900 rounded-2xl z-10`}
       >
         <div className="bg-[#FFFFFF] dark:bg-slate-800 rounded-2xl p-6  md:p-6 z-100">
-     
           <div
             className={`${
               modalHeader ? modalHeader : 'flex justify-between items-center'
             } `}
           >
-            {img && <div className={`${imgParent}`}>{img}
-            </div>}
+            {img && <div className={`${imgParent}`}>{img}</div>}
 
             <Heading
               text={modalTitle}
