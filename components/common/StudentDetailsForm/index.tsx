@@ -68,7 +68,6 @@ function StudentsDetailsFrom() {
     (studentsData: IStudentInfo) => StudentsCreate(studentsData),
     {
       onSuccess: (res: any) => {
-        toast.success(res.data.message);
         const response = res.data.result;
         router.push('/students/onboarding/about-user');
         storeUserId(response?.user?.id);

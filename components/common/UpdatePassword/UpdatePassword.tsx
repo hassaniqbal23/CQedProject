@@ -105,7 +105,13 @@ export function UpdatePassword(props: UpdatePasswordProps) {
                 </FormItem>
               )}
             />
-            <Button type="submit" variant={'default'} className="w-full mt-4">
+            <Button
+              type="submit"
+              variant={'default'}
+              className="w-full mt-4"
+              loading={isLoading}
+              disabled={isLoading}
+            >
               Continue
             </Button>
           </form>
