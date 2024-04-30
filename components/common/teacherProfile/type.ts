@@ -1,7 +1,7 @@
-export interface ITeacherLogin {
+export interface ITeacherCreate {
   fullname: string;
   email: string;
   country: string;
   gender: string;
-  languages: string;
+  language: string;
 }
