@@ -1,5 +1,5 @@
 'use client';
-import { FC, ReactNode, useMemo } from 'react';
+import { FC, ReactNode, Suspense, useMemo } from 'react';
 import Sidebar from '../common/sidebar/sidebar';
 import { usePathname } from 'next/navigation';
 import Navbar from '../common/navbar/MainBar';
@@ -57,7 +57,11 @@ export const SchoolLayout: FC<IProps> = ({ children }) => {
   ];
 
   if (showLayout) {
-    return <>{children}</>;
+    return (
+      <>
+        <Suspense>{children}</Suspense>
+      </>
+    );
   }
 
   return (
