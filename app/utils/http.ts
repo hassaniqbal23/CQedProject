@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { getAccessToken, removeToken, removeUserId } from './encryption';
 
-
 const createHttpInstance = () => {
-  let baseURL = "https://cqed-dev.staginguconnect.com/"
+  let baseURL = process.env.NEXT_PUBLIC_API_HOST;
   if (process.env.NODE_ENV === 'production') {
-    baseURL = ""
+    baseURL = '';
   }
   const http = axios.create({
     baseURL,
@@ -23,7 +22,7 @@ const createHttpInstance = () => {
         // redirectToLoginPage();
       }
       return Promise.reject(error);
-    },
+    }
   );
 
   return http;

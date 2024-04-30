@@ -7,6 +7,7 @@ interface BottomNavbarProps {
   onContinue: () => void;
   isBackButton?: boolean;
   buttonType?: ButtonProps['type'];
+  buttonLoading?: boolean;
 }
 
 const BottomNavbar: React.FC<BottomNavbarProps> = ({
@@ -14,6 +15,7 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
   onContinue,
   isBackButton,
   buttonType,
+  buttonLoading,
 }) => {
   return (
     <div
@@ -31,6 +33,7 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
       <Button
         type={buttonType}
         onClick={onContinue}
+        loading={buttonLoading}
         className="rounded-2xl bg-yellow-300 shadow-inner border border-yellow-300 flex justify-center items-center py-3 px-7 gap-7 text-blue-600 font-montserrat font-bold text-lg uppercase hover:bg-slate-400 hover:text-white cursor-pointer mr-6 w-auto"
       >
         Continue

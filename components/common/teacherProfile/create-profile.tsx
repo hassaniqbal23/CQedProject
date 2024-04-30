@@ -15,10 +15,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormInput } from '../From/FormInput';
-import { ITeacherLogin } from './type';
+import { ITeacherCreate } from './type';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
 import { SelectInput } from '../From/Select';
 import { DropdownMenuPropsOptions, countrySelectOptions } from '@/lib/constant';
+import { useMutation } from 'react-query';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { TeacherCreate } from '@/app/api/teachers';
 
 const formSchema = z.object({
   fullname: z.string().min(2).max(50).nonempty('Name is required'),
@@ -27,33 +31,46 @@ const formSchema = z.object({
     .email('Invalid email address')
     .nonempty('Email address is required'),
   country: z.string().nonempty('Country is required'),
-  languages: z.string().min(1, 'Language is required').optional(),
+  language: z.string().min(1, 'Language is required').optional(),
   gender: z.string().nonempty('Gender is required'),
 });
 
 export const CreateProfile: React.FC = () => {
-  const form = useForm<ITeacherLogin>({
+  const form = useForm<ITeacherCreate>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullname: '',
       email: '',
       country: '',
       gender: '',
-      languages: '',
+      language: '',
     },
   });
 
+  const router = useRouter();
   const {
     reset,
     handleSubmit,
     formState: { errors, isValid },
   } = form;
 
-  const onSubmit: SubmitHandler<ITeacherLogin> = async (
-    data: ITeacherLogin
+  const { mutate: createTeacher, isLoading: isCreating } = useMutation(
+    (userData: ITeacherCreate) => TeacherCreate(userData),
+    {
+      onSuccess: (res) => {
+        toast.success(res.data.message);
+        router.push('/teachers/onboarding/about-you');
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
+
+  const onSubmit: SubmitHandler<ITeacherCreate> = async (
+    data: ITeacherCreate
   ) => {
-    console.log(data, 'submitted data');
-    // userLogin(data);
+    createTeacher(data);
   };
 
   return (
@@ -95,7 +112,7 @@ export const CreateProfile: React.FC = () => {
                     form={form}
                     name="email"
                     placeholder="e.g example@12"
-                    label="Email Adress"
+                    label="Email Address"
                   />
                 </div>
                 <div className="mb-4">
@@ -163,7 +180,7 @@ export const CreateProfile: React.FC = () => {
                 <div className="mb-4">
                   <FormField
                     control={form.control}
-                    name="languages"
+                    name="language"
                     render={({ field }) => {
                       return (
                         <>
@@ -178,7 +195,7 @@ export const CreateProfile: React.FC = () => {
                               const selectlanguage = value
                                 .map((item: any) => item.value)
                                 .join(',');
-                              form.setValue('languages', selectlanguage);
+                              form.setValue('language', selectlanguage);
                               field.onChange(selectlanguage);
                             }}
                           />
@@ -193,6 +210,7 @@ export const CreateProfile: React.FC = () => {
               <div className="fixed bottom-0 w-full z-50 left-0">
                 <BottomNavbar
                   buttonType="submit"
+                  buttonLoading={isCreating}
                   onContinue={() => console.log('checking')}
                   onBackButton={function (): void {
                     throw new Error('Function not implemented.');
