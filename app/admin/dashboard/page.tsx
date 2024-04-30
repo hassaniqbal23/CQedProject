@@ -5,8 +5,9 @@ import SchoolTable from '@/components/common/SchoolsTable';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
 import Link from 'next/link';
 import { AdminWelCome } from './(components)/admin';
+import http from '@/app/utils/http';
 
-const data = [
+const data1 = [
   {
     id: 1,
     SchoolName: 'St. Marys High School',
@@ -113,9 +114,22 @@ const cardData = [
 ];
 
 const Dashboard = () => {
+  const [data, setData] = React.useState([]);
+  const [invitedSchools, setInvitedSchools] = React.useState([]);
+
+  // fetch data
+  React.useEffect(() => {
+    http.get('/schools/all-schools').then((res) => {
+      setData(res.data.data || []);
+    });
+    http.get('/invitation/all-invites').then((res) => {
+      setInvitedSchools(res.data.data || []);
+    });
+  }, []);
+
   return (
     <div>
-      {data ? (
+      {true ? (
         <>
           <AdminWelCome />
         </>
@@ -130,7 +144,7 @@ const Dashboard = () => {
                 <h2 className="font-bold text-lg">Overview</h2>
                 <ChipSelector
                   variant="link"
-                  defaultValue="days"
+                  defaultValue={['days']}
                   rounded={true}
                   options={[
                     {
@@ -168,7 +182,7 @@ const Dashboard = () => {
                 href={'/admin/schools'}
                 className="text-primary font-semibold"
               >
-                view all
+                View All
               </Link>
             </div>
             <SchoolTable data={data} />

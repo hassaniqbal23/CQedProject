@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { DashboardWelcome } from '@/components/common/dashboard/welcome/welcome';
 import { SendEmail } from '@/components/index';
 import { useMutation } from 'react-query';
-import { toast } from 'react-toastify';
 import { Invite } from '@/app/api/invitations';
 
 const icons = [
@@ -22,7 +21,6 @@ export const AdminWelCome = () => {
     (userData: { emails: string; type: string }) => Invite(userData),
     {
       onSuccess: (res) => {
-        toast.success(res.data.message);
         setInviteSchool(false);
       },
       onError: (error: any) => {

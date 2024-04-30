@@ -189,6 +189,7 @@ export function SchoolDetailsForm() {
       </div>
       <BottomNavbar
         onBackButton={() => {}}
+        buttonLoading={isLoading}
         onContinue={async () => {
           let validate = await form.trigger();
           let token = params?.get('token');

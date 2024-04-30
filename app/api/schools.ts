@@ -12,4 +12,4 @@ export interface AcceptInvite {
 }
 
 export const AcceptInvite = (payload: AcceptInvite) =>
-  http.post('/api/schools/create-school', payload);
+  http.post('/schools/create-school', payload);

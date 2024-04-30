@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getAccessToken, removeToken, removeUserId } from './encryption';
+import { toast } from 'react-toastify';
 
 const createHttpInstance = () => {
   let baseURL = process.env.NEXT_PUBLIC_API_HOST;
@@ -16,8 +17,20 @@ const createHttpInstance = () => {
   }
 
   http.interceptors.response.use(
-    (response) => response,
+    (response) => {
+      const show_message = response.data.show_message || false;
+      if (show_message) {
+        toast.success(response.data.message);
+      }
+      return response;
+    },
     (error) => {
+      const message =
+        error.response?.data?.message ||
+        error.response.data.error ||
+        error.message ||
+        'Something went wrong';
+      toast.error(message);
       if (error.response && error.response.status === 401) {
         // redirectToLoginPage();
       }
