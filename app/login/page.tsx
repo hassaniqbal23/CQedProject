@@ -85,7 +85,6 @@ export default function Login() {
             <Image alt="logo" width={150} height={150} src="/logo.svg" />
           </div>
           <div className="text-center">
-            <h1 className="font-semibold text-lg">Login</h1>
             <p>Admin login</p>
           </div>
           <Form {...form}>
@@ -95,7 +94,8 @@ export default function Login() {
                   required={true}
                   form={form}
                   name="name"
-                  label="Username"
+                  label="Email Address"
+                  placeholder={'Enter your email address'}
                 />
               </div>
               <div className="mb-6">
@@ -105,6 +105,7 @@ export default function Login() {
                     form={form}
                     name="password"
                     label="Password"
+                    placeholder={'Enter your password'}
                   />
                 </div>
               </div>

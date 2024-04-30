@@ -7,6 +7,7 @@ import { IoEllipsisVertical } from 'react-icons/io5';
 
 export interface SchoolTableProps {
   data: any;
+  noDataMessage?: string;
 }
 
 function SchoolTable(props: SchoolTableProps) {
@@ -15,6 +16,7 @@ function SchoolTable(props: SchoolTableProps) {
       <DataTable
         data={props.data}
         selection={true}
+        noDataMessage={props.noDataMessage || 'No Schools'}
         columns={[
           {
             label: 'School Name',

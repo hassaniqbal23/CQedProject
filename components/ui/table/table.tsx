@@ -112,6 +112,7 @@ interface DataTableProps {
   }[];
   data: any[];
   selection?: boolean;
+  noDataMessage?: string;
 }
 
 const DataTable = (props: DataTableProps) => {
@@ -190,6 +191,13 @@ const DataTable = (props: DataTableProps) => {
             ))}
           </TableRow>
         ))}
+        {props.data.length === 0 && (
+          <TableRow>
+            <TableCell colSpan={99} className={'text-center'}>
+              {props.noDataMessage || 'No data'}
+            </TableCell>
+          </TableRow>
+        )}
       </TableBody>
     </Table>
   );
