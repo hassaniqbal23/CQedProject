@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { useMutation } from 'react-query';
-import { toast } from 'react-toastify';
 import {
   AcceptTeacherInvitation,
   IAcceptTeacherInvitation,
@@ -48,6 +47,9 @@ export default function TeacherAcceptInvite({
         type: userType,
       };
       acceptTeacherInvitation(payload);
+    } else {
+      setIsLoading(false);
+      router.push('/teachers/sign-in');
     }
   }, []);
 

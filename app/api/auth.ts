@@ -14,3 +14,5 @@ export const CreateStudentUser = (payload: IAuthentication) =>
 
 export const UpdateUserPassword = (payload: UpdatePasswordBody) =>
   http.patch('/password/update-password', payload);
+
+export const GetUserInfomation = (id: string) => http.get(`/users/${id}/user`);

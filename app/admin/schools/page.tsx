@@ -48,8 +48,7 @@ const Schools = () => {
   return (
     <div>
       <div className="w-full py-3 mt-7">
-        <div className="w-full flex justify-between mb-4">
-          <h2 className="font-semibold">Schools</h2>
+        <div className="w-full flex justify-end mb-4">
           <Button
             className="font-semibold"
             onClick={() => setInviteSchool(true)}

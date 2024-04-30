@@ -67,3 +67,10 @@ export const removeUserId = (): void => {
     localStorage.removeItem(NEXT_AUTH_USERID);
   }
 };
+
+export const getUserIdLocalStorage = (): string | null => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('userId');
+  }
+  return null;
+};
