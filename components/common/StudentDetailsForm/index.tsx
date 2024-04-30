@@ -27,10 +27,10 @@ import { StudentsCreate } from '@/app/api/students';
 import { IStudentInfo } from '@/app/api/types';
 
 const formSchema = z.object({
-  fullName: z.string().refine((value) => value.trim() !== '', {
+  fullname: z.string().refine((value) => value.trim() !== '', {
     message: 'Please enter your Full name',
   }),
-  nickname: z.string().refine((value) => value.trim() !== '', {
+  nick_name: z.string().refine((value) => value.trim() !== '', {
     message: 'Please enter your Nickname.',
   }),
   birthday: z
@@ -56,8 +56,8 @@ function StudentsDetailsFrom() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: '',
-      nickname: '',
+      fullname: '',
+      nick_name: '',
       country: '',
       gender: '',
       language: '',
@@ -70,7 +70,7 @@ function StudentsDetailsFrom() {
       onSuccess: (res: any) => {
         toast.success(res.data.message);
         const response = res.data.result;
-        router.push('/student/onboarding/about-user');
+        router.push('/students/onboarding/about-user');
         storeUserId(response?.user?.id);
         form.reset();
       },
@@ -107,7 +107,7 @@ function StudentsDetailsFrom() {
               <div className=" grid md:grid-cols-2 md:gap-6">
                 <FormField
                   control={form.control}
-                  name="fullName"
+                  name="fullname"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Full name</FormLabel>
@@ -124,10 +124,10 @@ function StudentsDetailsFrom() {
                 />
                 <FormField
                   control={form.control}
-                  name="nickname"
+                  name="nick_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Set a nickname</FormLabel>
+                      <FormLabel>Set nickname</FormLabel>
                       <FormControl>
                         <Input placeholder="e.g example@12" {...field} />
                       </FormControl>

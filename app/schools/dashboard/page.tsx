@@ -49,6 +49,7 @@ export default function SchoolDashboard() {
         open={inviteTeacherModal}
         onSubmit={onSubmit}
         inviteButtonTitle={'Invite Teachers'}
+        headerTitle={'Invite Teachers'}
       />
     </div>
   );

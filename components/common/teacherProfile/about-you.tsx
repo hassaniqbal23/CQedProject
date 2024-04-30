@@ -63,7 +63,7 @@ export const AboutYou: React.FC = () => {
   const onSubmit: SubmitHandler<IAboutYouProps> = async (
     data: IAboutYouProps
   ) => {
-    router.push('/teachers/onboarding/welcome');
+    router.push('/teachers/onboarding/update-password');
   };
 
   return (

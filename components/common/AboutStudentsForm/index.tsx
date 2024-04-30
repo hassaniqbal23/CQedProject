@@ -26,9 +26,12 @@ const formSchema = z.object({
   bio: z.string().refine((value) => value.trim() !== '', {
     message: 'Please add a bio',
   }),
-  avatar: z.string().refine((value) => value.trim() !== '', {
-    message: 'Please add a profile picture',
-  }),
+  avatar: z
+    .string()
+    // .refine((value) => value.trim() !== '', {
+    //   message: 'Please add a profile picture',
+    // })
+    .optional(),
   culture: z.string().refine((value) => value.trim() !== '', {
     message: 'Please tell us about your culture',
   }),
@@ -54,10 +57,10 @@ function AboutStudentsForm() {
     },
   });
 
-  const onSubmit: SubmitHandler<any> = form.handleSubmit(async (values) => {
-    // createStudents(values)
-    router.push('/students/onboarding/qualities');
-  });
+  // const onSubmit: SubmitHandler<any> = form.handleSubmit(async (values) => {
+  //   // createStudents(values)
+  //
+  // });
   return (
     <>
       <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8">
@@ -114,7 +117,7 @@ function AboutStudentsForm() {
               />
               <FormField
                 control={form.control}
-                // name="culture"
+                name="culture"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-1">
                     <FormLabel>
@@ -167,7 +170,8 @@ function AboutStudentsForm() {
       <BottomNavbar
         isBackButton={false}
         onContinue={() => {
-          onSubmit(form.getValues());
+          router.push('/students/onboarding/qualities');
+          // onSubmit(form.getValues());
         }}
       ></BottomNavbar>
     </>
