@@ -50,7 +50,7 @@ const ChipSelector = ({
   };
 
   return (
-    <div className={`flex gap-2 items-start ${multiSelect && 'flex-wrap'}`}>
+    <div className={`flex gap-2 items-start ${multiSelect && 'flex-wrap justify-center'}`}>
       {options.map((chip, index) => (
         <Chip
           key={index}
