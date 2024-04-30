@@ -115,21 +115,17 @@ const cardData = [
 
 const Dashboard = () => {
   const [data, setData] = React.useState([]);
-  const [invitedSchools, setInvitedSchools] = React.useState([]);
 
   // fetch data
   React.useEffect(() => {
     http.get('/schools/all-schools').then((res) => {
       setData(res.data.data || []);
     });
-    http.get('/invitation/all-invites').then((res) => {
-      setInvitedSchools(res.data.data || []);
-    });
   }, []);
 
   return (
     <div>
-      {data.length == 0 && invitedSchools.length === 0 ? (
+      {data.length == 0 ? (
         <>
           <AdminWelCome />
         </>
