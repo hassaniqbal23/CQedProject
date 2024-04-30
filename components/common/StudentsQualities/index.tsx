@@ -10,7 +10,7 @@ function StudentsQualities() {
   const router = useRouter();
   return (
     <>
-      <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8">
+      <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8 h-[calc(100vh_-_30px)] ">
         <div className="my-8">
           <Progressbar heading="You are almost there." percentage={75} />
         </div>
