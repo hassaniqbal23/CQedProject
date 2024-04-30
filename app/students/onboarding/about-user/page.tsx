@@ -1,8 +1,8 @@
 'use client';
 
-import TopNavbar from '@/components/common/navbar/TopNavbar';
-import React from 'react';
-import AboutStudentsForm from '@/components/common/AboutStudentsForm';
+import React from 'react'
+import TopNavbar from '@/components/common/navbar/TopNavbar'
+import AboutStudentsForm from '@/components/common/AboutStudentsForm'
 
 function AboutUserInfo() {
   return (

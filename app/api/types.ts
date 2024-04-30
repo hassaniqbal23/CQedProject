@@ -16,5 +16,5 @@ export interface IStudentInfo {
   birthday: Date;
   country: any;
   gender: string;
-  language: any[];
+  language: string;
 }
