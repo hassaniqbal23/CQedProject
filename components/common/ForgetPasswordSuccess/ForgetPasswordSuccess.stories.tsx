@@ -11,13 +11,12 @@ const meta = {
   argTypes: {},
 } satisfies Meta<typeof ForgetPasswordSuccess>;
 
-
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    email: "john@domain.com",
-    backLink: "/login",
-  }
+    email: 'john@domain.com',
+    backLink: '/login',
+  },
 };

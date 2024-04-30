@@ -1,21 +1,21 @@
-"use client";
-import { useEffect, useState, ReactNode } from "react";
-import { useRouter } from "next/navigation";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "./globals.css";
-import { FormProvider, useForm } from "react-hook-form";
-import { ThemeProvider } from "@/components/theme-provider";
-import { getAccessToken } from "./utils/encryption";
-import { updateToken } from "./utils/http";
-import { GlobalProvider } from "./gobalContext/globalContext";
-import { Toaster } from "@/components/ui";
-import localFont from "next/font/local";
+'use client';
+import { useEffect, useState, ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './globals.css';
+import { FormProvider, useForm } from 'react-hook-form';
+import { ThemeProvider } from '@/components/theme-provider';
+import { getAccessToken } from './utils/encryption';
+import { updateToken } from './utils/http';
+import { GlobalProvider } from './gobalContext/globalContext';
+import { Toaster } from '@/components/ui';
+import localFont from 'next/font/local';
 
 const myFont = localFont({
-  src: "../public/fonts/Montserrat-Regular.ttf",
-  display: "swap",
+  src: '../public/fonts/Montserrat-Regular.ttf',
+  display: 'swap',
 });
 
 export default function RootLayout({ children }: { children: ReactNode }) {

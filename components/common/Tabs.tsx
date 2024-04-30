@@ -21,7 +21,7 @@ export const Tabs: FC<IProps> = ({ customTabs }) => {
 
   const handleRouteChange = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    routeLink: string,
+    routeLink: string
   ) => {
     e.preventDefault();
     route.push(routeLink);

@@ -1,5 +1,5 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import {
   Form,
   FormControl,
@@ -10,11 +10,11 @@ import {
 } from '@/components/ui';
 import { Input } from '@/components/ui';
 import { useForm } from 'react-hook-form';
-import {useMutation} from "react-query";
-import {AcceptInvite} from "@/app/api/schools";
-import {useRouter, useSearchParams} from 'next/navigation'
-import {useEffect} from "react";
-import BottomNavbar from "@/components/common/navbar/bottomNavbar";
+import { useMutation } from 'react-query';
+import { AcceptInvite } from '@/app/api/schools';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+import BottomNavbar from '@/components/common/navbar/bottomNavbar';
 
 const formSchema = z.object({
   name: z.string().refine((value) => value.trim() !== '', {
@@ -23,17 +23,17 @@ const formSchema = z.object({
   email: z
     .string()
     .email()
-    .refine((value) => value.trim() !== "", {
-      message: "Please enter your email address.",
+    .refine((value) => value.trim() !== '', {
+      message: 'Please enter your email address.',
     }),
   phone: z.string().refine((value) => value.trim() !== '', {
     message: 'Please enter your phone number.',
   }),
-    country: z.string().refine((value) => value.trim() !== '', {
+  country: z.string().refine((value) => value.trim() !== '', {
     message: 'Please select your Country.',
   }),
-  state: z.string().refine((value) => value.trim() !== "", {
-    message: " Please select your State.",
+  state: z.string().refine((value) => value.trim() !== '', {
+    message: ' Please select your State.',
   }),
   address: z.string().refine((value) => value.trim() !== '', {
     message: ' Please enter School address.',
@@ -41,9 +41,9 @@ const formSchema = z.object({
 });
 
 export function SchoolDetailsForm() {
-    const params = useSearchParams()
-    const router = useRouter()
-    const form = useForm<z.infer<typeof formSchema>>({
+  const params = useSearchParams();
+  const router = useRouter();
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
@@ -55,19 +55,19 @@ export function SchoolDetailsForm() {
     },
   });
 
-    const { mutate: acceptSchoolInvite, isLoading } = useMutation(
-        (data: AcceptInvite) => AcceptInvite(data),
-        {
-            onSuccess: (res) => {
-                // const response = res.data.result;
-                // router.push('/admin/dashboard');
-                // form.reset();
-            },
-            onError: (error: any) => {
-                console.log(error, 'Error =====> log');
-            },
-        }
-    );
+  const { mutate: acceptSchoolInvite, isLoading } = useMutation(
+    (data: AcceptInvite) => AcceptInvite(data),
+    {
+      onSuccess: (res) => {
+        // const response = res.data.result;
+        // router.push('/admin/dashboard');
+        // form.reset();
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
 
   const onSubmit = form.handleSubmit((values, field: any) => {
     console.log(values);
@@ -184,24 +184,23 @@ export function SchoolDetailsForm() {
                 )}
               />
             </form>
-
           </Form>
         </div>
       </div>
-        <BottomNavbar
-            onBackButton={() => {}}
-            onContinue={async() => {
-                let validate =await form.trigger()
-                let token = params?.get('token')
+      <BottomNavbar
+        onBackButton={() => {}}
+        onContinue={async () => {
+          let validate = await form.trigger();
+          let token = params?.get('token');
 
-                if (validate && token) {
-                    acceptSchoolInvite({
-                        ...form.getValues(),
-                        inviteToken: token
-                    })
-                }
-            }}
-        ></BottomNavbar>
+          if (validate && token) {
+            acceptSchoolInvite({
+              ...form.getValues(),
+              inviteToken: token,
+            });
+          }
+        }}
+      ></BottomNavbar>
     </>
   );
 }

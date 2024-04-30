@@ -1,5 +1,5 @@
-import {SignIn} from "@/components/common/SignIn-Page/SignInpage";
+import { SignIn } from '@/components/common/SignIn-Page/SignInpage';
 
 export default function SchoolSignIn() {
-    return (<SignIn forgetPasswordLink={'/students/forget-password'} ></SignIn>)
+  return <SignIn forgetPasswordLink={'/students/forget-password'}></SignIn>;
 }

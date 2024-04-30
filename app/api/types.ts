@@ -1,4 +1,3 @@
-
 export interface IAuthentication {
   name: string;
   password: string | number;
@@ -6,16 +5,16 @@ export interface IAuthentication {
 }
 
 export interface IRegisterFrom {
-  name: string,
-  email: string,
-  password: string,
+  name: string;
+  email: string;
+  password: string;
 }
 
 export interface IStudentInfo {
-  fullName: string,
-  nickname : string,
-  birthday : Date,
+  fullName: string;
+  nickname: string;
+  birthday: Date;
   country: any;
   gender: string;
-  language: any[]
+  language: any[];
 }

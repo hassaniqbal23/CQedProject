@@ -1,15 +1,15 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import CountrySelectDropdown from "./CountryDropdown";
+import CountrySelectDropdown from './CountryDropdown';
 
 const meta: Meta<typeof CountrySelectDropdown> = {
-  title: "Forms/CountryDropdown",
+  title: 'Forms/CountryDropdown',
   component: CountrySelectDropdown,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 } satisfies Meta<typeof CountrySelectDropdown>;
 
 export default meta;
@@ -19,28 +19,28 @@ export const Default: Story = {
   args: {
     options: [
       {
-        name: "Pakistan",
-        countryCode: "US",
-        flagUrl: "/assets/flags/pakistanFlagLogo.svg",
+        name: 'Pakistan',
+        countryCode: 'US',
+        flagUrl: '/assets/flags/pakistanFlagLogo.svg',
       },
       {
-        name: "India",
-        countryCode: "GB",
-        flagUrl: "/assets/flags/indiaFlagLogo.svg",
+        name: 'India',
+        countryCode: 'GB',
+        flagUrl: '/assets/flags/indiaFlagLogo.svg',
       },
       {
-        name: "United Kingdom",
-        countryCode: "IN",
-        flagUrl: "/assets/flags/UnFlag.svg",
+        name: 'United Kingdom',
+        countryCode: 'IN',
+        flagUrl: '/assets/flags/UnFlag.svg',
       },
       {
-        name: "Saudi Arabia",
-        countryCode: "CN",
-        flagUrl: "/assets/flags/sudiaFlag.svg",
+        name: 'Saudi Arabia',
+        countryCode: 'CN',
+        flagUrl: '/assets/flags/sudiaFlag.svg',
       },
     ],
 
-    onChange: (country) => console.log("Selected country:", country),
-    label: "Select your country",
+    onChange: (country) => console.log('Selected country:', country),
+    label: 'Select your country',
   },
 };

@@ -8,9 +8,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  Separator
-} from "@/components/ui";
-import React from "react";
+  Separator,
+} from '@/components/ui';
+import React from 'react';
 
 interface ModalProps {
   children: React.ReactNode;
@@ -40,7 +40,7 @@ function Modal({
   onOpenChange,
 }: ModalProps) {
   return (
-    <Dialog open={isVisible } onOpenChange={onOpenChange}>
+    <Dialog open={isVisible} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{openModalButton}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -54,18 +54,18 @@ function Modal({
           )}
         </DialogHeader>
         <Separator className="mb-3" />
-           {children}
+        {children}
         {footer === true ? (
           <DialogFooter>
             {showFooterCloseButton && (
               <DialogClose asChild>
-                <Button type="button" variant={"ghost"}>
+                <Button type="button" variant={'ghost'}>
                   Close
                 </Button>
               </DialogClose>
             )}
             <DialogClose asChild>
-              {typeof footerOkButton === "string" ? (
+              {typeof footerOkButton === 'string' ? (
                 <Button type="button" onClick={onOkClick}>
                   {footerOkButton}
                 </Button>
