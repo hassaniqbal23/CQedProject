@@ -10,7 +10,8 @@
     "lint": "next lint",
     "test": "jest --config=jest.config.ts",
     "storybook": "storybook dev  --debug-webpack -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prettier":  "prettier --write .",
   },
   "dependencies": {
     "@babel/core": "^7.0.0",
