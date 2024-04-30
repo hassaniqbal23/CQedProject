@@ -11,31 +11,50 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui';
+import { useMutation } from 'react-query';
+import { UpdatePasswordBody, UpdateUserPassword } from '@/app/api/auth';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   password: z.string().min(8, {
     message: 'Password should be at least 8 characters',
   }),
 
-  confirmPassword: z.string().min(8, {
+  confirm_password: z.string().min(8, {
     message: 'Confirm Password should be at least 8 characters',
   }),
 });
 
-export function UpdatePassword() {
+export interface UpdatePasswordProps {
+  updatePasswordSuccessLink: string;
+}
+
+export function UpdatePassword(props: UpdatePasswordProps) {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       password: '',
-      confirmPassword: '',
+      confirm_password: '',
     },
   });
 
+  const { mutate, isLoading } = useMutation(
+    (data: UpdatePasswordBody) => UpdateUserPassword(data),
+    {
+      onSuccess: (res) => {
+        router.push(props.updatePasswordSuccessLink);
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
+
   const onSubmit = form.handleSubmit((values) => {
-    console.log(values);
+    mutate(values);
   });
 
   return (
@@ -70,7 +89,7 @@ export function UpdatePassword() {
 
             <FormField
               control={form.control}
-              name="confirmPassword"
+              name="confirm_password"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>

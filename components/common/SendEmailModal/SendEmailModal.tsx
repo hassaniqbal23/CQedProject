@@ -13,6 +13,7 @@ interface SendEmailProps {
   setOpen?: (value: boolean) => void;
   inviteButtonTitle?: string;
   inviteLoading?: boolean;
+  headerTitle?: string;
 }
 
 const emailValidation = (emails: string) => {
@@ -40,6 +41,7 @@ export const SendEmail: FC<SendEmailProps> = ({
   setOpen,
   inviteButtonTitle,
   inviteLoading,
+  headerTitle = 'Invite School',
 }: SendEmailProps) => {
   const form = useForm<any>({
     resolver: zodResolver(schema),
@@ -62,7 +64,7 @@ export const SendEmail: FC<SendEmailProps> = ({
         setOpen && setOpen(false);
       }}
       header={true}
-      headerTitle="Invite School"
+      headerTitle={headerTitle}
       footerOkButton="Invite School"
       showFooterCloseButton={false}
       footer={false}

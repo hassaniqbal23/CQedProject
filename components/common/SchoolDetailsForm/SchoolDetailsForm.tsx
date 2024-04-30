@@ -15,6 +15,8 @@ import { AcceptInvite } from '@/app/api/schools';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import BottomNavbar from '@/components/common/navbar/bottomNavbar';
+import { storeToken, storeUserId } from '@/app/utils/encryption';
+import { updateToken } from '@/app/utils/http';
 
 const formSchema = z.object({
   name: z.string().refine((value) => value.trim() !== '', {
@@ -59,9 +61,11 @@ export function SchoolDetailsForm() {
     (data: AcceptInvite) => AcceptInvite(data),
     {
       onSuccess: (res) => {
-        // const response = res.data.result;
-        // router.push('/admin/dashboard');
-        // form.reset();
+        storeToken(res.data?.token);
+        storeUserId(res?.data?.data?.id);
+        updateToken(res?.data.token);
+        router.push('/schools/onboarding/update-password');
+        form.reset();
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
@@ -75,7 +79,7 @@ export function SchoolDetailsForm() {
 
   return (
     <>
-      <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8">
+      <div className="flex flex-col max-w-3xl mx-auto">
         <div className="flex flex-col justify-center items-center mb-4">
           <h1
             className="text-[#4146B8] font-bold text-2xl
