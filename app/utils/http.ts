@@ -3,10 +3,15 @@ import { getAccessToken, removeToken, removeUserId } from './encryption';
 import { toast } from 'react-toastify';
 
 const createHttpInstance = () => {
-  let baseURL = process.env.NEXT_PUBLIC_API_HOST;
+  let baseURL = process.env.NEXT_PUBLIC_API_HOST || '';
   if (process.env.NODE_ENV === 'production') {
     baseURL = '';
   }
+
+  if (!baseURL.endsWith('/api')) {
+    baseURL = `${baseURL}/api`;
+  }
+
   const http = axios.create({
     baseURL,
   });
