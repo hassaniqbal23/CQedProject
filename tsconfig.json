@@ -24,6 +24,14 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/ImageCropper/imageDialog.js", "app/utils/canvasUtils.js", "app/schools/onboarding/about-user"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "components/ImageCropper/imageDialog.js",
+    "app/utils/canvasUtils.js",
+    "app/schools/onboarding/about-user"
+  ],
   "exclude": ["node_modules"]
 }
