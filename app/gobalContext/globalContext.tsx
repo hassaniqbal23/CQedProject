@@ -13,13 +13,11 @@ export const GlobalState = createContext<IGlobalState>({
 export const GlobalProvider: FC<any> = ({ children }) => {
   const [isUserGetInfo, setIsUserGetInfo] = useState<boolean>(false);
 
-
-
   return (
     <GlobalState.Provider
       value={{
         isUserGetInfo,
-        setIsUserGetInfo
+        setIsUserGetInfo,
       }}
     >
       {children}

@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Checkbox } from "./checkbox";
+import { Checkbox } from './checkbox';
 
 const meta: Meta<typeof Checkbox> = {
-  title: "Che/checkBox",
+  title: 'Forms/checkBox',
   component: Checkbox,
 };
 
@@ -12,7 +12,7 @@ type Story = StoryObj<typeof Checkbox>;
 
 export const Default: Story = {
   args: {
-    label: "checkbox",
+    label: 'checkbox',
     // checked: false,
     // disabled: false,
     onChange: () => {},
@@ -20,16 +20,15 @@ export const Default: Story = {
 };
 export const error: Story = {
   args: {
-    label: "checkbox",
-
+    label: 'checkbox',
     onChange: () => {},
-    error: true,
+    error: '',
   },
 };
 
 export const disabled: Story = {
   args: {
-    label: "checkbox",
+    label: 'checkbox',
 
     disabled: true,
     onChange: () => {},

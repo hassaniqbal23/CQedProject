@@ -1,9 +1,9 @@
-import React, { FC, useState } from "react";
-import Image from "next/image";
+import React, { FC, useState } from 'react';
+import Image from 'next/image';
 // import Bin from "../public/icons/Bin.png";
-import { Button } from "@/components/ui";
-import Modal from "../Modal/Modal";
-import { Separator } from "@/components/ui/separator/separator";
+import { Button } from '@/components/ui';
+import Modal from '../Modal/Modal';
+import { Separator } from '@/components/ui/separator/separator';
 
 interface IProps {
   onClose: () => void;

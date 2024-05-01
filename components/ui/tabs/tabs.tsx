@@ -40,7 +40,7 @@ const TabsTrigger = forwardRef<
 				variant === 'linked'
 					? 'data-[state=active]:border-primary'
 					: '',
-				variant === 'secondary' ? "rounded-md data-[state=active]:bg-background data-[state=active]:shadow" : '',
+				variant === 'secondary' ? "rounded-md data-[state=active]:bg-background data-[state=active]:shadow data-[state=active]:text-primary" : '',
 				className
 			)}
 			{...props}
@@ -62,13 +62,13 @@ const TabsContent = forwardRef<
 TabsContent.displayName = 'TabsContent';
 
 interface TabsProps {
-	label: string;
-	value: string;
+  label: string;
+  value: string;
 }
 
 interface TabContent {
-	value: string;
-	content: React.ReactNode;
+  value: string;
+  content: React.ReactNode;
 }
 
 interface TabsComponentProps {
@@ -80,11 +80,11 @@ interface TabsComponentProps {
 }
 
 const TabsComponent = ({
-	tabs,
-	tabContent,
-	defaultValue,
-	variant = 'primary',
-	onValueChange
+  tabs,
+  tabContent,
+  defaultValue,
+  variant = 'primary',
+  onValueChange,
 }: TabsComponentProps) => {
 	return (
 		<Tabs

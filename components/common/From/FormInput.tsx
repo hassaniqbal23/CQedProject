@@ -1,5 +1,5 @@
-import React, { ComponentPropsWithoutRef, FC, ReactNode } from "react";
-import { UseFormReturn } from "react-hook-form";
+import React, { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 import {
   FormControl,
   FormDescription,
@@ -7,10 +7,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../ui";
-import { Input } from "@/components/ui";
+} from '../../ui';
+import { Input } from '@/components/ui';
 
-interface InputProps extends Omit<ComponentPropsWithoutRef<"input">, "form"> {
+interface InputProps extends Omit<ComponentPropsWithoutRef<'input'>, 'form'> {
   form: UseFormReturn<any | undefined>;
   name: string;
   description?: ReactNode;
@@ -34,9 +34,7 @@ export const FormInput: FC<InputProps> = ({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-sm">
-            {label}
-          </FormLabel>
+          <FormLabel className="text-sm">{label}</FormLabel>
           <FormControl>
             <Input placeholder={placeholder} {...field} {...inputProps} />
           </FormControl>

@@ -11,11 +11,7 @@
 # next.js
 /.next/
 /out/
-/yarn.lock
-/package-lock.json
 
-package-lock.json
-yarn.lock
 # production
 /build
 
@@ -39,10 +35,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-yarn.lock
 .env
 
 certificates
 *storybook.log
-.idea
 /storybook-static

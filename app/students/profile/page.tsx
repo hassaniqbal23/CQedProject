@@ -1,7 +1,8 @@
-import React from 'react'
-
-export const Profile = () => {
+import React from 'react';
+export default function StudentProfile() {
   return (
-    <div>Profile</div>
-  )
+    <div>
+      <h1>Student Profile</h1>
+    </div>
+  );
 }

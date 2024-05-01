@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui';
 import { useRouter } from 'next/navigation';
 
- export const  AccessDenied = () =>  {
+const AccessDenied = () => {
   const router = useRouter();
 
   return (
@@ -19,15 +19,12 @@ import { useRouter } from 'next/navigation';
           <p className="mt-3 text-base leading-7 text-gray-600">
             Sorry, you don’t have permission to access this page.
           </p>
-          <Button
-            className="mt-10"
-            onClick={() => router.push("/")}
-          >
+          <Button className="mt-10" onClick={() => router.push('/')}>
             Go Back
           </Button>
         </div>
       </main>
     </>
   );
-}
+};
 export default AccessDenied;

@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from '@storybook/react';
 
-import BottomNavbar from "./bottomNavbar";
+import BottomNavbar from './bottomNavbar';
 
 const meta: Meta<typeof BottomNavbar> = {
-  title: "Navbar/BottomNavbar",
+  title: 'Navigation/BottomNavbar',
   component: BottomNavbar,
 };
 
@@ -14,10 +14,10 @@ export const Default: Story = {
   args: {
     isBackButton: true,
     onBackButton: () => {
-      console.log("Back button")
+      console.log('Back button');
     },
     onContinue: () => {
-      console.log("Continue button")
-    }
+      console.log('Continue button');
+    },
   },
 };

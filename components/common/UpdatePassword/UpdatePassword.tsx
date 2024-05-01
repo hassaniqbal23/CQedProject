@@ -11,31 +11,50 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui';
+import { useMutation } from 'react-query';
+import { UpdatePasswordBody, UpdateUserPassword } from '@/app/api/auth';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
-  newpassword: z.string().min(8, {
-    message: 'Empty Field',
+  password: z.string().min(8, {
+    message: 'Password should be at least 8 characters',
   }),
 
-  conformpassword: z.string().min(8, {
-    message: 'Empty Field',
+  confirm_password: z.string().min(8, {
+    message: 'Confirm Password should be at least 8 characters',
   }),
 });
 
-export function UpdatedPassword() {
+export interface UpdatePasswordProps {
+  updatePasswordSuccessLink: string;
+}
+
+export function UpdatePassword(props: UpdatePasswordProps) {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      newpassword: '',
-      conformpassword: '',
+      password: '',
+      confirm_password: '',
     },
   });
 
+  const { mutate, isLoading } = useMutation(
+    (data: UpdatePasswordBody) => UpdateUserPassword(data),
+    {
+      onSuccess: (res) => {
+        router.push(props.updatePasswordSuccessLink);
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
+
   const onSubmit = form.handleSubmit((values) => {
-    console.log(values);
+    mutate(values);
   });
 
   return (
@@ -51,11 +70,12 @@ export function UpdatedPassword() {
           <form onSubmit={onSubmit} className="space-y-4">
             <FormField
               control={form.control}
-              name="newpassword"
+              name="password"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Input
+                      type={'password'}
                       placeholder="New Password"
                       {...field}
                       className="font-semibold"
@@ -69,11 +89,12 @@ export function UpdatedPassword() {
 
             <FormField
               control={form.control}
-              name="conformpassword"
+              name="confirm_password"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Input
+                      type={'password'}
                       placeholder="Conform Password"
                       {...field}
                       className="font-semibold"
@@ -84,9 +105,15 @@ export function UpdatedPassword() {
                 </FormItem>
               )}
             />
-              <Button type="submit" variant={'default'} className="w-full mt-4">
-                Continue
-              </Button>
+            <Button
+              type="submit"
+              variant={'default'}
+              className="w-full mt-4"
+              loading={isLoading}
+              disabled={isLoading}
+            >
+              Continue
+            </Button>
           </form>
         </Form>
       </div>

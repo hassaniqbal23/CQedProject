@@ -13,14 +13,14 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  age: string; 
+  age: string;
   roleId: number;
-  status: number; 
+  status: number;
   role: Role;
 }
 
 export interface Role {
   id: number;
   name: string;
-  permissionsJson: string;  
+  permissionsJson: string;
 }

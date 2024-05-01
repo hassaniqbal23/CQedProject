@@ -1,11 +1,11 @@
 // RadioGroup.stories.tsx
-import React from "react";
-import { Meta, StoryObj } from "@storybook/react";
-import { Label } from "../label/label";
-import { RadioGroup, RadioGroupItem } from "./radio-group";
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { Label } from '../label/label';
+import { RadioGroup, RadioGroupItem } from './radio-group';
 
 const meta: Meta<typeof RadioGroup> = {
-  title: "CHE/RadioGroup",
+  title: 'Forms/RadioGroup',
   component: RadioGroup,
 };
 

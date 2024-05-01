@@ -2,6 +2,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { SignIn } from '@/components/common/SignIn-Page/SignInpage';
+import { LoginCarousel } from '@/components/ui/carousel/carousel';
 
 const meta = {
   title: 'Ui/SignIn-Page',
@@ -14,5 +15,15 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: {},
+  render: (args) => {
+    return (
+      <>
+        <SignIn {...args} />
+      </>
+    );
+  },
+  args: {
+    forgetPasswordLink: '/forget-password',
+    loginSuccessLink: '/',
+  },
 };

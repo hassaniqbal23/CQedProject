@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Label } from "@/components/ui/label/label";
-import { Textarea } from "@/components/ui/textarea/textarea";
+import type { Meta, StoryObj } from '@storybook/react';
+import { Label } from '@/components/ui/label/label';
+import { Textarea } from '@/components/ui/textarea/textarea';
 
 interface TextareaStoryArgs {
   heading: string;
@@ -8,13 +8,13 @@ interface TextareaStoryArgs {
 }
 
 const meta = {
-  title: "Example/Textarea",
+  title: 'Forms/Textarea',
   component: Textarea,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 } satisfies Meta<typeof Textarea>;
 
 export default meta;
@@ -39,13 +39,13 @@ export const Primary: Story = {
 
 export const Disabled: Story = {
   args: {
-    label: "Disable",
+    label: 'Disable',
     disabled: true,
   },
 };
 export const Error: Story = {
   args: {
-    label: "Email",
-    error: "Please enter a valid email address.",
+    label: 'Email',
+    error: 'Please enter a valid email address.',
   },
 };
