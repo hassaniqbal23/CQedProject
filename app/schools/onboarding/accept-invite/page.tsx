@@ -1,16 +1,9 @@
 'use client';
 
-import { SchoolDetailsForm } from '@/components/common/SchoolDetailsForm/SchoolDetailsForm';
-import BottomNavbar from '@/components/common/navbar/bottomNavbar';
-import TopNavbar from '@/components/common/navbar/TopNavbar';
+import { AcceptInvitation } from '@/components/common/AcceptInvitation/AcceptInvitation';
 
 export default function SchoolAcceptInvite() {
-  return (
-    <div className="flex flex-col justify-between h-screen ">
-      <TopNavbar onLogout={() => {}}></TopNavbar>
-      <SchoolDetailsForm></SchoolDetailsForm>
-    </div>
-  );
+  return <AcceptInvitation routeType="schools" />;
 }
 
 SchoolAcceptInvite.showLayout = false;

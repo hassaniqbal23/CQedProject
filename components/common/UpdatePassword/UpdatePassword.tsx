@@ -14,8 +14,9 @@ import {
   FormMessage,
 } from '@/components/ui';
 import { useMutation } from 'react-query';
-import { UpdatePasswordBody, UpdateUserPassword } from '@/app/api/auth';
+import { UpdateUserPassword } from '@/app/api/auth';
 import { useRouter } from 'next/navigation';
+import { UpdatePasswordBody } from '@/app/api/types';
 
 const formSchema = z.object({
   password: z.string().min(8, {

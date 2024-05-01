@@ -1,5 +1,4 @@
-'use client';
-import { FC, createContext, useContext, useEffect, useState } from 'react';
+import { FC, createContext, useContext, useState } from 'react';
 import { IUserInformation } from './types';
 import { useQuery } from 'react-query';
 import { GetUserInfomation } from '../api/auth';
@@ -24,21 +23,21 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   const [userInformation, setUserInformation] = useState<IUserInformation>(
     {} as IUserInformation
   );
-
-  const userInfo = (id: string) => {
-    return useQuery(['userInformation', id], () => GetUserInfomation(id), {
-      staleTime: 1000,
-    });
-  };
   const userId = getUserIdLocalStorage();
-  const { data } = userInfo(userId as string);
 
-  useEffect(() => {
-    if (data) {
-      console.log(data.data.data, 'data');
-      setUserInformation(data.data.data);
+  useQuery(
+    ['userInformation', userId],
+    () => GetUserInfomation(userId as string),
+    {
+      enabled: (userId as string) ? true : false,
+      onSuccess: (res) => {
+        setUserInformation(res.data.data);
+      },
+      onError: (err) => {
+        console.log(err, '======> ERROR');
+      },
     }
-  }, []);
+  );
 
   return (
     <GlobalState.Provider

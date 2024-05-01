@@ -13,7 +13,6 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { AcceptInvite } from '@/app/api/schools';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
 import BottomNavbar from '@/components/common/navbar/bottomNavbar';
 import { storeToken, storeUserId } from '@/app/utils/encryption';
 import { updateToken } from '@/app/utils/http';
@@ -61,9 +60,6 @@ export function SchoolDetailsForm() {
     (data: AcceptInvite) => AcceptInvite(data),
     {
       onSuccess: (res) => {
-        storeToken(res.data?.token);
-        storeUserId(res?.data?.data?.id);
-        updateToken(res?.data.token);
         router.push('/schools/onboarding/update-password');
         form.reset();
       },
@@ -196,13 +192,9 @@ export function SchoolDetailsForm() {
         buttonLoading={isLoading}
         onContinue={async () => {
           let validate = await form.trigger();
-          let token = params?.get('token');
-
-          if (validate && token) {
-            acceptSchoolInvite({
-              ...form.getValues(),
-              inviteToken: token,
-            });
+          if (validate) {
+            const submitedValues = form.getValues();
+            acceptSchoolInvite(submitedValues);
           }
         }}
       ></BottomNavbar>
