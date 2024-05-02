@@ -95,12 +95,12 @@ export default function Login() {
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4">
-                <label className="font-semibold">Username</label>
+                <label className="font-semibold">Email</label>
                 <FormInput
                   required={true}
                   form={form}
                   name="name"
-                  placeholder={'admin'}
+                  placeholder={'Enter your email'}
                 />
               </div>
               <div className="mb-3">
