@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import { useState } from "react";
-import { useMutation } from "react-query";
-import { Invite } from "@/app/api/invitations";
-import { SendEmail } from "@/components/common/SendEmailModal/SendEmailModal";
-import { Button } from "@/components/ui";
+import { useState } from 'react';
+import { useMutation } from 'react-query';
+import { Invite } from '@/app/api/invitations';
+import { SendEmail } from '@/components/common/SendEmailModal/SendEmailModal';
+import { Button } from '@/components/ui';
 
 function SchoolStudents() {
   const [inviteStudentModal, setInviteStudentModal] = useState(false);
@@ -25,25 +25,27 @@ function SchoolStudents() {
     schoolInvite({ emails, type: 'SCHOOL_STUDENT' });
   };
 
-  return <div>
-    <div className={'flex mb-2'}>
-      <h1>Students</h1>
-      <div className={'ml-auto'}>
-        <Button onClick={() => setInviteStudentModal(true)}>
-          Invite Students
-        </Button>
+  return (
+    <div>
+      <div className={'flex mb-2'}>
+        <h1>Students</h1>
+        <div className={'ml-auto'}>
+          <Button onClick={() => setInviteStudentModal(true)}>
+            Invite Students
+          </Button>
+        </div>
       </div>
+      <hr />
+      <SendEmail
+        inviteLoading={isLoading}
+        setOpen={setInviteStudentModal}
+        open={inviteStudentModal}
+        onSubmit={onSubmit}
+        inviteButtonTitle={'Invite Students'}
+        headerTitle={'Invite Students'}
+      />
     </div>
-    <hr />
-    <SendEmail
-      inviteLoading={isLoading}
-      setOpen={setInviteStudentModal}
-      open={inviteStudentModal}
-      onSubmit={onSubmit}
-      inviteButtonTitle={'Invite Students'}
-      headerTitle={'Invite Students'}
-    />
-  </div>;
+  );
 }
 
-export default SchoolStudents
+export default SchoolStudents;
