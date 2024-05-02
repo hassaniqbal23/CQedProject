@@ -9,7 +9,7 @@ interface DashboardStaticCardsProps {
 
 function DashboardStaticCards(props: DashboardStaticCardsProps) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-9">
+    <div className="grid  gap-3 mt-9  sm:grid-cols-1 xl:grid-cols-4 lg:grid-cols-2">
       {props.data.map((_, i) => {
         return (
           <StaticCard
