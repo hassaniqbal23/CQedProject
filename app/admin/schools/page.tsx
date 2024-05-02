@@ -8,7 +8,7 @@ import { SendEmail } from '@/components/index';
 import { useMutation } from 'react-query';
 import { Invite } from '@/app/api/invitations';
 import DataTable from '@/components/ui/table/table';
-import Pagination from '@/components/common/pagination';
+import Pagination from '@/components/common/pagination/pagination';
 
 const Schools = () => {
   const [data, setData] = useState([]);
