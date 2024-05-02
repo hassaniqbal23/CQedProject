@@ -125,7 +125,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      {data.length == 0 ? (
+      {data.length === 0 ? (
         <>
           <AdminWelCome />
         </>
@@ -134,8 +134,8 @@ const Dashboard = () => {
           <p>Thursday, January 18</p>
           <h1 className="text-2xl font-bold">Welcome to your Dashboard</h1>
           <DashboardStaticCards data={cardData} />
-          <div className="flex justify-between gap-4 mt-9">
-            <div className="w-2/3 h-[300px] p-3 border rounded">
+          <div className="xl:flex  xl:flex-row justify-between gap-4 mt-9 sm:flex-col ">
+            <div className=" xl:w-2/3 h-[300px] p-3 border rounded  sm:w-full">
               <div className="flex justify-between w-full">
                 <h2 className="font-bold text-lg">Overview</h2>
                 <ChipSelector
@@ -164,7 +164,7 @@ const Dashboard = () => {
               </div>
               <div>Chart</div>
             </div>
-            <div className="p-6 border h-[300px] w-1/3 rounded">
+            <div className="p-6 border h-[300px] xl:w-1/3 rounded sm:w-full ">
               <h2 className="text-2xl font-bold">$9,650</h2>
               <p>Income of March 2024</p>
 
