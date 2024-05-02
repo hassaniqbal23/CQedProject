@@ -8,6 +8,7 @@ import { SendEmail } from '@/components/index';
 import { useMutation } from 'react-query';
 import { Invite } from '@/app/api/invitations';
 import DataTable from '@/components/ui/table/table';
+import Pagination from '@/components/common/pagination';
 
 const Schools = () => {
   const [data, setData] = useState([]);
@@ -40,7 +41,25 @@ const Schools = () => {
     schoolInvite({ emails, type: 'SCHOOL' });
   };
 
-  // fetch data
+  const handlePageChange = (pageNumber: number) => {
+    console.log('Go to page', pageNumber);
+  };
+
+  const handleInvitePage = (pageNumber: number) => {
+    console.log('Go to invite', pageNumber);
+  };
+
+  const fetchData = async (
+    pageNumber: number,
+    pageSize: number
+  ): Promise<any> => {
+    // Example:
+    const response = await http.get(
+      `/schools?page=${pageNumber}&pageSize=${pageSize}`
+    );
+    return response.data;
+  };
+
   useEffect(() => {
     fetch();
   }, []);
@@ -83,6 +102,15 @@ const Schools = () => {
               content: (
                 <div className={'pt-8'}>
                   <SchoolTable data={data} />
+                  <Pagination
+                    currentPage={1}
+                    totalPages={50}
+                    pageSize={10}
+                    fetchData={fetchData}
+                    onPageChange={handlePageChange}
+                    totalCount={50}
+                    SetPageSize={(pageNumber) => {}}
+                  />
                 </div>
               ),
             },
@@ -93,6 +121,15 @@ const Schools = () => {
                   <DataTable
                     columns={[{ label: 'School Email', key: 'email' }]}
                     data={invitedSchools}
+                  />
+                  <Pagination
+                    currentPage={1}
+                    totalPages={50}
+                    pageSize={10}
+                    fetchData={fetchData}
+                    onPageChange={handlePageChange}
+                    totalCount={50}
+                    SetPageSize={(pageNumber) => {}}
                   />
                 </div>
               ),
