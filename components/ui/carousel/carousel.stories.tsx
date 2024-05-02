@@ -1,4 +1,4 @@
-import { LoginCarousel } from '@/components/ui/carousel/carousel';
+import { LoginCarousel } from './carousel';
 import { fn } from '@storybook/test';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Card, CardContent } from '../card/card';
