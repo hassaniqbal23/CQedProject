@@ -89,25 +89,23 @@ function Pagination({
   };
 
   return totalPages > 0 ? (
-    <div className="mt-4 flex justify-end mb-4">
-      <div className="mr-3 bg-white text-[#3C3C3C]">
-        {showSelectPage && (
-          <Select
-            defaultValue={String(pageSize)}
-            onValueChange={(value) => SetPageSize(Number(value))}
-          >
-            <SelectTrigger className="w-[100px] bg-white text-[#3C3C3C]">
-              <SelectValue />/ page
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="25">25</SelectItem>
-              <SelectItem value="50">50</SelectItem>
-              <SelectItem value={String(totalCount)}>All</SelectItem>
-            </SelectContent>
-          </Select>
-        )}
-      </div>
+    <>
+      {showSelectPage && (
+        <Select
+          defaultValue={String(pageSize)}
+          onValueChange={(value) => SetPageSize(Number(value))}
+        >
+          <SelectTrigger className="w-[100px] bg-white text-[#3C3C3C]">
+            <SelectValue />/ page
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="10">10</SelectItem>
+            <SelectItem value="25">25</SelectItem>
+            <SelectItem value="50">50</SelectItem>
+            <SelectItem value={String(totalCount)}>All</SelectItem>
+          </SelectContent>
+        </Select>
+      )}
 
       <Button
         type="button"
@@ -128,7 +126,7 @@ function Pagination({
       >
         <MdKeyboardArrowRight className="text-xl" />
       </Button>
-    </div>
+    </>
   ) : null;
 }
 

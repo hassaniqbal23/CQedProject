@@ -102,15 +102,17 @@ const Schools = () => {
               content: (
                 <div className={'pt-8'}>
                   <SchoolTable data={data} />
-                  <Pagination
-                    currentPage={1}
-                    totalPages={50}
-                    pageSize={10}
-                    fetchData={fetchData}
-                    onPageChange={handlePageChange}
-                    totalCount={50}
-                    SetPageSize={(pageNumber) => {}}
-                  />
+                  <div className={'flex justify-end w-full mt-4'}>
+                    <Pagination
+                      currentPage={1}
+                      totalPages={50}
+                      pageSize={10}
+                      fetchData={fetchData}
+                      onPageChange={handlePageChange}
+                      totalCount={50}
+                      SetPageSize={(pageNumber) => {}}
+                    />
+                  </div>
                 </div>
               ),
             },
@@ -122,15 +124,17 @@ const Schools = () => {
                     columns={[{ label: 'School Email', key: 'email' }]}
                     data={invitedSchools}
                   />
-                  <Pagination
-                    currentPage={1}
-                    totalPages={50}
-                    pageSize={10}
-                    fetchData={fetchData}
-                    onPageChange={handlePageChange}
-                    totalCount={50}
-                    SetPageSize={(pageNumber) => {}}
-                  />
+                  <div className={'flex justify-end w-full mt-4'}>
+                    <Pagination
+                      currentPage={1}
+                      totalPages={50}
+                      pageSize={10}
+                      fetchData={fetchData}
+                      onPageChange={handlePageChange}
+                      totalCount={50}
+                      SetPageSize={(pageNumber) => {}}
+                    />
+                  </div>
                 </div>
               ),
             },
