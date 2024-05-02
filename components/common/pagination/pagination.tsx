@@ -20,6 +20,7 @@ interface PaginationProps {
   pageSize: number;
   totalCount: number;
   showSelectPage?: boolean;
+
   // SetPageSize: Dispatch<SetStateAction<number>>;
   SetPageSize: (pageNumber: number) => void;
   onPageChange: (pageNumber: number) => void;
@@ -58,7 +59,7 @@ function Pagination({
             disabled={i === currentPage}
             className={`mx-1 ${
               currentPage === i
-                ? '  bg-[#F0F3F5] rounded-xl text-[#3C3C3C] px-5 py-3'
+                ? ' bg-[#F0F3F5] hover:bg-[#F0F3F5] rounded-xl text-[#3C3C3C] px-5 py-1'
                 : ' text-lg text-[#3C3C3C]  bg-[#F0F3F5] rounded-xl  '
             }
             `}
