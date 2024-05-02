@@ -5,6 +5,9 @@ const nextConfig = {
   experimental: {
     forceSwcTransforms: true,
   },
+  images: {
+    domains: ['s3-alpha-sig.figma.com'],
+  },
   async rewrites() {
     return [
       {
@@ -16,3 +19,4 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+
