@@ -21,7 +21,6 @@ export interface IStudentInfo {
 
 export interface IAcceptInvitation {
   inviteToken: string;
-  type: string;
 }
 
 export interface UpdatePasswordBody {

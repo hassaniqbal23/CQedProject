@@ -17,7 +17,6 @@ export const AcceptInvitation: FC<IProps> = ({ routeType }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const params = useSearchParams();
   const currentToken = params?.get('token');
-  const userType = params?.get('type');
   const router = useRouter();
 
   const { mutate: userAcceptInvitation } = useMutation(
@@ -32,6 +31,7 @@ export const AcceptInvitation: FC<IProps> = ({ routeType }) => {
         updateToken(response?.data.token);
       },
       onError: (error: AxiosError) => {
+        router.push(`/${routeType}/sign-in`);
         console.log((error.response?.data as any)?.message, 'checking');
         console.log(error, 'Error =====> log');
       },
@@ -39,10 +39,9 @@ export const AcceptInvitation: FC<IProps> = ({ routeType }) => {
   );
 
   useEffect(() => {
-    if (currentToken && userType) {
+    if (currentToken) {
       const payload = {
         inviteToken: currentToken!,
-        type: userType,
       };
       userAcceptInvitation(payload);
     } else {
