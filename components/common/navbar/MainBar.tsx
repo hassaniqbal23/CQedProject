@@ -85,11 +85,13 @@ export const Navbar: FC<IProps> = ({ onLogout, links }) => {
                 return <IconLink src={link.src} key={index} icon={link.icon} />;
               }
               if (link.type === 'profile') {
-                return <ProfileLink
-                  key={index}
-                  onClick={onLogout}
-                  userInformation={userInformation}
-                />;
+                return (
+                  <ProfileLink
+                    key={index}
+                    onClick={onLogout}
+                    userInformation={userInformation}
+                  />
+                );
               }
               return null;
             })

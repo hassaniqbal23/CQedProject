@@ -144,7 +144,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      {data.length === 0 ? (
+      {data.length !== 0 ? (
         <>
           <AdminWelCome />
         </>

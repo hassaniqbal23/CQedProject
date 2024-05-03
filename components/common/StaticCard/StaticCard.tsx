@@ -31,13 +31,13 @@ function StaticCard({
 }: IStaticCardProps) {
   return (
     <Link href={link}>
-      <Card className="w-full h-[159px]">
-        <CardHeader className="p-4 flex justify-between flex-row items-center border-b">
+      <Card className="w-full h-[169px]">
+        <CardHeader className={`px-4 flex justify-between flex-row items-center border-b ${dropdown ? 'py-1' : 'py-4'}`}>
           <CardTitle className="font-semibold w-2/3">{title}</CardTitle>
           {dropdown && dropdownOptions ? (
             <Dropdown
               rounded={true}
-              className="w-24"
+              className="w-24 bg-white"
               label={dropdownOptions.label}
               options={dropdownOptions.options}
             />

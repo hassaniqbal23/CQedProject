@@ -249,7 +249,7 @@ export const Dropdown = (props: IDropdownProps) => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="w-full">
             <div
-              className={`flex justify-between px-2 border-1 border bg-[#F8F9FB] outer-shadow ${props.rounded ? 'rounded-full py-1' : 'rounded-md py-4'}`}
+              className={`flex justify-between px-2 border-1 border bg-[#F8F9FB] outer-shadow ${props.rounded ? 'rounded-full py-2' : 'rounded-md py-4'}`}
             >
               {!Array.isArray(selectedItems) && selectedItems.label ? (
                 <div className="flex mr-1 justify-center items-center">
@@ -272,7 +272,7 @@ export const Dropdown = (props: IDropdownProps) => {
               <ChevronDown />
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className=" w-[430px] text-[#5D5E68] mt-3.5 px-3 py-2 text-semibold items-center bg-[#F8F9FB] cursor-pointer">
+          <DropdownMenuContent className="text-[#5D5E68] mt-3.5 px-3 py-2 text-semibold items-center bg-[#F8F9FB] cursor-pointer">
             <DropdownMenuRadioGroup className="">
               {props.options.map((option, index) => {
                 return (

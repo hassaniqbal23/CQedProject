@@ -23,12 +23,16 @@ function DashboardStaticCards(props: DashboardStaticCardsProps) {
               label: 'Today',
               options: [
                 {
-                  label: 'Today',
-                  value: 'today',
+                  label: 'Weekly',
+                  value: 'weekly',
                 },
                 {
-                  label: 'Today',
-                  value: 'today',
+                  label: 'Monthly',
+                  value: 'monthly',
+                },
+                {
+                  label: '3 Months',
+                  value: 'threeMonths',
                 },
               ],
             }}
