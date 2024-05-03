@@ -18,6 +18,20 @@ function DashboardStaticCards(props: DashboardStaticCardsProps) {
             number={_.number}
             key={i}
             percentage={_.percentage}
+            dropdown={i === props.data.length - 1}
+            dropdownOptions={{
+              label : 'Today',
+              options : [
+                {
+                  label : 'Today',
+                  value : 'today'
+                },
+                {
+                  label : 'Today',
+                  value : 'today'
+                },
+              ]
+            }}
           />
         );
       })}

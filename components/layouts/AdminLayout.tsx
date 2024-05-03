@@ -6,6 +6,7 @@ import { removeToken, removeUserId } from '@/app/utils/encryption';
 import { useResponsive } from '@/lib/hooks';
 import Sidebar from '../common/sidebar/sidebar';
 import Navbar from '../common/navbar/MainBar';
+import { Bell } from 'lucide-react';
 
 interface IProps {
   children: ReactNode;
@@ -54,6 +55,17 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
               removeUserId();
               router.push('/login');
             }}
+            links={[
+              {
+                src : '',
+                type : 'icon',
+                icon : <Bell fill='#000000' />
+              },
+              {
+                src: '',
+                type: 'profile',
+              },
+            ]}
           />
         </div>
       </div>

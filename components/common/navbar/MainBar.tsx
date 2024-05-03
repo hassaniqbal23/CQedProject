@@ -2,35 +2,22 @@ import { FC } from 'react';
 import { Button, Popover, PopoverContent, PopoverTrigger } from './../../ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
 import { MdLogout } from 'react-icons/md';
-import { Bell, MessageCircle } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface Link {
   src: string;
   type: 'icon' | 'profile';
-  icon?: React.ComponentType;
+  icon?: React.ComponentType | React.ReactNode;
 }
 
-const navPopLinks: Link[] = [
-  { src: 'chat', type: 'icon', icon: MessageCircle },
-  {
-    src: 'notification',
-    type: 'icon',
-    icon: Bell,
-  },
-  {
-    src: '',
-    type: 'profile',
-  },
-];
-
-const IconLink = ({ icon: Icon }: { icon: any }) => (
-  <div className="my-2 cursor-pointer">
+const IconLink = ({ icon: Icon, src }: { icon: any, src: string }) => (
+  <Link href={src} className="my-2 cursor-pointer">
     <div className="flex gap-4 items-center p-2 bg-[#F0F0F0] rounded-full">
-      <Icon className="text-black border text-2xl" />
+      {Icon}
     </div>
-  </div>
-);
+  </Link>
+)
 
 const ProfileLink = ({ onClick }: { onClick: () => void }) => (
   <Popover>
@@ -66,8 +53,9 @@ const ProfileLink = ({ onClick }: { onClick: () => void }) => (
 
 interface IProps {
   onLogout: () => void;
+  links?: Link[]
 }
-export const Navbar: FC<IProps> = ({ onLogout }) => {
+export const Navbar: FC<IProps> = ({ onLogout, links }) => {
   return (
     <nav className="w-full fixed top-0 flex items-center justify-between bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
       <Image
@@ -78,15 +66,15 @@ export const Navbar: FC<IProps> = ({ onLogout }) => {
       />
       <div className="flex items-center justify-end">
         <div className="flex justify-around sm:justify-between gap-2 items-center py-2 pr-4">
-          {navPopLinks.map((link, index) => {
+          {links && links?.length > 0 ? links.map((link: Link, index: number) => {
             if (link.type === 'icon' && link.icon) {
-              return <IconLink key={index} icon={link.icon} />;
+              return <IconLink src={link.src} key={index} icon={link.icon} />;
             }
             if (link.type === 'profile') {
               return <ProfileLink key={index} onClick={onLogout} />;
             }
             return null;
-          })}
+          }) : <></>}
         </div>
       </div>
     </nav>
