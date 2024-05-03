@@ -1,9 +1,13 @@
+'use client';
+
 import { FC } from 'react';
 import { Button, Popover, PopoverContent, PopoverTrigger } from './../../ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
 import { MdLogout } from 'react-icons/md';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { IUserInformation } from '@/app/gobalContext/types';
 
 interface Link {
   src: string;
@@ -19,7 +23,13 @@ const IconLink = ({ icon: Icon, src }: { icon: any; src: string }) => (
   </Link>
 );
 
-const ProfileLink = ({ onClick }: { onClick: () => void }) => (
+const ProfileLink = ({
+  onClick,
+  userInformation,
+}: {
+  onClick: () => void;
+  userInformation: IUserInformation;
+}) => (
   <Popover>
     <PopoverTrigger>
       <div className="flex gap-2 items-center justify-center">
@@ -31,8 +41,10 @@ const ProfileLink = ({ onClick }: { onClick: () => void }) => (
           <AvatarFallback>CQED</AvatarFallback>
         </Avatar>
         <div className="block text-left ">
-          <h1 className="font-semibold text-base  text-black">Sajid Ali</h1>
-          <p className="text-xs font-medium">Admin</p>
+          <h1 className="font-semibold text-base  text-black">
+            {userInformation?.name || ''}
+          </h1>
+          <p className="text-xs font-medium">{userInformation.name}</p>
         </div>
       </div>
     </PopoverTrigger>
@@ -56,6 +68,7 @@ interface IProps {
   links?: Link[];
 }
 export const Navbar: FC<IProps> = ({ onLogout, links }) => {
+  const { userInformation } = useGlobalState();
   return (
     <nav className="w-full fixed top-0 flex items-center justify-between bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
       <Image
@@ -72,7 +85,11 @@ export const Navbar: FC<IProps> = ({ onLogout, links }) => {
                 return <IconLink src={link.src} key={index} icon={link.icon} />;
               }
               if (link.type === 'profile') {
-                return <ProfileLink key={index} onClick={onLogout} />;
+                return <ProfileLink
+                  key={index}
+                  onClick={onLogout}
+                  userInformation={userInformation}
+                />;
               }
               return null;
             })
