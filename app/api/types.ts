@@ -18,3 +18,12 @@ export interface IStudentInfo {
   gender: string;
   language: string;
 }
+
+export interface IAcceptInvitation {
+  inviteToken: string;
+}
+
+export interface UpdatePasswordBody {
+  password: string;
+  confirm_password: string;
+}

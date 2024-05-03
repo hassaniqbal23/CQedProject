@@ -52,7 +52,6 @@ const formSchema = z.object({
 
 function StudentsDetailsFrom() {
   const router = useRouter();
-  const params = useSearchParams();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -68,9 +67,7 @@ function StudentsDetailsFrom() {
     (studentsData: IStudentInfo) => StudentsCreate(studentsData),
     {
       onSuccess: (res: any) => {
-        const response = res.data.result;
         router.push('/students/onboarding/about-user');
-        storeUserId(response?.user?.id);
         form.reset();
       },
       onError: (error: any) => {
@@ -80,7 +77,6 @@ function StudentsDetailsFrom() {
   );
 
   const onSubmit = form.handleSubmit(async (values: any) => {
-    console.log(values);
     createStudents(values);
   });
 
