@@ -196,7 +196,7 @@ interface IDropdownProps {
   value?: DropdownMenuOptionProps | DropdownMenuOptionProps[];
   multSelect?: boolean;
   options: DropdownMenuOptionProps[];
-  rounded?: boolean
+  rounded?: boolean;
 }
 
 export interface DropdownMenuOptionProps {
@@ -248,16 +248,22 @@ export const Dropdown = (props: IDropdownProps) => {
       <div className={`${props.className}`}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="w-full">
-            <div className={`flex justify-between px-2 border-1 border bg-[#F8F9FB] outer-shadow ${props.rounded ? 'rounded-full py-1' :'rounded-md py-4'}`}>
+            <div
+              className={`flex justify-between px-2 border-1 border bg-[#F8F9FB] outer-shadow ${props.rounded ? 'rounded-full py-1' : 'rounded-md py-4'}`}
+            >
               {!Array.isArray(selectedItems) && selectedItems.label ? (
                 <div className="flex mr-1 justify-center items-center">
-                  {selectedItems.flagUrl && selectedItems.altName ? <Image
-                    width={30}
-                    height={30}
-                    src={selectedItems.flagUrl}
-                    alt={selectedItems.altName}
-                    className="mr-2"
-                  /> : ''}
+                  {selectedItems.flagUrl && selectedItems.altName ? (
+                    <Image
+                      width={30}
+                      height={30}
+                      src={selectedItems.flagUrl}
+                      alt={selectedItems.altName}
+                      className="mr-2"
+                    />
+                  ) : (
+                    ''
+                  )}
                   <h1>{selectedItems.label} </h1>
                 </div>
               ) : (
@@ -274,16 +280,21 @@ export const Dropdown = (props: IDropdownProps) => {
                     key={option.label}
                     value={option.value}
                     onClick={() => handleItemClick(option)}
-                    className={`text-[#5D5E68] px-3 py-2.5 text-semibold items-center bg-[#F8F9FB] hover:bg-gray-200 cursor-pointer ${index === props.options.length - 1 ? '' : 'border-b '
-                      }`}
+                    className={`text-[#5D5E68] px-3 py-2.5 text-semibold items-center bg-[#F8F9FB] hover:bg-gray-200 cursor-pointer ${
+                      index === props.options.length - 1 ? '' : 'border-b '
+                    }`}
                   >
-                    {option.flagUrl && option.altName ? <Image
-                      width={30}
-                      height={30}
-                      src={option.flagUrl}
-                      alt={option.altName}
-                      className="mr-2"
-                    /> : ''}
+                    {option.flagUrl && option.altName ? (
+                      <Image
+                        width={30}
+                        height={30}
+                        src={option.flagUrl}
+                        alt={option.altName}
+                        className="mr-2"
+                      />
+                    ) : (
+                      ''
+                    )}
                     {option.label}
                   </DropdownMenuRadioItem>
                 );

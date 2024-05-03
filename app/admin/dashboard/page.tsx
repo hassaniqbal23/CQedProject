@@ -9,13 +9,13 @@ import http from '@/app/utils/http';
 import { format } from 'date-fns';
 import AdminCharts from '@/components/common/AdminCharts';
 import { getBarOptions } from '@/lib/utils';
-import * as echarts from 'echarts'
+import * as echarts from 'echarts';
 
 const initialBar = {
   data: [],
   error: undefined,
   loading: true,
-  vertical: false
+  vertical: false,
 };
 
 const Dashboard = () => {
@@ -23,18 +23,15 @@ const Dashboard = () => {
   const [lineData, setLineData] = useState<any>(initialBar);
   const [barData, setbarData] = useState<any>(initialBar);
 
-
-
   // fetch data
   useEffect(() => {
     http.get('/schools/all-schools').then((res) => {
       setData(res.data.data || []);
     });
-    getBarChart()
+    getBarChart();
   }, []);
 
   const currentDate = format(new Date(), 'EEEE, MMMM do');
-
 
   const cardData = [
     { title: 'Total Schools', link: '/', number: data.length, percentage: 2.5 },
@@ -42,25 +39,59 @@ const Dashboard = () => {
     { title: 'Total Students', link: '/', number: '15,000', percentage: 2.5 },
     { title: 'Total Sales', link: '/', number: '$10,000', percentage: 2.5 },
   ];
-  
 
   function getBarChart() {
     setLineData((prev: any) => ({ ...prev, loading: true }));
     setbarData((prev: any) => ({ ...prev, loading: true }));
     setTimeout(() => {
       const lineLabels = {
-        xAxis: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        yAxis: ["$0", "$20k", "$40k", "$60k", '$80k', '$100k']
+        xAxis: [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec',
+        ],
+        yAxis: ['$0', '$20k', '$40k', '$60k', '$80k', '$100k'],
       };
 
       const labels = {
-        xAxis: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        yAxis: ["$0", "$20k", "$40k", "$60k", '$80k', '$100k']
+        xAxis: [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec',
+        ],
+        yAxis: ['$0', '$20k', '$40k', '$60k', '$80k', '$100k'],
       };
 
       const datasets = [
         {
-          data: [50000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000, 20000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000, 20000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000, 20000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000, 20000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000, 20000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000],
+          data: [
+            50000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000,
+            62000, 58000, 65000, 20000, 35000, 45000, 52000, 60000, 55000,
+            48000, 50000, 58000, 62000, 58000, 65000, 20000, 35000, 45000,
+            52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000,
+            20000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000,
+            62000, 58000, 65000, 20000, 35000, 45000, 52000, 60000, 55000,
+            48000, 50000, 58000, 62000, 58000, 65000, 20000, 35000, 45000,
+            52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000,
+          ],
           name: 'This Year',
           smooth: false,
           type: 'line',
@@ -69,7 +100,16 @@ const Dashboard = () => {
 
       const datasetsBar = [
         {
-          data: [50000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000, 20000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000, 20000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000, 20000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000, 20000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000, 20000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000],
+          data: [
+            50000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000,
+            62000, 58000, 65000, 20000, 35000, 45000, 52000, 60000, 55000,
+            48000, 50000, 58000, 62000, 58000, 65000, 20000, 35000, 45000,
+            52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000,
+            20000, 35000, 45000, 52000, 60000, 55000, 48000, 50000, 58000,
+            62000, 58000, 65000, 20000, 35000, 45000, 52000, 60000, 55000,
+            48000, 50000, 58000, 62000, 58000, 65000, 20000, 35000, 45000,
+            52000, 60000, 55000, 48000, 50000, 58000, 62000, 58000, 65000,
+          ],
           name: 'This Year',
           smooth: false,
           type: 'bar',
@@ -77,32 +117,30 @@ const Dashboard = () => {
       ];
 
       const gradient = new echarts.graphic.LinearGradient(0, 1, 0, 0, [
-        { offset: 0, color: '#ffffff' }, 
+        { offset: 0, color: '#ffffff' },
         { offset: 0.2, color: '#ffffff' },
         { offset: 0.3, color: '#ffffff' },
         { offset: 0.8, color: '#e9fbed' },
-        { offset: 1, color: '#d0e1d4' },  
+        { offset: 1, color: '#d0e1d4' },
       ]);
 
       const lineOptions = getBarOptions(datasets, lineLabels, gradient);
-      const barOptions = getBarOptions(datasetsBar , labels)
+      const barOptions = getBarOptions(datasetsBar, labels);
       setLineData({
         data: lineOptions,
         error: false,
         loading: false,
-        vertical: false
+        vertical: false,
       });
 
       setbarData({
         data: barOptions,
         error: false,
         loading: false,
-        vertical: false
+        vertical: false,
       });
-
     }, 2000);
   }
-
 
   return (
     <div>
@@ -146,7 +184,8 @@ const Dashboard = () => {
               <AdminCharts
                 xLabel={lineData.labels}
                 loading={lineData.loading}
-                options={lineData.data} />
+                options={lineData.data}
+              />
             </div>
             <div className="p-6 border h-[350px] w-1/3 rounded">
               <h2 className="text-2xl font-bold">$9,650</h2>
@@ -155,7 +194,8 @@ const Dashboard = () => {
               <AdminCharts
                 xLabel={barData.labels}
                 loading={barData.loading}
-                options={barData.data} />
+                options={barData.data}
+              />
             </div>
           </div>
           <div className="w-full py-3 mt-7">

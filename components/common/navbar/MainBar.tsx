@@ -11,13 +11,13 @@ interface Link {
   icon?: React.ComponentType | React.ReactNode;
 }
 
-const IconLink = ({ icon: Icon, src }: { icon: any, src: string }) => (
+const IconLink = ({ icon: Icon, src }: { icon: any; src: string }) => (
   <Link href={src} className="my-2 cursor-pointer">
     <div className="flex gap-4 items-center p-2 bg-[#F0F0F0] rounded-full">
       {Icon}
     </div>
   </Link>
-)
+);
 
 const ProfileLink = ({ onClick }: { onClick: () => void }) => (
   <Popover>
@@ -53,7 +53,7 @@ const ProfileLink = ({ onClick }: { onClick: () => void }) => (
 
 interface IProps {
   onLogout: () => void;
-  links?: Link[]
+  links?: Link[];
 }
 export const Navbar: FC<IProps> = ({ onLogout, links }) => {
   return (
@@ -66,15 +66,19 @@ export const Navbar: FC<IProps> = ({ onLogout, links }) => {
       />
       <div className="flex items-center justify-end">
         <div className="flex justify-around sm:justify-between gap-2 items-center py-2 pr-4">
-          {links && links?.length > 0 ? links.map((link: Link, index: number) => {
-            if (link.type === 'icon' && link.icon) {
-              return <IconLink src={link.src} key={index} icon={link.icon} />;
-            }
-            if (link.type === 'profile') {
-              return <ProfileLink key={index} onClick={onLogout} />;
-            }
-            return null;
-          }) : <></>}
+          {links && links?.length > 0 ? (
+            links.map((link: Link, index: number) => {
+              if (link.type === 'icon' && link.icon) {
+                return <IconLink src={link.src} key={index} icon={link.icon} />;
+              }
+              if (link.type === 'profile') {
+                return <ProfileLink key={index} onClick={onLogout} />;
+              }
+              return null;
+            })
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </nav>

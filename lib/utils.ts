@@ -27,42 +27,42 @@ export const dateFormat = (date: string | number | Date | undefined) => {
     'Dec',
   ];
   const month = String(inputDate.getUTCMonth() + 1).padStart(2, '0');
-  const formattedDate = `${inputDate.getUTCDate()}-${monthNames[parseInt(month) - 1]
-    }-${year}`;
+  const formattedDate = `${inputDate.getUTCDate()}-${
+    monthNames[parseInt(month) - 1]
+  }-${year}`;
   return formattedDate;
 };
 
-
 export function getBarOptions(data: any, labels: any, gradient?: any) {
-  const isBar = data.find((item: any) => item.type == 'bar')?.type === 'bar'
+  const isBar = data.find((item: any) => item.type == 'bar')?.type === 'bar';
   return {
     tooltip: {
       trigger: 'axis',
-      show: true
+      show: true,
     },
     xAxis: {
-      type: "category",
+      type: 'category',
       data: labels.xAxis,
       axisLine: {
-        show: false
+        show: false,
       },
 
       axisTick: {
-        show: false
-      }
+        show: false,
+      },
     },
     yAxis: {
-      type: "value",
+      type: 'value',
       show: isBar ? false : true,
       data: labels.yAxis,
       boundaryGap: [0, '100%'],
       axisLine: {
-        show: false
+        show: false,
       },
 
       axisTick: {
-        show: false
-      }
+        show: false,
+      },
     },
     height: isBar ? 170 : 200,
     series: data.map((dataset: any) => {
@@ -86,18 +86,16 @@ export function getBarOptions(data: any, labels: any, gradient?: any) {
           width: 0.2,
           shadowColor: '#497352',
           shadowBlur: 20,
-          shadowOffsetY: 10
-
+          shadowOffsetY: 10,
         },
         areaStyle: {
-          color: gradient
+          color: gradient,
         },
       };
     }),
     legend: {
-      y: "bottom",
-      show: false
-    }
+      y: 'bottom',
+      show: false,
+    },
   };
 }
-

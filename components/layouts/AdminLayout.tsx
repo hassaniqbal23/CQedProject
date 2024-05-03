@@ -57,9 +57,9 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
             }}
             links={[
               {
-                src : '',
-                type : 'icon',
-                icon : <Bell fill='#000000' />
+                src: '',
+                type: 'icon',
+                icon: <Bell fill="#000000" />,
               },
               {
                 src: '',
