@@ -1,5 +1,4 @@
 import React from 'react';
-import { IconType } from 'react-icons';
 
 interface DashboardCardProps {
   title: string;
@@ -19,22 +18,23 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
   cardType = 'default',
 }) => {
   let cardClasses =
-    'w-full bg-[#F08853] p-7 rounded-lg flex justify-between items-center gap-4';
+    'w-full p-7 rounded-lg flex justify-between items-center gap-4 text-white';
+
   if (cardType === 'primary') {
-    cardClasses += ' bg-[#8E6CF7] ';
+    cardClasses += ' bg-[#8E6CF7]';
   } else if (cardType === 'secondary') {
     cardClasses += ' bg-[#676BC6]';
+  } else {
+    cardClasses += ' bg-[#F08853]';
   }
 
   return (
     <div className={cardClasses}>
       <div>
-        <h2 className="text-2xl font-semibold mb-4 text-white">{title}</h2>
-        <p className="text-lg text-white  mb-6 max-w-sm font-normal">
-          {description}
-        </p>
+        <h2 className="text-2xl font-semibold mb-4">{title}</h2>
+        <p className="text-lg mb-6 max-w-sm font-normal">{description}</p>
         <button
-          className="text-black flex px-8 py-3 justify-center items-center gap-10 bg-white rounded-3xl font-medium"
+          className="px-8 py-3 bg-white rounded-3xl font-medium text-black text-lg"
           onClick={buttonOnClick}
         >
           {buttonText}
