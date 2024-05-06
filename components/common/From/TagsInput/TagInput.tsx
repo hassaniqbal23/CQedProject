@@ -28,7 +28,7 @@ const EmailInput: React.FC<EmailInputProps> = ({
   }, [emails, onChange]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && input) {
+    if ((event.key === 'Enter' || event.key === 'Tab') && input) {
       if (maxEmails !== undefined && emails.length >= maxEmails) {
         setError(`You can only add up to ${maxEmails} email addresses.`);
         return;
