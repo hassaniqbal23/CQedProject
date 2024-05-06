@@ -9,6 +9,8 @@ import { useMutation } from 'react-query';
 import { Invite } from '@/app/api/invitations';
 import DataTable from '@/components/ui/table/table';
 import Pagination from '@/components/common/pagination/pagination';
+import { toast } from 'sonner';
+import { CircleAlert } from 'lucide-react';
 
 const Schools = () => {
   const [data, setData] = useState([]);
@@ -28,6 +30,11 @@ const Schools = () => {
     (userData: { emails: string; type: string }) => Invite(userData),
     {
       onSuccess: (res) => {
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+          icon: <CircleAlert />,
+          closeButton: true,
+        });
         setInviteSchool(false);
         fetch();
       },

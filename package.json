@@ -81,6 +81,7 @@
     "recharts": "^2.9.3",
     "shadcn-ui": "^0.3.0",
     "sharp": "^0.33.2",
+    "sonner": "^1.4.41",
     "tailwind-merge": "^1.13.2",
     "tailwindcss-animate": "^1.0.6",
     "tooltip": "^1.6.1",
