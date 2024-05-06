@@ -1,14 +1,14 @@
 'use client';
 import { Children } from 'react';
-import { buttonVariants } from '@/components/ui';
-import { ScrollArea } from '@/components/ui';
+import { buttonVariants } from '@/components/ui/button/button';
+import { ScrollArea } from '@/components/ui/scroll-area/scroll-area';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui';
+} from '@/components/ui/select/select';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DayPicker, DropdownProps } from 'react-day-picker';
