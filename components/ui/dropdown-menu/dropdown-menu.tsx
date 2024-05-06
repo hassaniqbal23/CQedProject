@@ -196,13 +196,14 @@ interface IDropdownProps {
   value?: DropdownMenuOptionProps | DropdownMenuOptionProps[];
   multSelect?: boolean;
   options: DropdownMenuOptionProps[];
+  rounded?: boolean;
 }
 
 export interface DropdownMenuOptionProps {
   label: string;
   value: string;
-  flagUrl: string;
-  altName: string;
+  flagUrl?: string;
+  altName?: string;
 }
 
 export const Dropdown = (props: IDropdownProps) => {
@@ -247,16 +248,22 @@ export const Dropdown = (props: IDropdownProps) => {
       <div className={`${props.className}`}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="w-full">
-            <div className="flex justify-between py-4 px-2  border-1 border rounded-md bg-[#F8F9FB] outer-shadow">
+            <div
+              className={`flex justify-between px-2 border-1 border bg-[#F8F9FB] outer-shadow ${props.rounded ? 'rounded-full py-2' : 'rounded-md py-4'}`}
+            >
               {!Array.isArray(selectedItems) && selectedItems.label ? (
                 <div className="flex mr-1 justify-center items-center">
-                  <Image
-                    width={30}
-                    height={30}
-                    src={selectedItems.flagUrl}
-                    alt={selectedItems.altName}
-                    className="mr-2"
-                  />
+                  {selectedItems.flagUrl && selectedItems.altName ? (
+                    <Image
+                      width={30}
+                      height={30}
+                      src={selectedItems.flagUrl}
+                      alt={selectedItems.altName}
+                      className="mr-2"
+                    />
+                  ) : (
+                    ''
+                  )}
                   <h1>{selectedItems.label} </h1>
                 </div>
               ) : (
@@ -265,7 +272,7 @@ export const Dropdown = (props: IDropdownProps) => {
               <ChevronDown />
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className=" w-[430px] text-[#5D5E68] mt-3.5 px-3 py-2 text-semibold items-center bg-[#F8F9FB] cursor-pointer">
+          <DropdownMenuContent className="text-[#5D5E68] mt-3.5 px-3 py-2 text-semibold items-center bg-[#F8F9FB] cursor-pointer">
             <DropdownMenuRadioGroup className="">
               {props.options.map((option, index) => {
                 return (
@@ -277,12 +284,17 @@ export const Dropdown = (props: IDropdownProps) => {
                       index === props.options.length - 1 ? '' : 'border-b '
                     }`}
                   >
-                    <Image
-                      width={30}
-                      height={30}
-                      src={option.flagUrl}
-                      alt={option.altName}
-                    />
+                    {option.flagUrl && option.altName ? (
+                      <Image
+                        width={30}
+                        height={30}
+                        src={option.flagUrl}
+                        alt={option.altName}
+                        className="mr-2"
+                      />
+                    ) : (
+                      ''
+                    )}
                     {option.label}
                   </DropdownMenuRadioItem>
                 );

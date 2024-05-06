@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
 
 import { useResponsive } from '@/lib/hooks';
+import { Bell, MessageCircle } from 'lucide-react';
 interface IProps {
   children: ReactNode;
 }
@@ -80,6 +81,18 @@ export const StudentsLayout: FC<IProps> = ({ children }) => {
               removeUserId();
               router.push('/login');
             }}
+            links={[
+              { src: 'chat', type: 'icon', icon: <MessageCircle /> },
+              {
+                src: 'notification',
+                type: 'icon',
+                icon: <Bell />,
+              },
+              {
+                src: '',
+                type: 'profile',
+              },
+            ]}
           />
         </div>
       </div>
