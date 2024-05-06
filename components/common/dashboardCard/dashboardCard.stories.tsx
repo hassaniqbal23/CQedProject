@@ -7,7 +7,7 @@ import online_course from '/public/Online course.svg';
 import DashboardCard from '@/components/common/dashboardCard/dashboardCard';
 
 const meta: Meta<typeof DashboardCard> = {
-  title: 'DashboardCard', // Title for the story section in Storybook
+  title: 'DashboardCard',
   component: DashboardCard,
 };
 
@@ -25,7 +25,7 @@ export const Default: Story = {
       buttonOnClick={() => {
         console.log('clicked');
       }}
-      icon={friend.blurDataURL}
+      icon={friend}
       cardType="default"
     />
   ),
@@ -39,7 +39,7 @@ export const Primary: Story = {
       description="Make a Global Friend"
       buttonText="Start"
       buttonOnClick={() => {}}
-      icon={diversity.blurDataURL}
+      icon={diversity}
       cardType="primary"
     />
   ),
@@ -53,7 +53,7 @@ export const Secondary: Story = {
       description="Become Culturally intelligent by learning about different cultures"
       buttonText="Start"
       buttonOnClick={() => {}}
-      icon={online_course.blurDataURL}
+      icon={online_course}
       cardType="secondary"
     />
   ),

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Image from 'next/image';
 interface DashboardCardProps {
   title: string;
   description: string;
@@ -34,14 +34,14 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
         <h2 className="text-2xl font-semibold mb-4">{title}</h2>
         <p className="text-lg mb-6 max-w-sm font-normal">{description}</p>
         <button
-          className="px-8 py-3 bg-white rounded-3xl font-medium text-black text-lg"
+          className="px-8 py-2  bg-white rounded-3xl font-medium text-black text-lg"
           onClick={buttonOnClick}
         >
           {buttonText}
         </button>
       </div>
       <div className="mt-6">
-        <img src={icon} alt="" width={100} height={100} />
+        <Image src={icon} alt="" />
       </div>
     </div>
   );
