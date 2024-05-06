@@ -18,7 +18,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
   cardType = 'default',
 }) => {
   let cardClasses =
-    'w-full p-7 rounded-lg flex justify-between items-center gap-4 text-white';
+    'max-w-full p-7 rounded-lg flex justify-between items-center gap-4 text-white';
 
   if (cardType === 'primary') {
     cardClasses += ' bg-[#8E6CF7]';
