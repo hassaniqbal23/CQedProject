@@ -18,18 +18,24 @@ interface IProps {
   attachment?: string[];
   likes?: number;
   comments?: number;
+  onComplete?:() => void;
+  onLike?: () => void;
+
 }
 
 export const BlogPost: FC<IProps> = ({
-  userImage = '/assets/profile/profile.svg',
-  userFullName = 'Alexander John',
-  username = 'john_stim',
+  userImage ,
+  userFullName,
+  username,
   created_at,
-  description = 'You can’t buy happiness, but you can get happiness on the beach! This is labuan bajo, Indonesiaa',
-  attachment = ['/assets/images/img.png'],
-  likes = 0,
-  comments = 0,
+  description,
+  attachment,
+  likes=0,
+  comments=0,
+  onComplete,
+  
 }: IProps) => {
+  console.log(attachment)
   const [liked, setLiked] = useState(false);
   const [commented, setCommented] = useState(false);
 
@@ -55,17 +61,17 @@ export const BlogPost: FC<IProps> = ({
     alert('Share functionality not implemented yet!');
   };
   return (
-    <div className="p-3 m-1 w-fit border-2 border-dashed border-purple-600">
-      <div className="flex gap-4 w-full md:w-auto md:mr-4 ">
+    <div className="p-3 m-1 w-fit ">
+      <div className="flex gap-2 items-center w-full md:w-auto md:mr-4 mb-4">
         <div>
-          <Avatar className="w-14 h-14 md:w-54 md:h-54 rounded-full bg-lightgray mb-7 md:mb-0">
+          <Avatar className="w-14 h-14 md:w-54 md:h-54 rounded-full bg-lightgray mb-3">
             <AvatarImage src={userImage} alt="Profile Picture" />
           </Avatar>
         </div>
 
-        <div className="flex flex-col md:flex-row md:items-center  mb-4">
+        <div className="flex flex-col mb-4 ">
           <div className="text-xl font-semibold ml-3">{userFullName}</div>
-          <div className="text-gray-600 text-sm ml-3">
+          <div className="text-gray-600 text-sm ml-3 mt-[7px]">
             <span>@{username}</span>
             <span className="mx-1">•</span>
             <span>{dayjs(created_at).fromNow()}</span>
@@ -73,7 +79,7 @@ export const BlogPost: FC<IProps> = ({
         </div>
       </div>
       <div className="flex flex-col flex-grow">
-        <div className="text-gray-600">{description}</div>{' '}
+        <div className="text-gray-600 mb-4">{description}</div>{' '}
         {/* Description here */}
         {attachment && attachment.length > 0 && (
           <div className="mt-4 md:mt-0">
@@ -87,7 +93,8 @@ export const BlogPost: FC<IProps> = ({
             />
           </div>
         )}
-        <div className="flex mt-4 md:mt-6 items-center">
+        <div className="flex justify-between mt-4 md:mt-6 items-center">
+          
           <div className="flex items-center text-gray-600 mr-4">
             <div className="flex items-center mr-4" onClick={handleLike}>
               <Heart
@@ -95,21 +102,22 @@ export const BlogPost: FC<IProps> = ({
               />
               <span>{liked ? likes + 1 : likes}</span>
             </div>
-          </div>
-          <div className="flex items-center mr-4" onClick={handleComment}>
+            <div className="flex items-center mr-4" onClick={handleComment||onComplete && onComplete}>
             <MessageCircle
               className={`h-5 w-5 mr-1 cursor-pointer ${commented ? 'text-blue-500' : ''}`}
             />
             <span>{commented ? comments + 1 : comments}</span>
           </div>
-        </div>
-        <div
-          className="flex justify-end items-center text-gray-600 cursor-pointer"
+          </div>
+          <div
+          className="flex justify-end items-center text-gray-600 cursor-pointer "
           onClick={handleShare}
         >
           <Send className="h-5 w-5 mr-1" />
           <span>Share</span>
         </div>
+        </div>
+      
       </div>
     </div>
   );
