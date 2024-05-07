@@ -2,12 +2,12 @@ import { Avatar } from '@/components/ui/avatar/avatar';
 import Image from 'next/image';
 import React, { FC } from 'react';
 
-interface IProps {
+interface WelcomeHeaderProps {
   title?: string;
   description?: string;
 }
 
-const WelcomeHeader: FC<IProps> = ({ title, description }) => {
+const WelcomeHeader: FC<WelcomeHeaderProps> = ({ title, description }) => {
   return (
     <>
       <div className="border-l-4 border-[#676BC6] bg-[#ECEDF8] rounded-2xl p-4 md:flex md:justify-between md:items-center">
