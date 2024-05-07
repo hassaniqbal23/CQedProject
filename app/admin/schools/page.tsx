@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import http from '@/app/utils/http';
-import Link from 'next/link';
 import SchoolTable from '@/components/common/SchoolsTable';
 import { Button, TabsComponent as Tabs } from '@/components/ui';
 import { SendEmail } from '@/components/index';
@@ -10,30 +9,45 @@ import { Invite } from '@/app/api/invitations';
 import DataTable from '@/components/ui/table/table';
 import Pagination from '@/components/common/pagination/pagination';
 import { getInvitedSchools, getInvites } from '@/app/api/admin';
+import { toast } from 'sonner';
+import { CircleAlert, Plus } from 'lucide-react';
 
 const Schools = () => {
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
-  const [invitePage, setInvitedPage] = useState(1)
-  const [invitePageSize, setInvitedPageSize] = useState(10)
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [invitePage, setInvitedPage] = useState(1);
+  const [invitePageSize, setInvitedPageSize] = useState(10);
   const [inviteSchool, setInviteSchool] = useState(false);
 
-  const { data, refetch, isLoading } = useQuery(['getInvitedSchools', page, pageSize], () => getInvitedSchools(page, pageSize), {
-    enabled: true,
-    onError(err) {
-      console.log(err)
+  const { data, refetch, isLoading } = useQuery(
+    ['getInvitedSchools', page, pageSize],
+    () => getInvitedSchools(page, pageSize),
+    {
+      enabled: true,
+      onError(err) {
+        console.log(err);
+      },
     }
-  })
+  );
 
-  const { data: invitedSchools, isLoading: invitedSchoolsLoading, refetch: inviteRefetch } = useQuery(['getInvites', page, pageSize], () => getInvites())
+  const {
+    data: invitedSchools,
+    isLoading: invitedSchoolsLoading,
+    refetch: inviteRefetch,
+  } = useQuery(['getInvites', page, pageSize], () => getInvites());
 
   const { mutate: schoolInvite, isLoading: inviteLoading } = useMutation(
     (userData: { emails: string; type: string }) => Invite(userData),
     {
       onSuccess: (res) => {
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+          icon: <CircleAlert />,
+          closeButton: true,
+        });
         setInviteSchool(false);
-        refetch()
-        inviteRefetch()
+        refetch();
+        inviteRefetch();
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
@@ -46,14 +60,13 @@ const Schools = () => {
   };
 
   const handlePageChange = async (pageNumber: number) => {
-    setPage(pageNumber)
-    await refetch()
+    setPage(pageNumber);
+    await refetch();
   };
 
-
   const handleInvitePageChange = async (pageNumber: number) => {
-    setInvitedPage(pageNumber)
-    await inviteRefetch()
+    setInvitedPage(pageNumber);
+    await inviteRefetch();
   };
 
   return (
@@ -61,10 +74,12 @@ const Schools = () => {
       <div className="w-full py-3 mt-7">
         <div className="w-full flex justify-end mb-4">
           <Button
-            className="font-semibold"
+            icon={<Plus size={25} />}
+            iconPosition="left"
+            size={'md'}
             onClick={() => setInviteSchool(true)}
           >
-            Invite School
+            Add Schools
           </Button>
           <SendEmail
             inviteLoading={inviteLoading}
@@ -92,20 +107,25 @@ const Schools = () => {
               value: 'schools',
               content: (
                 <div className={'pt-8'}>
-                  <SchoolTable data={data?.data.data as any} loading={isLoading} />
+                  <SchoolTable
+                    data={data?.data.data as any}
+                    loading={isLoading}
+                  />
                   <div className={'flex justify-end w-full mt-4'}>
                     <Pagination
                       currentPage={page}
-                      totalPages={!isLoading ? data.data.totalCount / pageSize + 1 : 50}
+                      totalPages={
+                        !isLoading ? data.data.totalCount / pageSize + 1 : 50
+                      }
                       pageSize={pageSize}
                       fetchData={async (pageNumber, pageSize) => {
-                        setPage(pageNumber)
-                        setPageSize(pageSize)
-                        await refetch()
+                        setPage(pageNumber);
+                        setPageSize(pageSize);
+                        await refetch();
                       }}
                       onPageChange={handlePageChange}
                       totalCount={!isLoading && data.data.totalCount}
-                      SetPageSize={(pageNumber) => { }}
+                      SetPageSize={(pageNumber) => {}}
                     />
                   </div>
                 </div>
@@ -123,13 +143,16 @@ const Schools = () => {
                   <div className={'flex justify-end w-full mt-4'}>
                     <Pagination
                       currentPage={invitePage}
-                      totalPages={!invitedSchoolsLoading ? invitedSchools?.data.totalCount / invitePageSize + 1 : 0}
+                      totalPages={
+                        !invitedSchoolsLoading
+                          ? invitedSchools?.data.totalCount / invitePageSize + 1
+                          : 0
+                      }
                       pageSize={invitePageSize}
                       fetchData={async (page, size) => {
-                        setInvitedPage(page)
-                        setInvitedPageSize(size)
-                        await inviteRefetch()
-
+                        setInvitedPage(page);
+                        setInvitedPageSize(size);
+                        await inviteRefetch();
                       }}
                       onPageChange={handleInvitePageChange}
                       totalCount={invitedSchools?.data.totalCount}
@@ -140,7 +163,7 @@ const Schools = () => {
               ),
             },
           ]}
-          onValueChange={() => { }}
+          onValueChange={() => {}}
         ></Tabs>
       </div>
     </div>
