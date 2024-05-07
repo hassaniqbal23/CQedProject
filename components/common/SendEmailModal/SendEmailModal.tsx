@@ -1,11 +1,19 @@
 'use client';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import Modal from '@/components/common/Modal/Modal';
-import { Button, Form } from '@/components/ui';
+import {
+  Button,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { FormTextArea } from '../From/FormTextArea';
+import { EmailInput } from '../From/TagsInput/TagInput';
 
 interface SendEmailProps {
   onSubmit: (data: any) => void;
@@ -23,14 +31,14 @@ const emailValidation = (emails: string) => {
 const schema = z.object({
   emails: z
     .string()
+    .array()
     .nonempty({ message: 'Please enter at least 1 email' })
     .refine(
-      (value) => {
-        const emails = value.split(',').map((email) => email.trim());
-        return emails.every(emailValidation);
+      (emails) => {
+        return emails.every((email) => emailValidation(email));
       },
       {
-        message: 'Please enter valid email addresses, separated by commas.',
+        message: 'Please enter valid email addresses.',
       }
     ),
 });
@@ -46,7 +54,7 @@ export const SendEmail: FC<SendEmailProps> = ({
   const form = useForm<any>({
     resolver: zodResolver(schema),
     defaultValues: {
-      emails: '',
+      emails: [],
     },
   });
 
@@ -60,7 +68,6 @@ export const SendEmail: FC<SendEmailProps> = ({
       isVisible={open}
       onOpenChange={() => {
         form.reset();
-
         setOpen && setOpen(false);
       }}
       header={true}
@@ -72,15 +79,31 @@ export const SendEmail: FC<SendEmailProps> = ({
     >
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-6">
-            <FormTextArea
-              form={form}
-              placeholder="Enter emails address"
+          <div className="mb-1">
+            <FormField
+              control={form.control}
               name="emails"
-              label="Email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <EmailInput
+                      initialValue={field.value}
+                      maxEmails={10}
+                      onChange={(value: string[]) => {
+                        field.onChange(value);
+                      }}
+                      placeholder={'Enter emails address'}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
+
             <div className="flex justify-end mt-6">
               <Button
+                size={'md'}
                 loading={inviteLoading}
                 disabled={inviteLoading}
                 type="submit"

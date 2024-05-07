@@ -22,15 +22,15 @@ const myFont = localFont({
 export default function RootLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
 
-  useEffect(() => {
-    // Redirect to login if no access token
-    const token = getAccessToken();
-    if (token) {
-      updateToken(token);
-    } else if (!window.location.search) {
-      router.push('/login');
-    }
-  }, [router]);
+  // useEffect(() => {
+  //   // Redirect to login if no access token
+  //   const token = getAccessToken();
+  //   if (token) {
+  //     updateToken(token);
+  //   } else if (!window.location.search) {
+  //     router.push('/login');
+  //   }
+  // }, [router]);
 
   const [queryClient] = useState(
     () =>

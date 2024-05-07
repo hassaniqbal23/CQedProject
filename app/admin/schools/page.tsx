@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import http from '@/app/utils/http';
-import Link from 'next/link';
 import SchoolTable from '@/components/common/SchoolsTable';
 import { Button, TabsComponent as Tabs } from '@/components/ui';
 import { SendEmail } from '@/components/index';
@@ -10,7 +9,7 @@ import { Invite } from '@/app/api/invitations';
 import DataTable from '@/components/ui/table/table';
 import Pagination from '@/components/common/pagination/pagination';
 import { toast } from 'sonner';
-import { CircleAlert } from 'lucide-react';
+import { CircleAlert, Plus } from 'lucide-react';
 
 const Schools = () => {
   const [data, setData] = useState([]);
@@ -76,18 +75,23 @@ const Schools = () => {
       <div className="w-full py-3 mt-7">
         <div className="w-full flex justify-end mb-4">
           <Button
-            className="font-semibold"
+            icon={<Plus size={25} />}
+            iconPosition="left"
+            size={'md'}
             onClick={() => setInviteSchool(true)}
           >
-            Invite School
+            Add Schools
           </Button>
-          <SendEmail
-            inviteLoading={isLoading}
-            setOpen={setInviteSchool}
-            open={inviteSchool}
-            onSubmit={onSubmit}
-            inviteButtonTitle={'Invite School'}
-          />
+
+          {inviteSchool && (
+            <SendEmail
+              inviteLoading={isLoading}
+              setOpen={setInviteSchool}
+              open={inviteSchool}
+              onSubmit={onSubmit}
+              inviteButtonTitle={'Invite School'}
+            />
+          )}
         </div>
         <Tabs
           defaultValue={'schools'}

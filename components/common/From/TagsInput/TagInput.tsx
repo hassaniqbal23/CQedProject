@@ -1,5 +1,5 @@
 import { X } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { z } from 'zod';
 
 interface EmailInputProps {
@@ -21,35 +21,34 @@ const EmailInput: React.FC<EmailInputProps> = ({
   const [input, setInput] = useState('');
   const [error, setError] = useState<string | null>(null);
 
+  const prevEmailsRef = useRef(emails);
   useEffect(() => {
-    if (onChange) {
+    if (
+      onChange &&
+      JSON.stringify(emails) !== JSON.stringify(prevEmailsRef.current)
+    ) {
       onChange(emails);
+      prevEmailsRef.current = emails;
     }
   }, [emails, onChange]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if ((event.key === 'Enter' || event.key === 'Tab') && input) {
+    if ((event.key === 'Enter' || event.key === 'Tab') && input.trim()) {
+      event.preventDefault();
       if (maxEmails !== undefined && emails.length >= maxEmails) {
         setError(`You can only add up to ${maxEmails} email addresses.`);
         return;
       }
 
-      const validationResult = emailSchema.safeParse(input);
+      const validationResult = emailSchema.safeParse(input.trim());
       if (validationResult.success) {
-        setEmails((prevEmails) => {
-          const newEmails = [...prevEmails, input];
-          setInput('');
-          setError(null);
-          return newEmails;
-        });
+        setEmails((prevEmails) => [...prevEmails, input.trim()]);
+        setInput('');
+        setError(null);
       } else {
         setError('Please enter a valid email address.');
       }
     }
-  };
-
-  const removeEmail = (index: number) => {
-    setEmails((prevEmails) => prevEmails.filter((_, i) => i !== index));
   };
 
   return (
@@ -62,7 +61,11 @@ const EmailInput: React.FC<EmailInputProps> = ({
           >
             {email}
             <button
-              onClick={() => removeEmail(index)}
+              onClick={() =>
+                setEmails((prevEmails) =>
+                  prevEmails.filter((_, i) => i !== index)
+                )
+              }
               className="text-blue-500 hover:text-blue-700 flex items-center"
             >
               <X />
