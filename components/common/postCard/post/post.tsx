@@ -18,24 +18,22 @@ interface IProps {
   attachment?: string[];
   likes?: number;
   comments?: number;
-  onComplete?:() => void;
+  onComplete?: () => void;
   onLike?: () => void;
-
 }
 
-export const BlogPost: FC<IProps> = ({
-  userImage ,
+export const Post: FC<IProps> = ({
+  userImage,
   userFullName,
   username,
   created_at,
   description,
   attachment,
-  likes=0,
-  comments=0,
+  likes = 0,
+  comments = 0,
   onComplete,
-  
 }: IProps) => {
-  console.log(attachment)
+  console.log(attachment);
   const [liked, setLiked] = useState(false);
   const [commented, setCommented] = useState(false);
 
@@ -94,7 +92,6 @@ export const BlogPost: FC<IProps> = ({
           </div>
         )}
         <div className="flex justify-between mt-4 md:mt-6 items-center">
-          
           <div className="flex items-center text-gray-600 mr-4">
             <div className="flex items-center mr-4" onClick={handleLike}>
               <Heart
@@ -102,22 +99,24 @@ export const BlogPost: FC<IProps> = ({
               />
               <span>{liked ? likes + 1 : likes}</span>
             </div>
-            <div className="flex items-center mr-4" onClick={handleComment||onComplete && onComplete}>
-            <MessageCircle
-              className={`h-5 w-5 mr-1 cursor-pointer ${commented ? 'text-blue-500' : ''}`}
-            />
-            <span>{commented ? comments + 1 : comments}</span>
-          </div>
+            <div
+              className="flex items-center mr-4"
+              onClick={handleComment || (onComplete && onComplete)}
+            >
+              <MessageCircle
+                className={`h-5 w-5 mr-1 cursor-pointer ${commented ? 'text-blue-500' : ''}`}
+              />
+              <span>{commented ? comments + 1 : comments}</span>
+            </div>
           </div>
           <div
-          className="flex justify-end items-center text-gray-600 cursor-pointer "
-          onClick={handleShare}
-        >
-          <Send className="h-5 w-5 mr-1" />
-          <span>Share</span>
+            className="flex justify-end items-center text-gray-600 cursor-pointer "
+            onClick={handleShare}
+          >
+            <Send className="h-5 w-5 mr-1" />
+            <span>Share</span>
+          </div>
         </div>
-        </div>
-      
       </div>
     </div>
   );
