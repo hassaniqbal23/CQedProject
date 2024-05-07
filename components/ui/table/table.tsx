@@ -114,7 +114,7 @@ interface DataTableProps {
   data: any[];
   selection?: boolean;
   noDataMessage?: string;
-  loading?: boolean
+  loading?: boolean;
 }
 
 const DataTable = (props: DataTableProps) => {
@@ -151,7 +151,9 @@ const DataTable = (props: DataTableProps) => {
               <Checkbox
                 id="checkbox-header"
                 onCheckedChange={handleHeaderCheckboxChange}
-                checked={!props.loading && selectedItems.length === props.data.length}
+                checked={
+                  !props.loading && selectedItems.length === props.data.length
+                }
               />
             </TableHead>
           ) : null}
@@ -166,40 +168,55 @@ const DataTable = (props: DataTableProps) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {props.loading ? <TableRow><TableCell colSpan={5} className='flex items-center justify-center w-full h-24' ><Loading /></TableCell></ TableRow> : <>{props.data.map((item, index: number) => (
-          <TableRow key={index}>
-            {props.selection && (
-              <TableCell
-                className="text-[#282931] text-[13px] font-normal dark:text-white"
-                key={index}
-              >
-                <Checkbox
-                  id={`checkbox-${index}`}
-                  onCheckedChange={() => handleCellCheckboxChange(index)}
-                  checked={selectedItems.includes(index)}
-                  className="bg-[#E0E0E0]"
-                />
-              </TableCell>
-            )}
-            {props.columns.map((c, i) => (
-              <TableCell
-                className="text-[#282931] text-[13px] font-normal dark:text-white"
-                key={`${index}-${i}`}
-              >
-                <div className="">
-                  {c.render ? c.render(item) : item[c.key]}
-                </div>
-              </TableCell>
-            ))}
+        {props.loading ? (
+          <TableRow>
+            <TableCell
+              colSpan={props.columns.length + 1}
+              className="w-full h-24"
+            >
+              <div className="w-full flex justify-center">
+                <Loading />
+              </div>
+            </TableCell>
           </TableRow>
-        ))}
-          {props.data.length === 0 && (
-            <TableRow>
-              <TableCell colSpan={99} className={'text-center'}>
-                {props.noDataMessage || 'No data'}
-              </TableCell>
-            </TableRow>
-          )}</>}
+        ) : (
+          <>
+            {props.data.map((item, index: number) => (
+              <TableRow key={index}>
+                {props.selection && (
+                  <TableCell
+                    className="text-[#282931] text-[13px] font-normal dark:text-white"
+                    key={index}
+                  >
+                    <Checkbox
+                      id={`checkbox-${index}`}
+                      onCheckedChange={() => handleCellCheckboxChange(index)}
+                      checked={selectedItems.includes(index)}
+                      className="bg-[#E0E0E0]"
+                    />
+                  </TableCell>
+                )}
+                {props.columns.map((c, i) => (
+                  <TableCell
+                    className="text-[#282931] text-[13px] font-normal dark:text-white"
+                    key={`${index}-${i}`}
+                  >
+                    <div className="">
+                      {c.render ? c.render(item) : item[c.key]}
+                    </div>
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+            {props.data.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={99} className={'text-center'}>
+                  {props.noDataMessage || 'No data'}
+                </TableCell>
+              </TableRow>
+            )}
+          </>
+        )}
       </TableBody>
     </Table>
   );
