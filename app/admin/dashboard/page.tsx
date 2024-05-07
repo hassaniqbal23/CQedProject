@@ -24,11 +24,13 @@ const initialBar = {
 
 const Dashboard = () => {
 
+  const [lineData, setLineData] = useState<any>(initialBar);
+  const [barData, setbarData] = useState<any>(initialBar);
   const { data, isLoading } = useQuery(['getInvitedSchools'], () => getInvitedSchools())
   const currentDate = format(new Date(), 'EEEE, MMMM do');
 
   const cardData = [
-    { title: 'Total Schools', link: '/', number: data.length, percentage: 2.5 },
+    { title: 'Total Schools', link: '/', number: data?.data?.totalCount, percentage: 2.5 },
     { title: 'Total Teachers', link: '/', number: '1,400', percentage: 2.5 },
     { title: 'Total Students', link: '/', number: '15,000', percentage: 2.5 },
     { title: 'Total Sales', link: '/', number: '$10,000', percentage: 2.5 },
