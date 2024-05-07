@@ -1,7 +1,8 @@
 import { forwardRef } from 'react';
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui';
+import { Button, buttonVariants } from '@/components/ui';
+
 const AlertDialog = AlertDialogPrimitive.Root;
 const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
 const AlertDialogPortal = ({
@@ -117,6 +118,41 @@ const AlertDialogCancel = forwardRef<
   />
 ));
 AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
+
+interface AlertDialogProps {
+  ButtonTitle?: string;
+  DialogTitle?: string;
+  DialogDescription?: string;
+  DialogCancel?: string;
+  DialogAction?: string;
+}
+
+export const AlertDialogDemo = ({
+  ButtonTitle,
+  DialogTitle,
+  DialogDescription,
+  DialogCancel,
+  DialogAction,
+}: AlertDialogProps) => {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="outline">{ButtonTitle}</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{DialogTitle}</AlertDialogTitle>
+          <AlertDialogDescription>{DialogDescription}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>{DialogCancel}</AlertDialogCancel>
+          <AlertDialogAction>{DialogAction}</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};
+
 export {
   AlertDialog,
   AlertDialogTrigger,

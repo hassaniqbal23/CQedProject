@@ -4,6 +4,9 @@ import { forwardRef } from 'react';
 import * as HoverCardPrimitive from '@radix-ui/react-hover-card';
 
 import { cn } from '@/lib/utils';
+import { Button } from '../button/button';
+import { Avatar, AvatarFallback, AvatarImage } from '../avatar/avatar';
+import { CalendarDays } from 'lucide-react';
 
 const HoverCard = HoverCardPrimitive.Root;
 
@@ -26,4 +29,46 @@ const HoverCardContent = forwardRef<
 ));
 HoverCardContent.displayName = HoverCardPrimitive.Content.displayName;
 
-export { HoverCard, HoverCardTrigger, HoverCardContent };
+interface HoverCardDemoProps {
+  avatarSrc?: string; // Optional avatar image source
+  avatarFallback?: string; // Optional fallback text for avatar
+  username?: string;
+  description?: string;
+  joinedDate?: Date; // Optional joined date
+}
+
+export function HoverCardDemo({
+  avatarSrc,
+  avatarFallback,
+  username,
+  description,
+  joinedDate,
+}: HoverCardDemoProps) {
+  return (
+    <HoverCard>
+      <HoverCardTrigger asChild>
+        <Button variant="link">{username}</Button>
+      </HoverCardTrigger>
+      <HoverCardContent className="w-80">
+        <div className="flex justify-between space-x-4">
+          <Avatar>
+            {avatarSrc && <AvatarImage src={avatarSrc} />}
+            {!avatarSrc && <AvatarFallback>{avatarFallback}</AvatarFallback>}
+          </Avatar>
+          <div className="space-y-1">
+            <h4 className="text-sm font-semibold">{username}</h4>
+            <p className="text-sm">{description}</p>
+            {joinedDate && (
+              <div className="flex items-center pt-2">
+                <CalendarDays className="mr-2 h-4 w-4 opacity-70" />{' '}
+                <span className="text-xs text-muted-foreground">
+                  Joined {joinedDate.toLocaleDateString()}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      </HoverCardContent>
+    </HoverCard>
+  );
+}

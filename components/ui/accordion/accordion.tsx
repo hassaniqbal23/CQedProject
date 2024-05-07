@@ -1,9 +1,10 @@
 'use client';
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import { ChevronDown } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import React from 'react';
 
 const Accordion = AccordionPrimitive.Root;
 
@@ -55,5 +56,29 @@ const AccordionContent = forwardRef<
   </AccordionPrimitive.Content>
 ));
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;
+
+interface AccordionProps {
+  AccordionTitle?: string;
+  AccordionDescription?: string;
+  TriggerTitle?: string;
+  description?: string;
+  classname?: string;
+}
+
+export const AccordionDemo = ({
+  AccordionTitle,
+  AccordionDescription,
+  TriggerTitle,
+  description,
+}: AccordionProps) => {
+  return (
+    <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="item-1">
+        <AccordionTrigger>{TriggerTitle}</AccordionTrigger>
+        <AccordionContent>{AccordionTitle}</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+};
 
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };

@@ -5,6 +5,7 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { Button } from '../button/button';
 
 const Dialog = DialogPrimitive.Root;
 
@@ -107,6 +108,40 @@ const DialogDescription = forwardRef<
   />
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
+
+interface IProps {
+  ButtonTitle?: string;
+  ContentTitle?: string;
+  ContentDescription?: string;
+  className?: string;
+  DialogCancel?: string;
+  DialogAction?: string;
+}
+
+export const DialogDemo = ({
+  ButtonTitle,
+  ContentTitle,
+  ContentDescription,
+  DialogCancel,
+  DialogAction,
+}: IProps) => {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">{ButtonTitle}</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>{ContentTitle}</DialogTitle>
+          <DialogDescription>{ContentDescription}</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button type="submit">{DialogAction}</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 export {
   Dialog,

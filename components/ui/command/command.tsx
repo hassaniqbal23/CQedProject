@@ -151,14 +151,36 @@ const CommandShortcut = ({
 };
 CommandShortcut.displayName = 'CommandShortcut';
 
-export {
-  Command,
-  CommandDialog,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-  CommandShortcut,
-  CommandSeparator,
+interface ICommandItems {
+  icon: React.ReactNode;
+  title: string;
+  shortcut?: string;
+  heading?: string;
+  placeholder?: string; // Optional keyboard shortcut
+}
+interface CommandProps {
+  commandItems: ICommandItems[];
+}
+
+export const CommandDemo = ({ commandItems }: CommandProps) => {
+  return (
+    <div>
+      <Command className="rounded-lg border shadow-md">
+        <CommandInput placeholder="Type a command or search..." />
+        <CommandList>
+          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandGroup heading="Suggestions">
+            {commandItems.map((command) => (
+              <CommandItem key={command.title}>
+                {command.icon}
+                <span>{command.title}</span>
+              </CommandItem>
+            ))}
+          </CommandGroup>
+          <CommandSeparator />
+          <CommandGroup heading="Settings"></CommandGroup>
+        </CommandList>
+      </Command>
+    </div>
+  );
 };

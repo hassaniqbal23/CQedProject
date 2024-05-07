@@ -6,6 +6,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { Button } from '../button/button';
 
 const Sheet = SheetPrimitive.Root;
 
@@ -126,15 +127,26 @@ const SheetDescription = forwardRef<
 ));
 SheetDescription.displayName = SheetPrimitive.Description.displayName;
 
-export {
-  Sheet,
-  SheetPortal,
-  SheetOverlay,
-  SheetTrigger,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetFooter,
-  SheetTitle,
-  SheetDescription,
-};
+interface SheetDemoProps {
+  title?: string;
+  className?: string;
+  buttonTitle?: string;
+  description?: string;
+}
+
+export function SheetDemo({ title, description, buttonTitle }: SheetDemoProps) {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline">{buttonTitle}</Button>
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>{title}</SheetTitle>
+          <SheetDescription>{description}</SheetDescription>
+        </SheetHeader>
+        {/* ... rest of the component structure */}
+      </SheetContent>
+    </Sheet>
+  );
+}

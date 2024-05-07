@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { StoryObj } from '@storybook/react';
 import DataTable from './table';
 import Link from 'next/link';
 import { IoEllipsisVertical } from 'react-icons/io5';
@@ -116,9 +116,7 @@ const data: Schools[] = [
 const meta = {
   title: 'Forms/Table',
   component: DataTable,
-  parameters: {
-    layout: 'centered',
-  },
+
   tags: ['autodocs'],
   args: {},
 };
