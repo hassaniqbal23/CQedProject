@@ -59,6 +59,12 @@ export const MainLayout: FC<IProps> = ({ children }) => {
               removeUserId();
               router.push('/login');
             }}
+            links={[
+              {
+                src: '',
+                type: 'profile',
+              },
+            ]}
           />
         </div>
       </div>

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { CreateProfile } from './create-profile';
 
 const meta: Meta<typeof CreateProfile> = {
-  title: 'TeacherProfile',
+  title: 'Ui/TeacherProfile',
   component: CreateProfile,
 };
 

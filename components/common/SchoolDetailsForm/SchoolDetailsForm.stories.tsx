@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { SchoolDetailsForm } from '@/components/common/SchoolDetailsForm/SchoolDetailsForm';
+import { SchoolDetailsForm } from './SchoolDetailsForm';
 
 const meta = {
   title: 'Ui/SchoolForm',
