@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from '@/components/ui/dialog/dialog';
 
 import * as z from 'zod';
@@ -122,9 +123,11 @@ export const CreateClassDialog = ({
                   <Button type="submit" className="w-full rounded-md">
                     {ButtonAction}
                   </Button>
-                  <Button className="bg-white text-[#4146B8] ">
-                    {ButtonCancel}
-                  </Button>
+                  <DialogClose asChild>
+                    <Button className="bg-white text-[#4146B8] ">
+                      {ButtonCancel}
+                    </Button>
+                  </DialogClose>
                 </div>
               </form>
             </Form>
