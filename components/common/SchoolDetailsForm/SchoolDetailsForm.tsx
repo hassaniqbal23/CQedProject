@@ -14,8 +14,6 @@ import { useMutation } from 'react-query';
 import { AcceptInvite } from '@/app/api/schools';
 import { useRouter, useSearchParams } from 'next/navigation';
 import BottomNavbar from '@/components/common/navbar/bottomNavbar';
-import { storeToken, storeUserId } from '@/app/utils/encryption';
-import { updateToken } from '@/app/utils/http';
 
 const formSchema = z.object({
   name: z.string().refine((value) => value.trim() !== '', {

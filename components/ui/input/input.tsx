@@ -1,6 +1,6 @@
 import React, { useState, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
-import { ShieldAlert, LoaderIcon, Eye, EyeOff } from 'lucide-react';
+import { ShieldAlert, LoaderIcon, Eye, EyeOff, Search } from 'lucide-react';
 import { Label } from '../label/label';
 
 interface InputProps {
@@ -45,6 +45,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const inputType = showPassword ? 'text' : type;
     const isError = !!error;
+    const isSearchInput = type === 'search';
 
     return (
       <div>
@@ -72,6 +73,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             className={cn(
               'flex h-14 w-full bg-[#F8F9FB] rounded-md border font-medium px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-black disabled:cursor-not-allowed disabled:opacity-50',
               isError ? 'border-red-500' : 'border-[#D1D5DB]',
+              isSearchInput ? 'px-10' : '',
               className
             )}
             disabled={disabled}
@@ -83,6 +85,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               onClick={() => setShowPassword(!showPassword)}
             >
               {!showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          )}
+          {type === 'search' && (
+            <button
+              type="button"
+              className="absolute inset-y-0 left-2 flex items-center focus:outline-none"
+              onClick={() => {}}
+            >
+              <Search size={25} />
             </button>
           )}
           {isError && (

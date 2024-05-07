@@ -6,10 +6,14 @@ import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
 import Link from 'next/link';
 import { AdminWelCome } from './(components)/admin';
 import http from '@/app/utils/http';
+import { useQuery } from 'react-query';
+import { getInvitedSchools } from '@/app/api/admin';
+import Loading from '@/components/ui/button/loading';
 import { format } from 'date-fns';
 import AdminCharts from '@/components/common/AdminCharts';
 import { getBarOptions } from '@/lib/utils';
 import * as echarts from 'echarts';
+
 
 const initialBar = {
   data: [],
@@ -19,22 +23,14 @@ const initialBar = {
 };
 
 const Dashboard = () => {
-  const [data, setData] = useState([]);
+
   const [lineData, setLineData] = useState<any>(initialBar);
   const [barData, setbarData] = useState<any>(initialBar);
-
-  // fetch data
-  useEffect(() => {
-    http.get('/schools/all-schools').then((res) => {
-      setData(res.data.data || []);
-    });
-    getBarChart();
-  }, []);
-
+  const { data, isLoading } = useQuery(['getInvitedSchools'], () => getInvitedSchools())
   const currentDate = format(new Date(), 'EEEE, MMMM do');
 
   const cardData = [
-    { title: 'Total Schools', link: '/', number: data.length, percentage: 2.5 },
+    { title: 'Total Schools', link: '/', number: data?.data?.totalCount, percentage: 2.5 },
     { title: 'Total Teachers', link: '/', number: '1,400', percentage: 2.5 },
     { title: 'Total Students', link: '/', number: '15,000', percentage: 2.5 },
     { title: 'Total Sales', link: '/', number: '$10,000', percentage: 2.5 },
@@ -144,7 +140,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      {data.length === 0 ? (
+      <>{!isLoading ? <>{!data && data.data?.length === 0 ? (
         <>
           <AdminWelCome />
         </>
@@ -208,10 +204,10 @@ const Dashboard = () => {
                 View All
               </Link>
             </div>
-            <SchoolTable data={data} />
+            <SchoolTable data={data.data.data} />
           </div>
         </>
-      )}
+      )}</> : <div className='flex items-center justify-center w-full h-screen' ><Loading /></div>}</>
     </div>
   );
 };

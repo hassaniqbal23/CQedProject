@@ -82,6 +82,7 @@
     "shadcn-ui": "^0.8.0",
     "sharp": "^0.33.2",
     "slider": "^1.0.4",
+    "sonner": "^1.4.41",
     "tailwind-merge": "^1.13.2",
     "tailwindcss-animate": "^1.0.6",
     "tooltip": "^1.6.1",

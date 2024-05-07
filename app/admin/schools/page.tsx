@@ -1,35 +1,53 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import http from '@/app/utils/http';
-import Link from 'next/link';
 import SchoolTable from '@/components/common/SchoolsTable';
 import { Button, TabsComponent as Tabs } from '@/components/ui';
 import { SendEmail } from '@/components/index';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { Invite } from '@/app/api/invitations';
 import DataTable from '@/components/ui/table/table';
 import Pagination from '@/components/common/pagination/pagination';
+import { getInvitedSchools, getInvites } from '@/app/api/admin';
+import { toast } from 'sonner';
+import { CircleAlert, Plus } from 'lucide-react';
 
 const Schools = () => {
-  const [data, setData] = useState([]);
-  const [invitedSchools, setInvitedSchools] = useState([]);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [invitePage, setInvitedPage] = useState(1);
+  const [invitePageSize, setInvitedPageSize] = useState(10);
   const [inviteSchool, setInviteSchool] = useState(false);
 
-  const fetch = async () => {
-    http.get('/schools/all-schools').then((res) => {
-      setData(res.data.data || []);
-    });
-    http.get('/invitation/all-invites').then((res) => {
-      setInvitedSchools(res.data.data || []);
-    });
-  };
+  const { data, refetch, isLoading } = useQuery(
+    ['getInvitedSchools', page, pageSize],
+    () => getInvitedSchools(page, pageSize),
+    {
+      enabled: true,
+      onError(err) {
+        console.log(err);
+      },
+    }
+  );
 
-  const { mutate: schoolInvite, isLoading } = useMutation(
+  const {
+    data: invitedSchools,
+    isLoading: invitedSchoolsLoading,
+    refetch: inviteRefetch,
+  } = useQuery(['getInvites', page, pageSize], () => getInvites());
+
+  const { mutate: schoolInvite, isLoading: inviteLoading } = useMutation(
     (userData: { emails: string; type: string }) => Invite(userData),
     {
       onSuccess: (res) => {
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+          icon: <CircleAlert />,
+          closeButton: true,
+        });
         setInviteSchool(false);
-        fetch();
+        refetch();
+        inviteRefetch();
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
@@ -41,41 +59,30 @@ const Schools = () => {
     schoolInvite({ emails, type: 'SCHOOL' });
   };
 
-  const handlePageChange = (pageNumber: number) => {
-    console.log('Go to page', pageNumber);
+  const handlePageChange = async (pageNumber: number) => {
+    setPage(pageNumber);
+    await refetch();
   };
 
-  const handleInvitePage = (pageNumber: number) => {
-    console.log('Go to invite', pageNumber);
+  const handleInvitePageChange = async (pageNumber: number) => {
+    setInvitedPage(pageNumber);
+    await inviteRefetch();
   };
-
-  const fetchData = async (
-    pageNumber: number,
-    pageSize: number
-  ): Promise<any> => {
-    // Example:
-    const response = await http.get(
-      `/schools?page=${pageNumber}&pageSize=${pageSize}`
-    );
-    return response.data;
-  };
-
-  useEffect(() => {
-    fetch();
-  }, []);
 
   return (
     <div>
       <div className="w-full py-3 mt-7">
         <div className="w-full flex justify-end mb-4">
           <Button
-            className="font-semibold"
+            icon={<Plus size={25} />}
+            iconPosition="left"
+            size={'md'}
             onClick={() => setInviteSchool(true)}
           >
-            Invite School
+            Add Schools
           </Button>
           <SendEmail
-            inviteLoading={isLoading}
+            inviteLoading={inviteLoading}
             setOpen={setInviteSchool}
             open={inviteSchool}
             onSubmit={onSubmit}
@@ -100,15 +107,24 @@ const Schools = () => {
               value: 'schools',
               content: (
                 <div className={'pt-8'}>
-                  <SchoolTable data={data} />
+                  <SchoolTable
+                    data={data?.data.data as any}
+                    loading={isLoading}
+                  />
                   <div className={'flex justify-end w-full mt-4'}>
                     <Pagination
-                      currentPage={1}
-                      totalPages={50}
-                      pageSize={10}
-                      fetchData={fetchData}
+                      currentPage={page}
+                      totalPages={
+                        !isLoading ? data.data.totalCount / pageSize + 1 : 50
+                      }
+                      pageSize={pageSize}
+                      fetchData={async (pageNumber, pageSize) => {
+                        setPage(pageNumber);
+                        setPageSize(pageSize);
+                        await refetch();
+                      }}
                       onPageChange={handlePageChange}
-                      totalCount={50}
+                      totalCount={!isLoading && data.data.totalCount}
                       SetPageSize={(pageNumber) => {}}
                     />
                   </div>
@@ -121,17 +137,26 @@ const Schools = () => {
                 <div className={'pt-8'}>
                   <DataTable
                     columns={[{ label: 'School Email', key: 'email' }]}
-                    data={invitedSchools}
+                    data={invitedSchools?.data.data}
+                    loading={invitedSchoolsLoading}
                   />
                   <div className={'flex justify-end w-full mt-4'}>
                     <Pagination
-                      currentPage={1}
-                      totalPages={50}
-                      pageSize={10}
-                      fetchData={fetchData}
-                      onPageChange={handlePageChange}
-                      totalCount={50}
-                      SetPageSize={(pageNumber) => {}}
+                      currentPage={invitePage}
+                      totalPages={
+                        !invitedSchoolsLoading
+                          ? invitedSchools?.data.totalCount / invitePageSize + 1
+                          : 0
+                      }
+                      pageSize={invitePageSize}
+                      fetchData={async (page, size) => {
+                        setInvitedPage(page);
+                        setInvitedPageSize(size);
+                        await inviteRefetch();
+                      }}
+                      onPageChange={handleInvitePageChange}
+                      totalCount={invitedSchools?.data.totalCount}
+                      SetPageSize={(pageNumber) => console.log(pageNumber)}
                     />
                   </div>
                 </div>

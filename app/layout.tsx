@@ -11,6 +11,7 @@ import { getAccessToken } from './utils/encryption';
 import { updateToken } from './utils/http';
 import { GlobalProvider } from './gobalContext/globalContext';
 import { Toaster } from '@/components/ui/toaster/toaster';
+import { Toaster as Sonner } from '@/components/ui/sonner/sonner';
 import localFont from 'next/font/local';
 
 const myFont = localFont({
@@ -27,7 +28,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   //   if (token) {
   //     updateToken(token);
   //   } else if (!window.location.search) {
-  //     router.push("/login");
+  //     router.push('/login');
   //   }
   // }, [router]);
 
@@ -65,6 +66,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </FormProvider>
           </GlobalProvider>
         </QueryClientProvider>
+        <Sonner />
       </body>
     </html>
   );

@@ -60,7 +60,7 @@ function Pagination({
             className={`mx-1 ${
               currentPage === i
                 ? ' bg-[#F0F3F5] hover:bg-[#F0F3F5] rounded-xl text-[#3C3C3C] px-5 py-1'
-                : ' text-lg text-[#3C3C3C]  bg-[#F0F3F5] rounded-xl  '
+                : ' text-lg text-[#3C3C3C] bg-white rounded-xl  '
             }
             `}
             onClick={() => onPageChange(i)}
