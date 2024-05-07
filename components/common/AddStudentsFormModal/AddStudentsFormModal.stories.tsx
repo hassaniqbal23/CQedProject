@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { AddStudentModal } from './AddStudentsFormModal';
 
 const meta = {
-  title: 'Forms/AddStudentModal',
+  title: 'UI/AddStudentModal',
   component: AddStudentModal,
   parameters: {
     layout: 'centered',

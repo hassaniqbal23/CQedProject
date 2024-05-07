@@ -90,7 +90,7 @@ export const AddStudentModal = ({
       <DialogTrigger asChild>
         <Button variant="outline">{ButtonTrigger}</Button>
       </DialogTrigger>
-      <DialogContent className="w-2/4 h-screen">
+      <DialogContent className="w-2/4">
         <DialogHeader>
           <DialogTitle className="text-2xl mb-2">{Title}</DialogTitle>
         </DialogHeader>
