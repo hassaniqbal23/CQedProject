@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { DeleteDialog } from './DeleteClassModal';
+import { DeleteClassDialog } from './DeleteClassModal';
 
 const meta = {
-  title: 'Forms/DeleteDialog',
-  component: DeleteDialog,
+  title: 'UI/DeleteClassDialog',
+  component: DeleteClassDialog,
 
   tags: ['autodocs'],
-} satisfies Meta<typeof DeleteDialog>;
+} satisfies Meta<typeof DeleteClassDialog>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -15,7 +15,7 @@ export const Default: Story = {
   render(args) {
     return (
       <div>
-        <DeleteDialog {...args} />
+        <DeleteClassDialog {...args} />
       </div>
     );
   },

@@ -16,7 +16,7 @@ interface DeleteDialogProps {
   ButtonCancel?: string;
 }
 
-export const DeleteDialog = ({
+export const DeleteClassDialog = ({
   Title,
   Description,
   ButtonTrigger,
