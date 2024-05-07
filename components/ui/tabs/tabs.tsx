@@ -55,7 +55,7 @@ const TabsContent = forwardRef<
 >(({ className, ...props }, ref) => (
   <RadixUITabs.Content
     ref={ref}
-    className={cn('inline-flex items-center justify-center', className)}
+    className={cn('', className)}
     {...props}
   />
 ));

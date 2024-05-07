@@ -3,6 +3,7 @@ import React, { forwardRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 import { Checkbox } from '@/components/ui';
+import Loading from '../button/loading';
 
 const Table = forwardRef<
   HTMLTableElement,
@@ -113,6 +114,7 @@ interface DataTableProps {
   data: any[];
   selection?: boolean;
   noDataMessage?: string;
+  loading?: boolean
 }
 
 const DataTable = (props: DataTableProps) => {
@@ -149,7 +151,7 @@ const DataTable = (props: DataTableProps) => {
               <Checkbox
                 id="checkbox-header"
                 onCheckedChange={handleHeaderCheckboxChange}
-                checked={selectedItems.length === props.data.length}
+                checked={!props.loading && selectedItems.length === props.data.length}
               />
             </TableHead>
           ) : null}
@@ -164,7 +166,7 @@ const DataTable = (props: DataTableProps) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {props.data.map((item, index: number) => (
+        {props.loading ? <TableRow><TableCell colSpan={5} className='flex items-center justify-center w-full h-24' ><Loading /></TableCell></ TableRow> : <>{props.data.map((item, index: number) => (
           <TableRow key={index}>
             {props.selection && (
               <TableCell
@@ -191,13 +193,13 @@ const DataTable = (props: DataTableProps) => {
             ))}
           </TableRow>
         ))}
-        {props.data.length === 0 && (
-          <TableRow>
-            <TableCell colSpan={99} className={'text-center'}>
-              {props.noDataMessage || 'No data'}
-            </TableCell>
-          </TableRow>
-        )}
+          {props.data.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={99} className={'text-center'}>
+                {props.noDataMessage || 'No data'}
+              </TableCell>
+            </TableRow>
+          )}</>}
       </TableBody>
     </Table>
   );

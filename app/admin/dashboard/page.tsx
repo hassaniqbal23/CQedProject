@@ -6,6 +6,9 @@ import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
 import Link from 'next/link';
 import { AdminWelCome } from './(components)/admin';
 import http from '@/app/utils/http';
+import { useQuery } from 'react-query';
+import { getInvitedSchools } from '@/app/api/admin';
+import Loading from '@/components/ui/button/loading';
 
 const data1 = [
   {
@@ -114,18 +117,10 @@ const cardData = [
 ];
 
 const Dashboard = () => {
-  const [data, setData] = React.useState([]);
-
-  // fetch data
-  React.useEffect(() => {
-    http.get('/schools/all-schools').then((res) => {
-      setData(res.data.data || []);
-    });
-  }, []);
-
+  const { data, isLoading } = useQuery(['getInvitedSchools'], () => getInvitedSchools())
   return (
     <div>
-      {data.length === 0 ? (
+      <>{!isLoading ? <>{!data && data.data?.length === 0 ? (
         <>
           <AdminWelCome />
         </>
@@ -181,10 +176,10 @@ const Dashboard = () => {
                 View All
               </Link>
             </div>
-            <SchoolTable data={data} />
+            <SchoolTable data={data.data.data} />
           </div>
         </>
-      )}
+      )}</> : <div className='flex items-center justify-center w-full h-screen' ><Loading /></div>}</>
     </div>
   );
 };
