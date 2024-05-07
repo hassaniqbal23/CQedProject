@@ -1,33 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { AccordionDemo } from './accordion';
 
-const Div = () => <div>Accordion</div>;
-
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-const meta = {
-  title: 'Example/Component',
-  component: Div,
-  parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
-    layout: 'centered',
-  },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-  tags: ['autodocs'],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
-  args: { onClick: fn() },
-} satisfies Meta<typeof Div>;
-
+const meta: Meta<typeof AccordionDemo> = {
+  title: 'Ui/Accordian',
+  component: AccordionDemo,
+};
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof AccordionDemo>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Primary: Story = {
+export const Default: Story = {
+  render: (args) => {
+    return <AccordionDemo {...args} />;
+  },
   args: {
-    primary: true,
-    label: 'Button',
+    TriggerTitle: 'Is it accessible?',
+    AccordionTitle: ' Yes. It adheres to the WAI-ARIA design pattern.',
   },
 };

@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Label } from '@/components/ui/label/label';
 import { Switch } from '@/components/ui/switch/switch';
 
 // Define the meta information for the component
@@ -20,11 +19,14 @@ type Story = StoryObj<typeof Switch>;
 
 // Create the story
 export const Default: Story = {
-  args: {},
-  render: () => (
-    <div className="flex items-center space-x-2">
-      <Switch id="airplane-mode" />
-      <Label htmlFor="airplane-mode">Airplane Mode</Label>
-    </div>
-  ),
+  render: (args) => {
+    return (
+      <>
+        <Switch {...args} />
+      </>
+    );
+  },
+  args: {
+    title: 'Airplane-mode',
+  },
 };

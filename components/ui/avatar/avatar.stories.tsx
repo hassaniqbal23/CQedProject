@@ -5,9 +5,6 @@ import { Avatar, AvatarImage, AvatarFallback } from './avatar';
 const meta: Meta<typeof Avatar> = {
   title: 'Ui/Avatar',
   component: Avatar,
-  parameters: {
-    layout: 'centered',
-  },
 };
 
 export default meta;

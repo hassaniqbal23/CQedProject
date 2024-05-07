@@ -1,9 +1,15 @@
+'use client';
+
 import * as React from 'react';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import * as ToastPrimitives from '@radix-ui/react-toast';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
+import { Toaster } from '@/components/ui/toaster/toaster';
+// import { toast, useToast } from '@/components/ui/use-toast/use-toast';
+import { Button } from '../button/button';
+Toaster;
 
 const ToastProvider = ToastPrimitives.Provider;
 
@@ -30,6 +36,9 @@ const toastVariants = cva(
         default: 'border bg-background text-foreground',
         destructive:
           'destructive group border-destructive bg-destructive text-destructive-foreground',
+        success: 'border bg-success text-success-foreground',
+        warning: 'border bg-warning text-warning-foreground',
+        info: 'border bg-info text-info-foreground',
       },
     },
     defaultVariants: {
@@ -42,7 +51,7 @@ const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
     VariantProps<typeof toastVariants>
->(({ className, variant, ...props }, ref) => {
+>(({ className, variant, children, ...props }, ref) => {
   return (
     <ToastPrimitives.Root
       ref={ref}
@@ -114,6 +123,15 @@ type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>;
 
 type ToastActionElement = React.ReactElement<typeof ToastAction>;
 
+export type IProps = {
+  children?: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
+  variant?: string;
+  title?: string;
+  description?: string;
+};
+
 export {
   type ToastProps,
   type ToastActionElement,
@@ -124,4 +142,5 @@ export {
   ToastDescription,
   ToastClose,
   ToastAction,
+  toastVariants,
 };

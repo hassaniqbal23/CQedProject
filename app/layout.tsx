@@ -10,7 +10,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { getAccessToken } from './utils/encryption';
 import { updateToken } from './utils/http';
 import { GlobalProvider } from './gobalContext/globalContext';
-import { Toaster } from '@/components/ui';
+import { Toaster } from '@/components/ui/toaster/toaster';
 import localFont from 'next/font/local';
 
 const myFont = localFont({
