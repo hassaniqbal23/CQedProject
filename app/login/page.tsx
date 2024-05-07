@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -78,46 +78,52 @@ export default function Login() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 h-screen items-center bg-[#EEF3FE]">
-      <div className="flex justify-center items-center bg-white rounded-md shadow-md pt-[24px] px-[40px] pb-[45px] w-4/6 md:w-2/5 lg:w-2/6 mx-auto">
+    <div className="h-screen bg-[#EEF3FE] grid grid-cols-1   items-center">
+      <div className="flex justify-center items-center bg-white rounded-md shadow-md pt-8 md:pt-12 px-4 md:px-6 pb-10 md:pb-12 w-11/12 md:w-5/6 lg:w-2/3 xl:w-1/3 mx-auto">
         <div className="bg-secondary-light w-full md:w-10/12  flex flex-col gap-[30px]  ">
           <div className="flex items-center justify-center">
             <Image alt="logo" width={150} height={150} src="/logo.svg" />
           </div>
-          <div className="text-center">
-            <p>Admin login</p>
+          <div className="text-center mb-0">
+            <h1 className="font-bold text-center text-lg mb-1 md:text-xl ">
+              Login
+            </h1>
+            <p className="text-center text-sm font-semibold">
+              Login to your admin account
+            </p>
           </div>
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-6">
+              <div className="mb-4">
+                <label className="font-semibold">Email</label>
                 <FormInput
                   required={true}
                   form={form}
                   name="name"
-                  label="Email Address"
-                  placeholder={'Enter your email address'}
+                  placeholder={'Enter your email'}
                 />
               </div>
-              <div className="mb-6">
-                <div className="mb-6">
+              <div className="mb-3">
+                <div>
+                  <label className="font-semibold">Password</label>
                   <FormInput
                     type="password"
                     form={form}
                     name="password"
-                    label="Password"
                     placeholder={'Enter your password'}
                   />
                 </div>
               </div>
-              <div className="py-2 mt-2">
+              <div className="py-2 ">
                 <Button
-                  className="bg-primary w-full disabled:invalid:cursor-pointer hover:disabled:cursor-not-allowed"
+                  className=" w-full disabled:invalid:cursor-pointer hover:disabled:cursor-not-allowed"
                   type="submit"
                   size={'lg'}
                   loading={isLoading}
                   disabled={isLoading || !isValid}
+                  variant={'primary400'}
                 >
-                  Sign In
+                  Login
                 </Button>
               </div>
             </form>

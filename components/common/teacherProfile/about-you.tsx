@@ -86,7 +86,7 @@ export const AboutYou: React.FC = () => {
           </div>
         </div>
 
-        <div className="px-20 mt-8">
+        <div className="px-10 md:px20 mt-8">
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormField

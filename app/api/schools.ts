@@ -8,7 +8,6 @@ export interface AcceptInvite {
   country: string;
   phone: string;
   state: string;
-  inviteToken: string;
 }
 
 export const AcceptInvite = (payload: AcceptInvite) =>

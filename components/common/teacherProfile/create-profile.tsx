@@ -95,7 +95,7 @@ export const CreateProfile: React.FC = () => {
         <div className="px-20 mt-10">
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="mb-4">
                   <FormInput
                     required={true}

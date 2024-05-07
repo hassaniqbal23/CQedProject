@@ -128,13 +128,13 @@ const SheetDescription = forwardRef<
 SheetDescription.displayName = SheetPrimitive.Description.displayName;
 
 interface SheetDemoProps {
-  title?: string; 
+  title?: string;
   className?: string;
-  buttonTitle?:string
-  description?: string; 
+  buttonTitle?: string;
+  description?: string;
 }
 
-export function SheetDemo({ title, description ,buttonTitle }: SheetDemoProps) {
+export function SheetDemo({ title, description, buttonTitle }: SheetDemoProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>

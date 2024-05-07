@@ -8,6 +8,7 @@ import { SendEmail } from '@/components/index';
 import { useMutation } from 'react-query';
 import { Invite } from '@/app/api/invitations';
 import DataTable from '@/components/ui/table/table';
+import Pagination from '@/components/common/pagination/pagination';
 
 const Schools = () => {
   const [data, setData] = useState([]);
@@ -40,7 +41,25 @@ const Schools = () => {
     schoolInvite({ emails, type: 'SCHOOL' });
   };
 
-  // fetch data
+  const handlePageChange = (pageNumber: number) => {
+    console.log('Go to page', pageNumber);
+  };
+
+  const handleInvitePage = (pageNumber: number) => {
+    console.log('Go to invite', pageNumber);
+  };
+
+  const fetchData = async (
+    pageNumber: number,
+    pageSize: number
+  ): Promise<any> => {
+    // Example:
+    const response = await http.get(
+      `/schools?page=${pageNumber}&pageSize=${pageSize}`
+    );
+    return response.data;
+  };
+
   useEffect(() => {
     fetch();
   }, []);
@@ -48,8 +67,7 @@ const Schools = () => {
   return (
     <div>
       <div className="w-full py-3 mt-7">
-        <div className="w-full flex justify-between mb-4">
-          <h2 className="font-semibold">Schools</h2>
+        <div className="w-full flex justify-end mb-4">
           <Button
             className="font-semibold"
             onClick={() => setInviteSchool(true)}
@@ -83,6 +101,17 @@ const Schools = () => {
               content: (
                 <div className={'pt-8'}>
                   <SchoolTable data={data} />
+                  <div className={'flex justify-end w-full mt-4'}>
+                    <Pagination
+                      currentPage={1}
+                      totalPages={50}
+                      pageSize={10}
+                      fetchData={fetchData}
+                      onPageChange={handlePageChange}
+                      totalCount={50}
+                      SetPageSize={(pageNumber) => {}}
+                    />
+                  </div>
                 </div>
               ),
             },
@@ -94,6 +123,17 @@ const Schools = () => {
                     columns={[{ label: 'School Email', key: 'email' }]}
                     data={invitedSchools}
                   />
+                  <div className={'flex justify-end w-full mt-4'}>
+                    <Pagination
+                      currentPage={1}
+                      totalPages={50}
+                      pageSize={10}
+                      fetchData={fetchData}
+                      onPageChange={handlePageChange}
+                      totalCount={50}
+                      SetPageSize={(pageNumber) => {}}
+                    />
+                  </div>
                 </div>
               ),
             },
