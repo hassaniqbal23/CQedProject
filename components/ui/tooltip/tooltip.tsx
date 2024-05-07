@@ -4,6 +4,7 @@ import { forwardRef } from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 
 import { cn } from '@/lib/utils';
+import { Button } from '../button/button';
 
 const TooltipProvider = TooltipPrimitive.Provider;
 
@@ -27,4 +28,25 @@ const TooltipContent = forwardRef<
 ));
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+interface TooltipDemoProps {
+  tooltipContent: string; // Content to be displayed in the tooltip
+  triggerText?: string; // Optional text for the tooltip trigger (defaults to 'Hover')
+}
+
+export function TooltipDemo({
+  tooltipContent = 'Add to library',
+  triggerText = 'Hover',
+}: TooltipDemoProps) {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="outline">{triggerText}</Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{tooltipContent}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}

@@ -4,6 +4,9 @@ import { forwardRef } from 'react';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 
 import { cn } from '@/lib/utils';
+import { Label } from '@radix-ui/react-label';
+import { Input } from '../input/input';
+import { Button } from '../button/button';
 
 const Popover = PopoverPrimitive.Root;
 
@@ -28,4 +31,30 @@ const PopoverContent = forwardRef<
 ));
 PopoverContent.displayName = PopoverPrimitive.Content.displayName;
 
-export { Popover, PopoverTrigger, PopoverContent };
+interface PopoverDemoProps {
+  width?: string; // Optional initial width value
+  maxWidth?: string; // Optional initial max-width value
+  height?: string; // Optional initial height value
+  maxHeight?: string; // Optional initial max-height value
+  title?: string;
+  description?: string;
+  className?: string;
+}
+
+export function PopoverDemo({ title, description }: PopoverDemoProps) {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline">Open popover</Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-80 h-40">
+        <div className="">
+          <div className="font-semibold">{title}</div>
+          <div className="grid gap-2">
+            <div className="">{description}</div>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
