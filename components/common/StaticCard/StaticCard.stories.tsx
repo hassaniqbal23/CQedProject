@@ -25,7 +25,6 @@ export const Default: Story = {
   },
   args: {
     title: 'Title',
-    link: '/',
     number: 100,
     percentage: 20,
   },
@@ -44,7 +43,6 @@ export const Multiple: Story = {
   },
   args: {
     title: 'Title',
-    link: '/',
     number: 100,
     percentage: 20,
   },

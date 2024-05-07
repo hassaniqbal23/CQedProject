@@ -8,7 +8,7 @@ import { useMutation, useQuery } from 'react-query';
 import { Invite } from '@/app/api/invitations';
 import DataTable from '@/components/ui/table/table';
 import Pagination from '@/components/common/pagination/pagination';
-import { getInvitedSchools, getInvites } from '@/app/api/admin';
+import { getAllSchools, getInvites } from '@/app/api/admin';
 import { toast } from 'sonner';
 import { CircleAlert, Plus } from 'lucide-react';
 
@@ -21,7 +21,7 @@ const Schools = () => {
 
   const { data, refetch, isLoading } = useQuery(
     ['getInvitedSchools', page, pageSize],
-    () => getInvitedSchools(page, pageSize),
+    () => getAllSchools(page, pageSize),
     {
       enabled: true,
       onError(err) {
