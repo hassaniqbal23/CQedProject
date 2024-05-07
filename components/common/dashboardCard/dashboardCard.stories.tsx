@@ -1,8 +1,8 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import friend from '/public/Friends.svg';
-import diversity from '/public/Diversity.svg';
-import online_course from '/public/Online course.svg';
+import friend from '/public/friends.svg';
+import diversity from '/public/diversity.svg';
+import onlineCourse from '/public/online-course.svg';
 
 import DashboardCard from '@/components/common/dashboardCard/dashboardCard';
 
@@ -53,7 +53,7 @@ export const Secondary: Story = {
       description="Become Culturally intelligent by learning about different cultures"
       buttonText="Start"
       buttonOnClick={() => {}}
-      icon={online_course}
+      icon={onlineCourse}
       cardType="secondary"
     />
   ),
