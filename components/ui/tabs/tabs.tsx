@@ -53,11 +53,7 @@ const TabsContent = forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<typeof RadixUITabs.Content>
 >(({ className, ...props }, ref) => (
-  <RadixUITabs.Content
-    ref={ref}
-    className={cn('', className)}
-    {...props}
-  />
+  <RadixUITabs.Content ref={ref} className={cn('', className)} {...props} />
 ));
 TabsContent.displayName = 'TabsContent';
 
