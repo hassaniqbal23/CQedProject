@@ -43,3 +43,10 @@ export const Password: Story = {
     type: 'password',
   },
 };
+
+export const SearchField: Story = {
+  args: {
+    type: 'search',
+    placeholder: 'Search schools here',
+  },
+};
