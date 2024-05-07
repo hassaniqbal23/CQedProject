@@ -8,12 +8,12 @@ import { IoEllipsisVertical } from 'react-icons/io5';
 export interface SchoolTableProps {
   data: any;
   noDataMessage?: string;
-  loading?:boolean
+  loading?: boolean;
 }
 
 function SchoolTable(props: SchoolTableProps) {
   return (
-    <div className='w-full' >
+    <div className="w-full">
       <DataTable
         data={props.data}
         selection={true}
