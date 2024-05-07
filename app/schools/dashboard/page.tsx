@@ -43,14 +43,16 @@ export default function SchoolDashboard() {
         title="Teachers"
         icons={icons}
       />
-      <SendEmail
-        inviteLoading={isLoading}
-        setOpen={setInviteTeacherModal}
-        open={inviteTeacherModal}
-        onSubmit={onSubmit}
-        inviteButtonTitle={'Invite Teachers'}
-        headerTitle={'Invite Teachers'}
-      />
+      {inviteTeacherModal && (
+        <SendEmail
+          inviteLoading={isLoading}
+          setOpen={setInviteTeacherModal}
+          open={inviteTeacherModal}
+          onSubmit={onSubmit}
+          inviteButtonTitle={'Invite Teachers'}
+          headerTitle={'Invite Teachers'}
+        />
+      )}
     </div>
   );
 }

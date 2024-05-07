@@ -29,7 +29,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     ['userInformation', userId],
     () => GetUserInfomation(userId as string),
     {
-      enabled: userId !== 'undefined' ? true : false,
+      enabled: userId !== 'undefined' && userId !== null ? true : false,
       onSuccess: (res) => {
         setUserInformation(res.data.data);
       },
@@ -38,7 +38,6 @@ export const GlobalProvider: FC<any> = ({ children }) => {
       },
     }
   );
-
   return (
     <GlobalState.Provider
       value={{
