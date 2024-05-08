@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui';
 import { SendEmail } from '@/components/index';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { Invite } from '@/app/api/invitations';
+import { getInvitedTeachers } from '@/app/api/teachers';
 
 const Dashboard = () => {
   const [inviteStudentModal, setInviteStudentModal] = useState(false);
@@ -19,6 +20,11 @@ const Dashboard = () => {
         console.log(error, 'Error =====> log');
       },
     }
+  );
+
+  const { data, isLoading: isFetchingInvitedSchools } = useQuery(
+    ['getInvitedSchools'],
+    () => getInvitedTeachers()
   );
 
   const onSubmit = ({ emails }: { emails: string }) => {

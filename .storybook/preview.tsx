@@ -3,8 +3,6 @@ import React from 'react';
 import '!style-loader!css-loader!postcss-loader!../app/globals.css';
 import {ToastProvider} from '../components/ui/toast/toast'
 
-
-
 const preview: Preview = {
   decorators: (Story)=>{
     return <ToastProvider >

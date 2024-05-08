@@ -1,7 +1,12 @@
 'use client';
 
 import { FC } from 'react';
-import { Button, Popover, PopoverContent, PopoverTrigger } from './../../ui';
+import {
+  Button,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
 import { MdLogout } from 'react-icons/md';
 import Image from 'next/image';

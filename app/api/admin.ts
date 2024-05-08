@@ -1,6 +1,6 @@
 import http from '../utils/http';
 
-export const getInvitedSchools: any = (
+export const getAllSchools: any = (
   page: string | number = 1,
   pageSize: number | string = 10
 ) => {

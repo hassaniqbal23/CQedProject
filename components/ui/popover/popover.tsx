@@ -58,3 +58,5 @@ export function PopoverDemo({ title, description }: PopoverDemoProps) {
     </Popover>
   );
 }
+
+export { Popover, PopoverTrigger, PopoverContent };

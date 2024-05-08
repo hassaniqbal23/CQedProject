@@ -1,15 +1,46 @@
 'use client';
 
-import { useState } from 'react';
-import { useMutation } from 'react-query';
+import React, { useState } from 'react';
+import { useMutation, useQuery } from 'react-query';
 import { Invite } from '@/app/api/invitations';
 import { SendEmail } from '@/components/common/SendEmailModal/SendEmailModal';
-import { Button } from '@/components/ui';
+import { Button, Input, TabsComponent as Tabs } from '@/components/ui';
+import { Plus } from 'lucide-react';
+import SchoolTable from '@/components/common/SchoolsTable';
+import Pagination from '@/components/common/pagination/pagination';
+import DataTable from '@/components/ui/table/table';
+import { getInvites } from '@/app/api/admin';
+import { getAllStudents } from '@/app/api/students';
 
 function SchoolStudents() {
   const [inviteStudentModal, setInviteStudentModal] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [invitePage, setInvitedPage] = useState(1);
+  const [invitePageSize, setInvitedPageSize] = useState(10);
 
-  const { mutate: schoolInvite, isLoading } = useMutation(
+  const {
+    data,
+    refetch,
+    isLoading: isLoadingAllStudents,
+  } = useQuery(
+    ['getInvitedSchools', page, pageSize],
+    () => getAllStudents(page, pageSize),
+    {
+      enabled: true,
+      onError(err) {
+        console.log(err);
+      },
+    }
+  );
+
+  const {
+    data: invitedStudents,
+    isLoading: invitedStudentsLoading,
+    refetch: inviteRefetch,
+  } = useQuery(['getInvites', page, pageSize], () => getInvites());
+
+  const { mutate: studentInvite, isLoading } = useMutation(
     (studentData: { emails: string; type: string }) => Invite(studentData),
     {
       onSuccess: (res) => {
@@ -21,21 +52,123 @@ function SchoolStudents() {
     }
   );
 
+  const handlePageChange = async (pageNumber: number) => {
+    setPage(pageNumber);
+    await refetch();
+  };
+
+  const handleInvitePageChange = async (pageNumber: number) => {
+    setInvitedPage(pageNumber);
+    await inviteRefetch();
+  };
+
   const onSubmit = ({ emails }: { emails: string }) => {
-    schoolInvite({ emails, type: 'SCHOOL_STUDENT' });
+    studentInvite({ emails, type: 'SCHOOL_STUDENT' });
   };
 
   return (
-    <div>
-      <div className={'flex mb-2'}>
-        <h1>Students</h1>
-        <div className={'ml-auto'}>
-          <Button onClick={() => setInviteStudentModal(true)}>
-            Invite Students
-          </Button>
+    <>
+      <div>
+        <div className={'flex mb-4'}>
+          <div>
+            <h1 className={'text-3xl font-bold'}>Students</h1>
+            <p>Your school students are listed below</p>
+          </div>
+          <div className={'ml-auto'}>
+            <Button
+              iconPosition={'left'}
+              icon={<Plus></Plus>}
+              onClick={() => setInviteStudentModal(true)}
+            >
+              Invite Students
+            </Button>
+          </div>
         </div>
+
+        <Tabs
+          defaultValue={'students'}
+          tabs={[
+            {
+              label: 'Added Students',
+              value: 'students',
+            },
+            {
+              label: 'Invited Students',
+              value: 'invited',
+            },
+          ]}
+          variant={'secondary'}
+          tabContent={[
+            {
+              value: 'students',
+              content: (
+                <div className={'pt-7'}>
+                  <Input
+                    placeholder={'Search student '}
+                    type={'search'}
+                    className={'mb-7'}
+                  />
+                  <SchoolTable
+                    data={data?.data?.data || []}
+                    loading={isLoadingAllStudents}
+                  />
+                  <div className={'flex justify-end w-full mt-4'}>
+                    <Pagination
+                      currentPage={page}
+                      totalPages={
+                        !isLoading ? data?.data?.totalCount / pageSize + 1 : 50
+                      }
+                      pageSize={pageSize}
+                      fetchData={async (pageNumber, pageSize) => {
+                        setPage(pageNumber);
+                        setPageSize(pageSize);
+                        await refetch();
+                      }}
+                      onPageChange={handlePageChange}
+                      totalCount={!isLoading && data?.data?.totalCount}
+                      SetPageSize={(pageNumber) => {}}
+                    />
+                  </div>
+                </div>
+              ),
+            },
+            {
+              value: 'invited',
+              content: (
+                <div className={'pt-8'}>
+                  <DataTable
+                    columns={[{ label: 'Student email Email', key: 'email' }]}
+                    data={invitedStudents?.data?.data || []}
+                    loading={invitedStudentsLoading}
+                  />
+                  <div className={'flex justify-end w-full mt-4'}>
+                    <Pagination
+                      currentPage={invitePage}
+                      totalPages={
+                        !invitedStudentsLoading
+                          ? invitedStudents?.data.totalCount / invitePageSize +
+                            1
+                          : 0
+                      }
+                      pageSize={invitePageSize}
+                      fetchData={async (page, size) => {
+                        setInvitedPage(page);
+                        setInvitedPageSize(size);
+                        await inviteRefetch();
+                      }}
+                      onPageChange={handleInvitePageChange}
+                      totalCount={invitedStudents?.data.totalCount}
+                      SetPageSize={(pageNumber) => console.log(pageNumber)}
+                    />
+                  </div>
+                </div>
+              ),
+            },
+          ]}
+          onValueChange={() => {}}
+        ></Tabs>
       </div>
-      <hr />
+
       <SendEmail
         inviteLoading={isLoading}
         setOpen={setInviteStudentModal}
@@ -44,7 +177,7 @@ function SchoolStudents() {
         inviteButtonTitle={'Invite Students'}
         headerTitle={'Invite Students'}
       />
-    </div>
+    </>
   );
 }
 
