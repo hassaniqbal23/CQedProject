@@ -4,9 +4,7 @@ import { Dropdown } from './dropdown-menu';
 const meta = {
   title: 'Forms/Dropdown',
   component: Dropdown,
-  parameters: {
-    layout: 'centered',
-  },
+  parameters: {},
 
   tags: ['autodocs'],
 } satisfies Meta<typeof Dropdown>;
