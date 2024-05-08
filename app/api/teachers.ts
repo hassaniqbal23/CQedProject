@@ -8,5 +8,5 @@ export const getInvitedTeachers = (
   page: string | number = 1,
   pageSize: number | string = 10
 ) => {
-  return http.get(`/teachers/2/all-teachers`);
+  return http.get(`/teachers/all-teachers`);
 };

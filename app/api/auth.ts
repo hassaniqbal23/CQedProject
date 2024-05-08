@@ -11,7 +11,7 @@ export const LoginAPI = (payload: IAuthentication) =>
 export const UpdateUserPassword = (payload: UpdatePasswordBody) =>
   http.patch('/password/update-password', payload);
 
-export const GetUserInfomation = (id: string) => http.get(`/users/${id}/user`);
+export const GetUserInformation = (id: string) => http.get(`/users/${id}/user`);
 
 export const UserAcceptInvitation = (payload: IAcceptInvitation) =>
   http.post('/invitation/accept-invite', payload);
