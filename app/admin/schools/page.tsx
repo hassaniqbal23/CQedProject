@@ -70,24 +70,23 @@ const Schools = () => {
   };
 
   return (
-    <div>
+    <>
       <div className="w-full py-3 mt-7">
-        <div className="w-full flex justify-end mb-4">
-          <Button
-            icon={<Plus size={25} />}
-            iconPosition="left"
-            size={'md'}
-            onClick={() => setInviteSchool(true)}
-          >
-            Add Schools
-          </Button>
-          <SendEmail
-            inviteLoading={inviteLoading}
-            setOpen={setInviteSchool}
-            open={inviteSchool}
-            onSubmit={onSubmit}
-            inviteButtonTitle={'Invite School'}
-          />
+        <div className="w-full flex mb-4 items-center">
+          <div>
+            <h1 className={'text-3xl font-bold'}>Students</h1>
+            <p>Your school students are listed below</p>
+          </div>
+          <div className={'ml-auto'}>
+            <Button
+              icon={<Plus size={25} />}
+              iconPosition="left"
+              size={'md'}
+              onClick={() => setInviteSchool(true)}
+            >
+              Add Schools
+            </Button>
+          </div>
         </div>
         <Tabs
           defaultValue={'schools'}
@@ -166,7 +165,14 @@ const Schools = () => {
           onValueChange={() => {}}
         ></Tabs>
       </div>
-    </div>
+      <SendEmail
+        inviteLoading={inviteLoading}
+        setOpen={setInviteSchool}
+        open={inviteSchool}
+        onSubmit={onSubmit}
+        inviteButtonTitle={'Invite School'}
+      />
+    </>
   );
 };
 
