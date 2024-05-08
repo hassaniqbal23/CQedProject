@@ -22,7 +22,7 @@ function TeachersTable(props: TeachersTableProps) {
         columns={[
           {
             label: 'Teacher Name',
-            key: 'name',
+            key: 'fullname',
             render: (data) => {
               return (
                 <div className="flex items-center gap-2 w-full">
@@ -32,12 +32,11 @@ function TeachersTable(props: TeachersTableProps) {
                   {/*  width={30}*/}
                   {/*  height={30}*/}
                   {/*/>*/}
-                  <h2>{data['name']}</h2>
+                  <h2>{data['fullname']}</h2>
                 </div>
               );
             },
           },
-          { label: 'Subject', key: 'subject' },
           { label: 'Email Address', key: 'email' },
           {
             label: 'Years of Experience',

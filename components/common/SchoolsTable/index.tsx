@@ -40,13 +40,6 @@ function SchoolTable(props: SchoolTableProps) {
           { label: 'Country', key: 'country' },
           { label: 'Email Address', key: 'email' },
           {
-            label: 'Number Of Teachers',
-            key: 'NumberOfTeachers',
-            render: () => {
-              return 1;
-            },
-          },
-          {
             label: 'Actions',
             key: 'actions',
             render: (data) => {

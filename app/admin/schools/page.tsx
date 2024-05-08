@@ -74,8 +74,8 @@ const Schools = () => {
       <div className="w-full py-3 mt-7">
         <div className="w-full flex mb-4 items-center">
           <div>
-            <h1 className={'text-3xl font-bold'}>Students</h1>
-            <p>Your school students are listed below</p>
+            <h1 className={'text-3xl font-bold'}>Schools</h1>
+            <p>Your schools are listed below</p>
           </div>
           <div className={'ml-auto'}>
             <Button
@@ -124,7 +124,7 @@ const Schools = () => {
                       }}
                       onPageChange={handlePageChange}
                       totalCount={!isLoading && data.data.totalCount}
-                      SetPageSize={(pageNumber) => {}}
+                      SetPageSize={(pageNumber) => { }}
                     />
                   </div>
                 </div>
@@ -162,7 +162,7 @@ const Schools = () => {
               ),
             },
           ]}
-          onValueChange={() => {}}
+          onValueChange={() => { }}
         ></Tabs>
       </div>
       <SendEmail

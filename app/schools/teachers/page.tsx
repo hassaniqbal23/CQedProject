@@ -29,7 +29,7 @@ export default function SchoolTeachers() {
   );
 
   const onSubmit = ({ emails }: { emails: string }) => {
-    schoolInvite({ emails, type: 'SCHOOL_STUDENT' });
+    schoolInvite({ emails, type: 'SCHOOL_TEACHER' });
   };
 
   return (
@@ -52,7 +52,7 @@ export default function SchoolTeachers() {
       </div>
       <div className={'mt-6'}>
         <TeachersTable
-          data={[]}
+          data={data ? data.data.data : []}
           noDataMessage={'No Teachers'}
           loading={isFetchingInvitedSchools}
         />
