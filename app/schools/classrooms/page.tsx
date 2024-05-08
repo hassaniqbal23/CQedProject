@@ -5,8 +5,10 @@ import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
 import SubjectsTable from '@/components/common/SubjectsTable/SubjectsTable';
 import GradesTable from '@/components/common/GradesTable/GradesTable';
+import { CreateSubjectDialog } from '@/components/common/CreateSubjectModal/CreateSubjectModal';
 
 export default function SchoolClassRooms() {
+  const [addSubjectModal, setAddSubjectModal] = useState(true);
   const [grades, setGrades] = useState([
     {
       name: 'Grade 1',
@@ -47,10 +49,15 @@ export default function SchoolClassRooms() {
           <h1 className={'text-3xl font-bold'}>Classrooms</h1>
           <p>Subjects and Classes in your schools</p>
         </div>
-        <div className={'ml-auto'}>
-          <Button iconPosition={'left'} icon={<Plus></Plus>}>
-            Add Class
-          </Button>
+        <div className={'ml-auto'} onClick={() => setAddSubjectModal(true)}>
+          {addSubjectModal && (
+            <CreateSubjectDialog
+              Title="Add New Subject"
+              ButtonTrigger="Add Subject" // Adjust these props as needed
+              ButtonAction="Submit" // Adjust these props as needed
+              ButtonCancel="Cancel" // Adjust these props as needed
+            />
+          )}
         </div>
       </div>
 
