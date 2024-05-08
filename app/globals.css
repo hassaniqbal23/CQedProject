@@ -79,11 +79,6 @@
   }
 }
 
-html,
-body {
-  font-family: 'Montserrat';
-}
-
 @layer base {
   * {
     @apply border-border;
