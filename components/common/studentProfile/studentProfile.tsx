@@ -1,9 +1,4 @@
-import {
-  CardContent,
-  Card,
-  CardTitle,
-  CardHeader,
-} from '@/components/ui';
+import { CardContent, Card, CardTitle, CardHeader } from '@/components/ui';
 import React, { FC } from 'react';
 
 interface IProps {
@@ -34,7 +29,6 @@ const ProfileStudent: FC<IProps> = ({
   studentId = '#1223992',
 }: IProps) => {
   return (
-    
     <div className="flex flex-col md:flex-row justify-between gap-4 w-full mb-4 ">
       <Card className="w-full md:w-1/2">
         <CardHeader>
@@ -78,7 +72,7 @@ const ProfileStudent: FC<IProps> = ({
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="#1B1F37 text-xl" > SCHOOL DETAILS</CardTitle>
+            <CardTitle className="#1B1F37 text-xl"> SCHOOL DETAILS</CardTitle>
           </CardHeader>
 
           <div className="flex justify-between">
@@ -99,6 +93,6 @@ const ProfileStudent: FC<IProps> = ({
   );
 };
 
-ProfileStudent.displayName  = 'ProfileStudent'
+ProfileStudent.displayName = 'ProfileStudent';
 
 export default ProfileStudent;
