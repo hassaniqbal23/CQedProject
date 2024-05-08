@@ -57,7 +57,7 @@ const EmailInput: React.FC<EmailInputProps> = ({
         {emails.map((email, index) => (
           <div
             key={index}
-            className="flex items-center gap-2 bg-blue-50 border-[#676BC6] border-2 text-[#5D5E68] px-3 py-1 rounded-full"
+            className="flex items-center gap-2 bg-blue-50 border-[#676BC6] border text-sm text-[#5D5E68] px-3 py-1 rounded-full"
           >
             {email}
             <button
@@ -68,7 +68,7 @@ const EmailInput: React.FC<EmailInputProps> = ({
               }
               className="text-blue-500 hover:text-blue-700 flex items-center"
             >
-              <X />
+              <X size={14} />
             </button>
           </div>
         ))}

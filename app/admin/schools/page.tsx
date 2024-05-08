@@ -107,14 +107,14 @@ const Schools = () => {
               content: (
                 <div className={'pt-8'}>
                   <SchoolTable
-                    data={data?.data.data as any}
+                    data={data?.data?.data as any}
                     loading={isLoading}
                   />
                   <div className={'flex justify-end w-full mt-4'}>
                     <Pagination
                       currentPage={page}
                       totalPages={
-                        !isLoading ? data.data.totalCount / pageSize + 1 : 50
+                        !isLoading ? data?.data?.totalCount / pageSize + 1 : 50
                       }
                       pageSize={pageSize}
                       fetchData={async (pageNumber, pageSize) => {
@@ -123,7 +123,7 @@ const Schools = () => {
                         await refetch();
                       }}
                       onPageChange={handlePageChange}
-                      totalCount={!isLoading && data.data.totalCount}
+                      totalCount={!isLoading && data?.data?.totalCount}
                       SetPageSize={(pageNumber) => {}}
                     />
                   </div>

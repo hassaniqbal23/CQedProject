@@ -152,7 +152,8 @@ const DataTable = (props: DataTableProps) => {
                 id="checkbox-header"
                 onCheckedChange={handleHeaderCheckboxChange}
                 checked={
-                  !props.loading && selectedItems.length === props.data.length
+                  !props.loading &&
+                  selectedItems?.length === props?.data?.length
                 }
               />
             </TableHead>
