@@ -59,7 +59,7 @@ export const Post: FC<IProps> = ({
     alert('Share functionality not implemented yet!');
   };
   return (
-    <div className="p-3 m-1 w-fit ">
+    <div className="p-3 m-1 w-full ">
       <div className="flex gap-2 items-center w-full md:w-auto md:mr-4 mb-4">
         <div>
           <Avatar className="w-14 h-14 md:w-54 md:h-54 rounded-full bg-lightgray mb-3">
@@ -82,7 +82,7 @@ export const Post: FC<IProps> = ({
         {attachment && attachment.length > 0 && (
           <div className="mt-4 md:mt-0">
             <Image
-              className="w-full md:w-auto rounded-lg cursor-pointer"
+              className="w-full rounded-lg cursor-pointer"
               loading="lazy"
               alt="lvvvvvvvvvvvvvvvvvv"
               src={attachment[0]}
@@ -91,7 +91,7 @@ export const Post: FC<IProps> = ({
             />
           </div>
         )}
-        <div className="flex justify-between mt-4 md:mt-6 items-center">
+        <div className="flex justify-between mt-4 md:mt-6 items-center w-full">
           <div className="flex items-center text-gray-600 mr-4">
             <div className="flex items-center mr-4" onClick={handleLike}>
               <Heart
