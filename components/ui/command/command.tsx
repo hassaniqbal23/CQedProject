@@ -184,3 +184,15 @@ export const CommandDemo = ({ commandItems }: CommandProps) => {
     </div>
   );
 };
+
+export {
+  Command,
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandSeparator,
+  CommandItem,
+  CommandShortcut,
+};

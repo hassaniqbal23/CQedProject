@@ -136,3 +136,13 @@ const CardDemo: React.FC<CardProps> = ({
 };
 
 export default CardDemo;
+
+export {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  CardDemo,
+};
