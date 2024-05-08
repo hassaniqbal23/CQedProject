@@ -1,7 +1,7 @@
 import { FC, createContext, useContext, useState } from 'react';
 import { IUserInformation } from './types';
 import { useQuery } from 'react-query';
-import { GetUserInfomation } from '../api/auth';
+import { GetUserInformation } from '../api/auth';
 import { getUserIdLocalStorage } from '../utils/encryption';
 
 type IGlobalState = {
@@ -27,7 +27,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
 
   useQuery(
     ['userInformation', userId],
-    () => GetUserInfomation(userId as string),
+    () => GetUserInformation(userId as string),
     {
       enabled: userId !== 'undefined' && userId !== null ? true : false,
       onSuccess: (res) => {
