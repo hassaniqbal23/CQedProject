@@ -8,5 +8,5 @@ export const getAllStudents: any = (
   page: string | number = 1,
   pageSize: number | string = 10
 ) => {
-  return http.get(`/students/1/all-students?page=${page}&limit=${pageSize}`);
+  return http.get(`/students/all-students?page=${page}&limit=${pageSize}`);
 };

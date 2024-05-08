@@ -78,7 +78,7 @@ const EmailInput: React.FC<EmailInputProps> = ({
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="outline-none flex-1 min-w-[120px]"
+          className="outline-none flex-1 min-w-[120px] h-[35.5px]"
           disabled={maxEmails !== undefined && emails.length >= maxEmails}
         />
       </div>
