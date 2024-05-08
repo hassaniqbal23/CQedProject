@@ -11,6 +11,7 @@ import { getInvitedTeachers } from '@/app/api/teachers';
 
 export default function SchoolTeachers() {
   const [inviteStudentModal, setInviteStudentModal] = useState(false);
+
   const { mutate: schoolInvite, isLoading } = useMutation(
     (studentData: { emails: string; type: string }) => Invite(studentData),
     {
@@ -23,10 +24,8 @@ export default function SchoolTeachers() {
     }
   );
 
-  const { data, isLoading: isFetchingInvitedSchools } = useQuery(
-    ['getInvitedSchools'],
-    () => getInvitedTeachers()
-  );
+  const { data: invitedTeachers, isLoading: isFetchingInvitedSchools } =
+    useQuery(['getInvitedTeachers'], () => getInvitedTeachers());
 
   const onSubmit = ({ emails }: { emails: string }) => {
     schoolInvite({ emails, type: 'SCHOOL_STUDENT' });
@@ -43,6 +42,7 @@ export default function SchoolTeachers() {
           <Input placeholder={'Search teachers'} type={'search'} />
           <Button
             iconPosition={'left'}
+            size={'md'}
             icon={<Plus></Plus>}
             onClick={() => setInviteStudentModal(true)}
           >
@@ -52,7 +52,7 @@ export default function SchoolTeachers() {
       </div>
       <div className={'mt-6'}>
         <TeachersTable
-          data={[]}
+          data={invitedTeachers?.data?.data || []}
           noDataMessage={'No Teachers'}
           loading={isFetchingInvitedSchools}
         />

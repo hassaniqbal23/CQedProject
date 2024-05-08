@@ -2,6 +2,7 @@
 
 import DataTable from '@/components/ui/table/table';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 import { IoEllipsisVertical } from 'react-icons/io5';
 
@@ -22,18 +23,23 @@ function TeachersTable(props: TeachersTableProps) {
         columns={[
           {
             label: 'Teacher Name',
-            key: 'name',
+            key: 'fullname',
             render: (data) => {
               return (
-                <div className="flex items-center gap-2 w-full">
-                  {/*<Image*/}
-                  {/*  src={data.ImagePath}*/}
-                  {/*  alt={data.ImagePath}*/}
-                  {/*  width={30}*/}
-                  {/*  height={30}*/}
-                  {/*/>*/}
-                  <h2>{data['name']}</h2>
-                </div>
+                <Link
+                  className="hover:text-primary-500"
+                  href={`/schools/teachers/${data['fullname']}`}
+                >
+                  <div className="flex items-center gap-2 w-full">
+                    {/*<Image*/}
+                    {/*  src={data.ImagePath}*/}
+                    {/*  alt={data.ImagePath}*/}
+                    {/*  width={30}*/}
+                    {/*  height={30}*/}
+                    {/*/>*/}
+                    <h2>{data['fullname']}</h2>
+                  </div>
+                </Link>
               );
             },
           },
