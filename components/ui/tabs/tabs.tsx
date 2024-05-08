@@ -82,6 +82,8 @@ const TabsComponent = ({
   variant = 'primary',
   onValueChange,
 }: TabsComponentProps) => {
+  const isSecondary = variant === 'secondary';
+  const secondaryClass = isSecondary ? 'px-4 py-2' : '';
   return (
     <Tabs
       defaultValue={defaultValue}
@@ -90,7 +92,7 @@ const TabsComponent = ({
     >
       <TabsList
         variant={variant}
-        className={`flex w-full gap-1 items-start ${variant !== 'secondary' ? 'p-2' : ''}`}
+        className={`flex w-full gap-1 ${secondaryClass} items-start ${variant !== 'secondary' ? 'p-2' : ''}`}
       >
         {tabs.map((item: TabsProps, index) => (
           <TabsTrigger value={item.value} key={index} variant={variant}>

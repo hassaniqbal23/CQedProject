@@ -2,9 +2,44 @@
 
 import { Button, TabsComponent as Tabs } from '@/components/ui';
 import { Plus } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
+import SubjectsTable from '@/components/common/SubjectsTable/SubjectsTable';
+import GradesTable from '@/components/common/GradesTable/GradesTable';
 
 export default function SchoolClassRooms() {
+  const [grades, setGrades] = useState([
+    {
+      name: 'Grade 1',
+    },
+    {
+      name: 'Grade 2',
+    },
+    {
+      name: 'Grade 3',
+    },
+    {
+      name: 'Grade 4',
+    },
+    {
+      name: 'Grade 5',
+    },
+    {
+      name: 'Grade 6',
+    },
+    {
+      name: 'Grade 7',
+    },
+    {
+      name: 'Grade 8',
+    },
+    {
+      name: 'Grade 9',
+    },
+    {
+      name: 'Grade 10',
+    },
+  ]);
+
   return (
     <div>
       <div className={'flex mb-4'}>
@@ -35,14 +70,17 @@ export default function SchoolClassRooms() {
         tabContent={[
           {
             value: 'subjects',
-            content: <div className={'pt-4'}>subjects</div>,
+            content: (
+              <div className={'pt-4 w-full'}>
+                <SubjectsTable data={[]} />
+              </div>
+            ),
           },
           {
             value: 'grades',
             content: (
-              <div className={'pt-4'}>
-                asd
-                <div className={'flex justify-end w-full mt-4'}></div>
+              <div className={'pt-4 w-full'}>
+                <GradesTable data={grades} />
               </div>
             ),
           },

@@ -13,10 +13,11 @@ import { GlobalProvider } from './gobalContext/globalContext';
 import { Toaster } from '@/components/ui/toaster/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner/sonner';
 import localFont from 'next/font/local';
+import { Montserrat } from 'next/font/google';
 
-const myFont = localFont({
-  src: '../public/fonts/Montserrat-Regular.ttf',
-  display: 'swap',
+const montserrat = Montserrat({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
 });
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -50,7 +51,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body suppressHydrationWarning={false} className={myFont.className}>
+      <body suppressHydrationWarning={false} className={montserrat.className}>
         <Toaster />
         <QueryClientProvider client={queryClient}>
           <GlobalProvider>
