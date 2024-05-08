@@ -13,7 +13,7 @@ import Image from 'next/image';
 interface ISelectItem {
   value: string;
   label: string;
-  flag?: string;
+  render: () => React.ReactNode;
 }
 
 interface SelectInputProps {
@@ -51,10 +51,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({
               value={item.value}
             >
               <div className="flex items-center">
-                {item.flag && (
-                  <Image height={30} width={30} src={item.flag} alt="flag" />
-                )}
-                <span className="ml-2">{item.label}</span>
+                {item.render ? item.render() : item.label}
               </div>
             </SelectItem>
           ))}

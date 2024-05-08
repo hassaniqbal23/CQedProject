@@ -6,11 +6,11 @@ import { Invite } from '@/app/api/invitations';
 import { SendEmail } from '@/components/common/SendEmailModal/SendEmailModal';
 import { Button, Input, TabsComponent as Tabs } from '@/components/ui';
 import { Plus } from 'lucide-react';
-import SchoolTable from '@/components/common/SchoolsTable';
 import Pagination from '@/components/common/pagination/pagination';
 import DataTable from '@/components/ui/table/table';
 import { getInvites } from '@/app/api/admin';
 import { getAllStudents } from '@/app/api/students';
+import StudentsTable from '@/components/common/StudentsTable';
 
 function SchoolStudents() {
   const [inviteStudentModal, setInviteStudentModal] = useState(false);
@@ -24,7 +24,7 @@ function SchoolStudents() {
     refetch,
     isLoading: isLoadingAllStudents,
   } = useQuery(
-    ['getInvitedSchools', page, pageSize],
+    ['getAllStudents', page, pageSize],
     () => getAllStudents(page, pageSize),
     {
       enabled: true,
@@ -45,6 +45,7 @@ function SchoolStudents() {
     {
       onSuccess: (res) => {
         setInviteStudentModal(false);
+        inviteRefetch()
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
@@ -108,7 +109,7 @@ function SchoolStudents() {
                     type={'search'}
                     className={'mb-7'}
                   />
-                  <SchoolTable
+                  <StudentsTable
                     data={data?.data?.data || []}
                     loading={isLoadingAllStudents}
                   />
@@ -126,7 +127,7 @@ function SchoolStudents() {
                       }}
                       onPageChange={handlePageChange}
                       totalCount={!isLoading && data?.data?.totalCount}
-                      SetPageSize={(pageNumber) => {}}
+                      SetPageSize={(pageNumber) => { }}
                     />
                   </div>
                 </div>
@@ -147,7 +148,7 @@ function SchoolStudents() {
                       totalPages={
                         !invitedStudentsLoading
                           ? invitedStudents?.data.totalCount / invitePageSize +
-                            1
+                          1
                           : 0
                       }
                       pageSize={invitePageSize}
@@ -165,7 +166,7 @@ function SchoolStudents() {
               ),
             },
           ]}
-          onValueChange={() => {}}
+          onValueChange={() => { }}
         ></Tabs>
       </div>
 

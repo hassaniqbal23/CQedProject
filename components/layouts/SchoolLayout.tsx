@@ -79,7 +79,7 @@ export const SchoolLayout: FC<IProps> = ({ children }) => {
             onLogout={() => {
               removeToken();
               removeUserId();
-              router.push('/login');
+              router.push('/schools/sign-in');
             }}
             links={[
               {
