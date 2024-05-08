@@ -7,9 +7,10 @@ import SubjectsTable from '@/components/common/SubjectsTable/SubjectsTable';
 import GradesTable from '@/components/common/GradesTable/GradesTable';
 import { useQuery } from 'react-query';
 import { getAllClass, getAllGrades } from '@/app/api/schools';
-
+import { CreateSubjectDialog } from '@/components/common/CreateSubjectModal/CreateSubjectModal';
 export default function SchoolClassRooms() {
   const { data, isLoading } = useQuery(['getAllClass'], () => getAllClass());
+  const [addSubjectModal, setAddSubjectModal] = useState(true);
 
   const { data: gradesData, isLoading: gradesLoading } = useQuery(
     ['getAllGrades'],
@@ -56,10 +57,15 @@ export default function SchoolClassRooms() {
           <h1 className={'text-3xl font-bold'}>Classrooms</h1>
           <p>Subjects and Classes in your schools</p>
         </div>
-        <div className={'ml-auto'}>
-          <Button iconPosition={'left'} icon={<Plus></Plus>}>
-            Add Class
-          </Button>
+        <div className={'ml-auto'} onClick={() => setAddSubjectModal(true)}>
+          {addSubjectModal && (
+            <CreateSubjectDialog
+              Title="Add New Subject"
+              ButtonTrigger="Add Subject" // Adjust these props as needed
+              ButtonAction="Submit" // Adjust these props as needed
+              ButtonCancel="Cancel" // Adjust these props as needed
+            />
+          )}
         </div>
       </div>
 
