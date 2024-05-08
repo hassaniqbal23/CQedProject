@@ -28,7 +28,7 @@ function TeachersTable(props: TeachersTableProps) {
               return (
                 <Link
                   className="hover:text-primary-500"
-                  href={`/schools/teachers/${data['fullname']}`}
+                  href={`/schools/teachers/${data['id']}`}
                 >
                   <div className="flex items-center gap-2 w-full">
                     {/*<Image*/}
@@ -43,7 +43,6 @@ function TeachersTable(props: TeachersTableProps) {
               );
             },
           },
-          { label: 'Subject', key: 'subject' },
           { label: 'Email Address', key: 'email' },
           {
             label: 'Years of Experience',

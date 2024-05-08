@@ -28,7 +28,7 @@ export default function SchoolTeachers() {
     useQuery(['getInvitedTeachers'], () => getInvitedTeachers());
 
   const onSubmit = ({ emails }: { emails: string }) => {
-    schoolInvite({ emails, type: 'SCHOOL_STUDENT' });
+    schoolInvite({ emails, type: 'SCHOOL_TEACHER' });
   };
 
   return (

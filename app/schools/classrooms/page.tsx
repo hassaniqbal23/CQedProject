@@ -5,8 +5,15 @@ import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
 import SubjectsTable from '@/components/common/SubjectsTable/SubjectsTable';
 import GradesTable from '@/components/common/GradesTable/GradesTable';
+import { useQuery } from 'react-query';
+import { getAllClass, getAllGrades } from '@/app/api/schools';
 
 export default function SchoolClassRooms() {
+
+  const { data, isLoading } = useQuery(['getAllClass'], () => getAllClass())
+
+  const { data: gradesData, isLoading: gradesLoading } = useQuery(['getAllGrades'], () => getAllGrades())
+
   const [grades, setGrades] = useState([
     {
       name: 'Grade 1',
@@ -72,7 +79,7 @@ export default function SchoolClassRooms() {
             value: 'subjects',
             content: (
               <div className={'pt-4 w-full'}>
-                <SubjectsTable data={[]} />
+                <SubjectsTable data={data?.data.data || []} loading={isLoading} />
               </div>
             ),
           },
@@ -80,12 +87,12 @@ export default function SchoolClassRooms() {
             value: 'grades',
             content: (
               <div className={'pt-4 w-full'}>
-                <GradesTable data={grades} />
+                <GradesTable data={gradesData?.data.data || []} loading={gradesLoading} />
               </div>
             ),
           },
         ]}
-        onValueChange={() => {}}
+        onValueChange={() => { }}
       ></Tabs>
     </div>
   );
