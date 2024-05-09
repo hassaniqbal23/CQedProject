@@ -11,11 +11,11 @@ import { CreateSubjectModal } from '@/components/common/CreateSubjectModal/Creat
 
 export default function SchoolClassRooms() {
   const { data, isLoading } = useQuery(['getAllClass'], () => getAllClass());
+  const [addSubjectModal, setAddSubjectModal] = useState(true);
   const { data: gradesData, isLoading: gradesLoading } = useQuery(
     ['getAllGrades'],
     () => getAllGrades()
   );
-  const [addSubjectModal, setAddSubjectModal] = useState(true);
 
   return (
     <div>
@@ -30,11 +30,12 @@ export default function SchoolClassRooms() {
               Title="Add New Subject"
               trigger={
                 <Button
-                  variant="secondary"
+                  variant="default"
                   className={'flex items-center'}
                   icon={<Plus size={20} />}
+                  iconPosition={'left'}
                 >
-                  Add New Subject
+                  Add Subject
                 </Button>
               }
               ButtonAction="Submit"

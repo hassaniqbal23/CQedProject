@@ -17,6 +17,12 @@ const createHttpInstance = () => {
     http.defaults.headers['Authorization'] = `Bearer ${token}`;
   }
 
+  const redirectToLoginPage = () => {
+    window.location.href = '/login';
+    removeUserId();
+    removeToken();
+  };
+
   http.interceptors.response.use(
     (response) => {
       const show_message = response.data.show_message || false;
@@ -33,7 +39,7 @@ const createHttpInstance = () => {
         'Something went wrong';
       toast.error(message);
       if (error.response && error.response.status === 401) {
-        // redirectToLoginPage();
+        redirectToLoginPage();
       }
       return Promise.reject(error);
     }
@@ -42,11 +48,6 @@ const createHttpInstance = () => {
   return http;
 };
 
-const redirectToLoginPage = () => {
-  window.location.href = '/login';
-  removeUserId();
-  removeToken();
-};
 const http = createHttpInstance();
 
 export const updateToken = (token: string) => {
