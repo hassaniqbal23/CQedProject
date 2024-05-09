@@ -147,7 +147,7 @@ const DataTable = (props: DataTableProps) => {
       <TableHeader className="bg-[#F7F6F6] dark:bg-primary/[0.1]">
         <TableRow>
           {props.selection ? (
-            <TableHead colSpan={1} >
+            <TableHead colSpan={1}>
               <Checkbox
                 id="checkbox-header"
                 onCheckedChange={handleHeaderCheckboxChange}
