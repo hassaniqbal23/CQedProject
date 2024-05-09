@@ -1,16 +1,29 @@
 'use client';
 
 import React from 'react';
-
 import { TabsComponent } from '@/components/ui';
 import StudentProfileNavbar from '@/components/common/StudentProfileNavbar/StudentProfileNavbar';
-import StudentProfileProps from '@/components/common/studentProfile/studentProfileProps';
+import ProfileStudent from '@/components/common/StudentProfile/StudentProfile';
 
 const Profile = () => {
   const tabContents = [
     {
       value: 'profile',
-      content: <StudentProfileProps></StudentProfileProps>,
+      content: (
+        <ProfileStudent
+          cardtitle="PERSONAL INFO"
+          name="arslan"
+          email="arslan@gmail.com"
+          age={25}
+          birthDate="21/12/1999"
+          gender="male"
+          country="Pakistan"
+          address="Gilgit-Baltistan"
+          status="Active"
+          Schedule="View all schedules"
+          studentId="#12458u"
+        />
+      ),
     },
     { value: 'Feeds', content: <div>coming soon.</div> },
     { value: 'Groups', content: <div>coming soon.</div> },

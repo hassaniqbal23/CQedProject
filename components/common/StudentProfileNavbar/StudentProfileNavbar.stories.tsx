@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import StudentProfileNavbar from './StudentProfileNavbar';
 
 const meta: Meta<typeof StudentProfileNavbar> = {
-  title: 'UI/StudentProfileNavbar',
+  title: 'UI/Student/StudentProfileNavbar',
   component: StudentProfileNavbar,
 } satisfies Meta<typeof StudentProfileNavbar>;
 
