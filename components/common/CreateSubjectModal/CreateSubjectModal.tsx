@@ -21,11 +21,10 @@ import {
 import { Input } from '@/components/ui';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Plus } from 'lucide-react';
 
-interface CreateSubjectDialogProps {
+interface CreateSubjectModalProps {
   Title?: string;
-  ButtonTrigger: string;
+  trigger: React.ReactNode;
   Description?: string;
   ButtonAction?: string;
   ButtonCancel?: string;
@@ -38,14 +37,14 @@ const formSchema = z.object({
   }),
 });
 
-export const CreateSubjectDialog = ({
+export const CreateSubjectModal = ({
   Title,
   Description,
-  ButtonTrigger,
+  trigger,
   ButtonAction,
   ButtonCancel,
   onClick,
-}: CreateSubjectDialogProps) => {
+}: CreateSubjectModalProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -62,12 +61,7 @@ export const CreateSubjectDialog = ({
   return (
     <>
       <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="primary400">
-            <Plus size={20}></Plus>
-            {ButtonTrigger}
-          </Button>
-        </DialogTrigger>
+        <DialogTrigger asChild>{trigger}</DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle className="text-2xl">{Title}</DialogTitle>

@@ -1,15 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { CreateSubjectDialog } from './CreateSubjectModal';
+import { CreateSubjectModal } from './CreateSubjectModal';
+import { Button } from '@/components/ui';
 
 const meta = {
-  title: 'Ui/CreateSubjectDialog',
-  component: CreateSubjectDialog,
+  title: 'UI/CreateSubjectModal',
+  component: CreateSubjectModal,
   parameters: {
     layout: 'centered',
   },
 
   tags: ['autodocs'],
-} satisfies Meta<typeof CreateSubjectDialog>;
+} satisfies Meta<typeof CreateSubjectModal>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -18,13 +19,13 @@ export const Default: Story = {
   render(args) {
     return (
       <div>
-        <CreateSubjectDialog {...args} />
+        <CreateSubjectModal {...args} />
       </div>
     );
   },
   args: {
     Title: 'Add your Subject',
-    ButtonTrigger: 'Add Subject',
+    trigger: <Button>Show Modal</Button>,
     ButtonAction: 'Create Subject',
     ButtonCancel: 'Cancel',
   },
