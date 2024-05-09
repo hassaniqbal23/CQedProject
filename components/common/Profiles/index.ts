@@ -1,5 +1,5 @@
 export * from './Bio/Bio';
-export * from './Certificates/Certificates';
+export * from './CertificatesCard/CertificatesCard';
 export * from './ContactDetails/ContactDetails';
 export * from './Education/Education';
 export * from './Header/Header';

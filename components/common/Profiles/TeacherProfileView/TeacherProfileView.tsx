@@ -10,8 +10,6 @@ import {
   UniversityLink,
 } from '@/components/common/Profiles';
 import { Mail, MapPin, Phone } from 'lucide-react';
-import { Card } from '@/components/ui';
-import Image from 'next/image';
 
 export const TeacherProfileView = () => {
   return (

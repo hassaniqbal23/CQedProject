@@ -25,7 +25,6 @@ function TeachersTable(props: TeachersTableProps) {
             label: 'Teacher Name',
             key: 'fullname',
             render: (data) => {
-              console.log(data, 'checklign');
               return (
                 <Link
                   className="hover:text-primary-500"
