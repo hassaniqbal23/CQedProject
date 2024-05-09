@@ -11,13 +11,12 @@ import { CreateSubjectModal } from '@/components/common/CreateSubjectModal/Creat
 
 export default function SchoolClassRooms() {
   const { data, isLoading } = useQuery(['getAllClass'], () => getAllClass());
-  
+
   const { data: gradesData, isLoading: gradesLoading } = useQuery(
     ['getAllGrades'],
     () => getAllGrades()
   );
   const [addSubjectModal, setAddSubjectModal] = useState(true);
-
 
   return (
     <div>
