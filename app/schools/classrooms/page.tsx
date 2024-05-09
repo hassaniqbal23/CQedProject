@@ -7,47 +7,15 @@ import SubjectsTable from '@/components/common/SubjectsTable/SubjectsTable';
 import GradesTable from '@/components/common/GradesTable/GradesTable';
 import { useQuery } from 'react-query';
 import { getAllClass, getAllGrades } from '@/app/api/schools';
+import { CreateSubjectModal } from '@/components/common/CreateSubjectModal/CreateSubjectModal';
 
 export default function SchoolClassRooms() {
   const { data, isLoading } = useQuery(['getAllClass'], () => getAllClass());
-
   const { data: gradesData, isLoading: gradesLoading } = useQuery(
     ['getAllGrades'],
     () => getAllGrades()
   );
-
-  const [grades, setGrades] = useState([
-    {
-      name: 'Grade 1',
-    },
-    {
-      name: 'Grade 2',
-    },
-    {
-      name: 'Grade 3',
-    },
-    {
-      name: 'Grade 4',
-    },
-    {
-      name: 'Grade 5',
-    },
-    {
-      name: 'Grade 6',
-    },
-    {
-      name: 'Grade 7',
-    },
-    {
-      name: 'Grade 8',
-    },
-    {
-      name: 'Grade 9',
-    },
-    {
-      name: 'Grade 10',
-    },
-  ]);
+  const [addSubjectModal, setAddSubjectModal] = useState(true);
 
   return (
     <div>
@@ -56,10 +24,23 @@ export default function SchoolClassRooms() {
           <h1 className={'text-3xl font-bold'}>Classrooms</h1>
           <p>Subjects and Classes in your schools</p>
         </div>
-        <div className={'ml-auto'}>
-          <Button iconPosition={'left'} icon={<Plus></Plus>}>
-            Add Class
-          </Button>
+        <div className={'ml-auto'} onClick={() => setAddSubjectModal(true)}>
+          {addSubjectModal && (
+            <CreateSubjectModal
+              Title="Add New Subject"
+              trigger={
+                <Button
+                  variant="secondary"
+                  className={'flex items-center'}
+                  icon={<Plus size={20} />}
+                >
+                  Add New Subject
+                </Button>
+              }
+              ButtonAction="Submit"
+              ButtonCancel="Cancel"
+            />
+          )}
         </div>
       </div>
 
