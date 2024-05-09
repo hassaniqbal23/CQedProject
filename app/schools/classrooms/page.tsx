@@ -30,11 +30,12 @@ export default function SchoolClassRooms() {
               Title="Add New Subject"
               trigger={
                 <Button
-                  variant="secondary"
+                  variant="default"
                   className={'flex items-center'}
                   icon={<Plus size={20} />}
+                  iconPosition={'left'}
                 >
-                  Add New Subject
+                  Add Subject
                 </Button>
               }
               ButtonAction="Submit"
