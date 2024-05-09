@@ -78,10 +78,11 @@ function SchoolStudents() {
           <div className={'ml-auto'}>
             <Button
               iconPosition={'left'}
+              size={'md'}
               icon={<Plus></Plus>}
               onClick={() => setInviteStudentModal(true)}
             >
-              Invite Students
+              Add Students
             </Button>
           </div>
         </div>
