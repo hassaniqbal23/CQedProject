@@ -26,12 +26,17 @@ export const MultiSelectComponent: Story = {
         disable: false,
         render: () => {
           return (
-            <div className='flex gap-1 items-center' >
-              <Image height={30} width={30} src={'/countries/india.svg'} alt="flag" />
+            <div className="flex gap-1 items-center">
+              <Image
+                height={30}
+                width={30}
+                src={'/countries/india.svg'}
+                alt="flag"
+              />
               <span className="ml-2">India</span>
             </div>
-          )
-        }
+          );
+        },
       },
       {
         label: 'Pakistan',
@@ -39,12 +44,17 @@ export const MultiSelectComponent: Story = {
         disable: false,
         render: () => {
           return (
-            <div className='flex gap-1 items-center' >
-              <Image height={30} width={30} src={'/countries/pakistan.svg'} alt="flag" />
+            <div className="flex gap-1 items-center">
+              <Image
+                height={30}
+                width={30}
+                src={'/countries/pakistan.svg'}
+                alt="flag"
+              />
               <span className="ml-2">Pakistan</span>
             </div>
-          )
-        }
+          );
+        },
       },
       {
         label: 'UK',
@@ -52,16 +62,23 @@ export const MultiSelectComponent: Story = {
         disable: false,
         render: () => {
           return (
-            <div className='flex gap-1 items-center'>
-              <Image height={30} width={30} src={'/countries/uk.svg'} alt="flag" />
+            <div className="flex gap-1 items-center">
+              <Image
+                height={30}
+                width={30}
+                src={'/countries/uk.svg'}
+                alt="flag"
+              />
               <span className="ml-2">UK</span>
             </div>
-          )
-        }
+          );
+        },
       },
     ],
-    emptyIndicator: <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-      no results found.
-    </p>,
+    emptyIndicator: (
+      <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+        no results found.
+      </p>
+    ),
   },
 };

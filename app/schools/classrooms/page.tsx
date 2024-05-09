@@ -9,10 +9,12 @@ import { useQuery } from 'react-query';
 import { getAllClass, getAllGrades } from '@/app/api/schools';
 
 export default function SchoolClassRooms() {
+  const { data, isLoading } = useQuery(['getAllClass'], () => getAllClass());
 
-  const { data, isLoading } = useQuery(['getAllClass'], () => getAllClass())
-
-  const { data: gradesData, isLoading: gradesLoading } = useQuery(['getAllGrades'], () => getAllGrades())
+  const { data: gradesData, isLoading: gradesLoading } = useQuery(
+    ['getAllGrades'],
+    () => getAllGrades()
+  );
 
   const [grades, setGrades] = useState([
     {
@@ -79,7 +81,10 @@ export default function SchoolClassRooms() {
             value: 'subjects',
             content: (
               <div className={'pt-4 w-full'}>
-                <SubjectsTable data={data?.data.data || []} loading={isLoading} />
+                <SubjectsTable
+                  data={data?.data.data || []}
+                  loading={isLoading}
+                />
               </div>
             ),
           },
@@ -87,12 +92,15 @@ export default function SchoolClassRooms() {
             value: 'grades',
             content: (
               <div className={'pt-4 w-full'}>
-                <GradesTable data={gradesData?.data.data || []} loading={gradesLoading} />
+                <GradesTable
+                  data={gradesData?.data.data || []}
+                  loading={gradesLoading}
+                />
               </div>
             ),
           },
         ]}
-        onValueChange={() => { }}
+        onValueChange={() => {}}
       ></Tabs>
     </div>
   );

@@ -45,7 +45,7 @@ function SchoolStudents() {
     {
       onSuccess: (res) => {
         setInviteStudentModal(false);
-        inviteRefetch()
+        inviteRefetch();
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
@@ -127,7 +127,7 @@ function SchoolStudents() {
                       }}
                       onPageChange={handlePageChange}
                       totalCount={!isLoading && data?.data?.totalCount}
-                      SetPageSize={(pageNumber) => { }}
+                      SetPageSize={(pageNumber) => {}}
                     />
                   </div>
                 </div>
@@ -148,7 +148,7 @@ function SchoolStudents() {
                       totalPages={
                         !invitedStudentsLoading
                           ? invitedStudents?.data.totalCount / invitePageSize +
-                          1
+                            1
                           : 0
                       }
                       pageSize={invitePageSize}
@@ -166,7 +166,7 @@ function SchoolStudents() {
               ),
             },
           ]}
-          onValueChange={() => { }}
+          onValueChange={() => {}}
         ></Tabs>
       </div>
 

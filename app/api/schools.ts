@@ -13,9 +13,6 @@ export interface AcceptInvite {
 export const AcceptInvite = (payload: AcceptInvite) =>
   http.post('/schools/create-school', payload);
 
+export const getAllClass = () => http.get('/classes/get-all');
 
-export const getAllClass = () =>
-  http.get('/classes/get-all');
-
-export const getAllGrades = () =>
-  http.get('/grades/get-grades');
+export const getAllGrades = () => http.get('/grades/get-grades');
