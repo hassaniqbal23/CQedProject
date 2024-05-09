@@ -13,7 +13,7 @@ interface CardProps {
   buttonOnClick: () => void;
 }
 
-const Card: React.FC<CardProps> = ({
+const ClassroomCard: React.FC<CardProps> = ({
   title,
   studentCount,
   buttonOnClick,
@@ -52,7 +52,7 @@ const Card: React.FC<CardProps> = ({
       <h2 className="text-[16px] font-semibold text-primary-500  ">{title}</h2>
 
       <p className="text-secondary-foreground font-[400] text-[10px]">
-        {studentCount}{' '}
+        {studentCount} Students
       </p>
 
       <button
@@ -65,4 +65,4 @@ const Card: React.FC<CardProps> = ({
   );
 };
 
-export default Card;
+export { ClassroomCard };
