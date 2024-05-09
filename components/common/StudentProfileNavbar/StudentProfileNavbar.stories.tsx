@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
-import StudentProfileNavbar from './studentProfileNavbar';
+import StudentProfileNavbar from './StudentProfileNavbar';
 
 const meta: Meta<typeof StudentProfileNavbar> = {
   title: 'UI/StudentProfileNavbar',
@@ -10,7 +9,7 @@ const meta: Meta<typeof StudentProfileNavbar> = {
 export default meta;
 type Story = StoryObj<typeof StudentProfileNavbar>;
 
-export const studentprofileNavbar: Story = {
+export const primary: Story = {
   render: (args) => (
     <div>
       <StudentProfileNavbar {...args} />

@@ -2,23 +2,18 @@
 
 import React from 'react';
 
-
 import { TabsComponent } from '@/components/ui';
-import StudentProfileNavbar from '@/components/common/StudentProfileNavbar/studentProfileNavbar';
+import StudentProfileNavbar from '@/components/common/StudentProfileNavbar/StudentProfileNavbar';
 import StudentProfileProps from '@/components/common/studentProfile/studentProfileProps';
-import PostProps from '@/components/common/postCard/post/post-props';
-import StudentGruopProps from '@/components/common/studentGroups/studentGroupsProps';
 
 const Profile = () => {
   const tabContents = [
     {
       value: 'profile',
-      content: <StudentProfileProps></StudentProfileProps>
-      
-      
+      content: <StudentProfileProps></StudentProfileProps>,
     },
-    { value: 'Feeds', content: <PostProps></PostProps> },
-    { value: 'Groups', content: <StudentGruopProps></StudentGruopProps> },
+    { value: 'Feeds', content: <div>coming soon.</div> },
+    { value: 'Groups', content: <div>coming soon.</div> },
   ];
   return (
     <div>
