@@ -4,7 +4,7 @@ import SidebarItem from './sidebarItem';
 import { ISidebar } from './types';
 
 const meta = {
-  title: 'Ui/SidebarItem',
+  title: 'UI/Sidebar/SidebarItem',
   component: SidebarItem,
   tags: ['autodocs'],
   argTypes: {

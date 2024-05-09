@@ -10,7 +10,7 @@ const sidebarLink: ISidebar = {
 };
 
 const meta = {
-  title: 'Ui/SidebarMobileItem',
+  title: 'UI/Sidebar/SidebarMobileItem',
   component: SidebarMobileItem,
   tags: ['autodocs'],
   argTypes: {},

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Post } from './post';
+import { Post } from './Post';
 
 const meta: Meta<typeof Post> = {
   title: 'UI/Post',
@@ -10,7 +10,7 @@ const meta: Meta<typeof Post> = {
 export default meta;
 type Story = StoryObj<typeof Post>;
 
-export const blogwithImage: Story = {
+export const PostWithImage: Story = {
   render: (args) => (
     <div>
       <Post {...args} />
@@ -31,7 +31,7 @@ export const blogwithImage: Story = {
     },
   },
 };
-export const blogwithoutImage: Story = {
+export const PostWithoutImage: Story = {
   render: (args) => (
     <div className="">
       <Post {...args} />

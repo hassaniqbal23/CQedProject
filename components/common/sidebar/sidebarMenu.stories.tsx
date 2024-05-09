@@ -22,7 +22,7 @@ const sidebarLinks: ISidebar[] = [
 ];
 
 const meta = {
-  title: 'Ui/SidebarMenu',
+  title: 'UI/Sidebar/SidebarMenu',
   component: SidebarMenu,
   tags: ['autodocs'],
   argTypes: {
