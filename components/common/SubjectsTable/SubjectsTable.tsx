@@ -30,8 +30,6 @@ function SubjectTable(props: SubjectTableProps) {
               );
             },
           },
-          { label: 'Teacher', key: 'teacher' },
-          { label: 'Class Level', key: 'classLevel' },
           {
             label: 'Actions',
             key: 'actions',

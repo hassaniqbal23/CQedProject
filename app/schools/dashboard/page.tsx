@@ -44,7 +44,7 @@ export default function SchoolDashboard() {
   );
 
   const cardData = [
-    { title: 'Total Teachers', number: 12, percentage: 2.5 },
+    { title: 'Total Teachers', number: data?.data.totalCount, percentage: 2.5 },
     { title: 'Total Students', number: '15,000', percentage: 2.5 },
     { title: 'Active Students', number: '15,000', percentage: 2.5 },
   ];
@@ -95,7 +95,7 @@ export default function SchoolDashboard() {
       </div>
       <div className={'mt-6'}>
         <TeachersTable
-          data={[]}
+          data={data ? data.data.data : []}
           noDataMessage={'No Teachers'}
           loading={isFetchingInvitedSchools}
         />

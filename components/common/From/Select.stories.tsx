@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { SelectInput } from './Select';
+import Image from 'next/image';
 
 const meta = {
   title: 'Forms/SelectWithImage',
@@ -25,17 +26,53 @@ export const SelectSingle: Story = {
       {
         label: 'India',
         value: 'india',
-        flag: '/countries/india.svg',
+        render() {
+          return (
+            <div>
+              <Image
+                height={30}
+                width={30}
+                src={'/countries/india.svg'}
+                alt="flag"
+              />
+              <span className="ml-2">India</span>
+            </div>
+          );
+        },
       },
       {
         label: 'Pakistan',
         value: 'pakistan',
-        flag: '/countries/pakistan.svg',
+        render() {
+          return (
+            <div>
+              <Image
+                height={30}
+                width={30}
+                src={'/countries/pakistan.svg'}
+                alt="flag"
+              />
+              <span className="ml-2">Pakistan</span>
+            </div>
+          );
+        },
       },
       {
         label: 'UK',
         value: 'uk',
-        flag: '/countries/uk.svg',
+        render() {
+          return (
+            <div>
+              <Image
+                height={30}
+                width={30}
+                src={'/countries/uk.svg'}
+                alt="flag"
+              />
+              <span className="ml-2">UK</span>
+            </div>
+          );
+        },
       },
     ],
   },

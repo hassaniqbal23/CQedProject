@@ -7,7 +7,6 @@ import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
 import { Button } from '../button/button';
-import { MultiSelect } from '@/components/common/From/MultiSelect';
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
