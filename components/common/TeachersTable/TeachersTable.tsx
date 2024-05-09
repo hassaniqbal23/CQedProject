@@ -40,6 +40,7 @@ function TeachersTable(props: TeachersTableProps) {
                     <h2>{data['fullname']}</h2>
                   </div>
                 </Link>
+               
               );
             },
           },
