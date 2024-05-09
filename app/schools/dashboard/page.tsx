@@ -36,7 +36,6 @@ export default function SchoolDashboard() {
     {
       onSuccess: (res) => {
         setInviteTeacherModal(false);
-
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');

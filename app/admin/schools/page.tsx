@@ -124,7 +124,7 @@ const Schools = () => {
                       }}
                       onPageChange={handlePageChange}
                       totalCount={!isLoading && data.data.totalCount}
-                      SetPageSize={(pageNumber) => { }}
+                      SetPageSize={(pageNumber) => {}}
                     />
                   </div>
                 </div>
@@ -162,7 +162,7 @@ const Schools = () => {
               ),
             },
           ]}
-          onValueChange={() => { }}
+          onValueChange={() => {}}
         ></Tabs>
       </div>
       <SendEmail
