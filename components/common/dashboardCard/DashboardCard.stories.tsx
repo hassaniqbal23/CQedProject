@@ -4,7 +4,7 @@ import friend from '/public/friends.svg';
 import diversity from '/public/diversity.svg';
 import onlineCourse from '/public/online-course.svg';
 
-import DashboardCard from '@/components/common/dashboardCard/dashboardCard';
+import DashboardCard from '@/components/common/dashboardCard/DashboardCard';
 
 const meta: Meta<typeof DashboardCard> = {
   title: 'DashboardCard',
