@@ -13,7 +13,7 @@ import Image from 'next/image';
 interface ISelectItem {
   value: string;
   label: string;
-  render: () => React.ReactNode;
+  render?: () => React.ReactNode;
 }
 
 interface SelectInputProps {
