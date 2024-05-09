@@ -9,18 +9,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Select,
 } from '@/components/ui';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import Progressbar from '../Progressbar/Progressbar';
 import DatePicker from '@/components/ui/date-picker/date-picker';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
 import BottomNavbar from '../navbar/bottomNavbar';
 import { useMutation } from 'react-query';
-import { toast } from 'react-toastify';
-import { storeUserId } from '@/app/utils/encryption';
 import { SelectInput } from '../From/Select';
 import { countrySelectOptions, DropdownMenuPropsOptions } from '@/lib/constant';
 import { StudentsCreate } from '@/app/api/students';
