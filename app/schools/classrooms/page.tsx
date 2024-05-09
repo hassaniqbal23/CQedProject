@@ -5,7 +5,7 @@ import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
 import SubjectsTable from '@/components/common/SubjectsTable/SubjectsTable';
 import GradesTable from '@/components/common/GradesTable/GradesTable';
-import { CreateSubjectDialog } from '@/components/common/CreateSubjectModal/CreateSubjectModal';
+import { CreateSubjectModal } from '@/components/common/CreateSubjectModal/CreateSubjectModal';
 
 export default function SchoolClassRooms() {
   const [addSubjectModal, setAddSubjectModal] = useState(true);
@@ -51,11 +51,19 @@ export default function SchoolClassRooms() {
         </div>
         <div className={'ml-auto'} onClick={() => setAddSubjectModal(true)}>
           {addSubjectModal && (
-            <CreateSubjectDialog
+            <CreateSubjectModal
               Title="Add New Subject"
-              ButtonTrigger="Add Subject" // Adjust these props as needed
-              ButtonAction="Submit" // Adjust these props as needed
-              ButtonCancel="Cancel" // Adjust these props as needed
+              trigger={
+                <Button
+                  variant="secondary"
+                  className={'flex items-center'}
+                  icon={<Plus size={20} />}
+                >
+                  Add New Subject
+                </Button>
+              }
+              ButtonAction="Submit"
+              ButtonCancel="Cancel"
             />
           )}
         </div>
