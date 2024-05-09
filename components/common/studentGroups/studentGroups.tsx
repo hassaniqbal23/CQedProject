@@ -23,7 +23,7 @@ const Card: React.FC<CardProps> = ({
       <h1 className="text-black font-montserrat font-semibold text-2xl mb-5">
         {title}
       </h1>
-      <div className="sm:flex justify-around items-center">
+      <div className="sm:flex justify-around items-center p-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <div className="w-full rounded overflow-hidden shadow-lg">
             <img className="w-full" src={imageUrl} alt="Card" />
