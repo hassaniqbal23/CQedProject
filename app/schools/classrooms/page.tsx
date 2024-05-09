@@ -10,15 +10,12 @@ import { getAllClass, getAllGrades } from '@/app/api/schools';
 import { CreateSubjectModal } from '@/components/common/CreateSubjectModal/CreateSubjectModal';
 
 export default function SchoolClassRooms() {
-  
   const { data, isLoading } = useQuery(['getAllClass'], () => getAllClass());
   const [addSubjectModal, setAddSubjectModal] = useState(true);
   const { data: gradesData, isLoading: gradesLoading } = useQuery(
     ['getAllGrades'],
     () => getAllGrades()
   );
-  
-  const [addSubjectModal, setAddSubjectModal] = useState(true);
 
   return (
     <div>
