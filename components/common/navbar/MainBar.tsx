@@ -45,7 +45,7 @@ const ProfileLink = ({
           />
           <AvatarFallback>CQED</AvatarFallback>
         </Avatar>
-        <div className="block text-left ">
+        <div className="block text-left pr-10">
           <h1 className="font-semibold text-base  text-black">
             {userInformation?.name || ''}
           </h1>

@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import Loading from './loading';
 
 const buttonVariants = cva(
-  'inline-flex gap-1 items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex gap-1 items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2  disabled:opacity-50',
   {
     variants: {
       variant: {
@@ -14,6 +14,9 @@ const buttonVariants = cva(
           'border border-primary text-primary bg-background hover:bg-primary hover:text-white',
         primary400: 'bg-primary-400 text-white hover:bg-primary/90',
         'primaryOutline-400':
+          'border border-primary-400 text-primary-400  hover:bg-primary-400 hover:text-white',
+        primary500: 'bg-primary-500 text-white hover:bg-primary/90',
+        'primaryOutline-500':
           'border border-primary-400 text-primary-400  hover:bg-primary-400 hover:text-white',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
