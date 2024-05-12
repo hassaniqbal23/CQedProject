@@ -11,12 +11,13 @@ import Pagination from '@/components/common/pagination/pagination';
 import { getAllSchools, getInvites } from '@/app/api/admin';
 import { toast } from 'sonner';
 import { CircleAlert, Plus } from 'lucide-react';
+import { Typography } from '@/components/common/Typography/Typography';
 
 const Schools = () => {
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [invitePage, setInvitedPage] = useState(1);
-  const [invitePageSize, setInvitedPageSize] = useState(10);
+  const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [invitePage, setInvitedPage] = useState<number>(1);
+  const [invitePageSize, setInvitedPageSize] = useState<number>(10);
   const [inviteSchool, setInviteSchool] = useState(false);
 
   const { data, refetch, isLoading } = useQuery(
@@ -74,8 +75,12 @@ const Schools = () => {
       <div className="w-full py-3 mt-7">
         <div className="w-full flex mb-4 items-center">
           <div>
-            <h1 className={'text-3xl font-bold'}>Schools</h1>
-            <p>Your schools are listed below</p>
+            <Typography variant="h3" weight="semibold">
+              Schools
+            </Typography>
+            <Typography variant="p" weight="regular">
+              Your schools are listed below
+            </Typography>
           </div>
           <div className={'ml-auto'}>
             <Button
@@ -92,11 +97,11 @@ const Schools = () => {
           defaultValue={'schools'}
           tabs={[
             {
-              label: 'Schools',
+              label: 'Added Schools',
               value: 'schools',
             },
             {
-              label: 'Invited',
+              label: 'Invited Schools',
               value: 'invited',
             },
           ]}
@@ -107,7 +112,7 @@ const Schools = () => {
               content: (
                 <div className={'pt-8'}>
                   <SchoolTable
-                    data={data?.data?.data as any}
+                    data={data?.data?.data || []}
                     loading={isLoading}
                   />
                   <div className={'flex justify-end w-full mt-4'}>
@@ -136,7 +141,7 @@ const Schools = () => {
                 <div className={'pt-8'}>
                   <DataTable
                     columns={[{ label: 'School Email', key: 'email' }]}
-                    data={invitedSchools?.data.data}
+                    data={invitedSchools?.data?.data || []}
                     loading={invitedSchoolsLoading}
                   />
                   <div className={'flex justify-end w-full mt-4'}>
@@ -154,7 +159,7 @@ const Schools = () => {
                         await inviteRefetch();
                       }}
                       onPageChange={handleInvitePageChange}
-                      totalCount={invitedSchools?.data.totalCount}
+                      totalCount={invitedSchools?.data.totalCount || []}
                       SetPageSize={(pageNumber) => console.log(pageNumber)}
                     />
                   </div>

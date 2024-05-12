@@ -13,6 +13,7 @@ import { format } from 'date-fns';
 import AdminCharts from '@/components/common/AdminCharts';
 import { getBarOptions } from '@/lib/utils';
 import * as echarts from 'echarts';
+import { Typography } from '@/components/common/Typography/Typography';
 
 const initialBar = {
   data: [],
@@ -143,88 +144,84 @@ const Dashboard = () => {
     }, 2000);
   }
 
+  useEffect(() => {
+    getBarChart();
+  }, []);
+
   return (
     <div>
       <>
-        {!isLoading ? (
+        {!data && data?.data?.length === 0 ? (
           <>
-            {!data && data.data?.length === 0 ? (
-              <>
-                <AdminWelCome />
-              </>
-            ) : (
-              <>
-                <p>{currentDate}</p>
-                <h1 className="text-2xl font-bold">
-                  Welcome to your Dashboard
-                </h1>
-                <div className={'w-full mt-6'}>
-                  <DashboardStaticCards data={cardData} />
-                  <div className="xl:flex  xl:flex-row justify-between gap-4 mt-9 sm:flex-col ">
-                    <div className=" xl:w-2/3 h-[350px] p-3 border rounded  sm:w-full">
-                      <div className="flex justify-between w-full">
-                        <h2 className="font-bold text-lg">Overview</h2>
-                        <ChipSelector
-                          variant="link"
-                          defaultValue={['days']}
-                          rounded={true}
-                          options={[
-                            {
-                              label: 'This year',
-                              value: 'thisYear',
-                            },
-                            {
-                              label: '6 months',
-                              value: 'sixMonths',
-                            },
-                            {
-                              label: 'This Month',
-                              value: 'thisMonth',
-                            },
-                            {
-                              label: '7 Days',
-                              value: 'days',
-                            },
-                          ]}
-                        />
-                      </div>
-                      <AdminCharts
-                        xLabel={lineData.labels}
-                        loading={lineData.loading}
-                        options={lineData.data}
-                      />
-                    </div>
-                    <div className="p-6 border h-[350px] xl:w-1/3 rounded sm:w-full ">
-                      <h2 className="text-2xl font-bold">$9,650</h2>
-                      <p>Income of March 2024</p>
-
-                      <AdminCharts
-                        xLabel={barData.labels}
-                        loading={barData.loading}
-                        options={barData.data}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="w-full py-3 mt-7">
-                  <div className="w-full flex justify-between mb-4">
-                    <h2 className="font-semibold">Schools</h2>
-                    <Link
-                      href={'/admin/schools'}
-                      className="text-primary font-semibold"
-                    >
-                      View All
-                    </Link>
-                  </div>
-                  <SchoolTable data={data.data.data} />
-                </div>
-              </>
-            )}
+            <AdminWelCome />
           </>
         ) : (
-          <div className="flex items-center justify-center w-full h-screen">
-            <Loading />
-          </div>
+          <>
+            <p className="text-base">{currentDate}</p>
+            <Typography variant={'h3'} weight={'semibold'}>
+              Welcome to your Dashboard
+            </Typography>
+            <div className={'w-full mt-6'}>
+              <DashboardStaticCards data={cardData} />
+              <div className="xl:flex  xl:flex-row justify-between gap-4 mt-9 sm:flex-col ">
+                <div className=" xl:w-2/3 h-[350px] p-3 border rounded  sm:w-full">
+                  <div className="flex justify-between w-full">
+                    <h2 className="font-semibold text-lg">Overview</h2>
+                    <ChipSelector
+                      variant="link"
+                      defaultValue={['days']}
+                      rounded={true}
+                      options={[
+                        {
+                          label: 'This year',
+                          value: 'thisYear',
+                        },
+                        {
+                          label: '6 months',
+                          value: 'sixMonths',
+                        },
+                        {
+                          label: 'This Month',
+                          value: 'thisMonth',
+                        },
+                        {
+                          label: '7 Days',
+                          value: 'days',
+                        },
+                      ]}
+                    />
+                  </div>
+                  <AdminCharts
+                    xLabel={lineData.labels}
+                    loading={lineData.loading}
+                    options={lineData.data}
+                  />
+                </div>
+                <div className="p-6 border h-[350px] xl:w-1/3 rounded sm:w-full ">
+                  <h2 className="text-2xl font-semibold">$9,650</h2>
+                  <p>Income of March 2024</p>
+
+                  <AdminCharts
+                    xLabel={barData.labels}
+                    loading={barData.loading}
+                    options={barData.data}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="w-full py-3 mt-7">
+              <div className="w-full flex justify-between mb-4">
+                <h2 className="font-semibold">Schools</h2>
+                <Link
+                  href={'/admin/schools'}
+                  className="text-primary text-base font-normal"
+                >
+                  View All
+                </Link>
+              </div>
+              <SchoolTable data={data?.data?.data || []} loading={isLoading} />
+            </div>
+          </>
         )}
       </>
     </div>

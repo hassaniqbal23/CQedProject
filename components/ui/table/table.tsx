@@ -2,7 +2,7 @@
 import React, { forwardRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
-import { Checkbox } from '@/components/ui';
+import { Checkbox, Skeleton } from '@/components/ui';
 import Loading from '../button/loading';
 
 const Table = forwardRef<
@@ -170,16 +170,24 @@ const DataTable = (props: DataTableProps) => {
       </TableHeader>
       <TableBody>
         {props.loading ? (
-          <TableRow>
-            <TableCell
-              colSpan={props.columns.length + 1}
-              className="w-full h-24"
-            >
-              <div className="w-full flex justify-center">
-                <Loading />
-              </div>
-            </TableCell>
-          </TableRow>
+          <>
+            {props.columns.map((item, index) => {
+              let currentColumns = Array.from(
+                { length: props.columns.length },
+                (_, index) => index + 1
+              );
+              props.selection && currentColumns.push(props.columns.length + 1);
+              return (
+                <TableRow key={index}>
+                  {currentColumns.map((_, subindex) => (
+                    <TableCell key={subindex}>
+                      <Skeleton className="w-full h-10 bg-accent" />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })}
+          </>
         ) : (
           <>
             {props.data.map((item, index: number) => (

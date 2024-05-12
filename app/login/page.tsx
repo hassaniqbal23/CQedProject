@@ -7,7 +7,7 @@ import { IAuthentication } from '../api/types';
 import { getAccessToken, storeToken, storeUserId } from '../utils/encryption';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Form } from '@/components/ui';
+import { Form, Label } from '@/components/ui';
 import { Button } from '@/components/ui';
 import Image from 'next/image';
 import { FormInput } from '@/components/common/From/FormInput';
@@ -42,12 +42,13 @@ export default function Login() {
     handleSubmit,
     formState: { errors, isValid },
   } = form;
+  console.log(errors, 'errors');
 
   useEffect(() => {
     const checkUserAuthentication = async () => {
       const isLoginUser = getAccessToken();
       if (isLoginUser) {
-        router.push('/dashboard');
+        router.push('/admin/dashboard');
       }
     };
     checkUserAuthentication();
@@ -85,32 +86,32 @@ export default function Login() {
             <Image alt="logo" width={150} height={150} src="/logo.svg" />
           </div>
           <div className="text-center mb-0">
-            <h1 className="font-bold text-center text-lg mb-1 md:text-xl ">
+            <h1 className="font-semibold text-center text-lg mb-1 md:text-xl ">
               Login
             </h1>
-            <p className="text-center text-sm font-semibold">
+            <p className="text-center text-[#282931] text-sm font-normal">
               Login to your admin account
             </p>
           </div>
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4">
-                <label className="font-semibold">Email</label>
+              <div className="mb-6">
+                <Label>Username</Label>
                 <FormInput
                   required={true}
                   form={form}
                   name="name"
-                  placeholder={'Enter your email'}
+                  placeholder={'admin'}
                 />
               </div>
               <div className="mb-3">
                 <div>
-                  <label className="font-semibold">Password</label>
+                  <Label>Password</Label>
                   <FormInput
                     type="password"
                     form={form}
                     name="password"
-                    placeholder={'Enter your password'}
+                    placeholder={'enter your password'}
                   />
                 </div>
               </div>
@@ -121,7 +122,7 @@ export default function Login() {
                   size={'lg'}
                   loading={isLoading}
                   disabled={isLoading || !isValid}
-                  variant={'primary400'}
+                  variant={'primary500'}
                 >
                   Login
                 </Button>
