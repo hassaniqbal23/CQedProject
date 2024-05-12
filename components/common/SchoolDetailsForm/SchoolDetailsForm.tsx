@@ -14,6 +14,7 @@ import { useMutation } from 'react-query';
 import { AcceptInvite } from '@/app/api/schools';
 import { useRouter, useSearchParams } from 'next/navigation';
 import BottomNavbar from '@/components/common/navbar/bottomNavbar';
+import { Typography } from '../Typography/Typography';
 
 const formSchema = z.object({
   name: z.string().refine((value) => value.trim() !== '', {
@@ -75,15 +76,12 @@ export function SchoolDetailsForm() {
     <>
       <div className="flex flex-col max-w-3xl mx-auto">
         <div className="flex flex-col justify-center items-center mb-4">
-          <h1
-            className="text-[#4146B8] font-bold text-2xl
-"
-          >
+          <Typography variant="h3" weight="bold" className="text-primary mb-2">
             Add your school details
-          </h1>
-          <h3 className="font-semibold text-[#a3adbc] text-[17px] ">
+          </Typography>
+          <Typography variant="h4" weight="regular" className="text-[#464650] ">
             Create your school profile
-          </h3>
+          </Typography>
         </div>
         <div>
           <Form {...form}>

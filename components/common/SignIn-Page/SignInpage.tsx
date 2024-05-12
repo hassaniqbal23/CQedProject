@@ -26,6 +26,7 @@ import { LoginAPI } from '@/app/api/auth';
 import { toast } from 'react-toastify';
 import { storeToken, storeUserId } from '@/app/utils/encryption';
 import { updateToken } from '@/app/utils/http';
+import { Typography } from '../Typography/Typography';
 
 interface ICarouselItems {
   title: string;
@@ -127,10 +128,16 @@ export function SignIn(props: SignInProps) {
 
         <div className="w-full md:w-6/12 h-screen flex flex-col justify-center items-center ">
           <div className="text-center mb-4 mt-12">
-            <h1 className="font-bold text-3xl">Sign in to your account</h1>
-            <h4 className="text-slate-600  text-base mt-1 font-semibold">
+            <Typography variant="h2" weight="semibold">
+              Sign in to your account
+            </Typography>
+            <Typography
+              variant="p"
+              weight="medium"
+              className="text-slate-600 mt-1"
+            >
               Sign in to access your account
-            </h4>
+            </Typography>
           </div>
           <div className="flex items-center justify-center mb-2  ">
             {icons.map((icon, index) => (
@@ -147,7 +154,7 @@ export function SignIn(props: SignInProps) {
             ))}
           </div>
           <Form {...form}>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 ">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 ">
               <FormField
                 control={form.control}
                 name="name"
@@ -155,7 +162,7 @@ export function SignIn(props: SignInProps) {
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Username"
+                        placeholder="School Email"
                         {...field}
                         className="w-96"
                       />
@@ -171,7 +178,7 @@ export function SignIn(props: SignInProps) {
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Password"
+                        placeholder="Enter your password"
                         {...field}
                         className="text-[#5D5E68] w-96"
                         type="password"
@@ -190,7 +197,7 @@ export function SignIn(props: SignInProps) {
               <Button
                 type="submit"
                 variant="default"
-                size="sm"
+                size="md"
                 className="w-96 text-white flex items-center"
                 loading={isLoading}
                 disabled={isLoading}

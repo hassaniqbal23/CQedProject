@@ -53,7 +53,7 @@ export const SchoolLayout: FC<IProps> = ({ children }) => {
     {
       icon: '/assets/sidebaricons/managements.svg',
       title: 'Management',
-      path: '/admin/management',
+      path: '/schools/management',
     },
   ];
 

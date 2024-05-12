@@ -43,7 +43,7 @@ const buttonVariants = cva(
         default: 'py-[14px] px-[10px] font-[600] text-[16px] rounded-[4px]',
         sm: 'p-[10px] rounded-[4px]  font-[500]',
         lg: 'rounded-md py-[14px] px-[10px] font-[600] text-[20px]',
-        md: 'rounded-md py-3 px-10 font-semibold text-md',
+        md: 'rounded-md py-3.5 px-[42px] font-semibold text-base',
         icon: 'h-10 w-10',
       },
     },

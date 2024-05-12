@@ -8,6 +8,7 @@ import { SendEmail } from '@/components/index';
 import React, { useState } from 'react';
 import TeachersTable from '@/components/common/TeachersTable/TeachersTable';
 import { getInvitedTeachers } from '@/app/api/teachers';
+import { Typography } from '@/components/common/Typography/Typography';
 
 export default function SchoolTeachers() {
   const [inviteStudentModal, setInviteStudentModal] = useState(false);
@@ -34,20 +35,31 @@ export default function SchoolTeachers() {
   return (
     <>
       <div className={'flex'}>
-        <div>
-          <h2 className={'text-3xl font-bold'}>Teachers</h2>
-          <p>Teachers in your school</p>
+        <div className="mb-2">
+          <Typography variant={'h2'} weight={'semibold'}>
+            Teachers
+          </Typography>
+          <Typography variant="p" weight="regular">
+            The total number of teachers in your school
+          </Typography>
         </div>
-        <div className={'ml-auto flex gap-3'}>
-          <Input placeholder={'Search teachers'} type={'search'} />
-          <Button
-            iconPosition={'left'}
-            size={'md'}
-            icon={<Plus></Plus>}
-            onClick={() => setInviteStudentModal(true)}
-          >
-            Add Teachers
-          </Button>
+        <div className={'flex ml-auto gap-3  items-center'}>
+          <Input
+            rounded={true}
+            placeholder={'Search teachers here...'}
+            type={'search'}
+          />
+          <div>
+            <Button
+              variant={'default'}
+              iconPosition={'left'}
+              size={'md'}
+              icon={<Plus />}
+              onClick={() => setInviteStudentModal(true)}
+            >
+              Add Teachers
+            </Button>
+          </div>
         </div>
       </div>
       <div className={'mt-6'}>

@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from '@/components/ui';
 import { ChevronLeft } from 'lucide-react';
+import { Typography } from '../Typography/Typography';
 
 const formSchema = z.object({
   email: z
@@ -45,10 +46,16 @@ export function ForgetPassword(props: ForgetPasswordProp) {
   return (
     <div className="w-full flex flex-col shrink">
       <div className="text-center flex flex-col ">
-        <h1 className="mb-2 font-bold text-3xl ">Forget password</h1>
-        <p className="mb-2 text-sm font-semibold text-gray-500">
-          Please enter your email address to reset your password
-        </p>
+        <Typography variant="h3" weight="semibold" className="mb-2 ">
+          Forget password
+        </Typography>
+        <Typography
+          variant="p"
+          weight="medium"
+          className="mb-5  text-secondary-foreground"
+        >
+          No worries, We will send you reset instructions
+        </Typography>
       </div>
       <div className="">
         <Form {...form}>
@@ -61,7 +68,7 @@ export function ForgetPassword(props: ForgetPasswordProp) {
                   <FormLabel className="font-semibold">Email</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter Your email"
+                      placeholder="Enter your email"
                       {...field}
                       className="font-semibold"
                     />
@@ -77,9 +84,9 @@ export function ForgetPassword(props: ForgetPasswordProp) {
               </Button>
               <div
                 onClick={props.onClick}
-                className=" text-center font-montserrat font-medium text-lg cursor-pointer flex items-center text-[#4146B8] "
+                className=" text-center font-montserrat font-medium text-lg cursor-pointer flex items-center text-[#4146B8]"
               >
-                <ChevronLeft className="text-[#4146B8]" />
+                <ChevronLeft className="text-[#4146B8] mr-3" />
                 Back
               </div>
             </div>

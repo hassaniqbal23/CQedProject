@@ -18,6 +18,7 @@ interface InputProps {
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   autocomplete?: string;
   required?: boolean;
+  rounded?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -37,6 +38,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       name,
       required,
       autocomplete = 'off',
+      rounded = false, // Default value for rounded
       ...props
     },
     ref
@@ -71,9 +73,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             required={required}
             autoComplete={autocomplete}
             className={cn(
-              'flex h-14 w-full bg-[#F8F9FB] rounded-md border font-medium px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-black disabled:cursor-not-allowed disabled:opacity-50',
+              'flex h-14 w-full bg-[#F8F9FB] border font-medium px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-black disabled:cursor-not-allowed disabled:opacity-50',
               isError ? 'border-red-500' : 'border-[#D1D5DB]',
               isSearchInput ? 'px-10' : '',
+              rounded ? 'rounded-full' : 'rounded-md',
               className
             )}
             disabled={disabled}

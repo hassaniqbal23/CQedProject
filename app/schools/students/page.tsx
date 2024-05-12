@@ -11,6 +11,7 @@ import DataTable from '@/components/ui/table/table';
 import { getInvites } from '@/app/api/admin';
 import { getAllStudents } from '@/app/api/students';
 import StudentsTable from '@/components/common/StudentsTable';
+import { Typography } from '@/components/common/Typography/Typography';
 
 function SchoolStudents() {
   const [inviteStudentModal, setInviteStudentModal] = useState(false);
@@ -70,10 +71,14 @@ function SchoolStudents() {
   return (
     <>
       <div>
-        <div className={'flex mb-4'}>
-          <div>
-            <h1 className={'text-3xl font-bold'}>Students</h1>
-            <p>Your school students are listed below</p>
+        <div className={'flex mb-4 items-center'}>
+          <div className="mb-2">
+            <Typography variant={'h2'} weight={'semibold'}>
+              Students
+            </Typography>
+            <Typography variant={'p'} weight={'regular'}>
+              The total number of student
+            </Typography>
           </div>
           <div className={'ml-auto'}>
             <Button
@@ -106,7 +111,7 @@ function SchoolStudents() {
               content: (
                 <div className={'pt-7'}>
                   <Input
-                    placeholder={'Search student '}
+                    placeholder={'Search student here... '}
                     type={'search'}
                     className={'mb-7'}
                   />

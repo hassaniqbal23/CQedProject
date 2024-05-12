@@ -8,6 +8,7 @@ import GradesTable from '@/components/common/GradesTable/GradesTable';
 import { useQuery } from 'react-query';
 import { getAllClass, getAllGrades } from '@/app/api/schools';
 import { CreateSubjectModal } from '@/components/common/CreateSubjectModal/CreateSubjectModal';
+import { Typography } from '@/components/common/Typography/Typography';
 
 export default function SchoolClassRooms() {
   const { data, isLoading } = useQuery(['getAllClass'], () => getAllClass());
@@ -19,10 +20,14 @@ export default function SchoolClassRooms() {
 
   return (
     <div>
-      <div className={'flex mb-4'}>
-        <div>
-          <h1 className={'text-3xl font-bold'}>Classrooms</h1>
-          <p>Subjects and Classes in your schools</p>
+      <div className={'flex mb-4 items-center'}>
+        <div className="mb-2">
+          <Typography variant={'h2'} weight={'semibold'}>
+            Classrooms
+          </Typography>
+          <Typography variant="p" weight="regular">
+            Subjects and Classes in your schools
+          </Typography>
         </div>
         <div className={'ml-auto'} onClick={() => setAddSubjectModal(true)}>
           {addSubjectModal && (
@@ -30,6 +35,7 @@ export default function SchoolClassRooms() {
               Title="Add New Subject"
               trigger={
                 <Button
+                  size={'md'}
                   variant="default"
                   className={'flex items-center'}
                   icon={<Plus size={20} />}

@@ -10,12 +10,12 @@ export default function SchoolForgetPassword() {
     <>
       <div className="w-full h-screen">
         <TopNavbar showLogout={false}></TopNavbar>
-        <div className="max-w-md mx-auto flex justify-center items-center h-[80vh] p-5 ">
+        <div className="max-w-md mx-auto flex justify-center items-center h-[80vh] p-2 ">
           <ForgetPassword
             onSubmit={() => {
               router.push('/schools/forget-password/email-sent');
             }}
-            onClick={() => {}}
+            onClick={() => router.back()}
           ></ForgetPassword>
         </div>
       </div>
