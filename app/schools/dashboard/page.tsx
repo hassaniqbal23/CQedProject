@@ -10,6 +10,7 @@ import Link from 'next/link';
 import TeachersTable from '@/components/common/TeachersTable/TeachersTable';
 import { getAllSchools } from '@/app/api/admin';
 import { getInvitedTeachers } from '@/app/api/teachers';
+import { Typography } from '@/components/common/Typography/Typography';
 
 const icons = [
   '/assets/welcome/grey_woman1.svg',
@@ -80,17 +81,25 @@ export default function SchoolDashboard() {
 
   return (
     <div>
-      <p>{currentDate}</p>
-      <h1 className="text-2xl font-bold">Welcome to your Dashboard</h1>
+      <Typography variant="body" weight="medium" className="text-[#1E1F21]">
+        {currentDate}
+      </Typography>
+      <Typography variant={'h3'} weight={'semibold'}>
+        Welcome to your Dashboard
+      </Typography>
       <div className={'w-full mt-6'}>
         <DashboardStaticCards data={cardData} />
       </div>
       <div className={'w-full mt-6 flex'}>
         <div className={'flex gap-3'}>
-          <h2>Teachers List</h2>
+          <Typography variant={'h4'} weight={'semibold'}>
+            Teachers List
+          </Typography>
         </div>
         <div className={'ml-auto'}>
-          <Link href={'/schools/teachers'}>View all</Link>
+          <Link className="text-primary-500" href={'/schools/teachers'}>
+            View all
+          </Link>
         </div>
       </div>
       <div className={'mt-6'}>
