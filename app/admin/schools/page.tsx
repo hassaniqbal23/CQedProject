@@ -1,6 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import http from '@/app/utils/http';
+import React, { useState } from 'react';
 import SchoolTable from '@/components/common/SchoolsTable';
 import { Button, TabsComponent as Tabs } from '@/components/ui';
 import { SendEmail } from '@/components/index';
@@ -12,6 +11,7 @@ import { getAllSchools, getInvites } from '@/app/api/admin';
 import { toast } from 'sonner';
 import { CircleAlert, Plus } from 'lucide-react';
 import { Typography } from '@/components/common/Typography/Typography';
+import { IoEllipsisVertical } from 'react-icons/io5';
 
 const Schools = () => {
   const [page, setPage] = useState<number>(1);
@@ -140,7 +140,25 @@ const Schools = () => {
               content: (
                 <div className={'pt-8'}>
                   <DataTable
-                    columns={[{ label: 'School Email', key: 'email' }]}
+                    columns={[
+                      { label: 'School Email', key: 'email' },
+                      {
+                        label: 'Actions',
+                        key: 'actions',
+                        render: (data) => {
+                          return (
+                            <>
+                              <div
+                                className="flex center"
+                                onClick={() => console.log(data)}
+                              >
+                                <IoEllipsisVertical className="cursor-pointer" />
+                              </div>
+                            </>
+                          );
+                        },
+                      },
+                    ]}
                     data={invitedSchools?.data?.data || []}
                     loading={invitedSchoolsLoading}
                   />
