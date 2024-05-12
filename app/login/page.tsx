@@ -42,7 +42,6 @@ export default function Login() {
     handleSubmit,
     formState: { errors, isValid },
   } = form;
-  console.log(errors, 'errors');
 
   useEffect(() => {
     const checkUserAuthentication = async () => {
