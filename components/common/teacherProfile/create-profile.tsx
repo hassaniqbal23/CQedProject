@@ -17,8 +17,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormInput } from '../From/FormInput';
 import { ITeacherCreate } from './type';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
-import { SelectInput } from '../From/Select';
-import { DropdownMenuPropsOptions, countrySelectOptions } from '@/lib/constant';
+import { DropdownMenuPropsOptions } from '@/lib/constant';
 import { useMutation } from 'react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -123,13 +122,14 @@ export const CreateProfile: React.FC = () => {
                         <>
                           <FormLabel className="text-sm">Country</FormLabel>
                           <div className="mt-2.5">
-                            <SelectInput
+                            {/* @todo: use select component here */}
+                            {/* <SelectInput
                               placeholder="Select your country"
                               options={countrySelectOptions}
                               onChange={(value) => {
                                 field.onChange(value);
                               }}
-                            />
+                            /> */}
                             <FormMessage />
                           </div>
                         </>

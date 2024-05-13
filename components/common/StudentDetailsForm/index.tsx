@@ -18,7 +18,6 @@ import DatePicker from '@/components/ui/date-picker/date-picker';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
 import BottomNavbar from '../navbar/bottomNavbar';
 import { useMutation } from 'react-query';
-import { SelectInput } from '../From/Select';
 import { countrySelectOptions, DropdownMenuPropsOptions } from '@/lib/constant';
 import { StudentsCreate } from '@/app/api/students';
 import { IStudentInfo } from '@/app/api/types';
@@ -151,14 +150,15 @@ function StudentsDetailsFrom() {
                     <FormItem>
                       <FormLabel>Country</FormLabel>
                       <FormControl>
-                        <SelectInput
+                        {/* @todo: use select component here */}
+                        {/* <SelectInput
                           placeholder="Country"
                           options={countrySelectOptions}
                           onChange={(value: any) => {
                             console.log(value);
                             field.onChange(value);
                           }}
-                        />
+                        /> */}
                       </FormControl>
                       <FormMessage />
                     </FormItem>

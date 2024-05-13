@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Dropdown } from './dropdown-menu';
+import { Button } from './../index';
+import { Menu } from 'lucide-react';
 
 const meta = {
-  title: 'Forms/Dropdown',
+  title: 'UI/Dropdown',
   component: Dropdown,
   parameters: {},
 
@@ -12,89 +14,25 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const SelectLanguageSingle: Story = {
+export const Primary: Story = {
   render(args) {
-    return (
-      <div>
-        <Dropdown {...args} />
-      </div>
-    );
+    return <Dropdown {...args} />;
   },
   args: {
-    label: 'Select Language',
-    value: [
-      {
-        label: 'UK',
-        value: 'uk',
-        altName: 'flag uk',
-        flagUrl: '/countries/uk.svg',
-      },
-    ],
-    onChange: (value: any) => {
-      console.log(value, 'getting value ');
-    },
+    trigger: (
+      <Button className="w-[130px] ">
+        <Menu></Menu>
+      </Button>
+    ),
     options: [
       {
-        label: 'India',
-        value: 'india',
-        flagUrl: '/countries/india.svg',
-        altName: 'flag india',
+        content: 'Option 1',
       },
       {
-        label: 'Pakistan',
-        value: 'pakistan',
-        flagUrl: '/countries/pakistan.svg',
-        altName: 'flag pakistan ',
+        content: 'Option 2',
       },
       {
-        label: 'UK',
-        value: 'uk',
-        flagUrl: '/countries/uk.svg',
-        altName: 'flag uk',
-      },
-    ],
-  },
-};
-
-export const SelectLanguageMultipe: Story = {
-  render(args) {
-    return (
-      <div>
-        <Dropdown {...args} />
-      </div>
-    );
-  },
-  args: {
-    multSelect: true,
-    value: [
-      {
-        label: 'UK',
-        value: 'uk',
-        altName: 'flag uk',
-        flagUrl: '/countries/uk.svg',
-      },
-    ],
-    onChange: (value: any) => {
-      console.log(value, 'getting value ');
-    },
-    options: [
-      {
-        label: 'India',
-        value: 'india',
-        flagUrl: '/countries/india.svg',
-        altName: 'flag india',
-      },
-      {
-        label: 'Pakistan',
-        value: 'pakistan',
-        flagUrl: '/countries/pakistan.svg',
-        altName: 'flag pakistan ',
-      },
-      {
-        label: 'UK',
-        value: 'uk',
-        flagUrl: '/countries/uk.svg',
-        altName: 'flag uk',
+        content: 'Option 3',
       },
     ],
   },
