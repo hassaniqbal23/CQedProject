@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReportUserDialog } from './ReportUserModal';
+import { Button } from '@/components/ui';
 
 const meta = {
   title: 'UI/ReportUserDialog',
@@ -20,11 +21,11 @@ export const Default: Story = {
     );
   },
   args: {
-    Title: 'Report user',
-    Description:
-      'Are you sure you want to Report this user? This action cannot be undone.',
-    ButtonTrigger: 'Report User?',
-    ButtonAction: ' Report ',
-    ButtonCancel: 'Canecl',
+    title: 'Report user',
+    description:
+      'Are you sure you want to report this user? This action cannot be undone.',
+    buttonTrigger: <Button>Report</Button>,
+    buttonOKLabel: ' Report ',
+    buttonCancelLabel: 'Cancel',
   },
 };

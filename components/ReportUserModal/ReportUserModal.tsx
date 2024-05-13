@@ -11,28 +11,27 @@ import {
   DialogPrimitive,
 } from '@/components/ui/dialog/dialog';
 import { CircleAlert } from 'lucide-react';
+import React from 'react';
 
 interface ReportUserDialogProps {
-  Title?: string;
-  ButtonTrigger: string;
-  Description?: string;
-  ButtonAction?: string;
-  ButtonCancel?: string;
+  title?: string;
+  buttonTrigger: React.ReactNode;
+  description?: string;
+  buttonOKLabel?: string;
+  buttonCancelLabel?: string;
 }
 
 export const ReportUserDialog = ({
-  Title,
-  Description,
-  ButtonTrigger,
-  ButtonAction,
-  ButtonCancel,
+  title,
+  description,
+  buttonTrigger,
+  buttonOKLabel,
+  buttonCancelLabel,
 }: ReportUserDialogProps) => {
   return (
     <>
       <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="outline">{ButtonTrigger}</Button>
-        </DialogTrigger>
+        <DialogTrigger asChild>{buttonTrigger}</DialogTrigger>
         <DialogContent className="sm:max-w-[450px]">
           <DialogHeader>
             <div className="bg-[#FEF3F2] w-16 p-3 rounded-full mb-1">
@@ -44,23 +43,23 @@ export const ReportUserDialog = ({
               </div>
             </div>
             <DialogTitle>
-              <div className="mb-1 text-xl ">{Title}</div>
+              <div className="mb-1 text-xl ">{title}</div>
             </DialogTitle>
             <DialogDescription>
               <div className="text-[#5D5E68] mb-2 w-full text-base">
-                {Description}
+                {description}
               </div>
             </DialogDescription>
           </DialogHeader>
           <div className="flex">
             <DialogPrimitive.Close className="w-full ">
               <Button className="w-full text-black bg-white border-black ">
-                {ButtonCancel}
+                {buttonCancelLabel}
               </Button>
             </DialogPrimitive.Close>
 
             <Button variant={'destructive'} className="w-full rounded-full">
-              {ButtonAction}
+              {buttonOKLabel}
             </Button>
           </div>
         </DialogContent>
