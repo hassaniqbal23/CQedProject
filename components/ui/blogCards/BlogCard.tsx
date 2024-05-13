@@ -15,7 +15,7 @@ const blogCard: React.FC<blogCardProps> = ({
   description,
 }) => {
   return (
-    <div className="max-w-sm  flex flex-col p-4  bg-[#F7F7F7] rounded-sm ">
+    <div className="w-full flex flex-col p-4  bg-[#F7F7F7] rounded-sm ">
       <div>
         <Image src={imageUrl} alt="" className="w-full" />
         <h2 className="text-black text-lg font-semibold mt-4">{title}</h2>
