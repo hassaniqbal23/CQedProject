@@ -6,7 +6,7 @@ import TopNavbar from '@/components/common/navbar/TopNavbar';
 
 export default function CreateProfile() {
   return (
-    <div className="flex flex-col justify-between h-screen ">
+    <div className="h-screen">
       <TopNavbar onLogout={() => {}}></TopNavbar>
       <SchoolDetailsForm></SchoolDetailsForm>
     </div>
