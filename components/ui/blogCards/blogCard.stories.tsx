@@ -16,36 +16,42 @@ type Story = StoryObj<typeof BlogCards>;
 
 export const Default: Story = {
   render: (args) => (
-    <BlogCards
-      {...args}
-      imageUrl={RectangleImage}
-      title="Sharing your culture education"
-      label="5k Members"
-      description="Welcome to a place from where your sharing and learn about different.."
-    />
+    <div className={'w-[300px]'}>
+      <BlogCards
+        {...args}
+        imageUrl={RectangleImage}
+        title="Sharing your culture education"
+        label="5k Members"
+        description="Welcome to a place from where your sharing and learn about different.."
+      />
+    </div>
   ),
 };
 
 export const primary: Story = {
   render: (args) => (
-    <BlogCards
-      {...args}
-      imageUrl={RectangleImage2}
-      title="Sharing your culture education"
-      label="5k Members"
-      description="Welcome to a place from where your sharing and learn about different.."
-    />
+    <div className={'w-[300px]'}>
+      <BlogCards
+        {...args}
+        imageUrl={RectangleImage2}
+        title="Sharing your culture education"
+        label="5k Members"
+        description="Welcome to a place from where your sharing and learn about different.."
+      />
+    </div>
   ),
 };
 
 export const secondry: Story = {
   render: (args) => (
-    <BlogCards
-      {...args}
-      imageUrl={animal}
-      title="Sharing your culture education"
-      label="5k Members"
-      description="Welcome to a place from where your sharing and learn about different.."
-    />
+    <div className={'w-[300px]'}>
+      <BlogCards
+        {...args}
+        imageUrl={animal}
+        title="Sharing your culture education"
+        label="5k Members"
+        description="Welcome to a place from where your sharing and learn about different.."
+      />
+    </div>
   ),
 };
