@@ -10,17 +10,21 @@ import {
   createSubject as createSubjectAPI,
   getAllClass,
   getAllGrades,
+  deleteSubject as deleteSubjectAPI
 } from '@/app/api/schools';
 import { CreateSubjectModal } from '@/components/common/CreateSubjectModal/CreateSubjectModal';
 import { Typography } from '@/components/common/Typography/Typography';
+import { DeleteClassDialog } from '@/components/common/DeleteClassModal/DeleteClassModal';
 
 export default function SchoolClassRooms() {
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const [deleteId, setDeleteId] = useState<number>(0)
   const {
     data,
     isLoading,
     refetch: refetchClasses,
   } = useQuery(['getAllClass'], () => getAllClass());
-  const [addSubjectModal, setAddSubjectModal] = useState(true);
+  const [addSubjectModal, setAddSubjectModal] = useState(false);
   const {
     data: gradesData,
     isLoading: gradesLoading,
@@ -32,6 +36,20 @@ export default function SchoolClassRooms() {
     {
       onSuccess: (res) => {
         setAddSubjectModal(false);
+        refetchClasses();
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
+
+  const { mutate: deleteSubject, isLoading: isDeleteing } = useMutation(
+    (id: number) => deleteSubjectAPI(id),
+    {
+      onSuccess: (res) => {
+        setDeleteId(0)
+        setOpenDeleteModal(false)
         refetchClasses();
       },
       onError: (error: any) => {
@@ -99,7 +117,12 @@ export default function SchoolClassRooms() {
                 <SubjectsTable
                   data={data?.data.data || []}
                   loading={isLoading}
+                  onDeleteSubject={(id: number) => {
+                    setDeleteId(id)
+                    setOpenDeleteModal(true)
+                  }}
                 />
+                <DeleteClassDialog title='Delete your class' description='Are you sure want to delete your class' ButtonAction='Delete this Class' ButtonCancel='Cancel' open={openDeleteModal} onOpen={() => setOpenDeleteModal(true)} onClose={() => setOpenDeleteModal(false)} onClickOk={() => deleteSubject(deleteId)} okLoading={isDeleteing} />
               </div>
             ),
           },
@@ -115,7 +138,7 @@ export default function SchoolClassRooms() {
             ),
           },
         ]}
-        onValueChange={() => {}}
+        onValueChange={() => { }}
       ></Tabs>
     </div>
   );

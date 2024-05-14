@@ -1,5 +1,6 @@
 'use client';
 
+import { Dropdown } from '@/components/ui';
 import DataTable from '@/components/ui/table/table';
 import React from 'react';
 import { IoEllipsisVertical } from 'react-icons/io5';
@@ -8,6 +9,7 @@ export interface SubjectTableProps {
   data: any;
   noDataMessage?: string;
   loading?: boolean;
+  onDeleteSubject?: (id: number) => void
 }
 
 function SubjectTable(props: SubjectTableProps) {
@@ -35,8 +37,19 @@ function SubjectTable(props: SubjectTableProps) {
             key: 'actions',
             render: (data) => {
               return (
-                <div onClick={() => console.log(data)}>
-                  <IoEllipsisVertical className="cursor-pointer" />
+                <div className='w-8' >
+                  <Dropdown
+                    trigger={<div>
+                      <IoEllipsisVertical className="cursor-pointer" />
+                    </div>}
+                    options={
+                      [{
+                        content: <div onClick={() => props.onDeleteSubject && props.onDeleteSubject(data.id)}   >
+                          Delete Subject
+                        </div >,
+                      },]
+                    }
+                  />
                 </div>
               );
             },
@@ -48,3 +61,4 @@ function SubjectTable(props: SubjectTableProps) {
 }
 
 export default SubjectTable;
+
