@@ -1,13 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Dropdown,
-  DropdownMenuOptionProps,
-} from '../../ui';
+import { Card, CardContent, CardHeader, CardTitle, Dropdown } from '../../ui';
 import { TrendingUp } from 'lucide-react';
 import { Typography } from '../Typography/Typography';
 
@@ -18,7 +11,7 @@ interface IStaticCardProps {
   dropdown?: boolean;
   dropdownOptions?: {
     label: string;
-    options: DropdownMenuOptionProps[];
+    options: any[];
   };
 }
 function StaticCard({
@@ -34,16 +27,6 @@ function StaticCard({
         className={`px-4 flex justify-between flex-row items-center border-b ${dropdown ? 'py-1' : 'py-4'}`}
       >
         <CardTitle className="font-medium text-xl w-2/3">{title}</CardTitle>
-        {dropdown && dropdownOptions ? (
-          <Dropdown
-            rounded={true}
-            className="w-24 bg-white"
-            label={dropdownOptions.label}
-            options={dropdownOptions.options}
-          />
-        ) : (
-          ''
-        )}
       </CardHeader>
       <CardContent className="flex items-center h-3/4">
         <div className="flex justify-between items-center w-full">
