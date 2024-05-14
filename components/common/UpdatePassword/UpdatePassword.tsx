@@ -96,7 +96,7 @@ export function UpdatePassword(props: UpdatePasswordProps) {
                   <FormControl>
                     <Input
                       type={'password'}
-                      placeholder="Conform Password"
+                      placeholder="Confirm Password"
                       {...field}
                       className="font-semibold"
                     />
