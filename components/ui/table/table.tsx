@@ -142,6 +142,10 @@ const DataTable = (props: DataTableProps) => {
     });
   };
 
+  console.log(
+    !props.loading && selectedItems.length === 0 && props.data.length === 0,
+    'checking '
+  );
   return (
     <Table className=" border ">
       <TableHeader className="bg-[#F7F6F6] dark:bg-primary/[0.1]">
@@ -153,7 +157,8 @@ const DataTable = (props: DataTableProps) => {
                 onCheckedChange={handleHeaderCheckboxChange}
                 checked={
                   !props.loading &&
-                  selectedItems?.length === props?.data?.length
+                  selectedItems?.length !== 0 &&
+                  props?.data?.length !== 0
                 }
               />
             </TableHead>
