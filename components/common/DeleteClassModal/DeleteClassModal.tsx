@@ -32,17 +32,20 @@ export const DeleteClassDialog = ({
   open,
   onOpen,
   onClose,
-  okLoading
+  okLoading,
 }: DeleteDialogProps) => {
   return (
     <>
-      <Dialog open={open} onOpenChange={(e) => {
-        if (e) {
-          onOpen && onOpen();
-        } else {
-          onClose && onClose();
-        }
-      }} >
+      <Dialog
+        open={open}
+        onOpenChange={(e) => {
+          if (e) {
+            onOpen && onOpen();
+          } else {
+            onClose && onClose();
+          }
+        }}
+      >
         <DialogTrigger asChild>
           {ButtonTrigger && <Button variant="outline">{ButtonTrigger}</Button>}
         </DialogTrigger>
@@ -58,7 +61,12 @@ export const DeleteClassDialog = ({
             </DialogDescription>
           </DialogHeader>
           <div>
-            <Button variant={'destructive'} loading={okLoading} onClick={() => onClickOk && onClickOk()} className="w-full rounded-lg">
+            <Button
+              variant={'destructive'}
+              loading={okLoading}
+              onClick={() => onClickOk && onClickOk()}
+              className="w-full rounded-lg"
+            >
               {ButtonAction}
             </Button>
             <Button className="w-full text-[#4146B8] bg-white ">

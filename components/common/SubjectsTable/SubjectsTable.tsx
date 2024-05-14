@@ -9,7 +9,7 @@ export interface SubjectTableProps {
   data: any;
   noDataMessage?: string;
   loading?: boolean;
-  onDeleteSubject?: (id: number) => void
+  onDeleteSubject?: (id: number) => void;
 }
 
 function SubjectTable(props: SubjectTableProps) {
@@ -37,18 +37,27 @@ function SubjectTable(props: SubjectTableProps) {
             key: 'actions',
             render: (data) => {
               return (
-                <div className='w-8' >
+                <div className="w-8">
                   <Dropdown
-                    trigger={<div>
-                      <IoEllipsisVertical className="cursor-pointer" />
-                    </div>}
-                    options={
-                      [{
-                        content: <div onClick={() => props.onDeleteSubject && props.onDeleteSubject(data.id)}   >
-                          Delete Subject
-                        </div >,
-                      },]
+                    trigger={
+                      <div>
+                        <IoEllipsisVertical className="cursor-pointer" />
+                      </div>
                     }
+                    options={[
+                      {
+                        content: (
+                          <div
+                            onClick={() =>
+                              props.onDeleteSubject &&
+                              props.onDeleteSubject(data.id)
+                            }
+                          >
+                            Delete Subject
+                          </div>
+                        ),
+                      },
+                    ]}
                   />
                 </div>
               );
@@ -61,4 +70,3 @@ function SubjectTable(props: SubjectTableProps) {
 }
 
 export default SubjectTable;
-

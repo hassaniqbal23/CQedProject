@@ -10,15 +10,15 @@ import {
   createSubject as createSubjectAPI,
   getAllClass,
   getAllGrades,
-  deleteSubject as deleteSubjectAPI
+  deleteSubject as deleteSubjectAPI,
 } from '@/app/api/schools';
 import { CreateSubjectModal } from '@/components/common/CreateSubjectModal/CreateSubjectModal';
 import { Typography } from '@/components/common/Typography/Typography';
 import { DeleteClassDialog } from '@/components/common/DeleteClassModal/DeleteClassModal';
 
 export default function SchoolClassRooms() {
-  const [openDeleteModal, setOpenDeleteModal] = useState(false)
-  const [deleteId, setDeleteId] = useState<number>(0)
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState<number>(0);
   const {
     data,
     isLoading,
@@ -48,8 +48,8 @@ export default function SchoolClassRooms() {
     (id: number) => deleteSubjectAPI(id),
     {
       onSuccess: (res) => {
-        setDeleteId(0)
-        setOpenDeleteModal(false)
+        setDeleteId(0);
+        setOpenDeleteModal(false);
         refetchClasses();
       },
       onError: (error: any) => {
@@ -118,11 +118,21 @@ export default function SchoolClassRooms() {
                   data={data?.data.data || []}
                   loading={isLoading}
                   onDeleteSubject={(id: number) => {
-                    setDeleteId(id)
-                    setOpenDeleteModal(true)
+                    setDeleteId(id);
+                    setOpenDeleteModal(true);
                   }}
                 />
-                <DeleteClassDialog title='Delete your class' description='Are you sure want to delete your class' ButtonAction='Delete this Class' ButtonCancel='Cancel' open={openDeleteModal} onOpen={() => setOpenDeleteModal(true)} onClose={() => setOpenDeleteModal(false)} onClickOk={() => deleteSubject(deleteId)} okLoading={isDeleteing} />
+                <DeleteClassDialog
+                  title="Delete your class"
+                  description="Are you sure want to delete your class"
+                  ButtonAction="Delete this Class"
+                  ButtonCancel="Cancel"
+                  open={openDeleteModal}
+                  onOpen={() => setOpenDeleteModal(true)}
+                  onClose={() => setOpenDeleteModal(false)}
+                  onClickOk={() => deleteSubject(deleteId)}
+                  okLoading={isDeleteing}
+                />
               </div>
             ),
           },
@@ -138,7 +148,7 @@ export default function SchoolClassRooms() {
             ),
           },
         ]}
-        onValueChange={() => { }}
+        onValueChange={() => {}}
       ></Tabs>
     </div>
   );
