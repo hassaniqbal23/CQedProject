@@ -21,6 +21,9 @@ export const Default: Story = {
       description="What are CQED Communities?"
       image1={worldHand}
       image2={World}
+      onInputChange={() => {
+        console.log('onInputChange');
+      }}
     />
   ),
 };
