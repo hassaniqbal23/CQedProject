@@ -11,6 +11,7 @@ import TeachersTable from '@/components/common/TeachersTable/TeachersTable';
 import { getAllSchools } from '@/app/api/admin';
 import { getInvitedTeachers } from '@/app/api/teachers';
 import { Typography } from '@/components/common/Typography/Typography';
+import { StaticCard } from '@/components/common/StaticCard/StaticCard';
 
 const icons = [
   '/assets/welcome/grey_woman1.svg',
@@ -23,11 +24,10 @@ const icons = [
 
 export default function SchoolDashboard() {
   const [inviteTeacherModal, setInviteTeacherModal] = useState(false);
-  const [teachers, setTeachers] = useState([1, 3, 4]);
 
   const currentDate = format(new Date(), 'EEEE, MMMM do');
 
-  const { data, isLoading: isFetchingInvitedSchools } = useQuery(
+  const { data: teachersData, isLoading: isFetchingInvitedSchools } = useQuery(
     ['getInvitedSchools'],
     () => getInvitedTeachers()
   );
@@ -45,7 +45,11 @@ export default function SchoolDashboard() {
   );
 
   const cardData = [
-    { title: 'Total Teachers', number: data?.data.totalCount, percentage: 2.5 },
+    {
+      title: 'Total Teachers',
+      number: teachersData?.data.totalCount,
+      percentage: 2.5,
+    },
     { title: 'Total Students', number: '15,000', percentage: 2.5 },
     { title: 'Active Students', number: '15,000', percentage: 2.5 },
   ];
@@ -54,7 +58,7 @@ export default function SchoolDashboard() {
     schoolInvite({ emails, type: 'SCHOOL_TEACHER' });
   };
 
-  if (teachers.length === 0) {
+  if (Number(teachersData?.data.totalCount) === 0) {
     return (
       <>
         <DashboardWelcome
@@ -88,7 +92,36 @@ export default function SchoolDashboard() {
         Welcome to your Dashboard
       </Typography>
       <div className={'w-full mt-6'}>
-        <DashboardStaticCards data={cardData} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {cardData.map((_, i) => {
+            return (
+              <StaticCard
+                title={_.title}
+                number={_.number}
+                key={i}
+                percentage={_.percentage}
+                dropdown={false}
+                dropdownOptions={{
+                  label: 'Today',
+                  options: [
+                    {
+                      label: 'Weekly',
+                      value: 'weekly',
+                    },
+                    {
+                      label: 'Monthly',
+                      value: 'monthly',
+                    },
+                    {
+                      label: '3 Months',
+                      value: 'threeMonths',
+                    },
+                  ],
+                }}
+              />
+            );
+          })}
+        </div>
       </div>
       <div className={'w-full mt-6 flex'}>
         <div className={'flex gap-3'}>
@@ -104,7 +137,7 @@ export default function SchoolDashboard() {
       </div>
       <div className={'mt-6'}>
         <TeachersTable
-          data={data ? data.data.data : []}
+          data={teachersData ? teachersData.data.data : []}
           noDataMessage={'No Teachers'}
           loading={isFetchingInvitedSchools}
         />
