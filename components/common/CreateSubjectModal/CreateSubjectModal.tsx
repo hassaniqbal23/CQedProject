@@ -37,6 +37,9 @@ interface CreateSubjectModalProps {
   onClick?: () => void;
   loading?: boolean;
   onSubmit?: (values: z.infer<typeof formSchema>) => void;
+  open: boolean;
+  onClose: () => void;
+  onOpen: () => void;
 }
 
 export const CreateSubjectModal = ({
@@ -45,6 +48,9 @@ export const CreateSubjectModal = ({
   ButtonAction,
   loading,
   onSubmit: propsOnSubmit,
+  onOpen,
+  onClose,
+  open,
 }: CreateSubjectModalProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,7 +67,16 @@ export const CreateSubjectModal = ({
 
   return (
     <>
-      <Dialog>
+      <Dialog
+        open={open}
+        onOpenChange={(e) => {
+          if (e) {
+            onOpen();
+          } else {
+            onClose();
+          }
+        }}
+      >
         <DialogTrigger asChild>{trigger}</DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
