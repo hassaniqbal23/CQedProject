@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
-import Select from 'react-select';
+import SelectVirtualized from 'react-select-virtualized';
+import Select, { components } from 'react-select';
 import Creatable from 'react-select/creatable';
 
 import type { Props as ReactSelectProps } from 'react-select';
 
-interface SelectV2Props extends ReactSelectProps {
+export interface SelectV2Props extends ReactSelectProps {
   label?: string;
   labelProps?: React.HTMLProps<HTMLLabelElement>;
 }
@@ -46,4 +47,22 @@ const SelectV2Creatable = (props: SelectV2Props) => {
   );
 };
 
-export { SelectV2, SelectV2Creatable };
+const SelectV2Virtualized = (props: SelectV2Props) => {
+  return (
+    <div>
+      {props.label ? (
+        <label
+          className={`block mb-1 ${props.labelProps?.className || ''}`}
+          {...props.labelProps}
+        >
+          {props.label}
+        </label>
+      ) : (
+        <></>
+      )}
+      <SelectVirtualized {...props} />
+    </div>
+  );
+};
+
+export { SelectV2, SelectV2Creatable, SelectV2Virtualized };

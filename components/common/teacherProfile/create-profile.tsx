@@ -22,6 +22,10 @@ import { useMutation } from 'react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { TeacherCreate } from '@/app/api/teachers';
+import {
+  SelectCountry,
+  SelectLanguage,
+} from '@/components/ui/select-v2/select-v2-components';
 
 const formSchema = z.object({
   fullname: z.string().min(2).max(50).nonempty('Name is required'),
@@ -118,18 +122,23 @@ export const CreateProfile: React.FC = () => {
                     control={form.control}
                     name="country"
                     render={({ field }) => {
+                      const values = form.watch();
                       return (
                         <>
                           <FormLabel className="text-sm">Country</FormLabel>
-                          <div className="mt-2.5">
-                            {/* @todo: use select component here */}
-                            {/* <SelectInput
-                              placeholder="Select your country"
-                              options={countrySelectOptions}
-                              onChange={(value) => {
-                                field.onChange(value);
+                          <div className="mt-a">
+                            <SelectCountry
+                              menuPosition={'fixed'}
+                              onChange={(e: any) => {
+                                if (!e) {
+                                  form.setValue('country', '');
+                                  return;
+                                }
+                                form.setValue('country', e.value);
+                                form.setValue('language', '');
                               }}
-                            /> */}
+                              label=""
+                            ></SelectCountry>
                             <FormMessage />
                           </div>
                         </>
@@ -180,24 +189,24 @@ export const CreateProfile: React.FC = () => {
                   <FormField
                     control={form.control}
                     name="language"
-                    render={({ field }) => {
+                    render={({ field, formState }) => {
+                      const values = form.watch();
                       return (
                         <>
                           <FormLabel className="text-sm">Languages</FormLabel>
-                          <Dropdown
-                            className="mt-2"
-                            multSelect={true}
-                            label="Add language"
-                            value={field.value as any}
-                            options={DropdownMenuPropsOptions.options}
-                            onChange={(value: any) => {
-                              const selectlanguage = value
-                                .map((item: any) => item.value)
-                                .join(',');
-                              form.setValue('language', selectlanguage);
-                              field.onChange(selectlanguage);
+                          <SelectLanguage
+                            menuPosition={'fixed'}
+                            isDisabled={values.country.length == 0}
+                            label=""
+                            countryCode={values.country}
+                            onChange={(e: any) => {
+                              if (!e) {
+                                form.setValue('language', '');
+                                return;
+                              }
+                              form.setValue('language', e.value);
                             }}
-                          />
+                          ></SelectLanguage>
                           <FormMessage />
                         </>
                       );
