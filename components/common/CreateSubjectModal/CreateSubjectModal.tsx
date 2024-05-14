@@ -22,6 +22,12 @@ import { Input } from '@/components/ui';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+const formSchema = z.object({
+  name: z.string().min(5, {
+    message: 'Please enter subject name and must be more than 5 characters',
+  }),
+});
+
 interface CreateSubjectModalProps {
   Title?: string;
   trigger: React.ReactNode;
@@ -29,33 +35,28 @@ interface CreateSubjectModalProps {
   ButtonAction?: string;
   ButtonCancel?: string;
   onClick?: () => void;
+  loading?: boolean;
+  onSubmit?: (values: z.infer<typeof formSchema>) => void;
 }
-
-const formSchema = z.object({
-  subject: z.string().min(2, {
-    message: 'Please select your subject.',
-  }),
-});
 
 export const CreateSubjectModal = ({
   Title,
-  Description,
   trigger,
   ButtonAction,
-  ButtonCancel,
-  onClick,
+  loading,
+  onSubmit: propsOnSubmit,
 }: CreateSubjectModalProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      subject: '',
+      name: '',
     },
   });
 
   const onSubmit = form.handleSubmit((values) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    if (propsOnSubmit) {
+      propsOnSubmit(values);
+    }
   });
 
   return (
@@ -73,7 +74,7 @@ export const CreateSubjectModal = ({
                   <div className="">
                     <FormField
                       control={form.control}
-                      name="subject"
+                      name="name"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="font-semibold">
@@ -90,7 +91,12 @@ export const CreateSubjectModal = ({
                   </div>
                 </div>
                 <div className="flex flex-col">
-                  <Button type="submit" className="w-full rounded-md">
+                  <Button
+                    type="submit"
+                    className="w-full rounded-md"
+                    loading={loading}
+                    disabled={loading}
+                  >
                     {ButtonAction}
                   </Button>
                 </div>

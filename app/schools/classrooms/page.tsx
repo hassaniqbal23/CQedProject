@@ -5,17 +5,39 @@ import { Plus } from 'lucide-react';
 import React, { useState } from 'react';
 import SubjectsTable from '@/components/common/SubjectsTable/SubjectsTable';
 import GradesTable from '@/components/common/GradesTable/GradesTable';
-import { useQuery } from 'react-query';
-import { getAllClass, getAllGrades } from '@/app/api/schools';
+import { useMutation, useQuery } from 'react-query';
+import {
+  createSubject as createSubjectAPI,
+  getAllClass,
+  getAllGrades,
+} from '@/app/api/schools';
 import { CreateSubjectModal } from '@/components/common/CreateSubjectModal/CreateSubjectModal';
 import { Typography } from '@/components/common/Typography/Typography';
 
 export default function SchoolClassRooms() {
-  const { data, isLoading } = useQuery(['getAllClass'], () => getAllClass());
+  const {
+    data,
+    isLoading,
+    refetch: refetchClasses,
+  } = useQuery(['getAllClass'], () => getAllClass());
   const [addSubjectModal, setAddSubjectModal] = useState(true);
-  const { data: gradesData, isLoading: gradesLoading } = useQuery(
-    ['getAllGrades'],
-    () => getAllGrades()
+  const {
+    data: gradesData,
+    isLoading: gradesLoading,
+    refetch: getGrades,
+  } = useQuery(['getAllGrades'], () => getAllGrades());
+
+  const { mutate: createSubject, isLoading: isCreatingSubject } = useMutation(
+    (studentData: { name: string }) => createSubjectAPI(studentData),
+    {
+      onSuccess: (res) => {
+        setAddSubjectModal(false);
+        refetchClasses();
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
   );
 
   return (
@@ -29,25 +51,27 @@ export default function SchoolClassRooms() {
             Subjects and Classes in your schools
           </Typography>
         </div>
-        <div className={'ml-auto'} onClick={() => setAddSubjectModal(true)}>
-          {addSubjectModal && (
-            <CreateSubjectModal
-              Title="Add New Subject"
-              trigger={
-                <Button
-                  size={'md'}
-                  variant="default"
-                  className={'flex items-center'}
-                  icon={<Plus size={20} />}
-                  iconPosition={'left'}
-                >
-                  Add Subject
-                </Button>
-              }
-              ButtonAction="Submit"
-              ButtonCancel="Cancel"
-            />
-          )}
+        <div className={'ml-auto'}>
+          <CreateSubjectModal
+            Title="Add New Subject"
+            trigger={
+              <Button
+                size={'md'}
+                variant="default"
+                className={'flex items-center'}
+                icon={<Plus size={20} />}
+                iconPosition={'left'}
+              >
+                Add Subject
+              </Button>
+            }
+            ButtonAction="Submit"
+            ButtonCancel="Cancel"
+            loading={isCreatingSubject}
+            onSubmit={(values) => {
+              createSubject(values);
+            }}
+          />
         </div>
       </div>
 

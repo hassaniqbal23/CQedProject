@@ -15,6 +15,7 @@ import { AcceptInvite } from '@/app/api/schools';
 import { useRouter, useSearchParams } from 'next/navigation';
 import BottomNavbar from '@/components/common/navbar/bottomNavbar';
 import { Typography } from '../Typography/Typography';
+import { SelectCountry } from '@/components/ui/select-v2/select-v2-components';
 
 const formSchema = z.object({
   name: z.string().refine((value) => value.trim() !== '', {
@@ -147,7 +148,18 @@ export function SchoolDetailsForm() {
                     <FormItem>
                       <FormLabel>Country</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g USA" {...field} />
+                        <SelectCountry
+                          menuPosition={'fixed'}
+                          onChange={(e: any) => {
+                            if (!e) {
+                              form.setValue('country', '');
+                              return;
+                            }
+                            form.setValue('country', e.value);
+                          }}
+                          label=""
+                        ></SelectCountry>
+                        {/* <Input placeholder="e.g USA" {...field} /> */}
                       </FormControl>
                       <FormMessage />
                     </FormItem>

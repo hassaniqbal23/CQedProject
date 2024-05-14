@@ -18,10 +18,13 @@ import DatePicker from '@/components/ui/date-picker/date-picker';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
 import BottomNavbar from '../navbar/bottomNavbar';
 import { useMutation } from 'react-query';
-import { SelectInput } from '../From/Select';
 import { countrySelectOptions, DropdownMenuPropsOptions } from '@/lib/constant';
 import { StudentsCreate } from '@/app/api/students';
 import { IStudentInfo } from '@/app/api/types';
+import {
+  SelectCountry,
+  SelectLanguage,
+} from '@/components/ui/select-v2/select-v2-components';
 
 const formSchema = z.object({
   fullname: z.string().refine((value) => value.trim() !== '', {
@@ -151,14 +154,18 @@ function StudentsDetailsFrom() {
                     <FormItem>
                       <FormLabel>Country</FormLabel>
                       <FormControl>
-                        <SelectInput
-                          placeholder="Country"
-                          options={countrySelectOptions}
-                          onChange={(value: any) => {
-                            console.log(value);
-                            field.onChange(value);
+                        <SelectCountry
+                          menuPosition={'fixed'}
+                          onChange={(e: any) => {
+                            if (!e) {
+                              form.setValue('country', '');
+                              return;
+                            }
+                            form.setValue('country', e.value);
+                            form.setValue('language', '');
                           }}
-                        />
+                          label=""
+                        ></SelectCountry>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -209,27 +216,31 @@ function StudentsDetailsFrom() {
                 <FormField
                   control={form.control}
                   name="language"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Language</FormLabel>
-                      <FormControl>
-                        <Dropdown
-                          label="Language"
-                          multSelect={true}
-                          options={DropdownMenuPropsOptions.options}
-                          onChange={(value: any) => {
-                            const selectedString = value
-                              .map((item: any) => {
-                                return item.value;
-                              })
-                              .join(',');
-                            field.onChange(selectedString);
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  render={({ field }) => {
+                    const values = form.watch();
+
+                    return (
+                      <FormItem>
+                        <FormLabel>Language</FormLabel>
+                        <FormControl>
+                          <SelectLanguage
+                            menuPosition={'fixed'}
+                            isDisabled={values.country.length == 0}
+                            label=""
+                            countryCode={values.country}
+                            onChange={(e: any) => {
+                              if (!e) {
+                                form.setValue('language', '');
+                                return;
+                              }
+                              form.setValue('language', e.value);
+                            }}
+                          ></SelectLanguage>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
               </div>
             </form>
