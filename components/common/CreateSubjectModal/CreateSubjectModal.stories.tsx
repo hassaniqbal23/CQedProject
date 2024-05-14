@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { CreateSubjectModal } from './CreateSubjectModal';
 import { Button } from '@/components/ui';
+import React from 'react';
 
 const meta = {
   title: 'UI/CreateSubjectModal',
@@ -17,9 +18,16 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render(args) {
+    const [open, setOpen] = React.useState(false);
+
     return (
       <div>
-        <CreateSubjectModal {...args} />
+        <CreateSubjectModal
+          {...args}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+          open={open}
+        />
       </div>
     );
   },
@@ -28,5 +36,9 @@ export const Default: Story = {
     trigger: <Button>Show Modal</Button>,
     ButtonAction: 'Create Subject',
     ButtonCancel: 'Cancel',
+    open: false,
+    loading: false,
+    onOpen: () => {},
+    onClose: () => {},
   },
 };

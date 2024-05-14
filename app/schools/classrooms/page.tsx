@@ -68,6 +68,9 @@ export default function SchoolClassRooms() {
             ButtonAction="Submit"
             ButtonCancel="Cancel"
             loading={isCreatingSubject}
+            onOpen={() => setAddSubjectModal(true)}
+            onClose={() => setAddSubjectModal(false)}
+            open={addSubjectModal}
             onSubmit={(values) => {
               createSubject(values);
             }}
