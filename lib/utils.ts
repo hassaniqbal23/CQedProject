@@ -27,9 +27,8 @@ export const dateFormat = (date: string | number | Date | undefined) => {
     'Dec',
   ];
   const month = String(inputDate.getUTCMonth() + 1).padStart(2, '0');
-  const formattedDate = `${inputDate.getUTCDate()}-${
-    monthNames[parseInt(month) - 1]
-  }-${year}`;
+  const formattedDate = `${inputDate.getUTCDate()}-${monthNames[parseInt(month) - 1]
+    }-${year}`;
   return formattedDate;
 };
 
@@ -97,5 +96,42 @@ export function getBarOptions(data: any, labels: any, gradient?: any) {
       y: 'bottom',
       show: false,
     },
+  };
+}
+
+
+export function getPieChartOptions(data: any) {
+
+  return {
+    tooltip: {
+      trigger: 'item',
+      formatter: '{a} <br/>{b}: {c} ({d}%)'
+    },
+    legend: {
+      show: false
+    },
+    series: [
+      {
+        name: 'Skill Proficiency',
+        type: 'pie',
+        radius: ['40%', '70%'],
+        avoidLabelOverlap: false,
+        label: {
+          show: false,
+          position: 'center'
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: 40,
+            fontWeight: 'bold'
+          }
+        },
+        labelLine: {
+          show: false
+        },
+        data: data,
+      }
+    ]
   };
 }
