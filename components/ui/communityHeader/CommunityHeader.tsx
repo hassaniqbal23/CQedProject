@@ -7,24 +7,24 @@ interface CommunityHeaderProps {
   title: string;
   subtitle: string;
   description: string;
-  image1: string;
-  image2: string;
+  rightImage: string;
+  leftImage: string;
   onInputChange(e: React.ChangeEvent<HTMLInputElement>): void;
 }
 
-const CummunityHeader: React.FC<CommunityHeaderProps> = ({
+const CommunityHeader: React.FC<CommunityHeaderProps> = ({
   title,
   subtitle,
   description,
-  image1,
-  image2,
+  rightImage,
+  leftImage,
   onInputChange,
 }) => {
   return (
     <div className="bg-primary-500 p-5">
       <div className="sm:flex sm:justify-center sm:items-center sm:gap-2 sm:w-full md:flex md:justify-between md:gap-4">
         <div className="mt-2 self-end hidden md:block  sm:hidden ">
-          <Image src={image2} alt="" width={152} height={162} />
+          <Image src={leftImage} alt="" width={152} height={162} />
         </div>
         <div className="flex flex-col items-center  gap-2">
           <h2 className="sm:text-xl md:text-2xl font-bold lg:text-3xl  text-white">
@@ -46,7 +46,7 @@ const CummunityHeader: React.FC<CommunityHeaderProps> = ({
           </Link>
         </div>
         <div className="hidden md:block sm:hidden self-start">
-          <Image src={image1} alt="" width={112} height={111} />
+          <Image src={rightImage} alt="" width={112} height={111} />
         </div>
       </div>
       <div className="lg:block hidden md:block relative">
@@ -61,4 +61,4 @@ const CummunityHeader: React.FC<CommunityHeaderProps> = ({
   );
 };
 
-export default CummunityHeader;
+export { CommunityHeader };

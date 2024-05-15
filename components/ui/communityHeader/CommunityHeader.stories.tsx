@@ -1,26 +1,26 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import CummunityHeader from './CommunityHeader';
+import { CommunityHeader } from './CommunityHeader';
 import worldHand from '@/public/worldHand.svg';
 import World from '@/public/World.svg';
-const meta: Meta<typeof CummunityHeader> = {
+const meta: Meta<typeof CommunityHeader> = {
   title: 'Ui/CommunityHeader',
-  component: CummunityHeader,
+  component: CommunityHeader,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof CummunityHeader>;
+type Story = StoryObj<typeof CommunityHeader>;
 
 export const Default: Story = {
   render: (args) => (
-    <CummunityHeader
+    <CommunityHeader
       {...args}
       title="Find your CQED Community"
       subtitle="From gaming, to music, to learning, there’s a place for you."
       description="What are CQED Communities?"
-      image1={worldHand}
-      image2={World}
+      rightImage={worldHand}
+      leftImage={World}
       onInputChange={() => {
         console.log('onInputChange');
       }}
