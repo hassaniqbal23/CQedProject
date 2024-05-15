@@ -15,3 +15,5 @@ export const GetUserInformation = (id: string) => http.get(`/users/${id}/user`);
 
 export const UserAcceptInvitation = (payload: IAcceptInvitation) =>
   http.post('/invitation/accept-invite', payload);
+export const UserForgetPassword = (payload: { email: string }) =>
+  http.patch('/password/reset-password', payload);
