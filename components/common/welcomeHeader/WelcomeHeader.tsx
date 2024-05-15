@@ -21,7 +21,7 @@ const WelcomeHeader: FC<WelcomeHeaderProps> = ({ title, description }) => {
             alt="icon"
             width={120}
             height={120}
-            className="scale-x-[-1]"
+            className="scale-x-[-1] z-[1]"
           />
         </div>
       </div>

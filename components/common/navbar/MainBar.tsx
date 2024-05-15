@@ -75,7 +75,7 @@ interface IProps {
 export const Navbar: FC<IProps> = ({ onLogout, links }) => {
   const { userInformation } = useGlobalState();
   return (
-    <nav className="w-full fixed top-0 flex items-center justify-between bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <nav className="w-full fixed top-0 flex items-center justify-between bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 z-10">
       <Image
         src={'/assets/logos/navbarlogo.svg'}
         alt="navbar logo"
