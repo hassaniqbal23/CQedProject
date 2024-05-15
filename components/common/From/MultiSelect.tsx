@@ -364,7 +364,7 @@ const MultipleSelector = React.forwardRef<
       return undefined;
     }, [creatable, commandProps?.filter]);
 
-    console.log(selectables);
+    console.log(commandProps);
 
     return (
       <>
