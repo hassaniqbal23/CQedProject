@@ -6,7 +6,7 @@ const nextConfig = {
     forceSwcTransforms: true,
   },
   images: {
-    domains: ['s3-alpha-sig.figma.com'],
+    domains: ['cqed.ams3.digitaloceanspaces.com'],
   },
 };
 

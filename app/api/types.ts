@@ -27,3 +27,9 @@ export interface UpdatePasswordBody {
   password: string;
   confirm_password: string;
 }
+
+export interface IResetPassword {
+  password: string;
+  newPassword: string;
+  code?: string;
+}

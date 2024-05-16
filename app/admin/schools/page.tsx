@@ -1,17 +1,23 @@
 'use client';
 import React, { useState } from 'react';
 import SchoolTable from '@/components/common/SchoolsTable';
-import { Button, TabsComponent as Tabs } from '@/components/ui';
+import { Button, Dropdown, TabsComponent as Tabs } from '@/components/ui';
 import { SendEmail } from '@/components/index';
 import { useMutation, useQuery } from 'react-query';
 import { Invite } from '@/app/api/invitations';
 import DataTable from '@/components/ui/table/table';
 import Pagination from '@/components/common/pagination/pagination';
-import { getAllSchools, getInvites } from '@/app/api/admin';
+import {
+  deleteInvitation,
+  getAllSchools,
+  getInvites,
+  resendInvitation,
+} from '@/app/api/admin';
 import { toast } from 'sonner';
 import { CircleAlert, Plus } from 'lucide-react';
 import { Typography } from '@/components/common/Typography/Typography';
 import { IoEllipsisVertical } from 'react-icons/io5';
+import Delete from '@/components/common/DeleteAlert/DeleteAlert';
 
 const Schools = () => {
   const [page, setPage] = useState<number>(1);
@@ -19,6 +25,13 @@ const Schools = () => {
   const [invitePage, setInvitedPage] = useState<number>(1);
   const [invitePageSize, setInvitedPageSize] = useState<number>(10);
   const [inviteSchool, setInviteSchool] = useState(false);
+  const [selectDeleteModal, setSelectDeleteModal] = useState<{
+    id: number | null;
+    openDelete: boolean;
+  }>({
+    id: null,
+    openDelete: false,
+  });
 
   const { data, refetch, isLoading } = useQuery(
     ['getInvitedSchools', page, pageSize],
@@ -35,7 +48,9 @@ const Schools = () => {
     data: invitedSchools,
     isLoading: invitedSchoolsLoading,
     refetch: inviteRefetch,
-  } = useQuery(['getInvites', page, pageSize], () => getInvites());
+  } = useQuery(['getInvites', page, pageSize], () =>
+    getInvites(page, pageSize)
+  );
 
   const { mutate: schoolInvite, isLoading: inviteLoading } = useMutation(
     (userData: { emails: string; type: string }) => Invite(userData),
@@ -55,6 +70,41 @@ const Schools = () => {
       },
     }
   );
+
+  const { mutate: reInviteSchool, isLoading: reInviteLoading } = useMutation(
+    (userData: { email: string; type: string }) => resendInvitation(userData),
+    {
+      onSuccess: (res) => {
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+          icon: <CircleAlert />,
+          closeButton: true,
+        });
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
+
+  const { mutate: removeInviteSchool, isLoading: removeInviteLoading } =
+    useMutation((id: number) => deleteInvitation(id), {
+      onSuccess: (res) => {
+        setSelectDeleteModal({
+          id: null,
+          openDelete: false,
+        });
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+          icon: <CircleAlert />,
+          closeButton: true,
+        });
+        inviteRefetch();
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    });
 
   const onSubmit = ({ emails }: { emails: string }) => {
     schoolInvite({ emails, type: 'SCHOOL' });
@@ -147,14 +197,45 @@ const Schools = () => {
                         key: 'actions',
                         render: (data) => {
                           return (
-                            <>
-                              <div
-                                className="flex center"
-                                onClick={() => console.log(data)}
-                              >
-                                <IoEllipsisVertical className="cursor-pointer" />
-                              </div>
-                            </>
+                            <div className="w-8">
+                              <Dropdown
+                                trigger={
+                                  <div>
+                                    <IoEllipsisVertical className="cursor-pointer" />
+                                  </div>
+                                }
+                                options={[
+                                  {
+                                    content: (
+                                      <div
+                                        onClick={() =>
+                                          reInviteSchool({
+                                            email: data.email,
+                                            type: 'SCHOOL',
+                                          })
+                                        }
+                                      >
+                                        Resend Invite
+                                      </div>
+                                    ),
+                                  },
+                                  {
+                                    content: (
+                                      <div
+                                        onClick={() =>
+                                          setSelectDeleteModal({
+                                            id: data.id,
+                                            openDelete: true,
+                                          })
+                                        }
+                                      >
+                                        Remove Invite
+                                      </div>
+                                    ),
+                                  },
+                                ]}
+                              />
+                            </div>
                           );
                         },
                       },
@@ -188,6 +269,21 @@ const Schools = () => {
           onValueChange={() => {}}
         ></Tabs>
       </div>
+      <Delete
+        isButtonLoading={removeInviteLoading}
+        isVisible={selectDeleteModal.openDelete}
+        onClose={() => {
+          setSelectDeleteModal({
+            id: null,
+            openDelete: false,
+          });
+        }}
+        onConfirm={() => {
+          if (selectDeleteModal.id) {
+            removeInviteSchool(selectDeleteModal.id);
+          }
+        }}
+      />
       <SendEmail
         inviteLoading={inviteLoading}
         setOpen={setInviteSchool}
