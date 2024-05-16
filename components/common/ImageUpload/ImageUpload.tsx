@@ -4,6 +4,7 @@ import { Camera, Loader, LoaderCircle, Trash } from 'lucide-react';
 import { IUserInformation } from '@/app/gobalContext/types';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
+import { Avatar, AvatarImage } from '@/components/ui';
 
 interface IProps {
   isDeletingProfile: boolean;
@@ -25,6 +26,7 @@ const ImageUpload: FC<IProps> = ({
       fileInputRef.current.click();
     }
   };
+  console.log(userInformation?.attachment?.file_path, 'testing profile');
   return (
     <div className="relative">
       {isDeletingProfile || isUploadingProfile || isUserGetInfo ? (
@@ -32,17 +34,16 @@ const ImageUpload: FC<IProps> = ({
           <LoaderCircle className="animate-spin spin-in-1 shadow-yellow-50" />
         </div>
       ) : (
-        <>
-          {userInformation?.attachment?.file_path && (
-            <Image
-              src={userInformation?.attachment?.file_path}
-              alt="user-image"
-              width={200}
-              height={200}
-              className="rounded-full h-40 w-40"
-            />
-          )}
-        </>
+        <Avatar className="h-40 w-40">
+          <AvatarImage
+            loading={'lazy'}
+            src={
+              userInformation?.attachment?.file_path ||
+              '/assets/images/user-image.png'
+            }
+            alt="Profile Pictures"
+          />
+        </Avatar>
       )}
       <div className="relative">
         <div className="absolute p-2 bg-white border right-1 bottom-4 rounded-full cursor-pointer">
