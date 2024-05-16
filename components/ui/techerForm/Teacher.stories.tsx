@@ -11,8 +11,9 @@ export default meta;
 
 type Story = StoryObj<typeof TeacherForm>;
 
-export const Default: StoryObj = {
-  render: (args) => (
-    <TeacherForm {...args} title="Profile Information" name="ksdfdkfm" />
-  ),
+export const Default: Story = {
+  render: (args) => <TeacherForm {...args} />,
+  args: {
+    title: 'Profile Information ',
+  },
 };

@@ -2,17 +2,14 @@ import React from 'react';
 import { Input } from '../input/input';
 import DatePiker from '../date-picker/date-picker';
 import { SelectCountry } from '../select-v2/select-v2-components';
-// import { EmailInput } from '@/components/common/From/TagsInput/TagInput';
-import { SelectLanguage } from '../select-v2/select-v2-components';
 import { Textarea } from '../textarea/textarea';
 import ChipSelector from '../ChipSelect/ChipSelector';
 import MultipleSelector from '@/components/common/From/MultiSelect';
 interface TeacherFormProps {
   title: string;
-  name: string;
 }
 
-export const TeacherForm: React.FC<TeacherFormProps> = ({ title, name }) => {
+export const TeacherForm: React.FC<TeacherFormProps> = ({ title }) => {
   return (
     <div className="p-4 border border-red-500 flex gap-4 flex-col ">
       <h2>{title}</h2>
@@ -45,13 +42,14 @@ export const TeacherForm: React.FC<TeacherFormProps> = ({ title, name }) => {
           <Input placeholder="Enter your skype ID" type="number" />
         </div>
         <div className="w-full py-2">
-          <SelectLanguage
-            countryCode="odwwqdjiowd"
+          <label htmlFor="fullName">Language </label>
+          <MultipleSelector
             options={[
               { value: 'English', label: 'English' },
               { value: 'Udru', label: 'Udru' },
               { value: 'russian', label: 'Russian' },
             ]}
+            placeholder="Add language "
           />
         </div>
         <div className="grid grid-cols-1 w-full gap-4">
@@ -87,26 +85,46 @@ export const TeacherForm: React.FC<TeacherFormProps> = ({ title, name }) => {
       </div>
       <div className="md:grid md:grid-cols-1 lg:grid lg:grid-cols-2 w-full gap-4 ">
         <div className="w-full  ">
-          <label htmlFor="fullName">Education</label>
+          <label htmlFor="fullName">Skills</label>
           <MultipleSelector
             options={[
               {
-                label: 'Associate Degree',
-                value: 'Associate Degree',
+                value: 'communication-skills',
+                label: 'Communication Skills',
               },
               {
-                label: "Bachelor's Degree",
-                value: "Bachelor's Degree",
+                value: 'problem-solving',
+                label: 'Problem-Solving',
               },
               {
-                label: "Master's Degree",
-                value: "Master's Degree",
+                value: 'teamwork',
+                label: 'Teamwork',
               },
             ]}
-            placeholder="Your Education"
+            placeholder="Add Skills"
           />
         </div>
 
+        <div className="w-full  ">
+          <label htmlFor="fullName">Add Work History</label>
+          <MultipleSelector
+            options={[
+              {
+                value: 'software-engineer',
+                label: 'Software Engineer',
+              },
+              {
+                value: 'project-manager',
+                label: 'Project Manager',
+              },
+              {
+                value: 'data-analyst',
+                label: 'Data Analyst',
+              },
+            ]}
+            placeholder="Add Work History"
+          />
+        </div>
         <div className="w-full  ">
           <label htmlFor="fullName">Education</label>
           <MultipleSelector
@@ -126,6 +144,48 @@ export const TeacherForm: React.FC<TeacherFormProps> = ({ title, name }) => {
             ]}
             placeholder="Your Education"
           />
+        </div>
+        <div className="w-full  ">
+          <label htmlFor="fullName">Certificates</label>
+          <MultipleSelector
+            options={[
+              {
+                value: 'certified-scrum-master',
+                label: 'Certified Scrum Master',
+              },
+              {
+                value: 'aws-certified-solutions-architect',
+                label: 'AWS Certified Solutions Architect',
+              },
+              {
+                value: 'google-analytics-certified',
+                label: 'Google Analytics Certified',
+              },
+            ]}
+            placeholder="Your Education"
+          />
+        </div>
+        <div className="grid grid-cols-1 w-full gap-4 pb-12">
+          <div className="w-1/2/ ">
+            <label htmlFor="fullName">Currently Working with. </label>
+            <MultipleSelector
+              options={[
+                {
+                  value: 'amazon-office',
+                  label: 'Amazon Office',
+                },
+                {
+                  value: 'microsoft-campus',
+                  label: 'Microsoft Campus',
+                },
+                {
+                  value: 'googleplex',
+                  label: 'Googleplex',
+                },
+              ]}
+              placeholder="Add your working space name"
+            />{' '}
+          </div>
         </div>
       </div>
     </div>
