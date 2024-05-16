@@ -77,7 +77,7 @@ export const CreateClassDialog = ({
         <DialogTrigger asChild>
           <Button variant="outline">{ButtonTrigger}</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[430px]">
           <DialogHeader>
             <DialogTitle className="text-2xl">{Title}</DialogTitle>
 
