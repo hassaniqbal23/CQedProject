@@ -9,24 +9,20 @@ interface IProps {
   onClose: () => void;
   onConfirm: () => void;
   isVisible: boolean;
+  isButtonLoading?: boolean;
 }
 
-const Delete: FC<IProps> = ({ onClose, onConfirm, isVisible }) => {
-  //   const [isVisible, setIsVisible] = useState(false);
-
-  //   const handleYesClick = () => {
-  //     setIsVisible(false);
-  //   };
-
-  //   const handleNoClick = () => {
-  //     setIsVisible(false);
-  //   };
-
+const Delete: FC<IProps> = ({
+  onClose,
+  onConfirm,
+  isVisible,
+  isButtonLoading,
+}) => {
   return (
     <Modal
       isVisible={isVisible}
-      // onClose={handleNoClick}
       header={false}
+      onOpenChange={() => onClose()}
       footer={
         <div className="wrap-button flex flex-col md:flex-row justify-end md:items-center gap-4 mt-4 md:mt-6">
           <Button
@@ -37,6 +33,7 @@ const Delete: FC<IProps> = ({ onClose, onConfirm, isVisible }) => {
           </Button>
 
           <Button
+            loading={isButtonLoading}
             className="btn2 h-10 md:h-[42px] px-6 md:px-[40px] justify-center items-center flex-shrink-0 rounded-full shadow-btn font-bold font-montserrat text-base bg-primary-500 text-white  "
             onClick={() => onConfirm()}
           >

@@ -1,7 +1,9 @@
 'use client';
 
+import { Dropdown } from '@/components/ui';
 import DataTable from '@/components/ui/table/table';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 import { IoEllipsisVertical } from 'react-icons/io5';
 
@@ -40,15 +42,42 @@ function SchoolTable(props: SchoolTableProps) {
           { label: 'Country', key: 'country' },
           { label: 'Email Address', key: 'email' },
           {
+            label: 'No of Teachers',
+            key: 'teacherCount',
+            render: (data) => {
+              return <div className="pl-10">{data['teacherCount']}</div>;
+            },
+          },
+          {
             label: 'Actions',
             key: 'actions',
             render: (data) => {
               return (
-                <>
-                  <div onClick={() => console.log(data)}>
-                    <IoEllipsisVertical className="cursor-pointer" />
-                  </div>
-                </>
+                <div className="w-8">
+                  <Dropdown
+                    trigger={
+                      <div>
+                        <IoEllipsisVertical className="cursor-pointer" />
+                      </div>
+                    }
+                    options={[
+                      {
+                        content: (
+                          <Link href={`/admin/schools/${data.id}`}>
+                            View Profile
+                          </Link>
+                        ),
+                      },
+                      {
+                        content: (
+                          <div onClick={() => console.log('ok')}>
+                            Deactivate School
+                          </div>
+                        ),
+                      },
+                    ]}
+                  />
+                </div>
               );
             },
           },

@@ -28,6 +28,7 @@ const formSchema = z.object({
 
 interface ForgetPasswordProp {
   onClick: () => void;
+  isLoadingButton?: boolean;
   onSubmit?: (values: { email: string }) => void;
 }
 
@@ -79,7 +80,12 @@ export function ForgetPassword(props: ForgetPasswordProp) {
               )}
             />
             <div className=" flex flex-col gap-4 items-center justify-center">
-              <Button type="submit" variant={'default'} className="w-full">
+              <Button
+                loading={props?.isLoadingButton}
+                type="submit"
+                variant={'default'}
+                className="w-full"
+              >
                 Reset Password
               </Button>
               <div

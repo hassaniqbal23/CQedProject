@@ -10,6 +10,7 @@ export interface SubjectTableProps {
   noDataMessage?: string;
   loading?: boolean;
   onDeleteSubject?: (id: number) => void;
+  onEditSubjectName?: (id: number, name: string) => void;
 }
 
 function SubjectTable(props: SubjectTableProps) {
@@ -17,7 +18,7 @@ function SubjectTable(props: SubjectTableProps) {
     <div className="w-full">
       <DataTable
         data={props.data}
-        selection={true}
+        selection={false}
         noDataMessage={props.noDataMessage || 'No Subjects'}
         loading={props.loading}
         columns={[
@@ -53,7 +54,19 @@ function SubjectTable(props: SubjectTableProps) {
                               props.onDeleteSubject(data.id)
                             }
                           >
-                            Delete Subject
+                            Remove Subject
+                          </div>
+                        ),
+                      },
+                      {
+                        content: (
+                          <div
+                            onClick={() =>
+                              props.onEditSubjectName &&
+                              props.onEditSubjectName(data.id, data.name)
+                            }
+                          >
+                            Edit Subject
                           </div>
                         ),
                       },

@@ -6,14 +6,14 @@ import TopNavbar from '@/components/common/navbar/TopNavbar';
 import { useRouter } from 'next/navigation';
 import { useMutation } from 'react-query';
 
-export default function SchoolForgetPassword() {
+export default function AdminForgetPassword() {
   const router = useRouter();
 
   const { mutate: UserForgotPasswordApi, isLoading } = useMutation(
     (data: { email: string; type: string }) => UserForgotPassword(data),
     {
       onSuccess: (res) => {
-        router.push('/schools/forget-password/email-sent');
+        router.push('/admin/forget-password/email-sent');
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
@@ -30,7 +30,7 @@ export default function SchoolForgetPassword() {
             isLoadingButton={isLoading}
             onSubmit={(value) => {
               if (value) {
-                UserForgotPasswordApi({ type: 'school', ...value });
+                UserForgotPasswordApi({ type: 'admin', ...value });
               }
             }}
             onClick={() => router.back()}
