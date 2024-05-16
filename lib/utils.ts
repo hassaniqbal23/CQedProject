@@ -27,8 +27,9 @@ export const dateFormat = (date: string | number | Date | undefined) => {
     'Dec',
   ];
   const month = String(inputDate.getUTCMonth() + 1).padStart(2, '0');
-  const formattedDate = `${inputDate.getUTCDate()}-${monthNames[parseInt(month) - 1]
-    }-${year}`;
+  const formattedDate = `${inputDate.getUTCDate()}-${
+    monthNames[parseInt(month) - 1]
+  }-${year}`;
   return formattedDate;
 };
 
@@ -99,16 +100,14 @@ export function getBarOptions(data: any, labels: any, gradient?: any) {
   };
 }
 
-
 export function getPieChartOptions(data: any) {
-
   return {
     tooltip: {
       trigger: 'item',
-      formatter: '{a} <br/>{b}: {c} ({d}%)'
+      formatter: '{a} <br/>{b}: {c} ({d}%)',
     },
     legend: {
-      show: false
+      show: false,
     },
     series: [
       {
@@ -118,20 +117,20 @@ export function getPieChartOptions(data: any) {
         avoidLabelOverlap: false,
         label: {
           show: false,
-          position: 'center'
+          position: 'center',
         },
         emphasis: {
           label: {
             show: true,
             fontSize: 40,
-            fontWeight: 'bold'
-          }
+            fontWeight: 'bold',
+          },
         },
         labelLine: {
-          show: false
+          show: false,
         },
         data: data,
-      }
-    ]
+      },
+    ],
   };
 }
