@@ -18,6 +18,8 @@ import { UserResetPassword } from '@/app/api/auth';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { IResetPassword } from '@/app/api/types';
 import { Typography } from '@/components/common/Typography/Typography';
+import { Suspense, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const formSchema = z
   .object({
@@ -33,12 +35,40 @@ const formSchema = z
     path: ['newPassword'],
   });
 
-export default function ResetPassword() {
+const ResetPassword = () => {
+  return (
+    <Suspense>
+      <ResetPasswordContent />
+    </Suspense>
+  );
+};
+
+const ResetPasswordContent = () => {
   const router = useRouter();
   const params = useSearchParams();
   const token = params?.get('code');
-  const decodeType = Buffer.from(token as string, 'base64').toString('utf-8');
-  const currentType = JSON.parse(decodeType).type;
+  const [currentType, setCurrentType] = useState<null | string>(null);
+
+  useEffect(() => {
+    if (token) {
+      try {
+        const decodeType = Buffer.from(token, 'base64').toString('utf-8');
+        if (decodeType) {
+          const currentType = JSON.parse(decodeType).type;
+          setCurrentType(currentType);
+        } else {
+          console.error('Decoded string is empty');
+        }
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+      }
+    } else {
+      toast.warning('Token is missing', {
+        position: 'bottom-center',
+      });
+      router.push('/login');
+    }
+  }, [token]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -149,4 +179,6 @@ export default function ResetPassword() {
       </div>
     </div>
   );
-}
+};
+
+export default ResetPassword;
