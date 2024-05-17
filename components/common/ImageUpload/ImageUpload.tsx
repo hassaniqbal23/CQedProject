@@ -1,35 +1,32 @@
 import React, { FC, useRef } from 'react';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
-import { Camera, Loader, LoaderCircle, Trash } from 'lucide-react';
-import { IUserInformation } from '@/app/gobalContext/types';
-import Image from 'next/image';
+import { Camera, LoaderCircle, Trash } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Avatar, AvatarImage } from '@/components/ui';
 
 interface IProps {
-  isDeletingProfile: boolean;
-  isUploadingProfile: boolean;
+  loading: boolean;
   deleteProfile: (id: number) => void;
   uploadProfile: (value: FormData) => void;
+  attachmentID: number;
+  attachmentFilepath: string;
 }
 const ImageUpload: FC<IProps> = ({
-  isDeletingProfile,
-  isUploadingProfile,
+  loading,
   deleteProfile,
   uploadProfile,
+  attachmentID,
+  attachmentFilepath,
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const { userInformation, isUserGetInfo } = useGlobalState();
 
   const handleIconClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
-  console.log(userInformation?.attachment?.file_path, 'testing profile');
   return (
     <div className="relative">
-      {isDeletingProfile || isUploadingProfile || isUserGetInfo ? (
+      {loading ? (
         <div className=" h-40 w-40 flex justify-center items-center">
           <LoaderCircle className="animate-spin spin-in-1 shadow-yellow-50" />
         </div>
@@ -37,20 +34,15 @@ const ImageUpload: FC<IProps> = ({
         <Avatar className="h-40 w-40">
           <AvatarImage
             loading={'lazy'}
-            src={
-              userInformation?.attachment?.file_path ||
-              '/assets/images/user-image.png'
-            }
+            src={attachmentFilepath || '/assets/images/user-image.png'}
             alt="Profile Pictures"
           />
         </Avatar>
       )}
       <div className="relative">
         <div className="absolute p-2 bg-white border right-1 bottom-4 rounded-full cursor-pointer">
-          {userInformation?.attachment?.file_path ? (
-            <Trash
-              onClick={() => deleteProfile(userInformation.attachment.id)}
-            />
+          {attachmentFilepath ? (
+            <Trash onClick={() => deleteProfile(attachmentID)} />
           ) : (
             <Camera onClick={handleIconClick} />
           )}
