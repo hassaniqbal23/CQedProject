@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 function ChatInput() {
-    return (
-        <div>ChatInput</div>
-    )
+  return <div>ChatInput</div>;
 }
 
-export { ChatInput }
+export { ChatInput };
