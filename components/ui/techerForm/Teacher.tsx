@@ -5,44 +5,57 @@ import { SelectCountry } from '../select-v2/select-v2-components';
 import { Textarea } from '../textarea/textarea';
 import ChipSelector from '../ChipSelect/ChipSelector';
 import MultipleSelector from '@/components/common/From/MultiSelect';
-interface TeacherFormProps {
+export interface TeacherFormProps {
   title: string;
 }
-
 export const TeacherForm: React.FC<TeacherFormProps> = ({ title }) => {
   return (
-    <div className="p-4 border border-red-500 flex gap-4 flex-col ">
-      <h2>{title}</h2>
+    <div className="p-4 flex gap-4 flex-col ">
+      <h2 className="text-2xl font-semibold">{title}</h2>
       <div className="md:grid md:grid-cols-1 lg:grid lg:grid-cols-2 w-full gap-4">
-        <div className="w-full ">
-          <label htmlFor="fullName">Full Name</label>
+        <div className="w-full flex flex-col gap-3 ">
+          <label htmlFor="fullName" className="font-semibold text-lg">
+            Full Name
+          </label>
           <Input placeholder="Enter your full name" />
         </div>
-        <div className="w-full">
-          <label htmlFor="nickname">Set a Nickname</label>
+        <div className="w-full  flex flex-col gap-3 ">
+          <label htmlFor="nickname" className="font-semibold text-lg">
+            Set a Nickname
+          </label>
           <Input placeholder="Enter your Nickname" type="text" />
         </div>
-        <div className="w-full">
-          <label htmlFor="birthday">Birthday</label>
+        <div className="w-full flex flex-col gap-3 ">
+          <label htmlFor="birthday" className="font-semibold text-lg">
+            Birthday
+          </label>
           <DatePiker />
         </div>
-        <div className="w-full">
-          <SelectCountry className="py-2" />
+        <div className="w-full flex flex-col gap-3 ">
+          <SelectCountry className="mt-4 " />
         </div>
-        <div className="w-full">
-          <label htmlFor="">Email</label>
+        <div className="w-full flex flex-col gap-3">
+          <label htmlFor="" className="font-semibold text-lg">
+            Email
+          </label>
           <Input type="email" placeholder="Enter your email" />
         </div>
-        <div className="w-full ">
-          <label htmlFor="fullName">Phone Number</label>
+        <div className="w-full  flex flex-col gap-3 ">
+          <label htmlFor="fullName" className="font-semibold text-lg">
+            Phone Number
+          </label>
           <Input placeholder="Enter your Number" type="number" />
         </div>
-        <div className="w-full ">
-          <label htmlFor="fullName">Skype </label>
+        <div className="w-full  flex flex-col gap-3 ">
+          <label htmlFor="fullName" className="font-semibold text-lg">
+            Skype{' '}
+          </label>
           <Input placeholder="Enter your skype ID" type="number" />
         </div>
-        <div className="w-full py-2">
-          <label htmlFor="fullName">Language </label>
+        <div className="w-full py-2 flex flex-col gap-3 ">
+          <label htmlFor="fullName" className="font-semibold text-lg">
+            Language{' '}
+          </label>
           <MultipleSelector
             options={[
               { value: 'English', label: 'English' },
@@ -53,8 +66,10 @@ export const TeacherForm: React.FC<TeacherFormProps> = ({ title }) => {
           />
         </div>
         <div className="grid grid-cols-1 w-full gap-4">
-          <div className="w-full ">
-            <label htmlFor="fullName">gender </label>
+          <div className="w-full  flex flex-col gap-3 ">
+            <label htmlFor="fullName" className="font-semibold text-lg">
+              gender{' '}
+            </label>
             <ChipSelector
               options={[
                 {
@@ -78,14 +93,18 @@ export const TeacherForm: React.FC<TeacherFormProps> = ({ title }) => {
         </div>
       </div>
       <div className="grid grid-cols-1 w-full gap-4">
-        <div className="w-full ">
-          <label htmlFor="fullName">Write about yourself </label>
+        <div className="w-full  flex flex-col gap-3 ">
+          <label htmlFor="fullName" className="font-semibold text-lg">
+            Write about yourself{' '}
+          </label>
           <Textarea placeholder="Tell us about you. What makes you smile!" />
         </div>
       </div>
       <div className="md:grid md:grid-cols-1 lg:grid lg:grid-cols-2 w-full gap-4 ">
-        <div className="w-full  ">
-          <label htmlFor="fullName">Skills</label>
+        <div className="w-full   flex flex-col gap-3 ">
+          <label htmlFor="fullName" className="font-semibold text-lg">
+            Skills
+          </label>
           <MultipleSelector
             options={[
               {
@@ -105,8 +124,10 @@ export const TeacherForm: React.FC<TeacherFormProps> = ({ title }) => {
           />
         </div>
 
-        <div className="w-full  ">
-          <label htmlFor="fullName">Add Work History</label>
+        <div className="w-full  flex flex-col gap-3  ">
+          <label htmlFor="fullName" className="font-semibold text-lg">
+            Add Work History
+          </label>
           <MultipleSelector
             options={[
               {
@@ -125,8 +146,10 @@ export const TeacherForm: React.FC<TeacherFormProps> = ({ title }) => {
             placeholder="Add Work History"
           />
         </div>
-        <div className="w-full  ">
-          <label htmlFor="fullName">Education</label>
+        <div className="w-full  flex flex-col gap-3  ">
+          <label htmlFor="fullName" className="font-semibold text-lg">
+            Education
+          </label>
           <MultipleSelector
             options={[
               {
@@ -145,8 +168,10 @@ export const TeacherForm: React.FC<TeacherFormProps> = ({ title }) => {
             placeholder="Your Education"
           />
         </div>
-        <div className="w-full  ">
-          <label htmlFor="fullName">Certificates</label>
+        <div className="w-full  flex flex-col gap-3  ">
+          <label htmlFor="fullName" className="font-semibold text-lg">
+            Certificates
+          </label>
           <MultipleSelector
             options={[
               {
@@ -166,8 +191,10 @@ export const TeacherForm: React.FC<TeacherFormProps> = ({ title }) => {
           />
         </div>
         <div className="grid grid-cols-1 w-full gap-4 pb-12">
-          <div className="w-1/2/ ">
-            <label htmlFor="fullName">Currently Working with. </label>
+          <div className="w-1/2/  flex flex-col gap-3 ">
+            <label htmlFor="fullName" className="font-semibold text-lg">
+              Currently Working with.{' '}
+            </label>
             <MultipleSelector
               options={[
                 {
@@ -191,5 +218,3 @@ export const TeacherForm: React.FC<TeacherFormProps> = ({ title }) => {
     </div>
   );
 };
-
-export default TeacherForm;
