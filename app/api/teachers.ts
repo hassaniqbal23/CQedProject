@@ -11,9 +11,8 @@ export const getInvitedTeachers = (
   return http.get(`/teachers/all-teachers`);
 };
 
-
 export const updateProfile = (meta: { bio: string }) => {
   return http.patch('/users/update-profile', {
-    meta
-  })
-}
+    meta,
+  });
+};
