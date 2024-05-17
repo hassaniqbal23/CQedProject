@@ -1,19 +1,29 @@
+import React, { FC } from 'react';
 import {
   ProfileBio,
   ProfileContactDetails,
   ProfileHeader,
 } from '@/components/common/Profiles';
 import { Mail, MapPin, Phone } from 'lucide-react';
-import React from 'react';
+import { getSchoolByID } from '@/app/api/schools';
+import { useQuery } from 'react-query';
+import { ISchoolProfile } from '@/types/school';
 
-export const SchoolProfileView = () => {
+interface IProps {
+  id: number;
+}
+export const SchoolProfileView: FC<IProps> = ({ id }) => {
+  const { data: getProfileData } = useQuery(['getSchoolByID', id], () =>
+    getSchoolByID(id).then((res) => res?.data?.data as ISchoolProfile)
+  );
+
   return (
     <div className="space-y-4">
       <ProfileHeader
-        name="Minerva McGonagall"
+        name={getProfileData?.name || ''}
         role="10th Grade Geometry at "
         subrole=" Oak Ridge H.S."
-        location="Glenwood, CA"
+        location={getProfileData?.address || ''}
         profileIcon="/assets/profile/teacherprofile.svg"
       />
 
@@ -30,12 +40,12 @@ export const SchoolProfileView = () => {
             details={[
               {
                 title: 'Email',
-                content: 'stmaryhighschool@gmail.com',
+                content: getProfileData?.email || '',
                 icon: Mail,
               },
               {
                 title: 'Phone',
-                content: '03000000000',
+                content: getProfileData?.phone_number || '',
                 icon: Phone,
               },
               {
@@ -45,7 +55,7 @@ export const SchoolProfileView = () => {
               },
               {
                 title: 'Address',
-                content: '225 cherry street #24, New york,NY',
+                content: getProfileData?.address || '',
                 icon: MapPin,
               },
             ]}
@@ -55,5 +65,3 @@ export const SchoolProfileView = () => {
     </div>
   );
 };
-
-SchoolProfileView.display = 'SchoolProfileView';

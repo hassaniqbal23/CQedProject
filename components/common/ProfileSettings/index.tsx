@@ -21,7 +21,7 @@ const formSchema = z.object({
 });
 
 function ProfileSettings() {
-  const { userInformation } = useGlobalState();
+  const { userInformation, isUserGetInfo } = useGlobalState();
   const refetch = useQueryClient();
 
   const form = useForm<any>({
@@ -75,8 +75,9 @@ function ProfileSettings() {
       <h1 className="text-xl font-bold">Basic Information</h1>
       <div className="mt-8 flex flex-col items-center w-1/5">
         <ImageUpload
-          isDeletingProfile={isDeletingProfile}
-          isUploadingProfile={isUploadingProfile}
+          loading={isDeletingProfile || isUploadingProfile || isUserGetInfo}
+          attachmentFilepath={userInformation?.attachment?.file_path}
+          attachmentID={userInformation?.attachment?.id}
           deleteProfile={deleteProfile}
           uploadProfile={uploadProfile}
         />

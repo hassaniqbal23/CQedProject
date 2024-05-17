@@ -17,6 +17,9 @@ export const getAllClass = () => http.get('/classes/get-all');
 
 export const getSchoolDashboard = () => http.get('/dashbord/school-dashbord');
 
+export const getSchoolByID = (id: number) =>
+  http.get(`/schools/${id}/get-school`);
+
 export const getAllGrades = () => http.get('/grades/get-grades');
 
 export const createSubject = (formValues: any) =>
