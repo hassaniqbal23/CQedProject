@@ -19,10 +19,10 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { Camera, CircleUser } from 'lucide-react';
 import { updateProfile } from '@/app/api/teachers';
 import { deleteProfileImage, uploadProfileImage } from '@/app/api/admin';
 import ImageUpload from '../ImageUpload/ImageUpload';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 
 interface IAboutYouProps {
   avatar: string;
@@ -35,6 +35,7 @@ const formSchema = z.object({
 });
 
 export const AboutYou: React.FC = () => {
+  const { userInformation, isUserGetInfo } = useGlobalState();
   const refetch = useQueryClient();
   const router = useRouter();
   const form = useForm<IAboutYouProps>({
@@ -44,13 +45,7 @@ export const AboutYou: React.FC = () => {
       bio: '',
     },
   });
-
-  const {
-    reset,
-    handleSubmit,
-    getValues,
-    formState: { errors, isValid },
-  } = form;
+  const { handleSubmit } = form;
 
   const { mutate: uploadProfile, isLoading: isUploadingProfile } = useMutation(
     (file: FormData) => uploadProfileImage(file),
@@ -98,7 +93,7 @@ export const AboutYou: React.FC = () => {
   const onSubmit: SubmitHandler<IAboutYouProps> = async (
     data: IAboutYouProps
   ) => {
-    createTeacher(data)
+    createTeacher(data);
   };
 
   return (
@@ -131,10 +126,17 @@ export const AboutYou: React.FC = () => {
                   <FormItem className="flex justify-center flex-col items-center w-full">
                     <FormControl>
                       <ImageUpload
-                        isDeletingProfile={isDeletingProfile}
-                        isUploadingProfile={isUploadingProfile}
+                        loading={
+                          isDeletingProfile ||
+                          isUploadingProfile ||
+                          isUserGetInfo
+                        }
                         deleteProfile={deleteProfile}
                         uploadProfile={uploadProfile}
+                        attachmentID={userInformation?.attachment?.id}
+                        attachmentFilepath={
+                          userInformation?.attachment?.file_path
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -165,7 +167,6 @@ export const AboutYou: React.FC = () => {
                 <BottomNavbar
                   buttonType="submit"
                   buttonLoading={isCreating}
-                  // onContinue={() => createTeacher(getValues())}
                   onBackButton={function (): void {
                     throw new Error('Function not implemented.');
                   }}
