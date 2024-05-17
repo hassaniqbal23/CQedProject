@@ -4,7 +4,7 @@ import React from 'react';
 
 interface BottomNavbarProps {
   onBackButton?: () => void;
-  onContinue: () => void;
+  onContinue?: () => void;
   isBackButton?: boolean;
   buttonType?: ButtonProps['type'];
   buttonLoading?: boolean;
