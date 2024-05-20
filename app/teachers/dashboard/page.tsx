@@ -13,8 +13,7 @@ import WelcomeHeader from '@/components/common/welcomeHeader/WelcomeHeader';
 import { Typography } from '@/components/common/Typography/Typography';
 import Coummuntiycard from '@/components/common/Communitycard/CommunityCard';
 import Link from 'next/link';
-import { format, formatDistanceToNow } from 'date-fns';
-import { outlined } from '@/components/ui/button/button.stories';
+import { format } from 'date-fns';
 import DasboardDataTable from '@/components/ui/TeacherDashboardDataTable/TeacherDashboardDataTable';
 import { getPieChartOptions } from '@/lib/utils';
 import AdminCharts from '@/components/common/AdminCharts';
@@ -116,7 +115,7 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="flex ml-auto space-x-2">
-          <Button className="rounded-xl">
+          <Button size={'md'} className="rounded-xl">
             <Image alt="logo" width={18} height={18} src="/check.svg" />
             Create account
           </Button>
@@ -241,7 +240,7 @@ const Dashboard = () => {
               <div className="flex flex-col mt-2">
                 {[1, 2, 3, 4].map((item, index) => {
                   return (
-                    <div className="border-b">
+                    <div className="border-b" key={index}>
                       <TopStudentsCard
                         name="name"
                         buttonText={
@@ -282,7 +281,7 @@ const Dashboard = () => {
               totalDiscussions={14000}
               title={'Friends Globally'}
               imageSrc={'/globally.jpeg'}
-              buttonProps={outlined}
+              buttonProps={{ size: 'sm' }}
             />
           ))}
           <Link
@@ -304,7 +303,7 @@ const Dashboard = () => {
             <div className="mt-3">
               {[1, 2, 3, 4].map((_, index) => {
                 return (
-                  <div className="border-b border-[#F1ECDA]">
+                  <div className="border-b border-[#F1ECDA]" key={index}>
                     <BirthdayCard
                       birthDate="Today"
                       buttonText="Wish her"

@@ -17,7 +17,7 @@ interface IProps {
   totalDiscussions: number;
   title: string;
   imageSrc: string;
-  buttonProps: ButtonProps;
+  buttonProps?: ButtonProps;
 }
 
 const Coummuntiycard: FC<IProps> = ({
