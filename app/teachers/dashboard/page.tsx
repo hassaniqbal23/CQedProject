@@ -107,7 +107,7 @@ const Dashboard = () => {
     <div className="p-4">
       <div className="flex flex-col lg:flex-row mb-4">
         <div className="flex items-center mb-2 lg:mb-0">
-          <div className="flex flex-col bg-[#F5F6F5] items-center p-1 rounded-md">
+          <div className="flex flex-col bg-[#F5F6F5] items-center p-2 rounded-md">
             <div className="font-bold text-[#394245]">{formattedDate}</div>
             <div className="font-semibold text-[#394245]">{formattedTime}</div>
           </div>
