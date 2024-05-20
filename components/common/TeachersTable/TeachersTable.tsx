@@ -1,5 +1,6 @@
 'use client';
 
+import { Dropdown } from '@/components/ui';
 import DataTable from '@/components/ui/table/table';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -43,7 +44,27 @@ function TeachersTable(props: TeachersTableProps) {
               );
             },
           },
-          { label: 'Email Address', key: 'email' },
+          {
+            label: 'Subject',
+            key: 'subject',
+            render: (data) => {
+              return data['subject'] || 'N/A';
+            },
+          },
+          {
+            label: 'Class',
+            key: 'class',
+            render: (data) => {
+              return data['class'] || 'N/A';
+            },
+          },
+          {
+            label: 'Email Address',
+            key: 'email',
+            render: (data) => {
+              return data['email'] || 'N/A';
+            },
+          },
           {
             label: 'Years of Experience',
             key: 'yearsOfExperience',
@@ -56,8 +77,33 @@ function TeachersTable(props: TeachersTableProps) {
             key: 'actions',
             render: (data) => {
               return (
-                <div onClick={() => console.log(data)}>
-                  <IoEllipsisVertical className="cursor-pointer" />
+                <div className="w-8">
+                  <Dropdown
+                    trigger={
+                      <div>
+                        <IoEllipsisVertical className="cursor-pointer" />
+                      </div>
+                    }
+                    options={[
+                      {
+                        content: (
+                          <Link
+                            className="hover:text-primary-500"
+                            href={`/schools/teachers/${data['id']}`}
+                          >
+                            View Profile
+                          </Link>
+                        ),
+                      },
+                      {
+                        content: (
+                          <div onClick={() => console.log('akmsdkasd')}>
+                            Remove Teacher
+                          </div>
+                        ),
+                      },
+                    ]}
+                  />
                 </div>
               );
             },

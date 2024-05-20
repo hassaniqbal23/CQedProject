@@ -13,3 +13,22 @@ export const getInvites = (
 ) => {
   return http.get(`/invitation/all-invites?page=${page}&limit=${pageSize}`);
 };
+
+export const getAdminDashboard = () => http.get('/dashbord/admin-dashbord');
+
+export const deleteProfileImage = (id: number) =>
+  http.delete(`/uploads/${id}/delete`);
+
+export const uploadProfileImage = (file: FormData) =>
+  http.post(`/me/picture`, file);
+
+export const resendInvitation = (payload: { email: string; type: string }) =>
+  http.post(`/invitation/resend-invite`, payload);
+
+export const deleteInvitation = (id: number) =>
+  http.delete(`/invitation/${id}/delete-invite`);
+
+export const changePassword = (payload: {
+  oldPassword: string;
+  newPassword: string;
+}) => http.patch(`/password/change-password`, payload);

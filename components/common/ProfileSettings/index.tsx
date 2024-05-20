@@ -1,19 +1,14 @@
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-  Input,
-  Card,
-} from '@/components/ui';
+import { Form, Card } from '@/components/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Camera } from 'lucide-react';
-import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useMutation, useQueryClient } from 'react-query';
+import { deleteProfileImage, uploadProfileImage } from '@/app/api/admin';
+import { toast } from 'sonner';
+import { FormInput } from '../From/FormInput';
+import ImageUpload from '../ImageUpload/ImageUpload';
 
 const formSchema = z.object({
   fullName: z.string().min(2, {
@@ -26,78 +21,85 @@ const formSchema = z.object({
 });
 
 function ProfileSettings() {
+  const { userInformation, isUserGetInfo } = useGlobalState();
+  const refetch = useQueryClient();
+
   const form = useForm<any>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      password: '',
+      fullName: '',
+      username: '',
       photo: '',
     },
   });
 
-  const {
-    reset,
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = form;
+  const { mutate: deleteProfile, isLoading: isDeletingProfile } = useMutation(
+    (id: number) => deleteProfileImage(id),
+    {
+      onSuccess: (res) => {
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+        });
+        refetch.invalidateQueries('userInformation');
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
+
+  const { mutate: uploadProfile, isLoading: isUploadingProfile } = useMutation(
+    (file: FormData) => uploadProfileImage(file),
+    {
+      onSuccess: (res) => {
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+        });
+        refetch.invalidateQueries('userInformation');
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (userInformation) {
+      form.setValue('fullName', userInformation.name);
+      form.setValue('username', userInformation.name);
+    }
+  }, [userInformation]);
 
   return (
     <Card className="w-full p-4 mt-6">
       <h1 className="text-xl font-bold">Basic Information</h1>
       <div className="mt-8 flex flex-col items-center w-1/5">
-        <div className="relative">
-          <Image
-            src={'/assets/images/user-image.png'}
-            alt="user image"
-            width={200}
-            height={200}
-            className="rounded-full"
-          />
-          <div className="absolute p-2 bg-white border right-1 bottom-4 rounded-full cursor-pointer">
-            <Camera />
-          </div>
-        </div>
-        <h2 className="mt-2 font-semibold">Choose your avatar</h2>
+        <ImageUpload
+          loading={isDeletingProfile || isUploadingProfile || isUserGetInfo}
+          attachmentFilepath={userInformation?.attachment?.file_path}
+          attachmentID={userInformation?.attachment?.id}
+          deleteProfile={deleteProfile}
+          uploadProfile={uploadProfile}
+        />
       </div>
       <div>
         <Form {...form}>
           <form className="grid grid-cols-2 gap-5 mt-10">
-            <FormField
+            <FormInput
+              disabled
+              label="Full Name"
+              required={true}
+              form={form}
               name="fullName"
-              control={form.control}
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel className="mb-2">Full Name</FormLabel>
-                    <FormControl className="mb-6">
-                      <Input
-                        placeholder="Enter your Email or Username!"
-                        {...field}
-                        {...register('fullName')}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
+              placeholder={'admin'}
             />
-            <FormField
+            <FormInput
+              disabled
+              label="Username"
+              required={true}
+              form={form}
               name="username"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="mb-2">Username</FormLabel>
-                  <FormControl className="mb-6">
-                    <Input
-                      placeholder="Enter your Username!"
-                      {...field}
-                      {...register('username')}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              placeholder={'admin'}
             />
           </form>
         </Form>

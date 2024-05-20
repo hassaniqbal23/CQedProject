@@ -14,6 +14,7 @@ import { FormInput } from '@/components/common/From/FormInput';
 import { updateToken } from '../utils/http';
 import { LoginAPI } from '../api/auth';
 import { useMutation } from 'react-query';
+import Link from 'next/link';
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -115,6 +116,12 @@ export default function Login() {
                 </div>
               </div>
               <div className="py-2 ">
+                <Link
+                  href={'/admin/forgot-password'}
+                  className="text-sm text-primary hover:no-underline p-0 flex justify-end font-semibold mb-4"
+                >
+                  Forget your password?
+                </Link>
                 <Button
                   className=" w-full disabled:invalid:cursor-pointer hover:disabled:cursor-not-allowed"
                   type="submit"

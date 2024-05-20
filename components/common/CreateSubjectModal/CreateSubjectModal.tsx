@@ -21,6 +21,7 @@ import {
 import { Input } from '@/components/ui';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 
 const formSchema = z.object({
   name: z.string().min(5, {
@@ -40,6 +41,7 @@ interface CreateSubjectModalProps {
   open: boolean;
   onClose: () => void;
   onOpen: () => void;
+  initialValue?: string;
 }
 
 export const CreateSubjectModal = ({
@@ -51,6 +53,7 @@ export const CreateSubjectModal = ({
   onOpen,
   onClose,
   open,
+  initialValue,
 }: CreateSubjectModalProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -58,6 +61,14 @@ export const CreateSubjectModal = ({
       name: '',
     },
   });
+
+  useEffect(() => {
+    if (initialValue) {
+      form.setValue('name', initialValue);
+    } else {
+      form.reset();
+    }
+  }, [initialValue]);
 
   const onSubmit = form.handleSubmit((values) => {
     if (propsOnSubmit) {

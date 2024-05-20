@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { AdminWelCome } from './(components)/admin';
 import http from '@/app/utils/http';
 import { useQuery } from 'react-query';
-import { getAllSchools } from '@/app/api/admin';
+import { getAdminDashboard, getAllSchools } from '@/app/api/admin';
 import Loading from '@/components/ui/button/loading';
 import { format } from 'date-fns';
 import AdminCharts from '@/components/common/AdminCharts';
@@ -25,21 +25,37 @@ const initialBar = {
 const Dashboard = () => {
   const [lineData, setLineData] = useState<any>(initialBar);
   const [barData, setbarData] = useState<any>(initialBar);
+
   const { data, isLoading } = useQuery(['getInvitedSchools'], () =>
     getAllSchools()
   );
+
+  const { data: dashboardData } = useQuery(['getSchoolDashboard'], () =>
+    getAdminDashboard().then((res) => res?.data?.data)
+  );
+
   const currentDate = format(new Date(), 'EEEE, MMMM do');
 
   const cardData = [
     {
       title: 'Total Schools',
       link: '/',
-      number: data?.data?.totalCount,
+      number: dashboardData?.totalSchoolCount,
       percentage: 2.5,
     },
-    { title: 'Total Teachers', link: '/', number: '1,400', percentage: 2.5 },
-    { title: 'Total Students', link: '/', number: '15,000', percentage: 2.5 },
-    { title: 'Total Sales', link: '/', number: '$10,000', percentage: 2.5 },
+    {
+      title: 'Total Teachers',
+      link: '/',
+      number: dashboardData?.totalTeachersCount,
+      percentage: 2.5,
+    },
+    {
+      title: 'Total Students',
+      link: '/',
+      number: dashboardData?.totalStudentCount,
+      percentage: 2.5,
+    },
+    { title: 'Total Sales', link: '/', number: '$10', percentage: 2.5 },
   ];
 
   function getBarChart() {

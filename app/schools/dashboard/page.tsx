@@ -12,6 +12,7 @@ import { getAllSchools } from '@/app/api/admin';
 import { getInvitedTeachers } from '@/app/api/teachers';
 import { Typography } from '@/components/common/Typography/Typography';
 import { StaticCard } from '@/components/common/StaticCard/StaticCard';
+import { getSchoolDashboard } from '@/app/api/schools';
 
 const icons = [
   '/assets/welcome/grey_woman1.svg',
@@ -31,6 +32,9 @@ export default function SchoolDashboard() {
     ['getInvitedSchools'],
     () => getInvitedTeachers()
   );
+  const { data: dashboardData } = useQuery(['getSchoolDashboard'], () =>
+    getSchoolDashboard().then((res) => res?.data?.data)
+  );
 
   const { mutate: schoolInvite, isLoading } = useMutation(
     (userData: { emails: string; type: string }) => Invite(userData),
@@ -47,11 +51,19 @@ export default function SchoolDashboard() {
   const cardData = [
     {
       title: 'Total Teachers',
-      number: teachersData?.data.totalCount,
+      number: dashboardData?.totalTeachersCount,
       percentage: 2.5,
     },
-    { title: 'Total Students', number: '15,000', percentage: 2.5 },
-    { title: 'Active Students', number: '15,000', percentage: 2.5 },
+    {
+      title: 'Total Students',
+      number: dashboardData?.totalStudentCount,
+      percentage: 2.5,
+    },
+    {
+      title: 'Active Students',
+      number: dashboardData?.totalTeachersCount,
+      percentage: 2.5,
+    },
   ];
 
   const onSubmit = ({ emails }: { emails: string }) => {

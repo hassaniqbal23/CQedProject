@@ -40,7 +40,7 @@ const ProfileLink = ({
       <div className="flex gap-2 items-center justify-center">
         <Avatar className="h-10 w-h-10">
           <AvatarImage
-            src="/assets/profile/profile.svg"
+            src={userInformation?.attachment?.file_path}
             alt="Profile Picture"
           />
           <AvatarFallback>CQED</AvatarFallback>

@@ -11,6 +11,7 @@ import {
   getAllClass,
   getAllGrades,
   deleteSubject as deleteSubjectAPI,
+  updateSubject,
 } from '@/app/api/schools';
 import { CreateSubjectModal } from '@/components/common/CreateSubjectModal/CreateSubjectModal';
 import { Typography } from '@/components/common/Typography/Typography';
@@ -19,11 +20,20 @@ import { DeleteClassDialog } from '@/components/common/DeleteClassModal/DeleteCl
 export default function SchoolClassRooms() {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState<number>(0);
+  const [editSubject, setEditSubject] = useState<{
+    id: number | null;
+    name: string | null;
+  }>({
+    id: null,
+    name: null,
+  });
+
   const {
     data,
     isLoading,
     refetch: refetchClasses,
   } = useQuery(['getAllClass'], () => getAllClass());
+
   const [addSubjectModal, setAddSubjectModal] = useState(false);
   const {
     data: gradesData,
@@ -37,12 +47,29 @@ export default function SchoolClassRooms() {
       onSuccess: (res) => {
         setAddSubjectModal(false);
         refetchClasses();
+        setEditSubject({ id: null, name: null });
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
       },
     }
   );
+
+  const { mutate: mutateUpdateSubject, isLoading: isUpdateSubject } =
+    useMutation(
+      (subject: { id: number; name: string }) =>
+        updateSubject(subject.id, { name: subject.name }),
+      {
+        onSuccess: (res) => {
+          setAddSubjectModal(false);
+          refetchClasses();
+          setEditSubject({ id: null, name: null });
+        },
+        onError: (error: any) => {
+          console.log(error, 'Error =====> log');
+        },
+      }
+    );
 
   const { mutate: deleteSubject, isLoading: isDeleteing } = useMutation(
     (id: number) => deleteSubjectAPI(id),
@@ -74,6 +101,7 @@ export default function SchoolClassRooms() {
             Title="Add New Subject"
             trigger={
               <Button
+                onClick={() => setEditSubject({ id: null, name: null })}
                 size={'md'}
                 variant="default"
                 className={'flex items-center'}
@@ -83,14 +111,26 @@ export default function SchoolClassRooms() {
                 Add Subject
               </Button>
             }
+            initialValue={editSubject.name ? editSubject.name : ''}
             ButtonAction="Submit"
             ButtonCancel="Cancel"
-            loading={isCreatingSubject}
+            loading={isCreatingSubject || isUpdateSubject}
             onOpen={() => setAddSubjectModal(true)}
-            onClose={() => setAddSubjectModal(false)}
+            onClose={() => {
+              setEditSubject({ id: null, name: null });
+              setAddSubjectModal(false);
+            }}
             open={addSubjectModal}
             onSubmit={(values) => {
-              createSubject(values);
+              setEditSubject({ id: null, name: null });
+              if (editSubject.id) {
+                mutateUpdateSubject({
+                  id: editSubject.id,
+                  name: values.name,
+                });
+              } else {
+                createSubject(values);
+              }
             }}
           />
         </div>
@@ -120,6 +160,13 @@ export default function SchoolClassRooms() {
                   onDeleteSubject={(id: number) => {
                     setDeleteId(id);
                     setOpenDeleteModal(true);
+                  }}
+                  onEditSubjectName={(id: number, name: string) => {
+                    setEditSubject({
+                      id: id,
+                      name: name,
+                    });
+                    setAddSubjectModal(true);
                   }}
                 />
                 <DeleteClassDialog
