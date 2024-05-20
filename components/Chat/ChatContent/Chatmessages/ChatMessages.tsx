@@ -46,7 +46,7 @@ const messages: Message[] = [
 
 const ChatMessages: React.FC = () => {
   return (
-    <div className=" mt-10 ">
+    <div className=" m-10 ">
       {messages.map((message, index) => (
         <ChatMessage
           key={index}

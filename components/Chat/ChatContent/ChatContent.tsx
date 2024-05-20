@@ -4,7 +4,7 @@ import iconMenu from '@/public/IconsMenu.svg';
 import ChatMessages from './Chatmessages/ChatMessages';
 const ChatContent: FC = () => {
   return (
-    <div className="m-4 w-full">
+    <div className=" w-full">
       <ChatHeader
         userImage={'/assets/profile/profile.svg'}
         userFullName={'ASArtist'}
