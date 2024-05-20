@@ -1,16 +1,23 @@
 import React from 'react';
-import { Input } from '../input/input';
-import DatePiker from '../date-picker/date-picker';
-import { SelectCountry } from '../select-v2/select-v2-components';
-import { Textarea } from '../textarea/textarea';
-import ChipSelector from '../ChipSelect/ChipSelector';
+import { Input } from '../../../ui/input/input';
+import DatePiker from '../../../ui/date-picker/date-picker';
+import { SelectCountry } from '../../../ui/select-v2/select-v2-components';
+import { Textarea } from '../../../ui/textarea/textarea';
+import ChipSelector from '../../../ui/ChipSelect/ChipSelector';
 import MultipleSelector from '@/components/common/From/MultiSelect';
+import { ArrowLeft } from 'lucide-react';
 export interface TeacherFormProps {
   title: string;
 }
 export const TeacherForm: React.FC<TeacherFormProps> = ({ title }) => {
   return (
     <div className="p-4 flex gap-4 flex-col ">
+      <div>
+        <button className=" flex items-center gap-2 text-base font-semibold">
+          {' '}
+          <ArrowLeft /> Back to Profile
+        </button>
+      </div>
       <h2 className="text-2xl font-semibold">{title}</h2>
       <div className="md:grid md:grid-cols-1 lg:grid lg:grid-cols-2 w-full gap-4">
         <div className="w-full flex flex-col gap-3 ">
