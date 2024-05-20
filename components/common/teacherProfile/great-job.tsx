@@ -11,11 +11,6 @@ export const GreatJob: React.FC = () => {
   const router = useRouter();
   return (
     <div className="overflow-x-hidden overflow-y-hidden">
-      <TopNavbar
-        onLogout={() => console.log('logout')}
-        className="fixed top-0 w-full z-50 "
-      />
-
       <div className=" p-4 mx-auto ">
         <div className="">
           <div className="mx-auto w-max mt-4">

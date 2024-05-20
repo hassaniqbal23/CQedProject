@@ -98,11 +98,6 @@ export const AboutYou: React.FC = () => {
 
   return (
     <div className="overflow-x-hidden overflow-y-hidden">
-      <TopNavbar
-        onLogout={() => console.log('logout')}
-        className="fixed top-0 w-full z-50 "
-      />
-
       <div className=" p-4 mx-auto ">
         <div className="">
           <div className="mx-auto mt-4 md:w-96">
@@ -143,7 +138,7 @@ export const AboutYou: React.FC = () => {
                   </FormItem>
                 )}
               />
-              <div className="pt-20 w-9/12 mx-auto">
+              <div className="pt-20 w-9/12 mx-auto pb-24">
                 <FormField
                   control={form.control}
                   name="bio"
