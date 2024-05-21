@@ -3,9 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui';
 import { Typography } from '../Typography/Typography';
-import {
-  Card,
-} from '@/components/ui';
+import { Card } from '@/components/ui';
 
 interface PenpalshipNewilyJoinedCardProps {
   title?: string;
