@@ -1,0 +1,162 @@
+'use client';
+import { AutosizeTextarea } from '@/components/common/AutosizeTextarea';
+import {
+  Button,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+} from '@/components/ui';
+import { CircleX, SendHorizontal, Smile } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { ChatEmojiPicker } from './ChatEmojiPicker/ChatEmojiPicker';
+import { ChatFileUploader } from './ChatFileUploader/ChatFileUploader';
+import { AspectRatio } from '@/components/ui/aspect-ratio/aspect-ratio';
+import Image from 'next/image';
+
+function ChatInput() {
+  const [showEmoji, setShowEmoji] = useState<boolean>(false);
+  const emojiPickerRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState<number>(41);
+  const form = useForm<any>({
+    defaultValues: {
+      message: '',
+      files: [],
+    },
+  });
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      emojiPickerRef.current &&
+      event.target instanceof Node &&
+      !emojiPickerRef.current.contains(event.target)
+    ) {
+      setShowEmoji(false);
+    }
+  };
+
+  useEffect(() => {
+    const files = form.watch('files');
+    if (files?.length > 0) {
+      setHeight(150);
+    } else {
+      setHeight(41);
+    }
+  }, [form.watch('files')]);
+
+  useEffect(() => {
+    if (showEmoji) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showEmoji]);
+
+  const handleRemoveFile = (index: number) => {
+    const files = form
+      .watch('files')
+      .filter((_: any, i: number) => i !== index);
+    form.setValue('files', [...files]);
+  };
+
+  return (
+    <Form {...form}>
+      <form className="flex w-full items-end gap-2">
+        <FormField
+          name="message"
+          render={({ field }) => {
+            return (
+              <FormItem className="w-full">
+                <FormControl className="">
+                  <div className="relative">
+                    <AutosizeTextarea
+                      placeholder="Enter your message"
+                      {...field}
+                      minHeight={height}
+                      maxHeight={
+                        form.watch('files').length > 0 ? height / 2 : 120
+                      }
+                      className={`${form.watch('files').length > 0 ? 'resize-none pb-20' : 'pb-auto'}`}
+                      icon={
+                        <div className="flex gap-2" ref={emojiPickerRef}>
+                          <ChatFileUploader
+                            files={form.getValues('files')}
+                            onFileSelect={(data) => {
+                              form.setValue('files', [
+                                ...form.getValues('files'),
+                                ...data,
+                              ]);
+                            }}
+                          />
+                          <ChatEmojiPicker
+                            onPickEmoji={(emoji) => {
+                              const currentMessage =
+                                form.getValues('message') || '';
+                              form.setValue(
+                                'message',
+                                currentMessage + emoji.emoji
+                              );
+                            }}
+                            open={showEmoji}
+                            button={
+                              <div
+                                onClick={() => setShowEmoji(!showEmoji)}
+                                className="cursor-pointer"
+                              >
+                                <Smile width={18} height={18} color="#4E5D78" />
+                              </div>
+                            }
+                          />
+                        </div>
+                      }
+                    />
+                    {form.watch('files').length > 0 && (
+                      <div className="absolute bottom-4 left-3 grid grid-cols-5 gap-3">
+                        {form.watch('files').map((file: any, index: number) => (
+                          <div
+                            key={index}
+                            aria-roledescription={`file ${index + 1} containing ${
+                              file.name
+                            }`}
+                            className="p-0 size-20 group "
+                          >
+                            <AspectRatio className="size-full relative">
+                              <Image
+                                src={URL.createObjectURL(file)}
+                                alt={file.name}
+                                className="object-cover rounded-md"
+                                fill
+                              />
+                              <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 group-hover:flex hidden w-full h-full bg-slate-300-opacity-50 rounded items-center justify-center ">
+                                <CircleX
+                                  className="cursor-pointer"
+                                  onClick={() => handleRemoveFile(index)}
+                                />
+                              </div>
+                            </AspectRatio>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </FormControl>
+              </FormItem>
+            );
+          }}
+        />
+        <div>
+          <Button className="w-full bg-blue-100 h-[44px]" type="submit">
+            <SendHorizontal className="text-primary" />
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+}
+
+export { ChatInput };

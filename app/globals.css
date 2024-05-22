@@ -89,6 +89,10 @@
   }
 }
 
+.bg-slate-300-opacity-50 {
+  background-color: rgba(203, 213, 225, 0.4);
+}
+
 .rdp-vhidden {
   @apply hidden;
 }
