@@ -32,12 +32,12 @@ function TeachersTable(props: TeachersTableProps) {
                   href={`/schools/teachers/${data['id']}`}
                 >
                   <div className="flex items-center gap-2 w-full">
-                    {/*<Image*/}
-                    {/*  src={data.ImagePath}*/}
-                    {/*  alt={data.ImagePath}*/}
-                    {/*  width={30}*/}
-                    {/*  height={30}*/}
-                    {/*/>*/}
+                    <Image
+                      src={data.ImagePath || '/assets/profile/profile.svg'}
+                      alt={data.ImagePath}
+                      width={30}
+                      height={30}
+                    />
                     <h2>{data['fullname']}</h2>
                   </div>
                 </Link>
@@ -77,7 +77,7 @@ function TeachersTable(props: TeachersTableProps) {
             key: 'actions',
             render: (data) => {
               return (
-                <div className="w-8">
+                <div className="w-10 justify-center flex">
                   <Dropdown
                     trigger={
                       <div>

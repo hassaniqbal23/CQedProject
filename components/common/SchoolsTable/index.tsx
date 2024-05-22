@@ -14,13 +14,14 @@ export interface SchoolTableProps {
 }
 
 function SchoolTable(props: SchoolTableProps) {
+  const { data, noDataMessage, loading } = props;
   return (
     <div className="w-full">
       <DataTable
-        data={props.data}
+        data={data}
         selection={true}
-        noDataMessage={props.noDataMessage || 'No Schools'}
-        loading={props.loading}
+        noDataMessage={noDataMessage || 'No Schools'}
+        loading={loading}
         columns={[
           {
             label: 'School Name',
@@ -28,12 +29,12 @@ function SchoolTable(props: SchoolTableProps) {
             render: (data) => {
               return (
                 <div className="flex  items-center gap-2 w-full">
-                  {/*<Image*/}
-                  {/*  src={data.ImagePath}*/}
-                  {/*  alt={data.ImagePath}*/}
-                  {/*  width={30}*/}
-                  {/*  height={30}*/}
-                  {/*/>*/}
+                  <Image
+                    src={data?.ImagePath || '/assets/profile/profile.svg'}
+                    alt={data?.ImagePath || 'school profile '}
+                    width={30}
+                    height={30}
+                  />
                   <h2>{data['name']}</h2>
                 </div>
               );

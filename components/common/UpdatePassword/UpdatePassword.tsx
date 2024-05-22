@@ -18,15 +18,19 @@ import { UpdateUserPassword } from '@/app/api/auth';
 import { useRouter } from 'next/navigation';
 import { UpdatePasswordBody } from '@/app/api/types';
 
-const formSchema = z.object({
-  password: z.string().min(8, {
-    message: 'Password should be at least 8 characters',
-  }),
-
-  confirm_password: z.string().min(8, {
-    message: 'Confirm Password should be at least 8 characters',
-  }),
-});
+const formSchema = z
+  .object({
+    password: z.string().min(8, {
+      message: 'Password should be at least 8 characters',
+    }),
+    confirm_password: z.string().min(8, {
+      message: 'Confirm Password should be at least 8 characters',
+    }),
+  })
+  .refine((data) => data.password === data.confirm_password, {
+    message: 'Passwords do not match',
+    path: ['confirm_password'],
+  });
 
 export interface UpdatePasswordProps {
   updatePasswordSuccessLink: string;

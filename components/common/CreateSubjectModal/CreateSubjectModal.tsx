@@ -63,7 +63,7 @@ export const CreateSubjectModal = ({
   });
 
   useEffect(() => {
-    if (initialValue) {
+    if (initialValue && !loading) {
       form.setValue('name', initialValue);
     } else {
       form.reset();

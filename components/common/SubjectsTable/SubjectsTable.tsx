@@ -25,9 +25,10 @@ function SubjectTable(props: SubjectTableProps) {
           {
             label: 'Subject Name',
             key: 'name',
+            className: 'pl-10',
             render: (data) => {
               return (
-                <div className="flex items-center gap-2 w-full">
+                <div className="pl-7">
                   <h2>{data['name']}</h2>
                 </div>
               );
@@ -36,9 +37,10 @@ function SubjectTable(props: SubjectTableProps) {
           {
             label: 'Actions',
             key: 'actions',
+            className: 'flex justify-end items-center pr-10',
             render: (data) => {
               return (
-                <div className="w-8">
+                <div className="flex justify-end pr-10">
                   <Dropdown
                     trigger={
                       <div>

@@ -8,7 +8,7 @@ import GradesTable from '@/components/common/GradesTable/GradesTable';
 import { useMutation, useQuery } from 'react-query';
 import {
   createSubject as createSubjectAPI,
-  getAllClass,
+  getAllSubject,
   getAllGrades,
   deleteSubject as deleteSubjectAPI,
   updateSubject,
@@ -32,7 +32,7 @@ export default function SchoolClassRooms() {
     data,
     isLoading,
     refetch: refetchClasses,
-  } = useQuery(['getAllClass'], () => getAllClass());
+  } = useQuery(['getAllSubject'], () => getAllSubject());
 
   const [addSubjectModal, setAddSubjectModal] = useState(false);
   const {
@@ -155,7 +155,7 @@ export default function SchoolClassRooms() {
             content: (
               <div className={'pt-4 w-full'}>
                 <SubjectsTable
-                  data={data?.data.data || []}
+                  data={data?.data?.data || []}
                   loading={isLoading}
                   onDeleteSubject={(id: number) => {
                     setDeleteId(id);

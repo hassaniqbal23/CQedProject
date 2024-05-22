@@ -33,7 +33,10 @@ const EmailInput: React.FC<EmailInputProps> = ({
   }, [emails, onChange]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if ((event.key === 'Enter' || event.key === 'Tab') && input.trim()) {
+    if (
+      (event.key === 'Enter' || event.key === 'Tab' || event.key === ' ') &&
+      input.trim()
+    ) {
       event.preventDefault();
       if (maxEmails !== undefined && emails.length >= maxEmails) {
         setError(`You can only add up to ${maxEmails} email addresses.`);
@@ -48,9 +51,11 @@ const EmailInput: React.FC<EmailInputProps> = ({
       } else {
         setError('Please enter a valid email address.');
       }
+    } else if (event.key === 'Backspace' && !input) {
+      event.preventDefault();
+      setEmails((prevEmails) => prevEmails.slice(0, prevEmails.length - 1));
     }
   };
-
   return (
     <>
       <div className="flex flex-wrap items-start gap-2 p-2 border rounded min-h-[91px]">

@@ -55,7 +55,7 @@ const ProfileLink = ({
     </PopoverTrigger>
     <PopoverContent className="mt-1 w-[13.1rem] relative right-10 p-0">
       <div className="px-5 py-4 flex">
-        <MdLogout className="text-base rotate-180 text-primary mr-3" />
+        <MdLogout className="text-base  text-primary mr-3" />
         <Button
           variant="ghost"
           onClick={onClick}
