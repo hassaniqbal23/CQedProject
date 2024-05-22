@@ -1,5 +1,5 @@
 'use client';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import Modal from '@/components/common/Modal/Modal';
 import {
   Button,
@@ -58,10 +58,13 @@ export const SendEmail: FC<SendEmailProps> = ({
     },
   });
 
-  const {
-    handleSubmit,
-    formState: { errors, isValid },
-  } = form;
+  const { handleSubmit } = form;
+
+  useEffect(() => {
+    if (!inviteLoading) {
+      form.reset();
+    }
+  }, [inviteLoading]);
 
   return (
     <Modal

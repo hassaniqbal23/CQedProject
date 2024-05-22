@@ -24,6 +24,31 @@ const SelectCountry = (props: SelectCountryProps) => {
   return (
     <div>
       <SelectV2Virtualized
+        styles={{
+          control: (style) => ({
+            ...style,
+            background: '#f8f9fb',
+            color: 'black',
+            ':focus-within': {
+              color: 'red',
+            },
+          }),
+          singleValue: (styles, { data }) => ({
+            ...styles,
+            height: '25px',
+            display: 'flex',
+            alignItems: 'center',
+          }),
+          input: (styles) => ({
+            color: 'black',
+            background: '#f8f9fb',
+          }),
+          valueContainer: (style) => ({
+            ...style,
+            height: '54px',
+            display: 'flex',
+          }),
+        }}
         onInputChange={(e) => {
           setSearchValue(e);
         }}

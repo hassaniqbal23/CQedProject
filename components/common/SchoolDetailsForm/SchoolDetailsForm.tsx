@@ -98,7 +98,7 @@ export function SchoolDetailsForm() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>School Name</FormLabel>
+                    <FormLabel>School name</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="e.g John, Emma"
@@ -159,7 +159,6 @@ export function SchoolDetailsForm() {
                           }}
                           label=""
                         ></SelectCountry>
-                        {/* <Input placeholder="e.g USA" {...field} /> */}
                       </FormControl>
                       <FormMessage />
                     </FormItem>

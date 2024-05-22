@@ -4,15 +4,14 @@ import { DashboardWelcome } from '@/components/common/dashboard/welcome/welcome'
 import { useMutation, useQuery } from 'react-query';
 import { Invite } from '@/app/api/invitations';
 import { SendEmail } from '@/components/index';
-import DashboardStaticCards from '@/components/common/DashboardStaticCards';
 import { format } from 'date-fns';
 import Link from 'next/link';
 import TeachersTable from '@/components/common/TeachersTable/TeachersTable';
-import { getAllSchools } from '@/app/api/admin';
 import { getInvitedTeachers } from '@/app/api/teachers';
 import { Typography } from '@/components/common/Typography/Typography';
 import { StaticCard } from '@/components/common/StaticCard/StaticCard';
 import { getSchoolDashboard } from '@/app/api/schools';
+import Image from 'next/image';
 
 const icons = [
   '/assets/welcome/grey_woman1.svg',
@@ -136,7 +135,14 @@ export default function SchoolDashboard() {
         </div>
       </div>
       <div className={'w-full mt-6 flex'}>
-        <div className={'flex gap-3'}>
+        <div className={'flex gap-3 items-center'}>
+          <Image
+            src={'/assets/teacher/teacherlist.svg'}
+            width={26}
+            height={26}
+            alt="teacher list"
+          />
+
           <Typography variant={'h4'} weight={'semibold'}>
             Teachers List
           </Typography>

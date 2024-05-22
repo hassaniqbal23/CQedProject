@@ -98,12 +98,12 @@ export const SchoolLayout: FC<IProps> = ({ children }) => {
         </div>
       </div>
       <div
-        className={`block md:w-full ${isTabletMini ? 'px-6' : ''} lg:pl-8 pt-[60px] overflow-hidden bg-[#FDFDFD]`}
+        className={`block md:w-full ${isTabletMini ? 'px-6 pb-24' : ''} lg:pl-8 pt-[60px] overflow-hidden bg-[#FDFDFD]`}
       >
         <div
           className={`mx-[10px] my-[30px] ${isTabletMini ? '' : 'md:m-[40px]'}`}
         >
-          <div className="main-layout">{children}</div>
+          <div className="school-layout">{children}</div>
         </div>
       </div>
     </div>
