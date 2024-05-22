@@ -111,7 +111,7 @@ export default function SchoolClassRooms() {
                 Add Subject
               </Button>
             }
-            initialValue={editSubject.name ? editSubject.name : ''}
+            initialValue={editSubject.name || ''}
             ButtonAction="Submit"
             ButtonCancel="Cancel"
             loading={isCreatingSubject || isUpdateSubject}
