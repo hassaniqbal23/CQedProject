@@ -8,26 +8,47 @@ import { Button, Input, TabsComponent as Tabs } from '@/components/ui';
 import { Plus } from 'lucide-react';
 import Pagination from '@/components/common/pagination/pagination';
 import DataTable from '@/components/ui/table/table';
-import { getInvites } from '@/app/api/admin';
+import { InvitationType, getInvites } from '@/app/api/admin';
 import { getAllStudents } from '@/app/api/students';
 import StudentsTable from '@/components/common/StudentsTable';
 import { Typography } from '@/components/common/Typography/Typography';
 
 function SchoolStudents() {
-  const [inviteStudentModal, setInviteStudentModal] = useState(false);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [invitePage, setInvitedPage] = useState(1);
-  const [invitePageSize, setInvitedPageSize] = useState(10);
+  let Type = 'STUDNET';
+  const [inviteStudentModal, setInviteStudentModal] = useState<boolean>(false);
+  const [totalCountStudent, setTotalCountStudent] = useState<number>(1);
+  const [totalCountInviteStudent, setTotalCountInviteStudent] =
+    useState<number>(1);
+
+  const [paginationStudent, setPaginationStudent] = useState<{
+    studentPage: number;
+    studentLimit: number;
+  }>({
+    studentPage: 1,
+    studentLimit: 10,
+  });
+  const [paginationInviteStudent, setPaginationInviteStudent] = useState<{
+    studentInvitePage: number;
+    studentInviteLimit: number;
+  }>({
+    studentInvitePage: 1,
+    studentInviteLimit: 10,
+  });
+
+  const { studentPage, studentLimit } = paginationStudent;
+  const { studentInvitePage, studentInviteLimit } = paginationInviteStudent;
 
   const {
     data,
     refetch,
     isLoading: isLoadingAllStudents,
   } = useQuery(
-    ['getAllStudents', page, pageSize],
-    () => getAllStudents(page, pageSize),
+    ['getAllStudents', studentPage, studentLimit],
+    () => getAllStudents(studentPage, studentLimit),
     {
+      onSuccess: (res) => {
+        setTotalCountStudent(res.data.totalCount);
+      },
       enabled: true,
       onError(err) {
         console.log(err);
@@ -39,7 +60,20 @@ function SchoolStudents() {
     data: invitedStudents,
     isLoading: invitedStudentsLoading,
     refetch: inviteRefetch,
-  } = useQuery(['getInvites', page, pageSize], () => getInvites());
+  } = useQuery(
+    ['getInvitesStudent', studentInvitePage, studentInviteLimit],
+    () =>
+      getInvites(
+        studentInvitePage,
+        studentInviteLimit,
+        InvitationType.SCHOOL_STUDENT
+      ),
+    {
+      onSuccess: (res) => {
+        setTotalCountInviteStudent(res.data.totalCount);
+      },
+    }
+  );
 
   const { mutate: studentInvite, isLoading } = useMutation(
     (studentData: { emails: string; type: string }) => Invite(studentData),
@@ -53,16 +87,6 @@ function SchoolStudents() {
       },
     }
   );
-
-  const handlePageChange = async (pageNumber: number) => {
-    setPage(pageNumber);
-    await refetch();
-  };
-
-  const handleInvitePageChange = async (pageNumber: number) => {
-    setInvitedPage(pageNumber);
-    await inviteRefetch();
-  };
 
   const onSubmit = ({ emails }: { emails: string }) => {
     studentInvite({ emails, type: 'SCHOOL_STUDENT' });
@@ -121,19 +145,22 @@ function SchoolStudents() {
                   />
                   <div className={'flex justify-end w-full mt-4'}>
                     <Pagination
-                      currentPage={page}
-                      totalPages={
-                        !isLoading ? data?.data?.totalCount / pageSize + 1 : 50
-                      }
-                      pageSize={pageSize}
-                      fetchData={async (pageNumber, pageSize) => {
-                        setPage(pageNumber);
-                        setPageSize(pageSize);
-                        await refetch();
+                      currentPage={studentPage}
+                      totalPages={Math.ceil(totalCountStudent / studentLimit)}
+                      pageSize={studentLimit}
+                      onPageChange={(value: number) => {
+                        setPaginationStudent((prev) => ({
+                          ...prev,
+                          studentPage: value,
+                        }));
                       }}
-                      onPageChange={handlePageChange}
-                      totalCount={!isLoading && data?.data?.totalCount}
-                      SetPageSize={(pageNumber) => {}}
+                      totalCount={totalCountStudent}
+                      setPageSize={(pageSize) =>
+                        setPaginationStudent((prev) => ({
+                          ...prev,
+                          studentLimit: pageSize,
+                        }))
+                      }
                     />
                   </div>
                 </div>
@@ -150,22 +177,24 @@ function SchoolStudents() {
                   />
                   <div className={'flex justify-end w-full mt-4'}>
                     <Pagination
-                      currentPage={invitePage}
-                      totalPages={
-                        !invitedStudentsLoading
-                          ? invitedStudents?.data.totalCount / invitePageSize +
-                            1
-                          : 0
-                      }
-                      pageSize={invitePageSize}
-                      fetchData={async (page, size) => {
-                        setInvitedPage(page);
-                        setInvitedPageSize(size);
-                        await inviteRefetch();
+                      currentPage={studentInvitePage}
+                      totalPages={Math.ceil(
+                        totalCountInviteStudent / studentInviteLimit
+                      )}
+                      pageSize={studentInviteLimit}
+                      onPageChange={(value: number) => {
+                        setPaginationInviteStudent((prev) => ({
+                          ...prev,
+                          studentInvitePage: value,
+                        }));
                       }}
-                      onPageChange={handleInvitePageChange}
-                      totalCount={invitedStudents?.data.totalCount}
-                      SetPageSize={(pageNumber) => console.log(pageNumber)}
+                      totalCount={totalCountInviteStudent}
+                      setPageSize={(pageSize) =>
+                        setPaginationInviteStudent((prev) => ({
+                          ...prev,
+                          studentInviteLimit: pageSize,
+                        }))
+                      }
                     />
                   </div>
                 </div>

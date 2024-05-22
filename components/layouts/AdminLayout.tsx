@@ -1,5 +1,5 @@
 'use client';
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, Suspense, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
@@ -16,6 +16,14 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
   const pathname = usePathname();
   const router = useRouter();
   const { isTabletMini } = useResponsive();
+
+  const showLayout = useMemo(() => {
+    if (!pathname) return false;
+
+    const routes = ['/admin/forgot-password', '/login'];
+
+    return routes.some((route) => pathname.startsWith(route));
+  }, [pathname]);
 
   const sidebarLinks = [
     {
@@ -39,6 +47,13 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
       path: '/admin/settings',
     },
   ];
+  if (showLayout) {
+    return (
+      <>
+        <Suspense>{children}</Suspense>
+      </>
+    );
+  }
   return (
     <div className="md:flex md:justify-stretch min-h-screen">
       <div
@@ -72,12 +87,12 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
         </div>
       </div>
       <div
-        className={`block md:w-full ${isTabletMini ? 'px-6' : ''} lg:pl-8 pt-[60px] overflow-hidden bg-[#FDFDFD]`}
+        className={`block md:w-full ${isTabletMini ? 'px-6 pb-24' : ''} lg:pl-8 pt-[60px] overflow-hidden bg-[#FDFDFD]`}
       >
         <div
           className={`mx-[10px] my-[30px] ${isTabletMini ? '' : 'md:m-[40px]'}`}
         >
-          <div className="main-layout">{children}</div>
+          <div className="admin-layout">{children}</div>
         </div>
       </div>
     </div>

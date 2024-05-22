@@ -20,8 +20,8 @@ export const Default: Story = {
     );
   },
   args: {
-    Title: 'Delete your class',
-    Description: 'Are you sure want to delete your class',
+    title: 'Delete your class',
+    description: 'Are you sure want to delete your class',
     ButtonTrigger: 'Delete',
     ButtonAction: 'Delete this Class',
     ButtonCancel: 'Cancel',

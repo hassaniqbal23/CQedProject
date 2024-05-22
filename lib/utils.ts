@@ -99,3 +99,38 @@ export function getBarOptions(data: any, labels: any, gradient?: any) {
     },
   };
 }
+
+export function getPieChartOptions(data: any) {
+  return {
+    tooltip: {
+      trigger: 'item',
+      formatter: '{a} <br/>{b}: {c} ({d}%)',
+    },
+    legend: {
+      show: false,
+    },
+    series: [
+      {
+        name: 'Skill Proficiency',
+        type: 'pie',
+        radius: ['40%', '70%'],
+        avoidLabelOverlap: false,
+        label: {
+          show: false,
+          position: 'center',
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: 40,
+            fontWeight: 'bold',
+          },
+        },
+        labelLine: {
+          show: false,
+        },
+        data: data,
+      },
+    ],
+  };
+}

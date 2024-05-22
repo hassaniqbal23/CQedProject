@@ -98,7 +98,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
       </div>
       <div className="block md:w-full pl-0 md:pl-8 pt-[60px] overflow-hidden bg-[#FDFDFD]">
         <div className="mx-[10px] my-[30px] md:m-[40px]">
-          <div className="main-layout">{children}</div>
+          <div className="teacher-layout">{children}</div>
         </div>
       </div>
     </div>

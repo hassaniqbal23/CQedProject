@@ -109,6 +109,7 @@ interface DataTableProps {
   columns: {
     label: string;
     key: string;
+    className?: string;
     render?: (data: any) => React.ReactNode;
   }[];
   data: any[];
@@ -153,7 +154,8 @@ const DataTable = (props: DataTableProps) => {
                 onCheckedChange={handleHeaderCheckboxChange}
                 checked={
                   !props.loading &&
-                  selectedItems?.length === props?.data?.length
+                  selectedItems?.length !== 0 &&
+                  props?.data?.length !== 0
                 }
               />
             </TableHead>
@@ -161,7 +163,7 @@ const DataTable = (props: DataTableProps) => {
           {props.columns.map((c, i) => (
             <TableHead
               key={i}
-              className="text-blue-950 text-[13px] font-semibold  dark:text-white "
+              className={`text-blue-950 text-[13px] font-semibold  dark:text-white ${c.className}`}
             >
               {c.label}
             </TableHead>

@@ -17,12 +17,15 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormInput } from '../From/FormInput';
 import { ITeacherCreate } from './type';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
-import { SelectInput } from '../From/Select';
-import { DropdownMenuPropsOptions, countrySelectOptions } from '@/lib/constant';
+import { DropdownMenuPropsOptions } from '@/lib/constant';
 import { useMutation } from 'react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { TeacherCreate } from '@/app/api/teachers';
+import {
+  SelectCountry,
+  SelectLanguage,
+} from '@/components/ui/select-v2/select-v2-components';
 
 const formSchema = z.object({
   fullname: z.string().min(2).max(50).nonempty('Name is required'),
@@ -74,13 +77,8 @@ export const CreateProfile: React.FC = () => {
 
   return (
     <div className="overflow-x-hidden overflow-y-hidden">
-      <TopNavbar
-        onLogout={() => console.log('logout')}
-        className="fixed top-0 w-full z-50 "
-      />
-
-      <div className=" p-4 mx-auto ">
-        <div className="">
+      <div className="mx-auto ">
+        <div className="p-4 py-6">
           <div className="mx-auto mt-4 md:w-96">
             <Progressbar heading={'Get Started'} percentage={20} />
           </div>
@@ -88,14 +86,14 @@ export const CreateProfile: React.FC = () => {
             <h1 className="text-[#4146B8] text-2xl font-mono not-italic font-bold leading-10">
               Create your profile
             </h1>
-            <p>Learn grow, and thrive together!</p>
+            <p>Learn, grow, and thrive together!</p>
           </div>
         </div>
 
-        <div className="px-20 mt-10">
+        <div className="mt-10">
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className=" px-24 grid grid-cols-1 md:grid-cols-2 gap-6 pb-24">
                 <div className="mb-4">
                   <FormInput
                     required={true}
@@ -119,17 +117,23 @@ export const CreateProfile: React.FC = () => {
                     control={form.control}
                     name="country"
                     render={({ field }) => {
+                      const values = form.watch();
                       return (
                         <>
                           <FormLabel className="text-sm">Country</FormLabel>
-                          <div className="mt-2.5">
-                            <SelectInput
-                              placeholder="Select your country"
-                              options={countrySelectOptions}
-                              onChange={(value) => {
-                                field.onChange(value);
+                          <div className="mt-a">
+                            <SelectCountry
+                              menuPosition={'fixed'}
+                              onChange={(e: any) => {
+                                if (!e) {
+                                  form.setValue('country', '');
+                                  return;
+                                }
+                                form.setValue('country', e.value);
+                                form.setValue('language', '');
                               }}
-                            />
+                              label=""
+                            ></SelectCountry>
                             <FormMessage />
                           </div>
                         </>
@@ -180,24 +184,24 @@ export const CreateProfile: React.FC = () => {
                   <FormField
                     control={form.control}
                     name="language"
-                    render={({ field }) => {
+                    render={({ field, formState }) => {
+                      const values = form.watch();
                       return (
                         <>
                           <FormLabel className="text-sm">Languages</FormLabel>
-                          <Dropdown
-                            className="mt-2"
-                            multSelect={true}
-                            label="Add language"
-                            value={field.value as any}
-                            options={DropdownMenuPropsOptions.options}
-                            onChange={(value: any) => {
-                              const selectlanguage = value
-                                .map((item: any) => item.value)
-                                .join(',');
-                              form.setValue('language', selectlanguage);
-                              field.onChange(selectlanguage);
+                          <SelectLanguage
+                            menuPosition={'fixed'}
+                            isDisabled={values.country.length == 0}
+                            label=""
+                            countryCode={values.country}
+                            onChange={(e: any) => {
+                              if (!e) {
+                                form.setValue('language', '');
+                                return;
+                              }
+                              form.setValue('language', e.value);
                             }}
-                          />
+                          ></SelectLanguage>
                           <FormMessage />
                         </>
                       );
@@ -205,8 +209,7 @@ export const CreateProfile: React.FC = () => {
                   />
                 </div>
               </div>
-
-              <div className="fixed bottom-0 w-full z-50 left-0">
+              <div className="fixed bottom-0 w-full ">
                 <BottomNavbar
                   buttonType="submit"
                   buttonLoading={isCreating}

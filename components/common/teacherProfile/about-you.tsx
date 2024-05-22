@@ -16,10 +16,13 @@ import BottomNavbar from '../navbar/bottomNavbar';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { Camera, CircleUser } from 'lucide-react';
+import { updateProfile } from '@/app/api/teachers';
+import { deleteProfileImage, uploadProfileImage } from '@/app/api/admin';
+import ImageUpload from '../ImageUpload/ImageUpload';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 
 interface IAboutYouProps {
   avatar: string;
@@ -27,11 +30,13 @@ interface IAboutYouProps {
 }
 
 const formSchema = z.object({
-  bio: z.string().min(2).max(50).nonempty('Bio is required'),
+  bio: z.string().min(10).nonempty('Bio is required'),
   avatar: z.string().optional(),
 });
 
 export const AboutYou: React.FC = () => {
+  const { userInformation, isUserGetInfo } = useGlobalState();
+  const refetch = useQueryClient();
   const router = useRouter();
   const form = useForm<IAboutYouProps>({
     resolver: zodResolver(formSchema),
@@ -40,39 +45,59 @@ export const AboutYou: React.FC = () => {
       bio: '',
     },
   });
+  const { handleSubmit } = form;
 
-  const {
-    reset,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = form;
+  const { mutate: uploadProfile, isLoading: isUploadingProfile } = useMutation(
+    (file: FormData) => uploadProfileImage(file),
+    {
+      onSuccess: (res) => {
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+        });
+        refetch.invalidateQueries('userInformation');
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
 
-  // const { mutate: createTeacher, isLoading: isCreating } = useMutation(
-  //   (userData: IAboutYouProps) => TeacherCreate(userData),
-  //   {
-  //     onSuccess: (res) => {
-  //       toast.success(res.data.message);
-  //       router.push('/teachers/onboarding/about-you');
-  //     },
-  //     onError: (error: any) => {
-  //       console.log(error, 'Error =====> log');
-  //     },
-  //   }
-  // );
+  const { mutate: deleteProfile, isLoading: isDeletingProfile } = useMutation(
+    (id: number) => deleteProfileImage(id),
+    {
+      onSuccess: (res) => {
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+        });
+        refetch.invalidateQueries('userInformation');
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
+
+  const { mutate: createTeacher, isLoading: isCreating } = useMutation(
+    (userData: IAboutYouProps) => updateProfile({ bio: userData.bio }),
+    {
+      onSuccess: (res) => {
+        toast.success(res.data.message);
+        router.push('/teachers/onboarding/update-password');
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
 
   const onSubmit: SubmitHandler<IAboutYouProps> = async (
     data: IAboutYouProps
   ) => {
-    router.push('/teachers/onboarding/update-password');
+    createTeacher(data);
   };
 
   return (
     <div className="overflow-x-hidden overflow-y-hidden">
-      <TopNavbar
-        onLogout={() => console.log('logout')}
-        className="fixed top-0 w-full z-50 "
-      />
-
       <div className=" p-4 mx-auto ">
         <div className="">
           <div className="mx-auto mt-4 md:w-96">
@@ -95,21 +120,25 @@ export const AboutYou: React.FC = () => {
                 render={({ field }) => (
                   <FormItem className="flex justify-center flex-col items-center w-full">
                     <FormControl>
-                      <div className="">
-                        <div className="p-2 w-40 h-40 flex items-center justify-center border-dashed relative border border-success rounded-full">
-                          <CircleUser />
-                          <div className="absolute p-2 bg-white border right-1 bottom-0 rounded-full cursor-pointer">
-                            <Camera />
-                          </div>
-                        </div>
-                      </div>
+                      <ImageUpload
+                        loading={
+                          isDeletingProfile ||
+                          isUploadingProfile ||
+                          isUserGetInfo
+                        }
+                        deleteProfile={deleteProfile}
+                        uploadProfile={uploadProfile}
+                        attachmentID={userInformation?.attachment?.id}
+                        attachmentFilepath={
+                          userInformation?.attachment?.file_path
+                        }
+                      />
                     </FormControl>
-                    <FormLabel>Choose your avatar</FormLabel>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <div className="pt-20 w-9/12 mx-auto">
+              <div className="pt-20 w-9/12 mx-auto pb-24">
                 <FormField
                   control={form.control}
                   name="bio"
@@ -132,8 +161,7 @@ export const AboutYou: React.FC = () => {
               <div className="fixed bottom-0 w-full z-50 left-0">
                 <BottomNavbar
                   buttonType="submit"
-                  buttonLoading={false}
-                  onContinue={() => console.log('checking')}
+                  buttonLoading={isCreating}
                   onBackButton={function (): void {
                     throw new Error('Function not implemented.');
                   }}

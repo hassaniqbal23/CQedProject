@@ -10,13 +10,14 @@ import {
 } from '@/components/ui/card/card';
 import { Button, ButtonProps } from '@/components/ui';
 import { Users, MessageCircle } from 'lucide-react';
+import { Typography } from '../Typography/Typography';
 
 interface IProps {
   totalMembers: number | string;
   totalDiscussions: number;
   title: string;
   imageSrc: string;
-  buttonProps: ButtonProps;
+  buttonProps?: ButtonProps;
 }
 
 const Coummuntiycard: FC<IProps> = ({
@@ -28,30 +29,43 @@ const Coummuntiycard: FC<IProps> = ({
 }) => {
   return (
     <div>
-      <Card className="flex w-full p-4 items-center gap-18 rounded-10 bg-primary-50 border border-gray-800">
-        <Avatar className="w-20 h-20 md:w-54 md:h-54 rounded-full bg-lightgray mb-3 border border-gray-950 ">
-          <AvatarImage src={imageSrc} alt="Profile Picture" />
-        </Avatar>
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
-          <div className="flex">
-            <Users size={20} className="text-[#464650]" />
-            <CardDescription>{totalMembers} Members</CardDescription>
+      <Card className=" w-full   bg-primary-50 mb-2">
+        <div className="flex items-center justify-between ">
+          <div className="flex flex-row p-3">
+            <div>
+              <Avatar className="w-16 h-16 md:w-54 md:h-54 mr-2 rounded-full bg-lightgray  ">
+                <AvatarImage src={imageSrc} alt="Profile Picture" />
+              </Avatar>
+            </div>
+            <div className="flex ">
+              <div className="flex flex-col ">
+                <div>
+                  <Typography variant="h5" weight={'semibold'}>
+                    {title}
+                  </Typography>
+                </div>
+                <div className="flex flex-row">
+                  <Users size={20} className="text-[#464650] mb-1" />
+                  <CardDescription>{totalMembers} Members</CardDescription>
+                </div>
+                <div className="flex ">
+                  <MessageCircle size={20} className="text-[#464650]" />
+                  <CardDescription>
+                    {totalDiscussions}+ Discussions
+                  </CardDescription>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex">
-            <MessageCircle size={20} className="text-[#464650]" />
-            <CardDescription>{totalDiscussions}+ Discussions</CardDescription>
+          <div className="flex mr-5">
+            <Button
+              {...buttonProps}
+              className=" h-[30px] max-w-[222px] p-4  rounded-full "
+            >
+              Join
+            </Button>
           </div>
-        </CardHeader>
-        <CardContent>
-          <Button
-            {...buttonProps}
-            className="flex h-[30px] max-w-[222px] px-[16px] justify-center items-center rounded-xl mt-8"
-          >
-            {' '}
-            Join
-          </Button>
-        </CardContent>
+        </div>
       </Card>
     </div>
   );

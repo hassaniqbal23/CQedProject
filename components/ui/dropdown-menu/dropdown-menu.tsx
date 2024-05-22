@@ -186,143 +186,37 @@ DropdownMenuShortcut.displayName = 'DropdownMenuShortcut';
 interface IDropdownProps {
   children?: React.ReactNode;
   className?: string;
-  disabled?: boolean;
-  id?: string;
-  label?: string;
-  onChange?: (
-    value: DropdownMenuOptionProps | DropdownMenuOptionProps[]
-  ) => void;
-  value?: DropdownMenuOptionProps | DropdownMenuOptionProps[];
-  multSelect?: boolean;
-  options: DropdownMenuOptionProps[];
+  options: {
+    content: string | React.ReactNode;
+    command?: () => void;
+  }[];
   rounded?: boolean;
+  trigger: React.ReactNode;
 }
-
-export interface DropdownMenuOptionProps {
-  label: string;
-  value: string;
-  flagUrl?: string;
-  altName?: string;
-}
-
 export const Dropdown = (props: IDropdownProps) => {
-  const [selectedItems, setSelectedItems] = useState<
-    DropdownMenuOptionProps | DropdownMenuOptionProps[]
-  >([]);
-
-  const handleItemClick = (item: DropdownMenuOptionProps) => {
-    if (Array.isArray(selectedItems) && props.multSelect) {
-      if (!selectedItems.includes(item)) {
-        setSelectedItems([...selectedItems, item]);
-      } else {
-        setSelectedItems(
-          selectedItems.filter((selectedItem) => selectedItem !== item)
-        );
-      }
-    } else {
-      setSelectedItems(item);
-      props.onChange && props.onChange(item);
-    }
-  };
-
-  useEffect(() => {
-    if (
-      Array.isArray(selectedItems) &&
-      selectedItems?.length > 0 &&
-      props.multSelect
-    ) {
-      props.onChange && props.onChange(selectedItems);
-    }
-  }, [selectedItems]);
-
-  const handleChipRemove = (index: number) => {
-    if (Array.isArray(selectedItems) && props.multSelect) {
-      const newItems = selectedItems.filter((_, i) => i !== index);
-      setSelectedItems(newItems);
-    }
-  };
-
   return (
     <>
-      <div className={`${props.className}`}>
+      <div className={`${props.className || ''}`}>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild className="w-full">
-            <div
-              className={`flex justify-between px-2 border-1 border bg-[#F8F9FB] outer-shadow ${props.rounded ? 'rounded-full py-2' : 'rounded-md py-4'}`}
-            >
-              {!Array.isArray(selectedItems) && selectedItems.label ? (
-                <div className="flex mr-1 justify-center items-center">
-                  {selectedItems.flagUrl && selectedItems.altName ? (
-                    <Image
-                      width={30}
-                      height={30}
-                      src={selectedItems.flagUrl}
-                      alt={selectedItems.altName}
-                      className="mr-2"
-                    />
-                  ) : (
-                    ''
-                  )}
-                  <h1>{selectedItems.label} </h1>
-                </div>
-              ) : (
-                <h1>{props.label}</h1>
-              )}
-              <ChevronDown />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="text-[#5D5E68] mt-3.5 px-3 py-2 text-semibold items-center bg-[#F8F9FB] cursor-pointer">
-            <DropdownMenuRadioGroup className="">
-              {props.options.map((option, index) => {
-                return (
-                  <DropdownMenuRadioItem
-                    key={option.label}
-                    value={option.value}
-                    onClick={() => handleItemClick(option)}
-                    className={`text-[#5D5E68] px-3 py-2.5 text-semibold items-center bg-[#F8F9FB] hover:bg-gray-200 cursor-pointer ${
-                      index === props.options.length - 1 ? '' : 'border-b '
-                    }`}
-                  >
-                    {option.flagUrl && option.altName ? (
-                      <Image
-                        width={30}
-                        height={30}
-                        src={option.flagUrl}
-                        alt={option.altName}
-                        className="mr-2"
-                      />
-                    ) : (
-                      ''
-                    )}
-                    {option.label}
-                  </DropdownMenuRadioItem>
-                );
-              })}
-            </DropdownMenuRadioGroup>
+          <DropdownMenuTrigger asChild>{props.trigger}</DropdownMenuTrigger>
+          <DropdownMenuContent className="bg-[#F8F9FB] p-0">
+            {props.options.map((option, index) => {
+              return (
+                <DropdownMenuItem
+                  className={`px-3 rounded-none	 py-2.5 text-semibold items-center bg-[#F8F9FB] hover:bg-gray-200 cursor-pointer ${
+                    index === props.options.length - 1 ? '' : 'border-b '
+                  }`}
+                  onClick={() => {
+                    option.command && option.command();
+                  }}
+                >
+                  {option.content}
+                </DropdownMenuItem>
+              );
+            })}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      {props.multSelect && (
-        <div className="flex justify-start items-center flex-wrap w-[350px] mt-2 mx-auto">
-          {Array.isArray(selectedItems) &&
-            selectedItems.map((item: DropdownMenuOptionProps, index) => (
-              <div
-                key={index}
-                className="rounded-full border border-gray-300 mt-4 p-2 flex items-center  mr-1"
-              >
-                <span className="mr-1">{item.label}</span>
-                <Button
-                  size={'sm'}
-                  variant={'ghost'}
-                  className="ml-1 text-[#737373] p-0 m-0"
-                  onClick={() => handleChipRemove(index)}
-                >
-                  &times;
-                </Button>
-              </div>
-            ))}
-        </div>
-      )}
     </>
   );
 };

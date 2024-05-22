@@ -40,7 +40,7 @@ const ProfileLink = ({
       <div className="flex gap-2 items-center justify-center">
         <Avatar className="h-10 w-h-10">
           <AvatarImage
-            src="/assets/profile/profile.svg"
+            src={userInformation?.attachment?.file_path}
             alt="Profile Picture"
           />
           <AvatarFallback>CQED</AvatarFallback>
@@ -55,7 +55,7 @@ const ProfileLink = ({
     </PopoverTrigger>
     <PopoverContent className="mt-1 w-[13.1rem] relative right-10 p-0">
       <div className="px-5 py-4 flex">
-        <MdLogout className="text-base rotate-180 text-primary mr-3" />
+        <MdLogout className="text-base  text-primary mr-3" />
         <Button
           variant="ghost"
           onClick={onClick}
@@ -75,7 +75,7 @@ interface IProps {
 export const Navbar: FC<IProps> = ({ onLogout, links }) => {
   const { userInformation } = useGlobalState();
   return (
-    <nav className="w-full fixed top-0 flex items-center justify-between bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <nav className="w-full fixed top-0 flex items-center justify-between bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 z-10">
       <Image
         src={'/assets/logos/navbarlogo.svg'}
         alt="navbar logo"

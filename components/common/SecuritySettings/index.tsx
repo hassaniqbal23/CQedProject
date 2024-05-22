@@ -13,6 +13,9 @@ import {
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useMutation } from 'react-query';
+import { changePassword } from '@/app/api/admin';
+import { toast } from 'sonner';
 
 const formSchema = z
   .object({
@@ -46,8 +49,27 @@ function SecuritySettings() {
     formState: { errors, isValid },
   } = form;
 
+  const { mutate: changePasswordApi, isLoading } = useMutation(
+    (data: any) => changePassword(data),
+    {
+      onSuccess: (res) => {
+        form.reset();
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+        });
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
+
   const onSubmit: SubmitHandler<any> = (data) => {
-    console.log(data);
+    const submit = {
+      oldPassword: data.currentPassword,
+      newPassword: data.newPassword,
+    };
+    changePasswordApi(submit);
   };
 
   return (
@@ -112,7 +134,7 @@ function SecuritySettings() {
               )}
             />
             <div className="mt-4">
-              <Button className="w-full" type="submit">
+              <Button loading={isLoading} className="w-full" type="submit">
                 Reset Password
               </Button>
             </div>

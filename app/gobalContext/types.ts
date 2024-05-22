@@ -5,4 +5,8 @@ export interface IUserInformation {
   age: string;
   roleId: number;
   status: number;
+  attachment: {
+    file_path: string;
+    id: number;
+  };
 }

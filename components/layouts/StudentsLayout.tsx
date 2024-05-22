@@ -36,24 +36,29 @@ export const StudentsLayout: FC<IProps> = ({ children }) => {
       path: '/students/dashboard',
     },
     {
-      icon: '/assets/sidebaricons/classroom.svg',
-      title: 'Classrooms',
-      path: '/students/classrooms',
+      icon: '/assets/sidebaricons/chat.svg',
+      title: 'Chats',
+      path: '/students/chats',
     },
     {
-      icon: '/assets/sidebaricons/students.svg',
-      title: 'Students',
-      path: '/students/chat',
+      icon: '/assets/sidebaricons/classroomstudents.svg',
+      title: 'Classroom',
+      path: '/students/classroom',
     },
     {
-      icon: '/assets/sidebaricons/teachers.svg',
-      title: 'Teachers',
-      path: '/students/teachers',
+      icon: '/assets/sidebaricons/penpalship.svg',
+      title: 'Penpalship',
+      path: '/students/penpalship',
     },
     {
-      icon: '/assets/sidebaricons/managements.svg',
-      title: 'Management',
-      path: '/students/management',
+      icon: '/assets/sidebaricons/CQCommunities.svg',
+      title: 'CQ Communities',
+      path: '/students/cq-communities',
+    },
+    {
+      icon: '/assets/sidebaricons/cqCourses.svg',
+      title: 'CQ Courses',
+      path: '/students/cq-courses',
     },
   ];
 
@@ -71,7 +76,7 @@ export const StudentsLayout: FC<IProps> = ({ children }) => {
         <div className="flex">
           <Sidebar
             isMobileSidebar={isMobile}
-            isVerticalIcon={false}
+            isVerticalIcon={true}
             pathname={pathname as string}
             sidebarLinks={sidebarLinks}
           />
@@ -98,7 +103,7 @@ export const StudentsLayout: FC<IProps> = ({ children }) => {
       </div>
       <div className="block md:w-full pl-0 md:pl-8 pt-[60px] overflow-hidden bg-[#FDFDFD]">
         <div className="mx-[10px] my-[30px] md:m-[40px]">
-          <div className="main-layout">{children}</div>
+          <div className="student-layout">{children}</div>
         </div>
       </div>
     </div>

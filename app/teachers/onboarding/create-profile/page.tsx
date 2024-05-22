@@ -6,7 +6,10 @@ import TopNavbar from '@/components/common/navbar/TopNavbar';
 const CreateProfile = () => {
   return (
     <div>
-      <TopNavbar onLogout={() => {}}></TopNavbar>
+      <TopNavbar
+        className="static top-0 w-full z-50 "
+        onLogout={() => {}}
+      ></TopNavbar>
       <Profile></Profile>
     </div>
   );

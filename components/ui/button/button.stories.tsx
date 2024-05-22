@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 import { Button } from './button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
@@ -11,7 +10,7 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  args: { onClick: fn() },
+  args: { onClick: () => console.log('ok') },
 } as Meta<typeof Button>;
 
 export default meta;

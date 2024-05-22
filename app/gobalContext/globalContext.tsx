@@ -19,7 +19,7 @@ export const GlobalState = createContext<IGlobalState>({
 });
 
 export const GlobalProvider: FC<any> = ({ children }) => {
-  const [isUserGetInfo, setIsUserGetInfo] = useState<boolean>(false);
+  const [isUserGetInfo, setIsUserGetInfo] = useState<boolean>(true);
   const [userInformation, setUserInformation] = useState<IUserInformation>(
     {} as IUserInformation
   );
@@ -31,9 +31,11 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     {
       enabled: userId !== 'undefined' && userId !== null ? true : false,
       onSuccess: (res) => {
+        setIsUserGetInfo(false);
         setUserInformation(res.data.data);
       },
       onError: (err) => {
+        setIsUserGetInfo(false);
         console.log(err, '======> ERROR');
       },
     }

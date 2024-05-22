@@ -7,44 +7,72 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog/dialog';
+import React from 'react';
 
 interface DeleteDialogProps {
-  Title?: string;
-  ButtonTrigger: string;
-  Description?: string;
+  title?: string;
+  ButtonTrigger?: React.ReactNode;
+  description?: string;
   ButtonAction?: string;
   ButtonCancel?: string;
+  open?: boolean;
+  onClose?: () => void;
+  onOpen?: () => void;
+  onClickOk?: () => void;
+  okLoading?: boolean;
 }
 
 export const DeleteClassDialog = ({
-  Title,
-  Description,
+  title,
+  description,
   ButtonTrigger,
   ButtonAction,
   ButtonCancel,
+  onClickOk,
+  open,
+  onOpen,
+  onClose,
+  okLoading,
 }: DeleteDialogProps) => {
   return (
     <>
-      <Dialog>
+      <Dialog
+        open={open}
+        onOpenChange={(e) => {
+          if (e) {
+            onOpen && onOpen();
+          } else {
+            onClose && onClose();
+          }
+        }}
+      >
         <DialogTrigger asChild>
-          <Button variant="outline">{ButtonTrigger}</Button>
+          {ButtonTrigger && <Button variant="outline">{ButtonTrigger}</Button>}
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>
-              <div className="mb-3 text-2xl ">{Title}</div>
+              <div className="mb-3 text-2xl ">{title}</div>
             </DialogTitle>
             <DialogDescription>
               <div className="text-black mb-4 w-full text-base">
-                {Description}
+                {description}
               </div>
             </DialogDescription>
           </DialogHeader>
           <div>
-            <Button variant={'destructive'} className="w-full rounded-lg">
+            <Button
+              variant={'destructive'}
+              loading={okLoading}
+              onClick={() => onClickOk && onClickOk()}
+              className="w-full rounded-lg"
+            >
               {ButtonAction}
             </Button>
-            <Button className="w-full text-[#4146B8] bg-white ">
+            <Button
+              onClick={() => onClose && onClose()}
+              className="w-full text-[#4146B8] bg-white "
+            >
               {ButtonCancel}
             </Button>
           </div>
