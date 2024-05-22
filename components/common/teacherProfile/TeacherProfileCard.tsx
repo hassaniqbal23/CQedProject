@@ -1,35 +1,59 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { Typography } from '../Typography/Typography';
 interface TeacherProfileCardProps {
   profileImg: string;
   name: string;
   about: string;
+  href: string;
+  className?: string;
   buttonText: string;
-  buttonOnClick: () => void;
 }
 
 const TeacherProfileCard: React.FC<TeacherProfileCardProps> = ({
   profileImg,
   name,
   about,
+  href,
+  className,
   buttonText,
-  buttonOnClick,
 }) => {
   return (
     <>
-      <div className="bg-[#F7F7F7]  max-w-sm p-2 rounded-md">
+      <div className={`bg-[#F7F7F7]   p-2 rounded-md ${className}`}>
         <div className="flex justify-center items-center w-full ">
-          <Image src={profileImg} alt="" className="w-full rounded-md" />
+          <Image
+            src={profileImg}
+            height={100}
+            width={100}
+            alt="profile"
+            className="w-full rounded-md"
+          />
         </div>
         <div>
-          <h2 className="mt-2 text-base font-bold text-[#12121B]">{name}</h2>
-          <p className="mt-2 text-[13px font-medium text-[#282931]">{about}</p>
-          <button
-            className="w-full mt-2 bg-primary-50 text-primary-500 py-2 rounded-full text-[13px] font-semibold"
-            onClick={buttonOnClick}
+          <Typography
+            variant="h6"
+            weight="bold"
+            className="mt-2 text-base font-bold text-[#12121B]"
           >
-            {buttonText}
-          </button>
+            {name}
+          </Typography>
+          <Typography
+            variant="p"
+            weight="medium"
+            className="mt-2  text-[#282931]"
+          >
+            {about}
+          </Typography>
+          <div className="flex justify-center px-5 ">
+            <Link
+              href={href}
+              className="w-full mt-2 bg-primary-50 flex justify-center text-primary-500 py-4 rounded-full text-sm font-semibold"
+            >
+              {buttonText}
+            </Link>
+          </div>
         </div>
       </div>
     </>
