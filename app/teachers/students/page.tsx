@@ -50,9 +50,8 @@ export default function TeacherStudents() {
               render: (row) => {
                 return (
                   <span
-                    className={`${
-                      row.status ? 'text-green-500' : 'text-red-500'
-                    }`}
+                    className={`${row.status ? 'text-green-500' : 'text-red-500'
+                      }`}
                   >
                     {row.status ? 'Active' : 'Inactive'}
                   </span>

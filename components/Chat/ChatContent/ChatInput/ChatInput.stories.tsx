@@ -10,4 +10,10 @@ export default meta;
 
 type Story = StoryObj<typeof ChatInput>;
 
-export const chatDafualt: Story = {};
+export const chatDafualt: Story = {
+  render: () => {
+    return <div className='flex flex-col justify-end h-screen' >
+      <ChatInput />
+    </div>
+  }
+};

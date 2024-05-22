@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { ChatHeader } from './ChatHeader/ChatHeader';
 import iconMenu from '@/public/IconsMenu.svg';
 import ChatMessages from './Chatmessages/ChatMessages';
+import { ChatInput } from './ChatInput/ChatInput';
 const ChatContent: FC = () => {
   return (
     <div className=" w-full">
@@ -14,6 +15,7 @@ const ChatContent: FC = () => {
         Settings={'Settings'}
       />
       <ChatMessages />
+      <ChatInput />
     </div>
   );
 };
