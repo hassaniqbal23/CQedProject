@@ -12,16 +12,14 @@ const messages: Message[] = [
   {
     date: '2021-10-10',
     userImage: '/assets/profile/profile.svg',
-    content:
-      '尽管我们的文化背景和生活方式完全不同',
+    content: '尽管我们的文化背景和生活方式完全不同',
 
     isUserMessage: false,
   },
   {
     date: '2021-10-10',
     userImage: '/assets/profile/profile.svg',
-    content:
-      '尽管我们的文化背景和生活方式完全不同',
+    content: '尽管我们的文化背景和生活方式完全不同',
 
     isUserMessage: true,
   },

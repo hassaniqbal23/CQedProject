@@ -50,7 +50,7 @@ export type AutosizeTextAreaRef = {
 type AutosizeTextAreaProps = {
   maxHeight?: number;
   minHeight?: number;
-  icon?: React.ReactNode
+  icon?: React.ReactNode;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 export const AutosizeTextarea = React.forwardRef<
@@ -86,7 +86,7 @@ export const AutosizeTextarea = React.forwardRef<
       minHeight,
     }));
 
-    console.log(minHeight)
+    console.log(minHeight);
 
     React.useEffect(() => {
       if (value || props?.defaultValue) {
@@ -95,12 +95,16 @@ export const AutosizeTextarea = React.forwardRef<
     }, [value || props?.defaultValue]);
 
     return (
-      <div className='relative' >
+      <div className="relative">
         <textarea
           {...props}
           value={value}
           ref={textAreaRef}
-          style={{ minHeight: `${minHeight}px`, height: `${minHeight}px`, maxHeight: `150px` }}
+          style={{
+            minHeight: `${minHeight}px`,
+            height: `${minHeight}px`,
+            maxHeight: `150px`,
+          }}
           className={cn(
             'flex w-full rounded-md !mb-0 border border-input pr-16 bg-background pl-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
             className
@@ -110,7 +114,7 @@ export const AutosizeTextarea = React.forwardRef<
             onChange?.(e);
           }}
         />
-        {icon && <div className='absolute top-3 right-5' >{icon}</div>}
+        {icon && <div className="absolute top-3 right-5">{icon}</div>}
       </div>
     );
   }

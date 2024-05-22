@@ -12,8 +12,10 @@ type Story = StoryObj<typeof ChatInput>;
 
 export const chatDafualt: Story = {
   render: () => {
-    return <div className='flex flex-col justify-end h-screen' >
-      <ChatInput />
-    </div>
-  }
+    return (
+      <div className="flex flex-col justify-end h-screen">
+        <ChatInput />
+      </div>
+    );
+  },
 };

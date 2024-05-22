@@ -1,12 +1,18 @@
-"use client"
+'use client';
 import { AutosizeTextarea } from '@/components/common/AutosizeTextarea';
-import { Button, Form, FormControl, FormField, FormItem } from '@/components/ui';
+import {
+  Button,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+} from '@/components/ui';
 import { CircleX, SendHorizontal, Smile } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { ChatEmojiPicker } from './ChatEmojiPicker/ChatEmojiPicker';
 import { ChatFileUploader } from './ChatFileUploader/ChatFileUploader';
-import { AspectRatio } from "@/components/ui/aspect-ratio/aspect-ratio";
+import { AspectRatio } from '@/components/ui/aspect-ratio/aspect-ratio';
 import Image from 'next/image';
 
 function ChatInput() {
@@ -16,7 +22,7 @@ function ChatInput() {
   const form = useForm<any>({
     defaultValues: {
       message: '',
-      files: []
+      files: [],
     },
   });
 
@@ -52,43 +58,57 @@ function ChatInput() {
   }, [showEmoji]);
 
   const handleRemoveFile = (index: number) => {
-    const files = form.watch('files').filter((_: any, i: number) => i !== index)
-    form.setValue('files', [...files])
-  }
+    const files = form
+      .watch('files')
+      .filter((_: any, i: number) => i !== index);
+    form.setValue('files', [...files]);
+  };
 
   return (
     <Form {...form}>
-      <form className='flex w-full items-end gap-2'>
+      <form className="flex w-full items-end gap-2">
         <FormField
           name="message"
           render={({ field }) => {
             return (
-              <FormItem className='w-full'>
+              <FormItem className="w-full">
                 <FormControl className="">
-                  <div className='relative' >
+                  <div className="relative">
                     <AutosizeTextarea
                       placeholder="Enter your message"
                       {...field}
                       minHeight={height}
-                      maxHeight={form.watch('files').length > 0 ? height / 2 : 120}
+                      maxHeight={
+                        form.watch('files').length > 0 ? height / 2 : 120
+                      }
                       className={`${form.watch('files').length > 0 ? 'resize-none pb-20' : 'pb-auto'}`}
                       icon={
-                        <div className='flex gap-2' ref={emojiPickerRef}>
+                        <div className="flex gap-2" ref={emojiPickerRef}>
                           <ChatFileUploader
                             files={form.getValues('files')}
                             onFileSelect={(data) => {
-                              form.setValue('files', [...form.getValues('files'), ...data]);
+                              form.setValue('files', [
+                                ...form.getValues('files'),
+                                ...data,
+                              ]);
                             }}
                           />
                           <ChatEmojiPicker
                             onPickEmoji={(emoji) => {
-                              const currentMessage = form.getValues('message') || '';
-                              form.setValue('message', currentMessage + emoji.emoji);
+                              const currentMessage =
+                                form.getValues('message') || '';
+                              form.setValue(
+                                'message',
+                                currentMessage + emoji.emoji
+                              );
                             }}
                             open={showEmoji}
                             button={
-                              <div onClick={() => setShowEmoji(!showEmoji)} className='cursor-pointer' >
-                                <Smile width={18} height={18} color='#4E5D78' />
+                              <div
+                                onClick={() => setShowEmoji(!showEmoji)}
+                                className="cursor-pointer"
+                              >
+                                <Smile width={18} height={18} color="#4E5D78" />
                               </div>
                             }
                           />
@@ -100,8 +120,9 @@ function ChatInput() {
                         {form.watch('files').map((file: any, index: number) => (
                           <div
                             key={index}
-                            aria-roledescription={`file ${index + 1} containing ${file.name
-                              }`}
+                            aria-roledescription={`file ${index + 1} containing ${
+                              file.name
+                            }`}
                             className="p-0 size-20 group "
                           >
                             <AspectRatio className="size-full relative">
@@ -111,7 +132,12 @@ function ChatInput() {
                                 className="object-cover rounded-md"
                                 fill
                               />
-                              <div className='absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 group-hover:flex hidden w-full h-full bg-slate-300-opacity-50 rounded items-center justify-center ' ><CircleX className='cursor-pointer' onClick={() => handleRemoveFile(index)} /></div>
+                              <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 group-hover:flex hidden w-full h-full bg-slate-300-opacity-50 rounded items-center justify-center ">
+                                <CircleX
+                                  className="cursor-pointer"
+                                  onClick={() => handleRemoveFile(index)}
+                                />
+                              </div>
                             </AspectRatio>
                           </div>
                         ))}
@@ -125,7 +151,7 @@ function ChatInput() {
         />
         <div>
           <Button className="w-full bg-blue-100 h-[44px]" type="submit">
-            <SendHorizontal className='text-primary' />
+            <SendHorizontal className="text-primary" />
           </Button>
         </div>
       </form>
