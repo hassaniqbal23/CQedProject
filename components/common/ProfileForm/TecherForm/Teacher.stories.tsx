@@ -15,5 +15,6 @@ export const Default: Story = {
   render: (args) => <TeacherForm {...args} />,
   args: {
     title: 'Profile Information',
+    buttonOnClick: () => {},
   },
 };

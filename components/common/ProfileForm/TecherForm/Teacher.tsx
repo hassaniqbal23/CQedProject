@@ -6,19 +6,30 @@ import { Textarea } from '../../../ui/textarea/textarea';
 import ChipSelector from '../../../ui/ChipSelect/ChipSelector';
 import MultipleSelector from '@/components/common/From/MultiSelect';
 import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui';
+import { Typography } from '../../Typography/Typography';
 export interface TeacherFormProps {
   title: string;
+  buttonOnClick: () => void;
 }
-export const TeacherForm: React.FC<TeacherFormProps> = ({ title }) => {
+export const TeacherForm: React.FC<TeacherFormProps> = ({
+  title,
+  buttonOnClick,
+}) => {
   return (
     <div className="p-4 flex gap-4 flex-col ">
       <div>
-        <button className=" flex items-center gap-2 text-base font-semibold">
+        <Button
+          onClick={buttonOnClick}
+          className=" flex items-center gap-2 text-base font-semibold bg-transparent text-[#3C3C3C] ml-[-13px] "
+        >
           {' '}
           <ArrowLeft /> Back to Profile
-        </button>
+        </Button>
       </div>
-      <h2 className="text-2xl font-semibold">{title}</h2>
+      <Typography variant="h3" weight="semibold">
+        {title}
+      </Typography>
       <div className="md:grid md:grid-cols-1 lg:grid lg:grid-cols-2 w-full gap-4">
         <div className="w-full flex flex-col gap-3 ">
           <label htmlFor="fullName" className="font-semibold text-lg">
@@ -74,7 +85,7 @@ export const TeacherForm: React.FC<TeacherFormProps> = ({ title }) => {
         </div>
         <div className="grid grid-cols-1 w-full gap-4">
           <div className="w-full  flex flex-col gap-3 ">
-            <label htmlFor="fullName" className="font-semibold text-lg">
+            <label htmlFor="fullName" className="font-semibold text-lg b">
               gender{' '}
             </label>
             <ChipSelector
