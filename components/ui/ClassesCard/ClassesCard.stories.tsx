@@ -1,7 +1,5 @@
-// src/components/Card.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { ClassesCard } from './ClassesCard';
-import teacherIcon from '../../../public/teacherIcon.svg';
 
 const meta: Meta<typeof ClassesCard> = {
   component: ClassesCard,
@@ -12,28 +10,37 @@ export default meta;
 type Story = StoryObj<typeof ClassesCard>;
 
 export const Default: Story = {
+  render: (args) => {
+    return <ClassesCard {...args} />;
+  },
   args: {
     name: 'Mr. Gregor Perelman',
     subject: 'Mathematics',
-    imageUrl: teacherIcon,
+    imageUrl: '/teacherIcon.svg',
     variant: 'default',
   },
 };
 
 export const Primary: Story = {
+  render: (args) => {
+    return <ClassesCard {...args} />;
+  },
   args: {
     name: 'Mrs. India Jones',
     subject: 'History',
-    imageUrl: teacherIcon,
+    imageUrl: '/teacherIcon.svg',
     variant: 'primary',
   },
 };
 
 export const Secondary: Story = {
+  render: (args) => {
+    return <ClassesCard {...args} />;
+  },
   args: {
     name: 'Mrs. India Jones',
     subject: 'Geography',
-    imageUrl: teacherIcon,
+    imageUrl: '/teacherIcon.svg',
     variant: 'secondary',
   },
 };

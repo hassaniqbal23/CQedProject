@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import { Typography } from '@/components/common/Typography/Typography';
 export interface ClassesCardProps {
   name: string;
   subject: string;
@@ -25,7 +26,13 @@ export const ClassesCard: React.FC<ClassesCardProps> = ({
       <div className="flex items-center gap-4 md:gap-7 lg:gap-16">
         <div className="flex flex-col gap-2">
           <Image src={imageUrl} alt="teacher-icon" width={65} height={65} />
-          <p className=" text-sm max-w-20  font-bold text-[#394245]">{name}</p>
+          <Typography
+            variant="p"
+            weight="bold"
+            className="max-w-20 text-[#394245]"
+          >
+            {name}
+          </Typography>
         </div>
         <div>
           <h2 className=" text-[#394245] lg:text-3xl  font-bold  md:text-2xl text-[20px]">
