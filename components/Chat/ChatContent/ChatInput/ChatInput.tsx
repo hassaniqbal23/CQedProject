@@ -66,7 +66,7 @@ function ChatInput() {
 
   return (
     <Form {...form}>
-      <form className="flex w-full items-end gap-2">
+      <form className="flex w-full items-end gap-2 ">
         <FormField
           name="message"
           render={({ field }) => {

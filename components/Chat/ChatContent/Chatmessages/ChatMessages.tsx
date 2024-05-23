@@ -40,11 +40,59 @@ const messages: Message[] = [
 
     isUserMessage: true,
   },
+  {
+    date: '2021-10-10',
+    userImage: '/assets/profile/profile.svg',
+    content:
+      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
+
+    isUserMessage: true,
+  },
+  {
+    date: '2021-10-10',
+    userImage: '/assets/profile/profile.svg',
+    content:
+      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
+
+    isUserMessage: false,
+  },
+  {
+    date: '2021-10-10',
+    userImage: '/assets/profile/profile.svg',
+    content:
+      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
+
+    isUserMessage: true,
+  },
+  {
+    date: '2021-10-10',
+    userImage: '/assets/profile/profile.svg',
+    content:
+      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
+
+    isUserMessage: false,
+  },
+  {
+    date: '2021-10-10',
+    userImage: '/assets/profile/profile.svg',
+    content:
+      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
+
+    isUserMessage: true,
+  },
+  {
+    date: '2021-10-10',
+    userImage: '/assets/profile/profile.svg',
+    content:
+      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
+
+    isUserMessage: false,
+  },
 ];
 
 const ChatMessages: React.FC = () => {
   return (
-    <div className=" m-10 ">
+    <div className="">
       {messages.map((message, index) => (
         <ChatMessage
           key={index}

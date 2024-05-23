@@ -1,8 +1,15 @@
 import React, { FC, useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage, Button } from '@/components/ui';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
+  Dropdown,
+} from '@/components/ui';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Typography } from '@/components/common/Typography/Typography';
+import { Ellipsis, EllipsisVertical } from 'lucide-react';
 interface IProps {
   userImage: string;
   userFullName: string;
@@ -10,6 +17,8 @@ interface IProps {
   iconMenu: string;
   Profile: string;
   Settings: string;
+  onDeleteSubject?: (id: string) => void;
+  onEditSubjectName?: (id: string, name: string) => void;
 }
 
 export const ChatHeader: FC<IProps> = ({
@@ -19,6 +28,8 @@ export const ChatHeader: FC<IProps> = ({
   iconMenu,
   Profile,
   Settings,
+  onDeleteSubject,
+  onEditSubjectName,
 }: IProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -27,8 +38,8 @@ export const ChatHeader: FC<IProps> = ({
   };
 
   return (
-    <div className="flex justify-between bg-[#F4F4F4] items-center px-10 py-2">
-      <div className="flex gap-3">
+    <div className="flex justify-between bg-[#F4F4F4] items-center px-10 mx-0 py-2 w-full">
+      <div className="flex gap-3 justify-center items-center">
         <div>
           <Avatar className="w-14 h-14 rounded-full bg-lightgray">
             <AvatarImage src={userImage} alt="Profile Picture" />
@@ -54,44 +65,38 @@ export const ChatHeader: FC<IProps> = ({
       </div>
 
       <div className="relative">
-        <Button
-          onClick={toggleDropdown}
-          className="focus:outline-none bg-[#F4F4F4]"
-        >
-          <Image src={iconMenu} alt="Menu Icon" width={50} height={50} />
-        </Button>
-        {isDropdownOpen && (
-          <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-            <div
-              className="py-1"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="options-menu"
-            >
-              <Link
-                href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                role="menuitem"
-              >
-                {Profile}
-              </Link>
-              <Link
-                href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                role="menuitem"
-              >
-                {Settings}
-              </Link>
-              <Link
-                href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                role="menuitem"
-              >
-                Logout
-              </Link>
+        <Dropdown
+          trigger={
+            <div>
+              <EllipsisVertical className="cursor-pointer" />
             </div>
-          </div>
-        )}
+          }
+          options={[
+            {
+              content: (
+                <div
+                  onClick={() =>
+                    onDeleteSubject && onDeleteSubject('subject-id')
+                  }
+                >
+                  Remove Subject
+                </div>
+              ),
+            },
+            {
+              content: (
+                <div
+                  onClick={() =>
+                    onEditSubjectName &&
+                    onEditSubjectName('subject-id', 'subject-name')
+                  }
+                >
+                  Edit Subject
+                </div>
+              ),
+            },
+          ]}
+        />
       </div>
     </div>
   );
