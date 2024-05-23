@@ -11,8 +11,8 @@ interface IProps {
 export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
   return (
     <div>
-      <div className="max-w-sm border-r border-solid border-gray-200 h-auto bg-[#FFF] mt-5 flex flex-col gap-4 px-4">
-        <div className="flex justify-between items-center w-full">
+      <div className="max-w-sm border-r border-solid border-gray-200  h-[95vh] bg-[#FFF]  flex flex-col gap-4 px-4">
+        <div className="flex justify-between  w-full ">
           {/* <h1 className="ml-0 font-semibold text-black text-2xl font-montserrat ">
            
           </h1> */}
