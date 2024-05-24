@@ -188,7 +188,7 @@ export default function SchoolClassRooms() {
             content: (
               <div className={'pt-4 w-full'}>
                 <GradesTable
-                  data={gradesData?.data.data || []}
+                  data={gradesData?.data?.data || []}
                   loading={gradesLoading}
                 />
               </div>

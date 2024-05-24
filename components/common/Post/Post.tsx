@@ -33,7 +33,6 @@ export const Post: FC<IProps> = ({
   comments = 0,
   onComplete,
 }: IProps) => {
-  console.log(attachment);
   const [liked, setLiked] = useState(false);
   const [commented, setCommented] = useState(false);
 

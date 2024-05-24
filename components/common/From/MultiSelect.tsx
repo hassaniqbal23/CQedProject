@@ -207,8 +207,6 @@ const MultipleSelector = React.forwardRef<
     const [inputValue, setInputValue] = React.useState('');
     const debouncedSearchTerm = useDebounce(inputValue, delay || 500);
 
-    console.log(arrayOptions, 'arrayOptions');
-
     React.useImperativeHandle(
       ref,
       () => ({

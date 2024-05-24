@@ -2,6 +2,7 @@
 
 import React, { forwardRef } from 'react';
 import * as RadixUITabs from '@radix-ui/react-tabs';
+import { Separator } from '@/components/ui';
 
 import { cn } from '@/lib/utils';
 
@@ -71,6 +72,7 @@ interface TabsComponentProps {
   tabs: TabsProps[];
   tabContent: TabContent[];
   defaultValue?: string;
+  isSeparator?: boolean;
   variant?: 'primary' | 'secondary' | 'linked';
   onValueChange?: (value: string) => void;
 }
@@ -81,6 +83,7 @@ const TabsComponent = ({
   defaultValue,
   variant = 'primary',
   onValueChange,
+  isSeparator,
 }: TabsComponentProps) => {
   const isSecondary = variant === 'secondary';
   const secondaryClass = isSecondary ? 'px-4 py-2' : '';
@@ -100,6 +103,7 @@ const TabsComponent = ({
           </TabsTrigger>
         ))}
       </TabsList>
+      {isSeparator && <Separator />}
       {tabContent.map((item: TabContent, index) => (
         <TabsContent value={item.value} key={index} className="w-full">
           {item.content}
