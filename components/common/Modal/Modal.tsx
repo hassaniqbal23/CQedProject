@@ -44,7 +44,7 @@ function Modal({
   return (
     <Dialog open={isVisible} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{openModalButton}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="!flex flex-col">
         <DialogHeader>
           {header === true ? (
             <>
