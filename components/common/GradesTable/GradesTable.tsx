@@ -32,7 +32,7 @@ function GradesTable(props: GradesTableProps) {
   return (
     <div className="w-full">
       <DataTable
-        data={props.data?.splice(0, 10)}
+        data={props.data}
         selection={false}
         noDataMessage={props.noDataMessage || 'No Grades'}
         loading={props.loading}

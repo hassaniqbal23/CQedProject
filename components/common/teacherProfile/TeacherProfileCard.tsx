@@ -21,7 +21,7 @@ const TeacherProfileCard: React.FC<TeacherProfileCardProps> = ({
 }) => {
   return (
     <>
-      <div className={`bg-[#F7F7F7]   p-2 rounded-md ${className}`}>
+      <div className={`bg-[#F7F7F7] p-2 rounded-lg ${className}`}>
         <div className="flex justify-center items-center w-full ">
           <Image
             src={profileImg}
@@ -42,14 +42,14 @@ const TeacherProfileCard: React.FC<TeacherProfileCardProps> = ({
           <Typography
             variant="p"
             weight="medium"
-            className="mt-2  text-[#282931]"
+            className="mb-1 mt-1 text-[#282931]"
           >
             {about}
           </Typography>
-          <div className="flex justify-center px-5 ">
+          <div className="flex justify-center px-0 ">
             <Link
               href={href}
-              className="w-full mt-2 bg-primary-50 flex justify-center text-primary-500 py-4 rounded-full text-sm font-semibold"
+              className="w-full my-2 bg-primary-50 flex justify-center text-primary-500 py-2  rounded-full text-sm font-semibold"
             >
               {buttonText}
             </Link>

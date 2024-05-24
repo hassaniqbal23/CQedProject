@@ -65,10 +65,10 @@ export const CreateSubjectModal = ({
   useEffect(() => {
     if (initialValue && !loading) {
       form.setValue('name', initialValue);
-    } else {
+    } else if (!initialValue && !loading) {
       form.reset();
     }
-  }, [initialValue]);
+  }, [initialValue, loading]);
 
   const onSubmit = form.handleSubmit((values) => {
     if (propsOnSubmit) {

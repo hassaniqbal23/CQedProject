@@ -203,6 +203,7 @@ export const Dropdown = (props: IDropdownProps) => {
             {props.options.map((option, index) => {
               return (
                 <DropdownMenuItem
+                  key={index}
                   className={`px-3 rounded-none	 py-2.5 text-semibold items-center bg-[#F8F9FB] hover:bg-gray-200 cursor-pointer ${
                     index === props.options.length - 1 ? '' : 'border-b '
                   }`}
