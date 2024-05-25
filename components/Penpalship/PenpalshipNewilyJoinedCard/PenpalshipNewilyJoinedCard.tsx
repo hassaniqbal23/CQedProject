@@ -2,8 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui';
-import { Typography } from '../Typography/Typography';
 import { Card } from '@/components/ui';
+import { Typography } from '@/components/common/Typography/Typography';
 
 interface PenpalshipNewilyJoinedCardProps {
   title?: string;

@@ -1,9 +1,9 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { PenpalshipStoriesCard } from './StudentsPenpalshipCard1';
+import { PenpalshipStoriesCard } from './PenpalshipStoriesCard';
 
 const meta: Meta<typeof PenpalshipStoriesCard> = {
-  title: 'UI/PenpalshipStoriesCard',
+  title: 'Penpalship/PenpalshipStoriesCard',
   component: PenpalshipStoriesCard,
 };
 

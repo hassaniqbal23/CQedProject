@@ -1,6 +1,6 @@
 import React from 'react';
-import { Typography } from '../Typography/Typography';
 import { Plus } from 'lucide-react';
+import { Typography } from '@/components/common/Typography/Typography';
 
 interface PenpalshipPublishStoryCardProps {
   title: string;
