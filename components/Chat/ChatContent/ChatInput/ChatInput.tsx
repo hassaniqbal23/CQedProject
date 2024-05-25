@@ -9,13 +9,13 @@ import {
 } from '@/components/ui';
 import { CircleX, SendHorizontal, Smile } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { ChatEmojiPicker } from './ChatEmojiPicker/ChatEmojiPicker';
 import { ChatFileUploader } from './ChatFileUploader/ChatFileUploader';
 import { AspectRatio } from '@/components/ui/aspect-ratio/aspect-ratio';
 import Image from 'next/image';
 
-function ChatInput() {
+function ChatInput({ onSendMessage }: any) {
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<number>(41);
@@ -64,9 +64,15 @@ function ChatInput() {
     form.setValue('files', [...files]);
   };
 
+  const onSubmit: SubmitHandler<any> = async (
+    data: any
+  ) => {
+    onSendMessage(data)
+  };
+
   return (
     <Form {...form}>
-      <form className="flex w-full items-end gap-2 ">
+      <form className="flex w-full items-end gap-2 " onSubmit={form.handleSubmit(onSubmit)} >
         <FormField
           name="message"
           render={({ field }) => {
@@ -120,9 +126,8 @@ function ChatInput() {
                         {form.watch('files').map((file: any, index: number) => (
                           <div
                             key={index}
-                            aria-roledescription={`file ${index + 1} containing ${
-                              file.name
-                            }`}
+                            aria-roledescription={`file ${index + 1} containing ${file.name
+                              }`}
                             className="p-0 size-20 group "
                           >
                             <AspectRatio className="size-full relative">

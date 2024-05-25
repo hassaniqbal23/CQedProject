@@ -13,7 +13,7 @@ import { Ellipsis, EllipsisVertical } from 'lucide-react';
 interface IProps {
   userImage: string;
   userFullName: string;
-  description: string;
+  isOnline: boolean;
   iconMenu: string;
   Profile: string;
   Settings: string;
@@ -24,7 +24,7 @@ interface IProps {
 export const ChatHeader: FC<IProps> = ({
   userImage,
   userFullName,
-  description,
+  isOnline,
   iconMenu,
   Profile,
   Settings,
@@ -57,9 +57,9 @@ export const ChatHeader: FC<IProps> = ({
           <Typography
             variant="body"
             weight="medium"
-            className=" text-sm text-[#70C670]"
+            className={`text-sm ${isOnline ? 'text-[#70C670]' : 'text-gray-400'}`}
           >
-            {description}
+            {isOnline ? 'Online..' : 'Offline..'}
           </Typography>
         </div>
       </div>

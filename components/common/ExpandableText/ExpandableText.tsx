@@ -11,7 +11,7 @@ export const ExpandableText = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  if (text.length <= maxLength) {
+  if (text?.length <= maxLength) {
     return <p className={className}>{text}</p>;
   }
 

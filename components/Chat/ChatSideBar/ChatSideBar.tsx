@@ -4,11 +4,16 @@ import React, { FC } from 'react';
 import { Input } from '@/components/ui/input/input';
 import { ChatUserList } from './ChatUserList/ChatUserList';
 import { Typography } from '@/components/common/Typography/Typography';
+import { useChatFeatures } from '../ChatProvider/ChatProvider';
+import Loading from '../../ui/button/loading'
+
 interface IProps {
   chat: string;
 }
 
 export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
+  const { inboxResponse, inboxLoading } = useChatFeatures()
+  console.log(inboxResponse)
   return (
     <div>
       <div className="max-w-sm border-r border-solid border-gray-200  h-[95vh] bg-[#FFF]  flex flex-col gap-4 px-4">
@@ -34,34 +39,9 @@ export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
             type="search"
             className="w-full h-auto  rounded-3xl  "
           />
-          <ChatUserList
-            users={[
-              {
-                id: 1,
-                userImage: '/assets/profile/profile.svg',
-                userFullName: 'ASArtist',
-                description: 'A little, but mostly just for take scre',
-              },
-              {
-                id: 2,
-                userImage: '/assets/profile/profile.svg',
-                userFullName: 'Jackiemoonie',
-                description: 'Get better and better, I think I',
-              },
-              {
-                id: 3,
-                userImage: '/assets/profile/profile.svg',
-                userFullName: 'Moominmadness',
-                description: 'Hahahah that’s great',
-              },
-              {
-                id: 2,
-                userImage: '/assets/profile/profile.svg',
-                userFullName: 'Jackiemoonie',
-                description: 'Get better and better, I think I..',
-              },
-            ]}
-          />
+          {inboxLoading ? <Loading /> : <ChatUserList
+            users={inboxResponse.data.data || []}
+          />}
         </div>
       </div>
     </div>

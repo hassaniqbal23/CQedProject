@@ -1,107 +1,31 @@
 import React from 'react';
 import ChatMessage from './ChateMessage/ChatMessage';
-
 interface Message {
-  date: string;
-  userImage: string;
-  content: string;
-  isUserMessage: boolean;
+  id: string | number;
+  conversationId: string | number;
+  attachment: any;
+  message: string;
+  receiverId: number | string;
+  senderId: number | string;
 }
 
-const messages: Message[] = [
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content: '尽管我们的文化背景和生活方式完全不同',
+interface IChatMessages {
+  messages: Message[];
+  user: any;
+}
 
-    isUserMessage: false,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content: '尽管我们的文化背景和生活方式完全不同',
-
-    isUserMessage: true,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
-
-    isUserMessage: false,
-  },
-
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
-
-    isUserMessage: true,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
-
-    isUserMessage: true,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
-
-    isUserMessage: false,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
-
-    isUserMessage: true,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
-
-    isUserMessage: false,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
-
-    isUserMessage: true,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
-
-    isUserMessage: false,
-  },
-];
-
-const ChatMessages: React.FC = () => {
+const ChatMessages: React.FC<IChatMessages> = ({ messages, user }) => {
   return (
     <div className="">
       {messages.map((message, index) => (
         <ChatMessage
           key={index}
-          date={message.date}
-          userImage={message.userImage}
-          content={message.content}
-          isUserMessage={message.isUserMessage}
-          translateImage={''}
-          UserMessage={''}
+          // date={message.date}
+          userImage={user.user.attachment.file_name}
+          content={message.message}
+          // isCurrentUser={message.isUserMessage}
+          // translateImage={''}
+          // UserMessage={''}
         />
       ))}
     </div>
