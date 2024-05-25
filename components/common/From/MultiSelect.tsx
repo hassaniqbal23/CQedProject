@@ -262,8 +262,6 @@ const MultipleSelector = React.forwardRef<
       }
     }, [arrayDefaultOptions, arrayOptions, groupBy, onSearch, options]);
 
-    console.log(options, 'options state');
-
     useEffect(() => {
       const doSearch = async () => {
         setIsLoading(true);
@@ -363,8 +361,6 @@ const MultipleSelector = React.forwardRef<
       }
       return undefined;
     }, [creatable, commandProps?.filter]);
-
-    console.log(commandProps);
 
     return (
       <>
