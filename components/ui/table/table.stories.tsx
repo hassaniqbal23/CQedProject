@@ -133,7 +133,7 @@ export const Primary: Story = {
             <h1 className="text-blue-950 text-lg font-semibold dark:text-white">
               Schools{' '}
             </h1>
-            <Link href={'/Table'} className="text-[#4146B8] font-medium">
+            <Link href={'/Table'} className="text-primary-500 font-medium">
               View All
             </Link>
           </div>

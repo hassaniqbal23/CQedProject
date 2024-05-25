@@ -1,0 +1,24 @@
+<svg width="194" height="183" viewBox="0 0 194 183" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="194" height="183" fill="#EEEEEE"/>
+<g id="Success Screen" clip-path="url(#clip0_4160_49711)">
+<rect width="1440" height="848" transform="translate(-624 -164)" fill="white"/>
+<g id="Shadow" style="mix-blend-mode:hue">
+<rect x="-624" y="-164" width="1440" height="1226" fill="#6569C4" fill-opacity="0.46"/>
+</g>
+<g id="Group">
+<g id="Group_2">
+<path id="Vector" d="M193.159 91.4822L171.388 67.3103L174.797 34.95L142.961 28.2106L126.722 -6.10352e-05L96.9999 13.2835L92.9883 91.4822L96.9999 169.68L126.722 182.964L142.961 154.754L174.797 148.014L171.388 115.654L193.159 91.4822Z" fill="#0ED678"/>
+<path id="Vector_2" d="M67.2779 6.10352e-05L51.0391 28.2107L19.2034 34.9505L22.6122 67.3104L0.84082 91.4823L22.6122 115.654L19.2034 148.014L51.0391 154.754L67.2783 182.964L97.0004 169.681V13.2836L67.2779 6.10352e-05Z" fill="#04EB84"/>
+</g>
+<g id="Group_3">
+<path id="Vector_3" d="M137.312 70.4269L128.895 62.9139L96.9999 98.6477L92.9883 107.528L96.9999 115.591L137.312 70.4269Z" fill="#F7F0EB"/>
+<path id="Vector_4" d="M63.4804 82.9855L55.5029 90.9633L89.0438 124.505L96.9998 115.591V98.6478L88.5782 108.083L63.4804 82.9855Z" fill="#FFFBF5"/>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_4160_49711">
+<rect width="1440" height="848" fill="white" transform="translate(-624 -164)"/>
+</clipPath>
+</defs>
+</svg>

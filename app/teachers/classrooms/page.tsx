@@ -23,7 +23,7 @@ export default function TeacherClassRooms() {
         <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
           <Link
             href={''}
-            className="text-[#4146B8] underline font-medium text-center md:text-left"
+            className="text-primary-500 underline font-medium text-center md:text-left"
           >
             Learn about classrooms
           </Link>

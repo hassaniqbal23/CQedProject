@@ -104,7 +104,7 @@ export const AboutYou: React.FC = () => {
             <Progressbar heading={'We are almost there'} percentage={75} />
           </div>
           <div className="mx-auto w-max mt-4">
-            <h1 className="text-[#4146B8] text-2xl font-mono text-center pt-3 not-italic font-bold leading-10">
+            <h1 className="text-primary-500 text-2xl font-mono text-center pt-3 not-italic font-bold leading-10">
               About You
             </h1>
             <p>Tell us about yourself!</p>

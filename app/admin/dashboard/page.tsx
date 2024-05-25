@@ -138,8 +138,8 @@ const Dashboard = () => {
         { offset: 0, color: '#ffffff' },
         { offset: 0.2, color: '#ffffff' },
         { offset: 0.3, color: '#ffffff' },
-        { offset: 0.8, color: '#e9fbed' },
-        { offset: 1, color: '#d0e1d4' },
+        { offset: 0.8, color: '#2183C4' },
+        { offset: 1, color: '#2183C4' },
       ]);
 
       const lineOptions = getBarOptions(datasets, lineLabels, gradient);

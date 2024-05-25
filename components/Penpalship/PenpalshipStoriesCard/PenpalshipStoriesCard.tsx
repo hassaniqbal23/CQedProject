@@ -43,7 +43,7 @@ const PenpalshipStoriesCard: React.FC<PenpalshipStoriesCardProps> = ({
         >
           {description}
         </Typography>
-        <div className="flex items-center mt-4 text-[#4146B8] font-semibold">
+        <div className="flex items-center mt-4 text-primary-500 font-semibold">
           <Link href={''} className="mr-1">
             {link}
           </Link>

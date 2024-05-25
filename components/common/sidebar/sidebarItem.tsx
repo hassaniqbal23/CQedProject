@@ -14,7 +14,7 @@ const SidebarItem: FC<IProps> = ({ item, pathname, isVerticalIcon }) => {
     <>
       {isVerticalIcon ? (
         <li
-          className={`flex justify-center mb-2 hover:bg-[#3F1C9F] cursor-pointer  ${pathname === item?.path ? 'bg-[#3F1C9F]' : ''}`}
+          className={`flex justify-center mb-2 hover:bg-primary-600  cursor-pointer  ${pathname === item?.path ? 'bg-primary-600' : ''}`}
         >
           <Link
             href={item.path}
@@ -35,7 +35,7 @@ const SidebarItem: FC<IProps> = ({ item, pathname, isVerticalIcon }) => {
         </li>
       ) : (
         <li
-          className={`flex hover:bg-[#3F1C9F] mb-2  ${pathname === item?.path ? 'bg-[#3F1C9F]' : ''} cursor-pointer`}
+          className={`flex hover:bg-primary-600  mb-2  ${pathname === item?.path ? 'hover:bg-primary-600 ' : ''} cursor-pointer`}
         >
           <Link
             href={item.path}
