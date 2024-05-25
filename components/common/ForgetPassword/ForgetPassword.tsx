@@ -90,9 +90,9 @@ export function ForgetPassword(props: ForgetPasswordProp) {
               </Button>
               <div
                 onClick={props.onClick}
-                className=" text-center font-montserrat font-medium text-lg cursor-pointer flex items-center text-[#4146B8]"
+                className=" text-center font-montserrat font-medium text-lg cursor-pointer flex items-center text-primary-500"
               >
-                <ChevronLeft className="text-[#4146B8] mr-3" />
+                <ChevronLeft className="text-primary-500 mr-3" />
                 Back
               </div>
             </div>
