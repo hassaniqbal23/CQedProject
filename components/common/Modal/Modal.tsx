@@ -24,6 +24,7 @@ interface ModalProps {
   showFooterCloseButton?: boolean;
   footerOkButton?: React.ReactNode | string;
   onOpenChange?: () => void;
+  isSeperator?: boolean;
 }
 
 function Modal({
@@ -38,11 +39,12 @@ function Modal({
   footerOkButton,
   isVisible,
   onOpenChange,
+  isSeperator = true,
 }: ModalProps) {
   return (
     <Dialog open={isVisible} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{openModalButton}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="!flex flex-col">
         <DialogHeader>
           {header === true ? (
             <>
@@ -53,7 +55,7 @@ function Modal({
             header
           )}
         </DialogHeader>
-        <Separator className="mb-3" />
+        {isSeperator && <Separator className="mb-3" />}
         {children}
         {footer === true ? (
           <DialogFooter>
