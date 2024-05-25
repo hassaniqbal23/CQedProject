@@ -1,8 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
-import { Typography } from '../Typography/Typography';
 import { MoveRight } from 'lucide-react';
 import Link from 'next/link';
+import { Typography } from '@/components/common/Typography/Typography';
 
 interface PenpalshipStoriesCardProps {
   imgPath: string;
