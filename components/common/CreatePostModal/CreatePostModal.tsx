@@ -15,7 +15,7 @@ const Picker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 interface CreatePostModalProps {
   title?: string;
   textarea?: string;
-  buttonTrigger: string;
+  buttonTrigger: React.ReactNode;
   description?: string;
   buttonAction?: string;
   icon: string;

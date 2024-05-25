@@ -21,7 +21,7 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
   onInputChange,
 }) => {
   return (
-    <div className="bg-primary-500 p-5">
+    <div className="bg-primary-500 px-5 py-7">
       <div className="sm:flex sm:justify-center sm:items-center sm:gap-2 sm:w-full md:flex md:justify-between md:gap-4">
         <div className="mt-2 self-end hidden md:block  sm:hidden ">
           <Image src={leftImage} alt="" width={152} height={162} />
