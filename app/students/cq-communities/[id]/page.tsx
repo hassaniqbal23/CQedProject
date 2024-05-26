@@ -47,8 +47,8 @@ const CQCommunity = () => {
         </div>
       ) : (
         <>
-          <div className="flex gap-3">
-            <div className="w-3/4">
+          <div className="flex flex-col md:flex-row gap-3">
+            <div className="w-full md:w-3/4">
               <CommunityDetailsCard
                 communityId={data?.data.id}
                 title={data?.data.name}
@@ -70,7 +70,7 @@ const CQCommunity = () => {
               />
             </div>
           </div>
-          <Feeds feedList={data?.data.CommunityPost} />
+          <Feeds communityId={data?.data.id} />
         </>
       )}
     </div>

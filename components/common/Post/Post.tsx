@@ -4,7 +4,7 @@ import { Send, MessageCircle, Heart } from 'lucide-react';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useState } from 'react';
 
 dayjs.extend(relativeTime);
@@ -20,6 +20,8 @@ interface IProps {
   comments?: number;
   onComplete?: () => void;
   onLike?: () => void;
+  onUnlike?: () => void;
+  hasUserLiked?: boolean;
 }
 
 export const Post: FC<IProps> = ({
@@ -31,17 +33,27 @@ export const Post: FC<IProps> = ({
   attachment,
   likes = 0,
   comments = 0,
+  hasUserLiked,
   onComplete,
+  onLike,
+  onUnlike,
 }: IProps) => {
   const [liked, setLiked] = useState(false);
+  const [likeCount, setLikedCount] = useState(likes);
   const [commented, setCommented] = useState(false);
+
+  useEffect(() => {
+    if (hasUserLiked) setLiked(true);
+  }, [hasUserLiked]);
 
   const handleLike = () => {
     setLiked(!liked);
     if (liked) {
-      likes -= 1;
+      onUnlike && onUnlike();
+      setLikedCount(likeCount - 1);
     } else {
-      likes += 1;
+      onLike && onLike();
+      setLikedCount(likeCount + 1);
     }
   };
 
@@ -82,7 +94,7 @@ export const Post: FC<IProps> = ({
           {attachment && attachment.length > 0 && (
             <div className="mt-4 md:mt-0">
               <Image
-                className="w-full rounded-lg cursor-pointer"
+                className="w-full max-h-56 rounded-lg cursor-pointer object-contain"
                 loading="lazy"
                 alt="lvvvvvvvvvvvvvvvvvv"
                 src={attachment[0]}
@@ -97,7 +109,7 @@ export const Post: FC<IProps> = ({
                 <Heart
                   className={`h-5 w-5 mr-1 cursor-pointer ${liked ? 'text-red-500 ' : ''}`}
                 />
-                <span>{liked ? likes + 1 : likes}</span>
+                <span>{likeCount}</span>
               </div>
               <div
                 className="flex items-center mr-4"
