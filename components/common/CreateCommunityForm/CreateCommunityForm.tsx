@@ -92,12 +92,12 @@ const CreateCommunityForm = () => {
             value: 'Sophia Andrews',
             render: (data: any) => (
               <div className=" text-sm flex ">
-                <Avatar className='w-6 h-6 mr-1'>
+                <Avatar className="w-6 h-6 mr-1">
                   <AvatarImage
                     src="https://github.com/shadcn.png"
                     alt="@shadcn"
                   />
-                  <AvatarFallback >CN</AvatarFallback>
+                  <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 {data.label}
               </div>
