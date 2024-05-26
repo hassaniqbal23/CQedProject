@@ -32,7 +32,7 @@ export const PopularCommunitiesList = () => {
           </div>
         ) : (
           <>
-            {data.data.map((item: any, index: number) => (
+            {data?.data?.map((item: any, index: number) => (
               <CommunityCard
                 description="This is a community description"
                 title={item.name}
