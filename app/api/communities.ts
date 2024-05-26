@@ -29,7 +29,7 @@ export const getCommunity = (id: any) => {
 };
 
 export const createCommunity = (payload: any) => {
-  return http.post('/communities', payload);
+  return http.post('/community/create-community', payload);
 };
 
 export const updateCommunity = (id: number, payload: any) => {

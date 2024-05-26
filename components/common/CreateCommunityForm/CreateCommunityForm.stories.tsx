@@ -22,5 +22,7 @@ export const Default: Story = {
       </div>
     );
   },
-  args: {},
+  args: {
+    CommunityTypeOptions: [],
+  },
 };

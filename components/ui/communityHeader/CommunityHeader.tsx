@@ -41,7 +41,10 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
               onKeyDown={onInputChange}
             />
           </div>
-          <Link href="#" className="text-lg font-normal text-white">
+          <Link
+            href="/students/cq-communities/create"
+            className="text-lg font-normal text-white"
+          >
             Or <span className="text-secondary-500">create your own.</span>{' '}
           </Link>
         </div>
