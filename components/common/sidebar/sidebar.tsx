@@ -23,10 +23,7 @@ export const Sidebar: FC<IProps> = ({
     return (
       <>
         <aside
-          className={`fixed bottom-0  left-0  z-40 h-30  w-full`}
-          style={{
-            backgroundImage: `linear-gradient(90deg, #5429E8 0.12%, #70369A 99.97%)`,
-          }}
+          className={`fixed bottom-0  left-0  z-40 h-30  w-full bg-primary-500`}
         >
           <div className="flex justify-between flex-col h-full">
             <ul className="flex justify-between items-center px-16">
@@ -50,17 +47,14 @@ export const Sidebar: FC<IProps> = ({
         <aside
           className={`${
             false ? 'translate-x-0' : '-translate-x-full'
-          } fixed bottom-0 left-0 z-40 md:translate-x-0 h-screen hidden sm:flex flex-col w-60 `}
-          style={{
-            backgroundImage: 'linear-gradient(to bottom, #5429E8, #70369A)',
-          }}
+          } fixed bottom-0 left-0 z-40 md:translate-x-0 h-screen hidden sm:flex flex-col w-60 bg-primary-500 `}
         >
           <div className="flex items-center justify-center pt-7">
             <Image
               alt="logo-lo"
               width={150}
               height={150}
-              src="/logo-white.svg"
+              src="/assets/GCEd/GCEdlogo.svg"
               priority={true}
             />
           </div>

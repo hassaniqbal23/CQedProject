@@ -14,7 +14,7 @@ export const GreatJob: React.FC = () => {
       <div className=" p-4 mx-auto ">
         <div className="">
           <div className="mx-auto w-max mt-4">
-            <h1 className="text-[#4146B8] text-3xl font-mono text-center pt-3 mb-2 not-italic font-bold leading-10">
+            <h1 className="text-primary-500 text-3xl font-mono text-center pt-3 mb-2 not-italic font-bold leading-10">
               Great Job!
             </h1>
             <p className="text-2xl">Explore more on how to use CQED</p>

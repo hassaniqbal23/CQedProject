@@ -49,7 +49,7 @@ export const ProfileNotification: FC<Iprops> = ({
               <Avatar className="lg:w-[153px] lg:h-[153px] sm:w-[153px] sm:h-[153px]  rounded-full bg-lightgray w-[75.098px] h-[75.098px]">
                 <AvatarImage src={userImage} alt="Profile Picture" />
               </Avatar>
-              <p className="absolute hidden sm:block  sm:text-[#4146B8] lg:text-[#4146B8] sm:font-montserrat lg:font-montserrat sm:text-base lg:text-base sm:font-semibold lg:font-semibold sm:left-32 lg:left sm:bottom-5 lg:bottom-5 sm:z-10 lg:z-10 ">
+              <p className="absolute hidden sm:block  sm:text-primary-500 lg:text-primary-500 sm:font-montserrat lg:font-montserrat sm:text-base lg:text-base sm:font-semibold lg:font-semibold sm:left-32 lg:left sm:bottom-5 lg:bottom-5 sm:z-10 lg:z-10 ">
                 {notification}
               </p>
               <Image
@@ -66,7 +66,7 @@ export const ProfileNotification: FC<Iprops> = ({
                 height={30}
                 className=" lg:hidden sm:hidden object-contain absolute bottom-4 left-14 "
               />
-              <p className="absolute lg:hidden sm:hidden text-[8px] bottom-6 left-16 z-10 font-semibold text-[#4146B8]">
+              <p className="absolute lg:hidden sm:hidden text-[8px] bottom-6 left-16 z-10 font-semibold text-primary-500">
                 {notification}
               </p>
             </div>
@@ -96,12 +96,12 @@ export const ProfileNotification: FC<Iprops> = ({
           </div>
         </div>
         <div className=" lg:flex  lg:flex-row lg:gap-4 lg:mt-8  sm:flex sm:flex-col sm:justify-between sm:gap-32 flex justify-center items-center mt-3 gap-4 ">
-          <Button size={'sm'} className="bg-[#4146b8] ">
+          <Button size={'sm'} className="bg-primary-500 ">
             <MessageCircle /> Say Hello
           </Button>
           <Button
             size={'sm'}
-            className="text-[#4146B8] bg-white border border-[#4146b8]"
+            className="text-primary-500 bg-white border border-primary-500"
           >
             View Profile
           </Button>
