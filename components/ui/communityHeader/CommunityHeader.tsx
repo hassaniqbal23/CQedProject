@@ -9,7 +9,7 @@ interface CommunityHeaderProps {
   description: string;
   rightImage: string;
   leftImage: string;
-  onInputChange(e: React.ChangeEvent<HTMLInputElement>): void;
+  onInputChange(e: React.KeyboardEvent<HTMLInputElement>): void;
 }
 
 const CommunityHeader: React.FC<CommunityHeaderProps> = ({
@@ -38,7 +38,7 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
               className="text-black"
               placeholder="Explore Communities"
               type="search"
-              onChange={onInputChange}
+              onKeyDown={onInputChange}
             />
           </div>
           <Link href="#" className="text-lg font-normal text-white">

@@ -1,11 +1,29 @@
 import React from 'react';
 import Image from 'next/image';
 import { Typography } from '@/components/common/Typography/Typography';
-import { Avatar, AvatarImage, Button, Input } from '@/components/ui';
 import { CreatePostModal } from '@/components/common/CreatePostModal/CreatePostModal';
 import { Post } from '@/components/common/Post/Post';
+import { useMutation } from 'react-query';
+import { createCommunityPost } from '@/app/api/communities';
+import { toast } from 'sonner';
 
-export const Feeds = () => {
+interface FeedsProps {
+  feedList: any[];
+}
+
+export const Feeds = ({ feedList }: FeedsProps) => {
+  const { mutate: createPost } = useMutation(
+    ['createPost'],
+    (data) => createCommunityPost(data),
+    {
+      onSuccess(data) {
+        console.log('Post created');
+        toast.success('Post created successfully', {
+          duration: 3000,
+        });
+      },
+    }
+  );
   return (
     <div className="mt-6">
       <Typography variant="h3" weight="bold" className="flex items-center">
@@ -28,13 +46,14 @@ export const Feeds = () => {
             buttonAction="Publish"
           />
         </div>
-        {[1, 2, 3].map((item, index) => (
+        {feedList?.map((item: any, index: number) => (
           <Post
+            key={index}
             userFullName="Alexander John"
             username="alexander john"
             userImage="/assets/profile/profile.svg"
             created_at="2021-10-10T00:00:00.000Z"
-            description="You can’t buy happiness, but you can get happiness on the beach! This is labuan bajo, Indonesiaa"
+            description={item.content}
             attachment={['/assets/images/img.png']}
             likes={0}
             comments={0}

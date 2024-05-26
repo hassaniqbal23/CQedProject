@@ -1,9 +1,16 @@
 'use client';
 
+import { getCommunity, joinCommunity } from '@/app/api/communities';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 import { CommunityDetailsCard } from '@/components/Communities/CommunityDetailsCard/CommnunityDetailsCard';
 import { CommunityMembersCard } from '@/components/Communities/CommunityMembersCard/CommunityMembersCard';
 import { Feeds } from '@/components/Communities/Feeds/Feeds';
+import Loading from '@/components/ui/button/loading';
+import { CircleAlert } from 'lucide-react';
+import { useParams } from 'next/navigation';
 import React from 'react';
+import { useMutation, useQuery } from 'react-query';
+import { toast } from 'sonner';
 
 const guidelines = [
   'Respect and kindness: Treat all members with respect, regardless of their background, beliefs, or experiences. Be mindful of your words and actions, and remember that everyone is learning.',
@@ -38,30 +45,64 @@ const membersImages = [
 ];
 
 const CQCommunity = () => {
+  const params = useParams();
+  const { userInformation } = useGlobalState();
+  const { data, isLoading } = useQuery('communities', () =>
+    getCommunity(params?.id)
+  );
+
+  const { mutate: joinCommunityAsMember } = useMutation(
+    'communities',
+    () =>
+      joinCommunity({
+        communityId: params?.id,
+        userId: userInformation.id,
+        role: 'USER',
+        status: 1,
+      }),
+    {
+      onSuccess: (res) => {
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+          icon: <CircleAlert />,
+          closeButton: true,
+        });
+      },
+    }
+  );
+
   return (
     <div>
-      <div className="flex gap-3">
-        <div className="w-3/4">
-          <CommunityDetailsCard
-            title="Sharing our cultures."
-            image={'/avatar1.svg'}
-            members="5k"
-            description="Welcome! This is a vibrant space where individuals from all over the world connect, share their unique cultures, and learn from each other. What can you expect? To explore diverse perspectives; Ask questions and get answers; Share your own story; Celebrate differences; Make connections."
-            guidelines={guidelines}
-            isMember={false}
-            onToggleMembership={() => {
-              console.log('clicked join group ');
-            }}
-          />
+      {isLoading ? (
+        <div className="w-full h-[500px] flex items-center justify-center">
+          <Loading />
         </div>
-        <div>
-          <CommunityMembersCard
-            memberImages={membersImages}
-            totalMembers={12003}
-          />
-        </div>
-      </div>
-      <Feeds />
+      ) : (
+        <>
+          <div className="flex gap-3">
+            <div className="w-3/4">
+              <CommunityDetailsCard
+                title={data?.data.name}
+                image={'/avatar1.svg'}
+                members="5k"
+                description="Welcome! This is a vibrant space where individuals from all over the world connect, share their unique cultures, and learn from each other. What can you expect? To explore diverse perspectives; Ask questions and get answers; Share your own story; Celebrate differences; Make connections."
+                guidelines={guidelines}
+                isMember={true}
+                onToggleMembership={() => {
+                  joinCommunityAsMember();
+                }}
+              />
+            </div>
+            <div>
+              <CommunityMembersCard
+                memberImages={membersImages}
+                totalMembers={12003}
+              />
+            </div>
+          </div>
+          <Feeds feedList={data?.data.CommunityPost} />
+        </>
+      )}
     </div>
   );
 };

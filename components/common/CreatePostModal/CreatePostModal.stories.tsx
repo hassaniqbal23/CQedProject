@@ -25,7 +25,6 @@ export const CreatePost: Story = {
   args: {
     icon: '/uplode.svg',
     title: 'Create a post',
-    description: '',
     buttonTrigger: 'Post',
     buttonAction: 'Publish',
   },

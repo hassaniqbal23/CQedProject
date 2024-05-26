@@ -1,9 +1,13 @@
+import React from 'react';
+import Image from 'next/image';
+import { useQuery } from 'react-query';
+import { getCommunities } from '@/app/api/communities';
 import { CommunityCard } from '../CommunityCard2/CommunityCard2';
 import { Typography } from '@/components/common/Typography/Typography';
-import Image from 'next/image';
-import React from 'react';
+import Loading from '@/components/ui/button/loading';
 
 export const PopularCommunitiesList = () => {
+  const { data, isLoading } = useQuery('communities', () => getCommunities());
   return (
     <div>
       <Typography
@@ -22,19 +26,27 @@ export const PopularCommunitiesList = () => {
       </Typography>
 
       <div className="mt-5">
-        {[1, 2, 3].map((item, index) => (
-          <CommunityCard
-            description="This is a community description"
-            title="Community"
-            id={item}
-            members={1000}
-            key={index}
-            image="avatar2.svg"
-            onJoinClick={() => {
-              console.log('Join Clicked');
-            }}
-          />
-        ))}
+        {isLoading ? (
+          <div className="w-full h-[500px] flex items-center justify-center">
+            <Loading />
+          </div>
+        ) : (
+          <>
+            {data.data.map((item: any, index: number) => (
+              <CommunityCard
+                description="This is a community description"
+                title={item.name}
+                id={item.id}
+                members={1000}
+                key={index}
+                image="/avatar2.svg"
+                onJoinClick={() => {
+                  console.log('Join Clicked');
+                }}
+              />
+            ))}
+          </>
+        )}
       </div>
     </div>
   );
