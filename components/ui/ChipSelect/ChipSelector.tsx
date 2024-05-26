@@ -11,7 +11,7 @@ export interface ChipItem {
 
 interface ChipSelectorProps {
   options: ChipItem[];
-  defaultValue?: string[];
+  defaultValue?: any[];
   rounded?: boolean;
   variant?:
     | 'primary'
@@ -32,6 +32,10 @@ const ChipSelector = ({
   multiSelect,
 }: ChipSelectorProps) => {
   const [selectedValue, setSelectedValue] = useState(defaultValue || []);
+
+  React.useEffect(() => {
+    setSelectedValue(defaultValue || []);
+  }, [defaultValue, options]);
 
   const handleChipClick = (value: string) => {
     const isSelected = selectedValue.includes(value);

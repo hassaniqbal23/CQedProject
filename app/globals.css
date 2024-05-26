@@ -115,9 +115,9 @@
 }
 
 .ScrollbarsCustom .ScrollbarsCustom-Track {
-  opacity: 0.7;
+  opacity: 0.3;
 }
 
 .NiceScrollBar:hover .ScrollbarsCustom-Track {
-  opacity: 1;
+  opacity: .8;
 }
