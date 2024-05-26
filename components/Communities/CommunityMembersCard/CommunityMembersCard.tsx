@@ -28,7 +28,7 @@ export const CommunityMembersCard = ({
           Members
         </Typography>
       </div>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-6 md:grid-cols-4 gap-4">
         {memberImages.map((image, index) => (
           <Avatar key={index}>
             <AvatarImage

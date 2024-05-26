@@ -23,17 +23,19 @@ export const CommunityDetailsCard = ({
 }: CommunityDetailsCardProps) => {
   return (
     <Card className="p-6 w-full bg-white rounded-xl shadow-md space-y-4">
-      <div className="flex items-center">
-        <Avatar className="w-16 h-16 md:w-54 md:h-54 mr-2 rounded-full bg-lightgray ">
-          <AvatarImage src={image} alt={title} />
-        </Avatar>
-        <div className="ml-4">
-          <Typography variant="h2" weight="bold">
-            {title}
-          </Typography>
-          <Typography variant="p" weight="medium">
-            {members} Members
-          </Typography>
+      <div className="flex items-start md:items-center">
+        <div className="flex flex-col md:flex-row gap-3">
+          <Avatar className="w-16 h-16 md:w-54 md:h-54 mr-2 rounded-full bg-lightgray ">
+            <AvatarImage src={image} alt={title} />
+          </Avatar>
+          <div className="">
+            <Typography variant="h2" weight="bold">
+              {title}
+            </Typography>
+            <Typography variant="p" weight="medium">
+              {members} Members
+            </Typography>
+          </div>
         </div>
         <Button
           onClick={onToggleMembership}

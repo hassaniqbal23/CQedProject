@@ -9,6 +9,8 @@ import { Typography } from '../Typography/Typography';
 import dynamic from 'next/dynamic';
 import { EmojiClickData } from 'emoji-picker-react';
 import Modal from '@/components/common/Modal/Modal';
+import { useMutation } from 'react-query';
+import { uploadImage } from '@/app/api/communities';
 
 const Picker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
@@ -16,24 +18,24 @@ interface CreatePostModalProps {
   title?: string;
   textarea?: string;
   buttonTrigger: React.ReactNode;
-  description?: string;
   buttonAction?: string;
   icon: string;
+  onPublish?: (data: any) => void;
 }
 
 export const CreatePostModal = ({
   icon,
   title,
   textarea,
-  description,
   buttonAction,
   buttonTrigger,
+  onPublish,
 }: CreatePostModalProps) => {
   const [showUpload, setShowUpload] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState(textarea || '');
   const [searchInputFocused, setSearchInputFocused] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<any | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -66,15 +68,26 @@ export const CreatePostModal = ({
     }
   };
 
+  const { mutate: uploadPost } = useMutation(
+    'post-upload',
+    (data: FormData) => uploadImage(data),
+    {
+      onSuccess: (data) => {
+        console.log(data, 'data');
+        setUploadedImage(data.data?.data);
+      },
+      onError: (error) => {
+        console.log(error, 'error');
+      },
+    }
+  );
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setUploadedImage(reader.result as string);
-        setShowUpload(false);
-      };
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append('file', event.target.files?.[0] as any);
+      uploadPost(formData);
     }
   };
 
@@ -101,7 +114,8 @@ export const CreatePostModal = ({
   );
 
   const handleOkClick = () => {
-    // Handle OK click logic here
+    onPublish &&
+      onPublish({ content: textAreaValue, attachment_id: uploadedImage?.id });
     setIsVisible(false);
   };
 
@@ -134,7 +148,7 @@ export const CreatePostModal = ({
         {uploadedImage && (
           <div className="relative mt-4">
             <Image
-              src={uploadedImage}
+              src={uploadedImage.file_path}
               alt="Uploaded"
               width={100}
               height={100}

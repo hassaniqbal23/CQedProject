@@ -50,8 +50,8 @@ export const getCommunityMembers = (id: number) => {
   return http.get(`/communities/${id}/members`);
 };
 
-export const getCommunityPosts = (id: number) => {
-  return http.get(`/communities/${id}/posts`);
+export const getCommunityPosts = (id: number | string, page = 1, limit = 10) => {
+  return http.get(`/community-post/all-community-posts?page=${page}&limit=${limit}&id=${id}`).then((res)=> res.data);
 };
 
 export const getCommunityPost = (id: number, postId: number) => {
@@ -61,6 +61,10 @@ export const getCommunityPost = (id: number, postId: number) => {
 export const createCommunityPost = (payload: any) => {
   return http.post(`/community-post/create-community-post`, payload);
 };
+
+export const uploadImage = (payload: any) => {
+    return http.post(`/uploads/upload`, payload);
+}
 
 export const updateCommunityPost = (
   id: number,
@@ -108,10 +112,10 @@ export const deleteCommunityPostComment = (
   );
 };
 
-export const likeCommunityPost = (id: number, postId: number) => {
-  return http.post(`/communities/${id}/posts/${postId}/like`);
+export const likeCommunityPost = (postId: number) => {
+  return http.post(`/community-post-like/create-community-post-like`, {communityPostId: postId});
 };
 
-export const unlikeCommunityPost = (id: number, postId: number) => {
-  return http.delete(`/communities/${id}/posts/${postId}/like`);
+export const unlikeCommunityPost = (id: number) => {
+  return http.delete(`/community-post-like/${id}/delete-community-post-like`);
 };

@@ -79,12 +79,12 @@ const CQCommunity = () => {
         </div>
       ) : (
         <>
-          <div className="flex gap-3">
-            <div className="w-3/4">
+          <div className="flex flex-col md:flex-row gap-3">
+            <div className="w-full md:w-3/4">
               <CommunityDetailsCard
                 title={data?.data.name}
                 image={'/avatar1.svg'}
-                members="5k"
+                members={data?.data?.CommunityUsers.length}
                 description="Welcome! This is a vibrant space where individuals from all over the world connect, share their unique cultures, and learn from each other. What can you expect? To explore diverse perspectives; Ask questions and get answers; Share your own story; Celebrate differences; Make connections."
                 guidelines={guidelines}
                 isMember={joinedCommunities
@@ -98,11 +98,11 @@ const CQCommunity = () => {
             <div>
               <CommunityMembersCard
                 memberImages={membersImages}
-                totalMembers={12003}
+                totalMembers={data?.data?.CommunityUsers.length}
               />
             </div>
           </div>
-          <Feeds feedList={data?.data.CommunityPost} />
+          <Feeds communityId={data?.data.id} />
         </>
       )}
     </div>
