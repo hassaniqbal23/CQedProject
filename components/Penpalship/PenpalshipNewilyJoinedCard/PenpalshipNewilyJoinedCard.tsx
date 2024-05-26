@@ -43,7 +43,7 @@ const PenpalshipNewilyJoinedCard: React.FC<PenpalshipNewilyJoinedCardProps> = ({
             />
             <Button
               onClick={buttonOnClick}
-              className="rounded-full bg-[#ECEDF8] text-[#4146B8] w-32 h-12 "
+              className="rounded-full bg-[#ECEDF8] text-primary-500 w-32 h-12 "
             >
               {buttonText}
             </Button>
@@ -61,7 +61,7 @@ const PenpalshipNewilyJoinedCard: React.FC<PenpalshipNewilyJoinedCardProps> = ({
               weight={'semibold'}
               className="mb-1 mt-1 "
             >
-              <Link href={''} className="text-[#4146B8] ">
+              <Link href={''} className="text-primary-500 ">
                 {mutualFriends}
               </Link>
             </Typography>
@@ -77,7 +77,7 @@ const PenpalshipNewilyJoinedCard: React.FC<PenpalshipNewilyJoinedCardProps> = ({
             <Typography
               variant={'body'}
               weight={'regular'}
-              className="text-[#4146B8]  font-semibold mt-1 mb-1"
+              className="text-primary-500 font-semibold mt-1 mb-1"
             ></Typography>
           </div>
           <div className="flex justify-between p-2 items-center">

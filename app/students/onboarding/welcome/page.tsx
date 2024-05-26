@@ -14,7 +14,7 @@ function Welcome() {
       <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8">
         <div className="flex items-center justify-center w-full mb-10">
           <Image
-            src={'/thumbsup.png'}
+            src={'/assets/GCEd/GCEdSuccess.svg'}
             alt="thumbsup.png"
             width={400}
             height={400}
@@ -32,7 +32,7 @@ function Welcome() {
             Your future is in your hands. Enjoy this opportunity
           </h3>
           <div className="mt-10">
-            <Button variant={'secondary'} className="rounded-lg shadow-lg">
+            <Button variant={'secondary'} className="rounded-lg shadow-lg px-4">
               <Link
                 href={'/students/dashboard'}
                 className="text-primary font-bold"

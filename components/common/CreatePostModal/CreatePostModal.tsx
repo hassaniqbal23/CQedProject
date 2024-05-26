@@ -158,7 +158,7 @@ export const CreatePostModal = ({
               alt="icon"
               width={70}
               height={70}
-              className="text-[#4146B8]"
+              className="text-primary-500"
             />
           </div>
           <Typography variant="h4" weight="semibold" className="mt-4">
@@ -194,16 +194,16 @@ export const CreatePostModal = ({
             onClick={handleShowUpload}
             className={`flex items-center mb-2 sm:mb-0 sm:mr-4 p-2 cursor-pointer ${
               showUpload || uploadedImage
-                ? 'bg-[#ECEDF8] text-[#4146B8] rounded-full'
+                ? 'bg-[#ECEDF8] text-primary-500 rounded-full'
                 : 'text-[#4E5D78]'
             }`}
           >
             <Images
-              className={`${showUpload || uploadedImage ? 'text-[#4146B8]' : ''}`}
+              className={`${showUpload || uploadedImage ? 'text-primary-500' : ''}`}
             />
             <span
               className={`font-semibold ml-1 ${
-                showUpload || uploadedImage ? 'text-[#4146B8]' : ''
+                showUpload || uploadedImage ? 'text-primary-500' : ''
               }`}
             >
               Photo/Video
@@ -216,14 +216,14 @@ export const CreatePostModal = ({
             }}
             className={`relative flex items-center mb-2 sm:mb-0 p-2 cursor-pointer ${
               showEmojiPicker
-                ? 'bg-[#ECEDF8] text-[#4146B8] rounded-full'
+                ? 'bg-[#ECEDF8] text-primary-500 rounded-full'
                 : 'text-[#4E5D78]'
             }`}
           >
-            <Smile className={`${showEmojiPicker ? 'text-[#4146B8]' : ''}`} />
+            <Smile className={`${showEmojiPicker ? 'text-primary-500' : ''}`} />
             <span
               className={`font-semibold ml-1 ${
-                showEmojiPicker ? 'text-[#4146B8]' : ''
+                showEmojiPicker ? 'text-primary-500' : ''
               }`}
             >
               Feeling

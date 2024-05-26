@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect } from 'react';
-import TopNavbar from '../navbar/TopNavbar';
 import Progressbar from '../Progressbar/Progressbar';
 
 import {
@@ -17,10 +16,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormInput } from '../From/FormInput';
 import { ITeacherCreate } from './type';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
-import { DropdownMenuPropsOptions } from '@/lib/constant';
 import { useMutation } from 'react-query';
 import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
 import { TeacherCreate } from '@/app/api/teachers';
 import {
   SelectCountry,
@@ -83,7 +80,7 @@ export const CreateProfile: React.FC = () => {
             <Progressbar heading={'Get Started'} percentage={20} />
           </div>
           <div className="mx-auto w-max mt-4">
-            <h1 className="text-[#4146B8] text-2xl font-mono not-italic font-bold leading-10">
+            <h1 className="text-primary-500 text-2xl font-mono not-italic font-bold leading-10">
               Create your profile
             </h1>
             <p>Learn, grow, and thrive together!</p>
