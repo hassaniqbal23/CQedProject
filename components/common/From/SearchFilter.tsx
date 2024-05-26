@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Dropdown, Input, SelectInput } from '@/components/ui';
 import { SelectLanguage } from '@/components/ui/select-v2/select-v2-components';
 import GroupHorizontal from '@/components/ui/GroupHorizontal/GroupHorizontal';
@@ -9,6 +9,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Typography } from '../Typography/Typography';
 import { CommunityCard } from '@/components/Communities/CommunityCard2/CommunityCard2';
 import { Scrollbar } from 'react-scrollbars-custom';
+import { useParams, useSearchParams } from 'next/navigation';
 
 export interface SearchFilterProps {
   buttonText: string;
@@ -41,12 +42,19 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
   totalCount,
   onRequestBack,
 }) => {
-  const [inputValue, setInputValue] = React.useState('');
+  const params = useSearchParams();
+  const [inputValue, setInputValue] = React.useState<null | string>(null);
   const handleButtonClick = () => {
     if (onRequestBack) {
       onRequestBack();
     }
   };
+
+  useEffect(() => {
+    if (params && params.get('q')) {
+      setInputValue(params.get('q'));
+    }
+  }, [params]);
 
   return (
     <div className="w-full p-4 flex flex-col gap-4">

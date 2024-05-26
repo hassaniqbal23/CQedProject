@@ -1,14 +1,15 @@
 import { Typography } from '@/components/common/Typography/Typography';
 import { Avatar, AvatarImage, Button, Card } from '@/components/ui';
 import React from 'react';
+import { CommunityJoinLeaveActionButton } from '../CommunityJoinLeaveActionButton/CommunityJoinLeaveActionButton';
 
 interface CommunityDetailsCardProps {
   title: string;
   image: string;
   members: number | string;
   description: string;
-  guidelines: string[];
   isMember: boolean;
+  communityId: number;
   onToggleMembership: () => void;
 }
 
@@ -17,8 +18,8 @@ export const CommunityDetailsCard = ({
   image,
   members,
   description,
-  guidelines,
   isMember,
+  communityId,
   onToggleMembership,
 }: CommunityDetailsCardProps) => {
   return (
@@ -35,27 +36,14 @@ export const CommunityDetailsCard = ({
             {members} Members
           </Typography>
         </div>
-        <Button
-          onClick={onToggleMembership}
-          className={`ml-auto py-2 px-4 rounded-full ${isMember ? 'bg-red-100 text-red-600' : 'bg-primary-50 text-blue-600'}`}
-        >
-          {isMember ? 'Leave Group' : 'Join Group'}
-        </Button>
+        <CommunityJoinLeaveActionButton
+          communityId={communityId}
+        ></CommunityJoinLeaveActionButton>
       </div>
       <div>
         <Typography variant="p" weight="medium" className="">
           {description}
         </Typography>
-        <Typography variant="h3" weight="semibold" className="mt-4">
-          Community Guidelines:
-        </Typography>
-        <ul className="list-disc list-inside space-y-2  ml-4">
-          {guidelines.map((guideline, index) => (
-            <li key={index} className="font-medium">
-              {guideline}
-            </li>
-          ))}
-        </ul>
       </div>
     </Card>
   );

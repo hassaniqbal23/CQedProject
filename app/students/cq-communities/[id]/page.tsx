@@ -12,38 +12,6 @@ import React from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { toast } from 'sonner';
 
-const guidelines = [
-  'Respect and kindness: Treat all members with respect, regardless of their background, beliefs, or experiences. Be mindful of your words and actions, and remember that everyone is learning.',
-  'Open-mindedness and curiosity: Embrace diverse perspectives and be open to learning from others.',
-  'Accuracy and sensitivity: When sharing information about your culture, strive for accuracy and be mindful of potential sensitivities.',
-  'Active participation: Contribute to the community by sharing your thoughts, experiences, and questions.',
-  'No hate speech or discrimination: Harassment, hate speech, and discrimination of any kind are strictly prohibited.',
-  'Respect and kindness: Treat all members with respect, regardless of their background, beliefs, or experiences. Be mindful of your words and actions, and remember that everyone is learning.',
-  'Open-mindedness and curiosity: Embrace diverse perspectives and be open to learning from others.',
-  'Accuracy and sensitivity: When sharing information about your culture, strive for accuracy and be mindful of potential sensitivities.',
-  'Active participation: Contribute to the community by sharing your thoughts, experiences, and questions.',
-  'No hate speech or discrimination: Harassment, hate speech, and discrimination of any kind are strictly prohibited.',
-];
-
-const membersImages = [
-  '/avatar1.svg',
-  '/avatar2.svg',
-  '/avatar3.svg',
-  '/avatar1.svg',
-  '/avatar2.svg',
-  '/avatar3.svg',
-  '/avatar1.svg',
-  '/avatar2.svg',
-  '/avatar3.svg',
-  '/avatar1.svg',
-  '/avatar2.svg',
-  '/avatar3.svg',
-  '/avatar1.svg',
-  '/avatar2.svg',
-  '/avatar3.svg',
-  '/avatar1.svg',
-];
-
 const CQCommunity = () => {
   const params = useParams();
   const { userInformation, joinedCommunities } = useGlobalState();
@@ -82,11 +50,11 @@ const CQCommunity = () => {
           <div className="flex gap-3">
             <div className="w-3/4">
               <CommunityDetailsCard
+                communityId={data?.data.id}
                 title={data?.data.name}
                 image={'/avatar1.svg'}
                 members="5k"
-                description="Welcome! This is a vibrant space where individuals from all over the world connect, share their unique cultures, and learn from each other. What can you expect? To explore diverse perspectives; Ask questions and get answers; Share your own story; Celebrate differences; Make connections."
-                guidelines={guidelines}
+                description={data?.data.description}
                 isMember={joinedCommunities
                   .map((c) => c.id)
                   .includes(data?.data?.id)}
@@ -97,8 +65,8 @@ const CQCommunity = () => {
             </div>
             <div>
               <CommunityMembersCard
-                memberImages={membersImages}
-                totalMembers={12003}
+                members={data?.data.CommunityUsers}
+                totalMembers={data?.data._count.CommunityUsers}
               />
             </div>
           </div>

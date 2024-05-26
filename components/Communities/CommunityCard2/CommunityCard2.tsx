@@ -9,7 +9,7 @@ interface CommunityCardProps {
   image: string;
   members: number;
   description: string;
-  id: number | string;
+  id: number;
 }
 
 export const CommunityCard = ({
