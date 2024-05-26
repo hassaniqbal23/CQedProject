@@ -2,6 +2,7 @@ import { Typography } from '@/components/common/Typography/Typography';
 import { Avatar, AvatarImage, Button } from '@/components/ui';
 import Link from 'next/link';
 import React from 'react';
+import { CommunityJoinLeaveActionButton } from '../CommunityJoinLeaveActionButton/CommunityJoinLeaveActionButton';
 
 interface CommunityCardProps {
   title: string;
@@ -9,7 +10,6 @@ interface CommunityCardProps {
   members: number;
   description: string;
   id: number | string;
-  onJoinClick?: () => void;
 }
 
 export const CommunityCard = ({
@@ -17,7 +17,6 @@ export const CommunityCard = ({
   image,
   members,
   description,
-  onJoinClick,
   id,
 }: CommunityCardProps) => {
   return (
@@ -34,19 +33,16 @@ export const CommunityCard = ({
             {title}
           </Typography>
           <Typography variant="p" weight="regular" className="text-gray-500">
-            {members} Members
+            {members} {members > 1 ? 'Members' : 'Member'}
           </Typography>
           <Typography variant="p" weight="regular" className="text-gray-700">
             {description}
           </Typography>
         </div>
       </Link>
-      <Button
-        className="ml-auto bg-primary-50 text-primary-600 px-5 py-2 rounded-full"
-        onClick={() => onJoinClick && onJoinClick()}
-      >
-        Join
-      </Button>
+      <CommunityJoinLeaveActionButton
+        communityId={id}
+      ></CommunityJoinLeaveActionButton>
     </div>
   );
 };

@@ -119,7 +119,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
         {results &&
           results.map((community, index) => (
             <CommunityCard
-              description="This is a community description"
+              description={community.description}
               title={community.name}
               id={community.id}
               members={1000}

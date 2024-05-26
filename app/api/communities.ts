@@ -40,8 +40,10 @@ export const joinCommunity = (payload: any) => {
   return http.post(`/community-user/create-community-user`, payload);
 };
 
-export const leaveCommunity = (id: number) => {
-  return http.delete(`/communities/${id}/leave`);
+export const leaveCommunity = (communityId: number, userId: number) => {
+  return http.delete(`/community-user/delete-community-user`, {
+    params: { communityId, userId },
+  });
 };
 
 export const getCommunityMembers = (id: number) => {

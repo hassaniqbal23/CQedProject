@@ -32,19 +32,18 @@ export const PopularCommunitiesList = () => {
           </div>
         ) : (
           <>
-            {data?.data?.map((item: any, index: number) => (
-              <CommunityCard
-                description="This is a community description"
-                title={item.name}
-                id={item.id}
-                members={1000}
-                key={index}
-                image="/avatar2.svg"
-                onJoinClick={() => {
-                  console.log('Join Clicked');
-                }}
-              />
-            ))}
+            {!isLoading &&
+              data?.data &&
+              data?.data?.map((item: any, index: number) => (
+                <CommunityCard
+                  description={item.description}
+                  title={item.name}
+                  id={item.id}
+                  members={item._count.CommunityUsers}
+                  key={index}
+                  image="/avatar2.svg"
+                />
+              ))}
           </>
         )}
       </div>

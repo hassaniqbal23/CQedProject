@@ -46,8 +46,8 @@ const membersImages = [
 
 const CQCommunity = () => {
   const params = useParams();
-  const { userInformation } = useGlobalState();
-  const { data, isLoading } = useQuery('communities', () =>
+  const { userInformation, joinedCommunities } = useGlobalState();
+  const { data, isLoading } = useQuery('community', () =>
     getCommunity(params?.id)
   );
 
@@ -87,7 +87,9 @@ const CQCommunity = () => {
                 members="5k"
                 description="Welcome! This is a vibrant space where individuals from all over the world connect, share their unique cultures, and learn from each other. What can you expect? To explore diverse perspectives; Ask questions and get answers; Share your own story; Celebrate differences; Make connections."
                 guidelines={guidelines}
-                isMember={true}
+                isMember={joinedCommunities
+                  .map((c) => c.id)
+                  .includes(data?.data?.id)}
                 onToggleMembership={() => {
                   joinCommunityAsMember();
                 }}
