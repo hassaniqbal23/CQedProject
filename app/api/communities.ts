@@ -1,10 +1,14 @@
 import http from '../utils/http';
 
-export const getCommunities = (search?: string | null) => {
+export const getCommunities = (
+  search?: string | null,
+  community_type: number | string | null = ''
+) => {
   return http
     .get('/community/all-communities', {
       params: {
         search,
+        community_type: community_type,
       },
     })
     .then((res) => res.data);

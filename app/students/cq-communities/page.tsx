@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation';
 
 const CQCommunities = () => {
   const router = useRouter();
-
   return (
     <div>
       <CommunityHeader
@@ -19,10 +18,11 @@ const CQCommunities = () => {
         subtitle="From gaming, to music, to learning, there’s a place for you."
         description="What are CQED Communities?"
         onInputChange={(e: React.KeyboardEvent<HTMLInputElement>) => {
-          e.key === 'Enter' &&
+          if (e.key === 'Enter') {
             router.push(
-              `/students/cq-communities/community-search?q=${(e.target as HTMLInputElement).value}`
+              `/students/cq-communities/community-search?q=${e.currentTarget.value}`
             );
+          }
         }}
       />
 
