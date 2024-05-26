@@ -2,36 +2,50 @@ import React from 'react';
 import { Button, Dropdown, Input, SelectInput } from '@/components/ui';
 import { SelectLanguage } from '@/components/ui/select-v2/select-v2-components';
 import GroupHorizontal from '@/components/ui/GroupHorizontal/GroupHorizontal';
-import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
+import ChipSelector, {
+  ChipItem,
+} from '@/components/ui/ChipSelect/ChipSelector';
 import { ArrowLeft } from 'lucide-react';
 import { Typography } from '../Typography/Typography';
 import { CommunityCard } from '@/components/Communities/CommunityCard2/CommunityCard2';
+import { Scrollbar } from 'react-scrollbars-custom';
 
 export interface SearchFilterProps {
   buttonText: string;
   title: string;
-  inputValue?: string;
   searchResults?: any[];
   categories?: any[];
   onInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSelect?: (value: string) => void;
   onCategorySelect?: (value: string) => void;
   onSearchClick?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  results?: any[];
+  resultTypes?: any[];
+  totalCount?: number;
+  onRequestBack?: () => void;
 }
+
+let inputChangeTimeout: any;
 
 export const SearchFilter: React.FC<SearchFilterProps> = ({
   buttonText,
   title,
-  inputValue,
   categories,
   onCategorySelect,
   onInputChange,
   onSelect,
   searchResults,
   onSearchClick,
+  results,
+  resultTypes,
+  totalCount,
+  onRequestBack,
 }) => {
+  const [inputValue, setInputValue] = React.useState('');
   const handleButtonClick = () => {
-    console.log('Button clicked');
+    if (onRequestBack) {
+      onRequestBack();
+    }
   };
 
   return (
@@ -48,7 +62,15 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
             type="search"
             value={inputValue}
             onKeyDown={onSearchClick}
-            onChange={onInputChange}
+            onChange={(e) => {
+              setInputValue(e.target.value);
+              if (onInputChange) {
+                clearTimeout(inputChangeTimeout);
+                inputChangeTimeout = setTimeout(() => {
+                  onInputChange(e);
+                }, 500);
+              }
+            }}
           />
         </div>
         <div className="w-[10%]">
@@ -69,36 +91,45 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
           />
         </div>
       </div>
-      <div className="flex flex-wrap">
-        <ChipSelector
-          variant="link"
-          defaultValue={['all']}
-          rounded={true}
-          options={[
-            { label: 'All (219)', value: 'all' },
-            { label: 'Gaming (132)', value: 'gaming' },
-            { label: 'General Chatting (99)', value: 'general' },
-            { label: 'Entertainments (99)', value: 'entertainment' },
-          ]}
-        />
+      <div className="overflow-auto NiceScrollBar">
+        <Scrollbar marginHeight={120} style={{ width: '100%', height: '50px' }}>
+          <ChipSelector
+            variant="link"
+            defaultValue={['all']}
+            rounded={true}
+            options={[
+              {
+                label: `All(${totalCount})`,
+                value: 'all',
+              },
+              ...(resultTypes?.map((c) => {
+                return {
+                  label: `${c.name}(${c._count.Communities})`,
+                  value: c.id,
+                } as ChipItem;
+              }) || []),
+            ]}
+          />
+        </Scrollbar>
       </div>
       <Typography variant="h6" weight="semibold" className="text-[#535353]">
         {title}
       </Typography>
       <div className="flex flex-col">
-        {[1, 2, 3, 4].map((_, index) => (
-          <CommunityCard
-            description="This is a community description"
-            title="Community"
-            id={_}
-            members={1000}
-            key={index}
-            image="/avatar2.svg"
-            onJoinClick={() => {
-              console.log('Join Clicked');
-            }}
-          />
-        ))}
+        {results &&
+          results.map((community, index) => (
+            <CommunityCard
+              description={community.description}
+              title={community.name}
+              id={community.id}
+              members={1000}
+              key={index}
+              image="/avatar2.svg"
+              onJoinClick={() => {
+                console.log('Join Clicked');
+              }}
+            />
+          ))}
       </div>
     </div>
   );

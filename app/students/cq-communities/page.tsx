@@ -6,8 +6,6 @@ import worldHand from '@/public/worldHand.svg';
 import World from '@/public/World.svg';
 import { PopularCommunitiesList } from '@/components/Communities/PopularCommunitiesList/PopularCommunitiesList';
 import { useRouter } from 'next/navigation';
-import { getCommunities } from '@/app/api/communities';
-import { useQuery } from 'react-query';
 
 const CQCommunities = () => {
   const router = useRouter();

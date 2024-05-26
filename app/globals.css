@@ -108,3 +108,16 @@
 [data-state='inactive'][role='tabpanel'] {
   display: none;
 }
+
+/* nice scrollbar */
+.ScrollbarsCustom-Track.ScrollbarsCustom-TrackX {
+  height: 4px !important;
+}
+
+.ScrollbarsCustom .ScrollbarsCustom-Track {
+  opacity: 0.7;
+}
+
+.NiceScrollBar:hover .ScrollbarsCustom-Track {
+  opacity: 1;
+}
