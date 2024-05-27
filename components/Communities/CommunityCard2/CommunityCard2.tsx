@@ -3,6 +3,7 @@ import { Avatar, AvatarImage, Button } from '@/components/ui';
 import Link from 'next/link';
 import React from 'react';
 import { CommunityJoinLeaveActionButton } from '../CommunityJoinLeaveActionButton/CommunityJoinLeaveActionButton';
+import { usePathname } from 'next/navigation';
 
 interface CommunityCardProps {
   title: string;
@@ -19,10 +20,11 @@ export const CommunityCard = ({
   description,
   id,
 }: CommunityCardProps) => {
+  const pathname = usePathname();
   return (
     <div className="flex items-center p-4 border-t border-gray-300 rounded-md shadow-sm">
       <Link
-        href={`/students/cq-communities/${id}`}
+        href={`${pathname}/${id}`}
         className="flex items-center"
       >
         <Avatar className="w-16 h-16 md:w-54 md:h-54 mr-2 rounded-full bg-lightgray ">

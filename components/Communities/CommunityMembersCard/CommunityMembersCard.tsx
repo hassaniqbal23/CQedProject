@@ -29,10 +29,10 @@ export const CommunityMembersCard = ({
         </Typography>
       </div>
       <div className="grid grid-cols-6 md:grid-cols-4 gap-4">
-        {members.map((image, index) => (
+        {members?.map((image, index) => (
           <Avatar key={index}>
             <AvatarImage
-              src={image.User.attachment.file_path}
+              src={image?.User?.attachment?.file_path}
               alt={`Member ${index + 1}`}
               className="w-16 h-16"
             />

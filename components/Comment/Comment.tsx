@@ -1,14 +1,21 @@
 import React from 'react';
 import { Avatar, AvatarImage } from '../ui';
 import { Typography } from '../common/Typography/Typography';
+import dayjs from 'dayjs';
 
 type CommentProps = {
   user: string;
   text: string;
   avatarUrl: string;
+  created_at?: string;
 };
 
-export const Comment: React.FC<CommentProps> = ({ user, text, avatarUrl }) => {
+export const Comment: React.FC<CommentProps> = ({
+  user,
+  text,
+  avatarUrl,
+  created_at,
+}) => {
   return (
     <div className="p-4 border rounded-lg">
       <div className="flex items-start">
@@ -20,7 +27,7 @@ export const Comment: React.FC<CommentProps> = ({ user, text, avatarUrl }) => {
             <Typography variant="h6" weight="medium">
               {user}
               <div className="text-sm font-normal text-[#99A0AE] pb-3 ">
-                9h ago
+                {dayjs(created_at).fromNow()}
               </div>
             </Typography>
           </div>

@@ -12,12 +12,14 @@ import React, { useState, useEffect, useRef, FC } from 'react';
 import { useForm } from 'react-hook-form';
 import EmojiPicker from 'emoji-picker-react';
 import Image from 'next/image';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 
 interface IProps {
   onValueChange?: (value: string) => void;
 }
 
 const CommentInput: FC<IProps> = ({ onValueChange }) => {
+  const { userInformation } = useGlobalState();
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
   const form = useForm<any>({
@@ -62,7 +64,7 @@ const CommentInput: FC<IProps> = ({ onValueChange }) => {
         className="flex items-center w-full gap-2 "
       >
         <Image
-          src={'/assets/profile/teacherprofile.svg'}
+          src={userInformation?.attachment.file_path || '/images/avatar.png'}
           height={32}
           width={32}
           alt="comment ist"

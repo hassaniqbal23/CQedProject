@@ -81,7 +81,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
 
   const onSubmit: SubmitHandler<any> = async (data: any) => {
     if (props.onFormSubmit) {
-      props.onFormSubmit({ ...data, attachmentId: attachemt.id });
+      props.onFormSubmit({ ...data, attachmentId: attachment.id });
     }
   };
 
@@ -179,12 +179,12 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
             </>
           )}
         />
-        <Typography
+        {/* <Typography
           variant="h4"
           children="Community Type"
           weight="bold"
           className="my-3"
-        />
+        /> */}
         {/* <FormField
           control={form.control}
           name="students"

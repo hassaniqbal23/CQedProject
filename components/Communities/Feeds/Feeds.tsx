@@ -75,8 +75,10 @@ export const Feeds = ({ communityId }: FeedsProps) => {
     }
   );
 
+  console.log(data);
+
   return (
-    <div className="mt-6">
+    <div className="mt-6 p-6 w-full bg-white rounded-xl shadow-md space-y-4">
       <Typography variant="h3" weight="bold" className="flex items-center">
         <Image
           src="/membersCard.svg"
@@ -158,11 +160,12 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                             <div className="mb-3 ml-5 ">
                               <Comment
                                 avatarUrl={
-                                  comment.imageurl ||
+                                  comment.User.attachment.file_path ||
                                   '/assets/profile/teacherprofile.svg'
                                 }
                                 text={comment?.content}
                                 user={comment?.User?.name}
+                                created_at={comment?.created_at}
                               />
                             </div>
                           );

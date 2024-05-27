@@ -78,9 +78,9 @@ export const uploadImage = (payload: any) => {
   return http.post(`/uploads/upload`, payload);
 };
 
-export const deleteImage = (id: number) => {
-  return http.delete(`/uploads/${id}/delete`);
-};
+export const deleteImage = (id: number | string) => {
+    return http.delete(`/uploads/${id}/delete`);
+  };
 
 export const updateCommunityPost = (
   id: number,
@@ -98,12 +98,14 @@ export const getCommunityPostComments = (id: number, postId: number) => {
   return http.get(`/communities/${id}/posts/${postId}/comments`);
 };
 
-export const createCommunityPostComment = (
-  id: number,
-  postId: number,
-  payload: any
-) => {
-  return http.post(`/communities/${id}/posts/${postId}/comments`, payload);
+export const communityPostComment = (payload: {
+  communityPostId: number;
+  content: string;
+}) => {
+  return http.post(
+    `/community-post-comment/create-community-post-comment`,
+    payload
+  );
 };
 
 export const updateCommunityPostComment = (
@@ -132,15 +134,6 @@ export const likeCommunityPost = (postId: number) => {
   return http.post(`/community-post-like/create-community-post-like`, {
     communityPostId: postId,
   });
-};
-export const communityPostComment = (payload: {
-  communityPostId: number;
-  content: string;
-}) => {
-  return http.post(
-    `/community-post-comment/create-community-post-comment`,
-    payload
-  );
 };
 
 export const unlikeCommunityPost = (id: number) => {
