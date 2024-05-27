@@ -23,10 +23,7 @@ export const CommunityCard = ({
   const pathname = usePathname();
   return (
     <div className="flex items-center p-4 border-t border-gray-300 rounded-md shadow-sm">
-      <Link
-        href={`${pathname}/${id}`}
-        className="flex items-center"
-      >
+      <Link href={`${pathname}/${id}`} className="flex items-center">
         <Avatar className="w-16 h-16 md:w-54 md:h-54 mr-2 rounded-full bg-lightgray ">
           <AvatarImage src={image} alt="Profile Picture" />
         </Avatar>

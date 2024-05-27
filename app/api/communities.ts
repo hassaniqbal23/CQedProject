@@ -79,8 +79,8 @@ export const uploadImage = (payload: any) => {
 };
 
 export const deleteImage = (id: number | string) => {
-    return http.delete(`/uploads/${id}/delete`);
-  };
+  return http.delete(`/uploads/${id}/delete`);
+};
 
 export const updateCommunityPost = (
   id: number,
