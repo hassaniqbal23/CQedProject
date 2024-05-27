@@ -78,6 +78,10 @@ export const uploadImage = (payload: any) => {
   return http.post(`/uploads/upload`, payload);
 };
 
+export const deleteImage = (id: number) => {
+  return http.delete(`/uploads/${id}/delete`);
+};
+
 export const updateCommunityPost = (
   id: number,
   postId: number,

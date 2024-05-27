@@ -4,7 +4,6 @@ import * as z from 'zod';
 import { Typography } from '../Typography/Typography';
 import ImageUpload from '../ImageUpload/ImageUpload';
 import { FormField, FormMessage, Input, Form, Button } from '@/components/ui';
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,6 +13,10 @@ import Image from 'next/image';
 import { deleteImage, uploadImage } from '@/app/api/communities';
 import { useMutation } from 'react-query';
 import { toast } from 'sonner';
+import dynamic from 'next/dynamic';
+const ReactQuill = dynamic(() => import('react-quill'), {
+  ssr: false,
+});
 
 const formSchema = z.object({
   name: z.string().min(3, {
@@ -39,7 +42,7 @@ export interface CreateCommunityFormProps {
 let QuillChangeTimeout: any = null;
 
 const CreateCommunityForm = (props: CreateCommunityFormProps) => {
-  const [attachemt, setAttachment] = useState<any>();
+  const [attachment, setAttachment] = useState<any>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,7 +66,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
       },
     });
 
-  const { mutate: deleteCommnunityImage, isLoading: isDeletingCommunity } =
+  const { mutate: deleteCommunityImage, isLoading: isDeletingCommunity } =
     useMutation((id: number) => deleteImage(id), {
       onSuccess: (res) => {
         setAttachment(null);
@@ -94,9 +97,9 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
         <div className="mt-8 flex  items-center w-1/5">
           <ImageUpload
             loading={isUploadingCommunity || isDeletingCommunity || false}
-            attachmentFilepath={attachemt?.file_path}
-            attachmentID={attachemt?.id}
-            deleteProfile={deleteCommnunityImage}
+            attachmentFilepath={attachment?.file_path}
+            attachmentID={attachment?.id}
+            deleteProfile={deleteCommunityImage}
             uploadProfile={uploadCommunityImage}
           />
         </div>
