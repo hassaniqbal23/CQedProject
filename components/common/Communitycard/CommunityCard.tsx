@@ -18,6 +18,7 @@ interface IProps {
   title: string;
   imageSrc: string;
   buttonProps?: ButtonProps;
+  className?: string;
 }
 
 const Coummuntiycard: FC<IProps> = ({
@@ -26,10 +27,11 @@ const Coummuntiycard: FC<IProps> = ({
   title,
   imageSrc,
   buttonProps,
+  className = 'bg-primary-50',
 }) => {
   return (
     <div>
-      <Card className=" w-full   bg-primary-50 mb-2">
+      <Card className={` w-full mb-2 ${className}`}>
         <div className="flex items-center justify-between ">
           <div className="flex flex-row p-3">
             <div>
@@ -38,18 +40,18 @@ const Coummuntiycard: FC<IProps> = ({
               </Avatar>
             </div>
             <div className="flex ">
-              <div className="flex flex-col ">
+              <div className="flex flex-col">
                 <div>
                   <Typography variant="h5" weight={'semibold'}>
                     {title}
                   </Typography>
                 </div>
-                <div className="flex flex-row">
-                  <Users size={20} className="text-[#464650] mb-1" />
+                <div className="flex flex-row items-center">
+                  <Users size={13} className="text-[#464650] mb-1 mr-1" />
                   <CardDescription>{totalMembers} Members</CardDescription>
                 </div>
-                <div className="flex ">
-                  <MessageCircle size={20} className="text-[#464650]" />
+                <div className="flex flex-row items-center ">
+                  <MessageCircle size={13} className="text-[#464650] mr-1" />
                   <CardDescription>
                     {totalDiscussions}+ Discussions
                   </CardDescription>

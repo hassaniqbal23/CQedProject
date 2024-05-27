@@ -20,6 +20,7 @@ export const Primary: Story = {
     );
   },
   args: {
+    imageurl: '/assets/students/youngwoman.svg',
     title: 'Welcome to Classrooms',
     description:
       'Your Virtual CQED where you can help and engage with students ',

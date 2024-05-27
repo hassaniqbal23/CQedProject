@@ -73,9 +73,9 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
           />
         </div>
         <Typography
-          variant="h4"
+          variant="h5"
           children="Community Name"
-          weight="bold"
+          weight="semibold"
           className="mt-6 mb-2"
         />
         <FormField
@@ -90,9 +90,9 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
         />
 
         <Typography
-          variant="h4"
+          variant="h5"
           children="Description"
-          weight="bold"
+          weight="semibold"
           className="mt-6 mb-2"
         />
         <FormField
@@ -101,6 +101,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
           render={({ field }) => (
             <>
               <ReactQuill
+                style={{ height: '78px', marginBottom: '30px' }}
                 theme="snow"
                 placeholder="Community Description, You can write guidelines, rules or any other thing."
                 onBlur={() => {
@@ -169,10 +170,10 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
         ]}
       /> */}
         <Typography
-          variant="h4"
+          variant="h5"
           children="Community Type"
-          weight="bold"
-          className="my-2"
+          weight="semibold"
+          className="my-2 mt-16"
         />
         <FormField
           control={form.control}
