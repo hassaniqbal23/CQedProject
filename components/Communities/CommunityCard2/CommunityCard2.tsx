@@ -29,7 +29,7 @@ export const CommunityCard = ({
           <AvatarImage src={image} alt="Profile Picture" />
         </Avatar>
         <div>
-          <Typography variant="h3" weight="bold">
+          <Typography variant="h5" weight="semibold">
             {title}
           </Typography>
           <Typography variant="p" weight="regular" className="text-gray-500">

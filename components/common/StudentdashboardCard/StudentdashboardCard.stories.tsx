@@ -3,21 +3,21 @@ import type { Meta, StoryObj } from '@storybook/react';
 import friend from '/public/friends.svg';
 import diversity from '/public/diversity.svg';
 import onlineCourse from '/public/online-course.svg';
+import { StudentDashboardCard } from './StudentdashboardCard';
 
-import DashboardCard from '@/components/common/dashboardCard/DashboardCard';
-
-const meta: Meta<typeof DashboardCard> = {
-  title: 'DashboardCard',
-  component: DashboardCard,
+const meta: Meta<typeof StudentDashboardCard> = {
+  title: 'Students/DashboardCard',
+  component: StudentDashboardCard,
+  tags: ['autodocs'],
 };
 
 export default meta;
 
-type Story = StoryObj<typeof DashboardCard>;
+type Story = StoryObj<typeof StudentDashboardCard>;
 
 export const Default: Story = {
   render: (args) => (
-    <DashboardCard
+    <StudentDashboardCard
       {...args}
       title="CQ Challenges"
       description="Participate in a Challenge and Win different Prizes"
@@ -33,7 +33,7 @@ export const Default: Story = {
 
 export const Primary: Story = {
   render: (args) => (
-    <DashboardCard
+    <StudentDashboardCard
       {...args}
       title="Penpalship"
       description="Make a Global Friend"
@@ -47,7 +47,7 @@ export const Primary: Story = {
 
 export const Secondary: Story = {
   render: (args) => (
-    <DashboardCard
+    <StudentDashboardCard
       {...args}
       title="CQ Courses"
       description="Become Culturally intelligent by learning about different cultures"
