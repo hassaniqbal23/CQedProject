@@ -3,15 +3,16 @@
 import React, { useState } from 'react';
 import Chip from './Chip'; // Assuming Chip component is in the same directory
 
-export interface ChipItem {
+export interface ChipItem<T> {
   label: string;
-  value: string;
+  value: T;
   render?: (data: any) => React.ReactNode;
 }
 
-interface ChipSelectorProps {
-  options: ChipItem[];
+interface ChipSelectorProps<T> {
+  options: ChipItem<T>[];
   defaultValue?: any[];
+  value?: T;
   rounded?: boolean;
   variant?:
     | 'primary'
@@ -19,25 +20,32 @@ interface ChipSelectorProps {
     | 'outlined'
     | 'secondary-outlined'
     | 'link';
-  onChange?: (value: string[] | string) => void;
+  onChange?: (value: T[] | T) => void;
   multiSelect?: boolean;
 }
 
-const ChipSelector = ({
+function ChipSelector<T>({
   options,
   defaultValue,
   onChange,
   rounded,
   variant,
   multiSelect,
-}: ChipSelectorProps) => {
+  value,
+}: ChipSelectorProps<T>) {
   const [selectedValue, setSelectedValue] = useState(defaultValue || []);
 
   React.useEffect(() => {
-    setSelectedValue(defaultValue || []);
-  }, [defaultValue, options]);
+    if (value) {
+      if (Array.isArray(value)) {
+        setSelectedValue(value);
+      } else {
+        setSelectedValue([value]);
+      }
+    }
+  }, [value]);
 
-  const handleChipClick = (value: string) => {
+  const handleChipClick = (value: T) => {
     const isSelected = selectedValue.includes(value);
 
     if (multiSelect) {
@@ -75,6 +83,6 @@ const ChipSelector = ({
       ))}
     </div>
   );
-};
+}
 
 export default ChipSelector;

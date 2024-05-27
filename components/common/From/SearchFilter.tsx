@@ -57,16 +57,16 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
     }
   };
 
-  const categoriesOptions: ChipItem[] = [
+  const categoriesOptions: ChipItem<number>[] = [
     {
       label: `All(${totalCount})`,
-      value: '',
+      value: -1,
     },
     ...(resultTypes?.map((c) => {
       return {
         label: `${c.name}(${c._count.Communities})`,
         value: c.id,
-      } as ChipItem;
+      } as ChipItem<number>;
     }) || []),
   ];
 
@@ -139,7 +139,9 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
             variant="link"
             defaultValue={[selectedCategory]}
             onChange={(e) => {
-              onCategoryChange && onCategoryChange(e);
+              if (!Array.isArray(e)) {
+                onCategoryChange && onCategoryChange(e);
+              }
             }}
             rounded={true}
             options={categoriesOptions}

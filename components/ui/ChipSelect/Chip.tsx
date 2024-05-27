@@ -2,9 +2,9 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-interface ChipProps {
-  value: string;
-  onClick?: (value: string) => void;
+interface ChipProps<T> {
+  value: T;
+  onClick?: (value: T) => void;
   active?: boolean;
   icon?: React.ReactNode; // Accept SVG icon as prop
   children: React.ReactNode;
@@ -17,14 +17,14 @@ interface ChipProps {
     | 'link';
 }
 
-const Chip = ({
+function Chip<T>({
   value,
   onClick,
   active,
   children,
   rounded,
   variant,
-}: ChipProps) => {
+}: ChipProps<T>) {
   return (
     <div
       onClick={() => onClick && onClick(value)}
@@ -42,6 +42,6 @@ const Chip = ({
       {children}
     </div>
   );
-};
+}
 
 export default Chip;

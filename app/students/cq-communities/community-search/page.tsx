@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { SearchFilter } from '@/components/common/From/SearchFilter';
 import { getCommunities, getCommunityTypes } from '@/app/api/communities';
 import { useQuery } from 'react-query';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const CommunitySearch = () => {
-  const searchParams = useSearchParams();
   const router = useRouter();
   const [filters, setFilters] = useState<{
     q: string | null;
@@ -70,26 +69,28 @@ const CommunitySearch = () => {
   const community_types = community_types_data?.data || [];
 
   return (
-    <SearchFilter
-      title="Search results for communities"
-      buttonText="Back"
-      onInputChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-        setFilters({ ...filters, q: e.target.value });
-      }}
-      onSearchClick={(e: React.KeyboardEvent<HTMLInputElement>) => {}}
-      results={communities}
-      resultTypes={community_types}
-      totalCount={data?.totalCount || 0}
-      onRequestBack={() => {
-        router.push('/students/cq-communities');
-      }}
-      onCategoryChange={(e: number) => {
-        setFilters({ ...filters, community_type: e.toString() });
-      }}
-      onFiltersChange={(filters) => {
-        setFilters(filters);
-      }}
-    />
+    <Suspense>
+      <SearchFilter
+        title="Search results for communities"
+        buttonText="Back"
+        onInputChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setFilters({ ...filters, q: e.target.value });
+        }}
+        onSearchClick={(e: React.KeyboardEvent<HTMLInputElement>) => {}}
+        results={communities}
+        resultTypes={community_types}
+        totalCount={data?.totalCount || 0}
+        onRequestBack={() => {
+          router.push('/students/cq-communities');
+        }}
+        onCategoryChange={(e: number) => {
+          setFilters({ ...filters, community_type: e.toString() });
+        }}
+        onFiltersChange={(filters) => {
+          setFilters(filters);
+        }}
+      />
+    </Suspense>
   );
 };
 

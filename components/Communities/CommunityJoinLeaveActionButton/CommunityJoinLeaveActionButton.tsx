@@ -5,7 +5,7 @@ import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 
 export interface CommunityJoinLeaveActionButtonProps {
-  communityId: number | string;
+  communityId: number;
 }
 
 const CommunityJoinLeaveActionButton: React.FC<
