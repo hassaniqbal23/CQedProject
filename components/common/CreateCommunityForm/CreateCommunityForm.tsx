@@ -1,6 +1,6 @@
+import React, { useState } from 'react';
 import { Separator } from '@radix-ui/react-select';
 import * as z from 'zod';
-
 import { Typography } from '../Typography/Typography';
 import ImageUpload from '../ImageUpload/ImageUpload';
 import { FormField, FormMessage, Input, Form, Button } from '@/components/ui';
@@ -9,6 +9,11 @@ import 'react-quill/dist/quill.snow.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SelectV2 } from '@/components/ui/select-v2/select-v2';
+import MultipleSelector from '../From/MultiSelect';
+import Image from 'next/image';
+import { deleteImage, uploadImage } from '@/app/api/communities';
+import { useMutation } from 'react-query';
+import { toast } from 'sonner';
 
 const formSchema = z.object({
   name: z.string().min(3, {
@@ -20,20 +25,21 @@ const formSchema = z.object({
   CommunityTypeId: z.number().min(1, {
     message: 'Please select a community type',
   }),
+  students: z.array(z.number()),
 });
 
 export interface CreateCommunityFormProps {
   CommunityTypeOptions: any[];
   onFormSubmit?: (data: any) => void;
   loading?: boolean;
+  students?: any[];
+  isLoadingAllStudents?: boolean;
 }
 
 let QuillChangeTimeout: any = null;
 
 const CreateCommunityForm = (props: CreateCommunityFormProps) => {
-  const deleteProfile = (id: number) => {
-    console.log(id);
-  };
+  const [attachemt, setAttachment] = useState<any>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,9 +50,31 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
     },
   });
 
-  const uploadProfile = (value: FormData) => {
-    console.log(value);
-  };
+  const { mutate: uploadCommunityImage, isLoading: isUploadingCommunity } =
+    useMutation((file: FormData) => uploadImage(file), {
+      onSuccess: (res) => {
+        setAttachment(res.data.data);
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+        });
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    });
+
+  const { mutate: deleteCommnunityImage, isLoading: isDeletingCommunity } =
+    useMutation((id: number) => deleteImage(id), {
+      onSuccess: (res) => {
+        setAttachment(null);
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+        });
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    });
 
   const onSubmit: SubmitHandler<any> = async (data: any) => {
     if (props.onFormSubmit) {
@@ -65,11 +93,11 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
         <Separator className="h-[1px] w-full bg-[#CDD0D7] my-5 " />
         <div className="mt-8 flex  items-center w-1/5">
           <ImageUpload
-            loading={false}
-            attachmentFilepath={''}
-            attachmentID={23}
-            deleteProfile={deleteProfile}
-            uploadProfile={uploadProfile}
+            loading={isUploadingCommunity || isDeletingCommunity || false}
+            attachmentFilepath={attachemt?.file_path}
+            attachmentID={attachemt?.id}
+            deleteProfile={deleteCommnunityImage}
+            uploadProfile={uploadCommunityImage}
           />
         </div>
         <Typography
@@ -119,56 +147,6 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
           )}
         />
 
-        {/* <Typography
-        variant="h4"
-        children="Add Friends"
-        weight="bold"
-        className=" my-2"
-      /> */}
-        {/* <FormField
-        control={form.control}
-        name="name"
-        render={({ field }) => (
-          <Select defaultValue={'defaultValue'}>
-            <SelectTrigger className={` p-6`}>
-              <SelectValue placeholder={'Add Friends'} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {options.map((item, index) => {
-                  return (
-                    <SelectItem key={index} value={item.value}>
-                      {item.label}
-                    </SelectItem>
-                  );
-                })}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        )}
-      /> */}
-        {/* <ChipSelector
-        rounded={true}
-        variant="secondary-outlined"
-        options={[
-          {
-            label: 'Sophia Andrews',
-            value: 'Sophia Andrews',
-            render: (data: any) => (
-              <div className=" text-sm flex ">
-                <Avatar className="w-6 h-6 mr-1">
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="@shadcn"
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                {data.label}
-              </div>
-            ),
-          },
-        ]}
-      /> */}
         <Typography
           variant="h5"
           children="Community Type"
@@ -198,6 +176,78 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
             </>
           )}
         />
+        <Typography
+          variant="h4"
+          children="Community Type"
+          weight="bold"
+          className="my-3"
+        />
+        <FormField
+          control={form.control}
+          name="students"
+          render={({ field }) => (
+            <MultipleSelector
+              placeholder="Select language"
+              options={[
+                {
+                  label: 'India',
+                  value: 'india',
+                  disable: false,
+                  render: () => {
+                    return (
+                      <div className="flex gap-1 items-center">
+                        <Image
+                          height={30}
+                          width={30}
+                          src={'/countries/india.svg'}
+                          alt="flag"
+                        />
+                        <span className="ml-2">India</span>
+                      </div>
+                    );
+                  },
+                },
+                {
+                  label: 'Pakistan',
+                  value: 'pakistan',
+                  disable: false,
+                  render: () => {
+                    return (
+                      <div className="flex gap-1 items-center">
+                        <Image
+                          height={30}
+                          width={30}
+                          src={'/countries/pakistan.svg'}
+                          alt="flag"
+                        />
+                        <span className="ml-2">Pakistan</span>
+                      </div>
+                    );
+                  },
+                },
+                {
+                  label: 'UK',
+                  value: 'uk',
+                  disable: false,
+                  render: () => {
+                    return (
+                      <div className="flex gap-1 items-center">
+                        <Image
+                          height={30}
+                          width={30}
+                          src={'/countries/uk.svg'}
+                          alt="flag"
+                        />
+                        <span className="ml-2">UK</span>
+                      </div>
+                    );
+                  },
+                },
+              ]}
+            />
+          )}
+        />
+
         <div className="mt-6 flex">
           <Button
             type="submit"

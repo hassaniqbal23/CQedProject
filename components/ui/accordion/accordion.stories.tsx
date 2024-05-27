@@ -4,6 +4,7 @@ import { AccordionDemo } from './accordion';
 const meta: Meta<typeof AccordionDemo> = {
   title: 'Ui/Accordian',
   component: AccordionDemo,
+  tags: ['autodocs'],
 };
 export default meta;
 type Story = StoryObj<typeof AccordionDemo>;

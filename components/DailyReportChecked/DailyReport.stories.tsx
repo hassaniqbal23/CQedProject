@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { DailyReportCheckIn } from './DailyReport';
 
 const meta: Meta<typeof DailyReportCheckIn> = {
-  title: 'DailyReportCheckIn',
+  title: 'Students/DailyReportCheckIn',
   component: DailyReportCheckIn,
+  tags: ['autodocs'],
 };
 
 export default meta;
