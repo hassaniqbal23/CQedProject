@@ -18,6 +18,7 @@ const Penpalship = () => {
       </div>
       <div className="mt-2 mb-3">
         <Tabs
+          defaultValue="penpalCommunity"
           tabs={[
             { label: 'PenPal Community', value: 'penpalCommunity' },
             { label: 'AI Matches', value: 'aiMatches' },
