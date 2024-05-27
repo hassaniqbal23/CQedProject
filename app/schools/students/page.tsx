@@ -4,7 +4,12 @@ import React, { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { Invite } from '@/app/api/invitations';
 import { SendEmail } from '@/components/common/SendEmailModal/SendEmailModal';
-import { Button, Input, TabsComponent as Tabs } from '@/components/ui';
+import {
+  Button,
+  Dropdown,
+  Input,
+  TabsComponent as Tabs,
+} from '@/components/ui';
 import { Plus } from 'lucide-react';
 import Pagination from '@/components/common/pagination/pagination';
 import DataTable from '@/components/ui/table/table';
@@ -12,9 +17,9 @@ import { InvitationType, getInvites } from '@/app/api/admin';
 import { getAllStudents } from '@/app/api/students';
 import StudentsTable from '@/components/common/StudentsTable';
 import { Typography } from '@/components/common/Typography/Typography';
+import { IoEllipsisVertical } from 'react-icons/io5';
 
 function SchoolStudents() {
-  let Type = 'STUDNET';
   const [inviteStudentModal, setInviteStudentModal] = useState<boolean>(false);
   const [totalCountStudent, setTotalCountStudent] = useState<number>(1);
   const [totalCountInviteStudent, setTotalCountInviteStudent] =
@@ -38,11 +43,7 @@ function SchoolStudents() {
   const { studentPage, studentLimit } = paginationStudent;
   const { studentInvitePage, studentInviteLimit } = paginationInviteStudent;
 
-  const {
-    data,
-    refetch,
-    isLoading: isLoadingAllStudents,
-  } = useQuery(
+  const { data, isLoading: isLoadingAllStudents } = useQuery(
     ['getAllStudents', studentPage, studentLimit],
     () => getAllStudents(studentPage, studentLimit),
     {
@@ -133,12 +134,14 @@ function SchoolStudents() {
             {
               value: 'students',
               content: (
-                <div className={'pt-7'}>
-                  <Input
-                    placeholder={'Search student here... '}
-                    type={'search'}
-                    className={'mb-7'}
-                  />
+                <div>
+                  <div className="py-3">
+                    <Input
+                      placeholder="Search student here..."
+                      type="search"
+                      className=" max-w-sm  text-black rounded-full text"
+                    />
+                  </div>
                   <StudentsTable
                     data={data?.data?.data || []}
                     loading={isLoadingAllStudents}
@@ -169,9 +172,63 @@ function SchoolStudents() {
             {
               value: 'invited',
               content: (
-                <div className={'pt-8'}>
+                <div>
+                  <div className="py-3">
+                    <Input
+                      placeholder="Search student here..."
+                      type="search"
+                      className=" max-w-sm  text-black rounded-full text"
+                    />
+                  </div>
                   <DataTable
-                    columns={[{ label: 'Student email Email', key: 'email' }]}
+                    columns={[
+                      {
+                        label: 'Pending Invitation Emails',
+                        key: 'email',
+                        className: 'pl-7',
+                        render: (data) => (
+                          <div className="pl-2">{data['email']} </div>
+                        ),
+                      },
+                      {
+                        label: 'Actions',
+                        key: 'actions',
+                        className: 'flex justify-end items-center pr-7',
+                        render: (data) => {
+                          return (
+                            <div className=" flex justify-end pr-7">
+                              <Dropdown
+                                trigger={
+                                  <div>
+                                    <IoEllipsisVertical className="cursor-pointer" />
+                                  </div>
+                                }
+                                options={[
+                                  {
+                                    content: (
+                                      <div
+                                        onClick={() => {
+                                          console.log('ok');
+                                        }}
+                                      >
+                                        Resend Invite
+                                      </div>
+                                    ),
+                                  },
+                                  {
+                                    content: (
+                                      <div onClick={() => console.log('ok')}>
+                                        Remove Invite
+                                      </div>
+                                    ),
+                                  },
+                                ]}
+                              />
+                            </div>
+                          );
+                        },
+                      },
+                    ]}
                     data={invitedStudents?.data?.data || []}
                     loading={invitedStudentsLoading}
                   />

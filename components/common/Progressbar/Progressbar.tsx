@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 
 interface IProgressbarprops {
   heading: string;
@@ -29,22 +28,7 @@ function Progressbar({ percentage, heading }: IProgressbarprops) {
               transition: 'width 0.75s',
               padding: '0.5rem',
             }}
-          >
-            <span
-              className="absolute -right-1 transition-all duration-75 transform -translate-x-1/2"
-              style={{
-                top: '50%',
-                transform: 'translateY(-50%)',
-              }}
-            >
-              <Image
-                src="/Cartoon.svg"
-                width={40}
-                height={40}
-                alt="cartoon image"
-              />
-            </span>
-          </div>
+          ></div>
           <div
             className="absolute bg-primary-50 z-10 rounded-full transition-all duration-75 h-full"
             style={{

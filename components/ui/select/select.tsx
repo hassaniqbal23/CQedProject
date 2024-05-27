@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { FC, forwardRef } from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { Check, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -117,3 +117,40 @@ export {
   SelectItem,
   SelectSeparator,
 };
+
+interface ISelect {
+  options: { label: string; value: string }[];
+  onSelect?: (value: string) => void;
+  placeholder?: string | 'Please select';
+  SelectTriggerClass?: string;
+  defaultValue?: string;
+}
+
+const SelectInput: FC<ISelect> = ({
+  options,
+  onSelect,
+  placeholder,
+  SelectTriggerClass,
+  defaultValue,
+}) => {
+  return (
+    <Select defaultValue={defaultValue} onValueChange={onSelect}>
+      <SelectTrigger className={`${SelectTriggerClass} p-6`}>
+        <SelectValue placeholder={placeholder} />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          {options.map((item, index) => {
+            return (
+              <SelectItem key={index} value={item.value}>
+                {item.label}
+              </SelectItem>
+            );
+          })}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+};
+
+export { SelectInput };

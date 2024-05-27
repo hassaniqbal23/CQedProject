@@ -9,11 +9,21 @@ import React, { useState } from 'react';
 import TeachersTable from '@/components/common/TeachersTable/TeachersTable';
 import { getInvitedTeachers } from '@/app/api/teachers';
 import { Typography } from '@/components/common/Typography/Typography';
+import Pagination from '@/components/common/pagination/pagination';
 
 export default function SchoolTeachers() {
-  const [inviteStudentModal, setInviteStudentModal] = useState(false);
+  const [inviteStudentModal, setInviteStudentModal] = useState<boolean>(false);
+  const [teacherInviteCount, setTeacherInviteCount] = useState<number>(1);
+  const [paginationTeacherInvite, setPaginationTeacherInvite] = useState<{
+    teacherInvitePage: number;
+    teacherInviteLimit: number;
+  }>({
+    teacherInvitePage: 1,
+    teacherInviteLimit: 10,
+  });
+  const { teacherInviteLimit, teacherInvitePage } = paginationTeacherInvite;
 
-  const { mutate: schoolInvite, isLoading } = useMutation(
+  const { mutate: teacherInvite, isLoading } = useMutation(
     (studentData: { emails: string; type: string }) => Invite(studentData),
     {
       onSuccess: (res) => {
@@ -26,10 +36,18 @@ export default function SchoolTeachers() {
   );
 
   const { data: invitedTeachers, isLoading: isFetchingInvitedSchools } =
-    useQuery(['getInvitedTeachers'], () => getInvitedTeachers());
+    useQuery(
+      ['getInvitedTeachers', teacherInvitePage, teacherInviteLimit],
+      () => getInvitedTeachers(teacherInvitePage, teacherInviteLimit),
+      {
+        onSuccess: (res) => {
+          setTeacherInviteCount(res.data.totalCount);
+        },
+      }
+    );
 
   const onSubmit = ({ emails }: { emails: string }) => {
-    schoolInvite({ emails, type: 'SCHOOL_TEACHER' });
+    teacherInvite({ emails, type: 'SCHOOL_TEACHER' });
   };
 
   return (
@@ -68,6 +86,26 @@ export default function SchoolTeachers() {
           noDataMessage={'No Teachers'}
           loading={isFetchingInvitedSchools}
         />
+        <div className={'flex justify-end w-full mt-4'}>
+          <Pagination
+            currentPage={teacherInvitePage}
+            totalPages={Math.ceil(teacherInviteCount / teacherInviteLimit)}
+            pageSize={teacherInviteLimit}
+            onPageChange={(value: number) => {
+              setPaginationTeacherInvite((prev) => ({
+                ...prev,
+                schoolPage: value,
+              }));
+            }}
+            totalCount={teacherInviteCount}
+            setPageSize={(pageSize) =>
+              setPaginationTeacherInvite((prev) => ({
+                ...prev,
+                schoolLimit: pageSize,
+              }))
+            }
+          />
+        </div>
       </div>
       <SendEmail
         inviteLoading={isLoading}

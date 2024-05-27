@@ -111,7 +111,7 @@ export default function SchoolClassRooms() {
                 Add Subject
               </Button>
             }
-            initialValue={editSubject.name ? editSubject.name : ''}
+            initialValue={editSubject.name || ''}
             ButtonAction="Submit"
             ButtonCancel="Cancel"
             loading={isCreatingSubject || isUpdateSubject}
@@ -188,7 +188,7 @@ export default function SchoolClassRooms() {
             content: (
               <div className={'pt-4 w-full'}>
                 <GradesTable
-                  data={gradesData?.data.data || []}
+                  data={gradesData?.data?.data || []}
                   loading={gradesLoading}
                 />
               </div>

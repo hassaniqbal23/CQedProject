@@ -169,7 +169,7 @@ const DasboardDataTable = (props: DataTableProps) => {
                     >
                       Your classroom in CQED
                     </Typography>
-                    <Button className="mt-4 px-4 py-2 bg-white text-[#4146B8] border-[#4146B8] rounded">
+                    <Button className="mt-4 px-4 py-2 bg-white text-primary-500 border-primary-500rounded">
                       Create your class
                     </Button>
                   </div>

@@ -1,23 +1,34 @@
 import React from 'react';
 import Image from 'next/image';
 
-interface blogCardProps {
-  imageUrl: string;
+interface IGroupCardProps {
+  imageUrl: {
+    src: string;
+    width: number;
+    height: number;
+  };
   title: string;
   label: string;
   description: string;
 }
 
-const blogCard: React.FC<blogCardProps> = ({
+export const GroupCard: React.FC<IGroupCardProps> = ({
   imageUrl,
   title,
   label,
   description,
 }) => {
+  console.log(imageUrl, 'checkinfg');
   return (
     <div className="w-full flex flex-col p-4  bg-[#F7F7F7] rounded-sm ">
       <div>
-        <Image src={imageUrl} alt="" className="w-full" />
+        <Image
+          src={imageUrl.src}
+          alt={``}
+          height={imageUrl.height}
+          width={imageUrl.width}
+          className="w-full"
+        />
         <h2 className="text-black text-lg font-semibold mt-4">{title}</h2>
         <h3 className="text-[#08090A] text-[12px] font-semibold mt-1">
           {label}
@@ -29,5 +40,3 @@ const blogCard: React.FC<blogCardProps> = ({
     </div>
   );
 };
-
-export default blogCard;

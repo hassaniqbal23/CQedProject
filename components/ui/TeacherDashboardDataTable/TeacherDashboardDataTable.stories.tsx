@@ -21,7 +21,7 @@ const teachersDasboarddata: classroom[] = [
     Status: 'Active',
     Badge: (
       <>
-        <Badge className="bg-[#ECEDF8] text-[#4146B8] p-2">View</Badge>
+        <Badge className="bg-[#ECEDF8] text-primary-500 p-2">View</Badge>
       </>
     ),
   },
@@ -32,7 +32,7 @@ const teachersDasboarddata: classroom[] = [
     Status: 'Active',
     Badge: (
       <>
-        <Badge className="bg-[#ECEDF8] text-[#4146B8] p-2 ">View</Badge>
+        <Badge className="bg-[#ECEDF8] text-primary-500 p-2 ">View</Badge>
       </>
     ),
   },
@@ -43,7 +43,7 @@ const teachersDasboarddata: classroom[] = [
     Status: 'Active',
     Badge: (
       <>
-        <Badge className="bg-[#ECEDF8] text-[#4146B8] p-2">View</Badge>
+        <Badge className="bg-[#ECEDF8] text-primary-500 p-2">View</Badge>
       </>
     ),
   },
@@ -54,7 +54,7 @@ const teachersDasboarddata: classroom[] = [
     Status: 'Active',
     Badge: (
       <>
-        <Badge className="bg-[#ECEDF8] text-[#4146B8] p-2">View</Badge>
+        <Badge className="bg-[#ECEDF8] text-primary-500 p-2">View</Badge>
       </>
     ),
   },

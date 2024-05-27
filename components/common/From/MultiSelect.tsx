@@ -207,8 +207,6 @@ const MultipleSelector = React.forwardRef<
     const [inputValue, setInputValue] = React.useState('');
     const debouncedSearchTerm = useDebounce(inputValue, delay || 500);
 
-    console.log(arrayOptions, 'arrayOptions');
-
     React.useImperativeHandle(
       ref,
       () => ({
@@ -263,8 +261,6 @@ const MultipleSelector = React.forwardRef<
         setOptions(newOption);
       }
     }, [arrayDefaultOptions, arrayOptions, groupBy, onSearch, options]);
-
-    console.log(options, 'options state');
 
     useEffect(() => {
       const doSearch = async () => {
@@ -365,8 +361,6 @@ const MultipleSelector = React.forwardRef<
       }
       return undefined;
     }, [creatable, commandProps?.filter]);
-
-    console.log(selectables);
 
     return (
       <>
