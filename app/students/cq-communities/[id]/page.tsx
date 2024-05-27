@@ -52,15 +52,9 @@ const CQCommunity = () => {
               <CommunityDetailsCard
                 communityId={data?.data.id}
                 title={data?.data.name}
-                image={'/avatar1.svg'}
-                members="5k"
+                image={data?.data.profile_picture.file_path}
+                members={data.data?._count.CommunityUsers}
                 description={data?.data.description}
-                isMember={joinedCommunities
-                  .map((c) => c.id)
-                  .includes(data?.data?.id)}
-                onToggleMembership={() => {
-                  joinCommunityAsMember();
-                }}
               />
             </div>
             <div>

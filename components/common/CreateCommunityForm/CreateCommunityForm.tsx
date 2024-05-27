@@ -28,7 +28,7 @@ const formSchema = z.object({
   CommunityTypeId: z.number().min(1, {
     message: 'Please select a community type',
   }),
-  students: z.array(z.number()),
+  // students: z.array(z.number()),
 });
 
 export interface CreateCommunityFormProps {
@@ -81,7 +81,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
 
   const onSubmit: SubmitHandler<any> = async (data: any) => {
     if (props.onFormSubmit) {
-      props.onFormSubmit(data);
+      props.onFormSubmit({ ...data, attachmentId: attachemt.id });
     }
   };
 
@@ -185,7 +185,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
           weight="bold"
           className="my-3"
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="students"
           render={({ field }) => (
@@ -249,7 +249,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
               ]}
             />
           )}
-        />
+        /> */}
 
         <div className="mt-6 flex">
           <Button

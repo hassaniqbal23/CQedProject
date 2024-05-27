@@ -32,7 +32,7 @@ export const CommunityMembersCard = ({
         {members.map((image, index) => (
           <Avatar key={index}>
             <AvatarImage
-              src={image}
+              src={image.User.attachment.file_path}
               alt={`Member ${index + 1}`}
               className="w-16 h-16"
             />

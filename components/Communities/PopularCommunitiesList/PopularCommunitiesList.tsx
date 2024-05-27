@@ -8,6 +8,8 @@ import Loading from '@/components/ui/button/loading';
 
 export const PopularCommunitiesList = () => {
   const { data, isLoading } = useQuery('communities', () => getCommunities());
+
+  console.log(data);
   return (
     <div>
       <Typography
@@ -41,7 +43,7 @@ export const PopularCommunitiesList = () => {
                   id={item.id}
                   members={item._count.CommunityUsers}
                   key={index}
-                  image="/avatar2.svg"
+                  image={item?.profile_picture.file_path}
                 />
               ))}
           </>

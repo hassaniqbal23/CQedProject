@@ -8,9 +8,7 @@ interface CommunityDetailsCardProps {
   image: string;
   members: number | string;
   description: string;
-  isMember: boolean;
   communityId: number;
-  onToggleMembership: () => void;
 }
 
 export const CommunityDetailsCard = ({
@@ -18,9 +16,7 @@ export const CommunityDetailsCard = ({
   image,
   members,
   description,
-  isMember,
   communityId,
-  onToggleMembership,
 }: CommunityDetailsCardProps) => {
   return (
     <Card className="p-6 w-full bg-white rounded-xl shadow-md space-y-4">
@@ -44,7 +40,7 @@ export const CommunityDetailsCard = ({
       </div>
       <div>
         <Typography variant="p" weight="medium" className="">
-          {description}
+          <div dangerouslySetInnerHTML={{ __html: description }}></div>
         </Typography>
       </div>
     </Card>
