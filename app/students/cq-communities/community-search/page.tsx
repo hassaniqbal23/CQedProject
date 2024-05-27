@@ -6,7 +6,7 @@ import CommunitySearchPage from '@/components/Communities/CommunitySearchPage';
 const CommunitySearch = () => {
   return (
     <div>
-      <CommunitySearchPage />
+      <CommunitySearchPage module="students" />
     </div>
   );
 };

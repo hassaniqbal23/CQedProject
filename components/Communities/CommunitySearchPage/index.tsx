@@ -8,7 +8,11 @@ import { useQuery } from 'react-query';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 
-const CommunitySearchPage = () => {
+interface CommunitySearchPageProps {
+  module: 'students' | 'teachers';
+}
+
+const CommunitySearchPage: React.FC<CommunitySearchPageProps> = (props) => {
   const router = useRouter();
   const pathname = usePathname();
   const [filters, setFilters] = useState<{
@@ -84,12 +88,14 @@ const CommunitySearchPage = () => {
         resultTypes={community_types}
         totalCount={data?.totalCount || 0}
         onRequestBack={() => {
-          router.push(
-            pathname?.replace(`community-search?q=${filters.q}`, '') || ''
-          );
+          router.push(`/${props.module}/cq-communities`);
         }}
         onCategoryChange={(e: number) => {
-          setFilters({ ...filters, community_type: e.toString() });
+          if (e == -1) {
+            setFilters({ ...filters, community_type: null });
+          } else {
+            setFilters({ ...filters, community_type: e.toString() });
+          }
         }}
         onFiltersChange={(filters) => {
           setFilters(filters);

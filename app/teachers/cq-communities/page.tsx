@@ -6,7 +6,7 @@ import CommunitiesPage from '@/components/Communities/CommunitiesPage';
 const CQCommunities = () => {
   return (
     <div>
-      <CommunitiesPage />
+      <CommunitiesPage module="teachers" />
     </div>
   );
 };

@@ -2,8 +2,16 @@ import React from 'react';
 import { createCommunity, getCommunityTypes } from '@/app/api/communities';
 import { CreateCommunityForm } from '@/components/common/CreateCommunityForm/CreateCommunityForm';
 import { useMutation, useQuery } from 'react-query';
+import { useRouter } from 'next/navigation';
 
-const CreateCommunityPage = () => {
+interface CreateCommunityPageProps {
+  module?: 'students' | 'teachers';
+}
+
+const CreateCommunityPage: React.FC<CreateCommunityPageProps> = ({
+  module = 'students',
+}) => {
+  const router = useRouter();
   const { mutate: handleCreateCommunity, isLoading: isCreatingCommunity } =
     useMutation(
       (communityData: {
@@ -12,7 +20,9 @@ const CreateCommunityPage = () => {
         community_type: number;
       }) => createCommunity({ ...communityData, users: [] }),
       {
-        onSuccess: (res) => {},
+        onSuccess: (res) => {
+          router.push(`/${module}/cq-communities/${res.data.data.id}`);
+        },
         onError: (error: any) => {
           console.log(error, 'Error =====> log');
         },

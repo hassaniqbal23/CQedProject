@@ -34,7 +34,7 @@ export const CommunityMembersCard = ({
             <AvatarImage
               src={image?.User?.attachment?.file_path}
               alt={`Member ${index + 1}`}
-              className="w-16 h-16"
+              className="w-16 h-16 rounded-full object-cover"
             />
           </Avatar>
         ))}

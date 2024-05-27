@@ -6,7 +6,13 @@ import { CommunityCard } from '../CommunityCard2/CommunityCard2';
 import { Typography } from '@/components/common/Typography/Typography';
 import Loading from '@/components/ui/button/loading';
 
-export const PopularCommunitiesList = () => {
+interface PopularCommunitiesList {
+  module?: 'students' | 'teachers';
+}
+
+export const PopularCommunitiesList: React.FC<PopularCommunitiesList> = ({
+  module = 'students',
+}) => {
   const { data, isLoading } = useQuery('communities', () => getCommunities());
 
   console.log(data);
@@ -44,6 +50,7 @@ export const PopularCommunitiesList = () => {
                   members={item._count.CommunityUsers}
                   key={index}
                   image={item?.profile_picture.file_path}
+                  module={module}
                 />
               ))}
           </>

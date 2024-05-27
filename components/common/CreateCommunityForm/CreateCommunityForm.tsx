@@ -28,7 +28,13 @@ const formSchema = z.object({
   CommunityTypeId: z.number().min(1, {
     message: 'Please select a community type',
   }),
-  // students: z.array(z.number()),
+  attachmentId: z
+    .number({
+      message: 'Please upload an image',
+    })
+    .min(1, {
+      message: 'Please upload an image',
+    }),
 });
 
 export interface CreateCommunityFormProps {
@@ -57,6 +63,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
     useMutation((file: FormData) => uploadImage(file), {
       onSuccess: (res) => {
         setAttachment(res.data.data);
+        form.setValue('attachmentId', res.data.data.id);
         toast.success(`${res.data.message}`, {
           position: 'bottom-center',
         });
@@ -81,7 +88,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
 
   const onSubmit: SubmitHandler<any> = async (data: any) => {
     if (props.onFormSubmit) {
-      props.onFormSubmit({ ...data, attachmentId: attachment.id });
+      props.onFormSubmit({ ...data });
     }
   };
 
@@ -94,15 +101,25 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
           weight="medium"
         />
         <Separator className="h-[1px] w-full bg-[#CDD0D7] my-5 " />
-        <div className="mt-8 flex  items-center w-1/5">
-          <ImageUpload
-            loading={isUploadingCommunity || isDeletingCommunity || false}
-            attachmentFilepath={attachment?.file_path}
-            attachmentID={attachment?.id}
-            deleteProfile={deleteCommunityImage}
-            uploadProfile={uploadCommunityImage}
-          />
-        </div>
+
+        <FormField
+          control={form.control}
+          name="attachmentId"
+          render={({ field }) => (
+            <>
+              <div className="mt-8 flex  items-center w-1/5">
+                <ImageUpload
+                  loading={isUploadingCommunity || isDeletingCommunity || false}
+                  attachmentFilepath={attachment?.file_path}
+                  attachmentID={attachment?.id}
+                  deleteProfile={deleteCommunityImage}
+                  uploadProfile={uploadCommunityImage}
+                />
+              </div>
+              <FormMessage className="mt-2" />
+            </>
+          )}
+        />
         <Typography
           variant="h5"
           children="Community Name"
@@ -132,7 +149,6 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
           render={({ field }) => (
             <>
               <ReactQuill
-                style={{ height: '78px', marginBottom: '30px' }}
                 theme="snow"
                 placeholder="Community Description, You can write guidelines, rules or any other thing."
                 onBlur={() => {
@@ -145,7 +161,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
                   }, 500);
                 }}
               />
-              <FormMessage className="mt-2" />
+              <FormMessage className="mt-4" />
             </>
           )}
         />

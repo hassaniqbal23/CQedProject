@@ -10,6 +10,7 @@ interface CommunityHeaderProps {
   rightImage: string;
   leftImage: string;
   onInputChange(e: React.KeyboardEvent<HTMLInputElement>): void;
+  createCommunityLink?: string;
 }
 
 const CommunityHeader: React.FC<CommunityHeaderProps> = ({
@@ -19,6 +20,7 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
   rightImage,
   leftImage,
   onInputChange,
+  createCommunityLink = '/students/cq-communities/create',
 }) => {
   return (
     <div className="bg-primary-500 px-5 py-7">
@@ -42,7 +44,7 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
             />
           </div>
           <Link
-            href="/students/cq-communities/create"
+            href={createCommunityLink}
             className="text-lg font-normal text-white"
           >
             Or <span className="text-secondary-500">create your own.</span>{' '}

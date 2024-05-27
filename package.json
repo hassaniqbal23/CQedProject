@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3003",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "start-staging": "next start -p 3003",
+    "start-staging": "next start",
     "lint": "next lint",
     "test": "jest --config=jest.config.ts",
     "storybook": "storybook dev  --debug-webpack -p 6006",

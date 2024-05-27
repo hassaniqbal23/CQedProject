@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { getCommunity } from '@/app/api/communities';
 import Loading from '@/components/ui/button/loading';
 import { CommunityDetailsCard } from '../CommunityDetailsCard/CommnunityDetailsCard';
@@ -8,10 +8,15 @@ import { CommunityMembersCard } from '../CommunityMembersCard/CommunityMembersCa
 import { Feeds } from '../Feeds/Feeds';
 
 const Community = () => {
+  const queryClient = useQueryClient();
   const params = useParams();
   const { data, isLoading } = useQuery('community', () =>
     getCommunity(params?.id)
   );
+
+  useEffect(() => {
+    // queryClient.refetchQueries('UserJoinedCommunities');
+  }, []);
 
   return (
     <div>
