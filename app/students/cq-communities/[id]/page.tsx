@@ -39,8 +39,6 @@ const CQCommunity = () => {
     }
   );
 
-  console.log(data);
-
   return (
     <div>
       {isLoading ? (
