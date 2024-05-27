@@ -18,7 +18,7 @@ interface IProps {
   attachment?: string[];
   likes?: number;
   comments?: number;
-  onComplete?: () => void;
+  handleComment?: () => void;
   onLike?: () => void;
   onUnlike?: () => void;
   hasUserLiked?: boolean;
@@ -34,13 +34,12 @@ export const Post: FC<IProps> = ({
   likes = 0,
   comments = 0,
   hasUserLiked,
-  onComplete,
+  handleComment,
   onLike,
   onUnlike,
 }: IProps) => {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikedCount] = useState(likes);
-  const [commented, setCommented] = useState(false);
 
   useEffect(() => {
     if (hasUserLiked) setLiked(true);
@@ -54,15 +53,6 @@ export const Post: FC<IProps> = ({
     } else {
       onLike && onLike();
       setLikedCount(likeCount + 1);
-    }
-  };
-
-  const handleComment = () => {
-    setCommented(!commented);
-    if (commented) {
-      comments -= 1;
-    } else {
-      comments += 1;
     }
   };
 
@@ -111,14 +101,11 @@ export const Post: FC<IProps> = ({
                 />
                 <span>{likeCount}</span>
               </div>
-              <div
-                className="flex items-center mr-4"
-                onClick={handleComment || (onComplete && onComplete)}
-              >
+              <div className="flex items-center mr-4" onClick={handleComment}>
                 <MessageCircle
-                  className={`h-5 w-5 mr-1 cursor-pointer ${commented ? 'text-blue-500' : ''}`}
+                  className={`h-5 w-5 mr-1 cursor-pointer ${comments ? 'text-blue-500' : ''}`}
                 />
-                <span>{commented ? comments + 1 : comments}</span>
+                <span>{comments}</span>
               </div>
             </div>
             <div

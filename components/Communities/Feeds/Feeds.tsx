@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Typography } from '@/components/common/Typography/Typography';
 import { CreatePostModal } from '@/components/common/CreatePostModal/CreatePostModal';
 import { Post } from '@/components/common/Post/Post';
+import { Comment } from '@/components/Comment/Comment';
 import { useMutation, useQuery } from 'react-query';
 import {
+  communityPostComment,
   createCommunityPost,
   getCommunityPosts,
   likeCommunityPost,
@@ -13,6 +15,7 @@ import {
 import { toast } from 'sonner';
 import Loading from '@/components/ui/button/loading';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { CommentInput } from '@/components/Comment/CommentInput';
 
 interface FeedsProps {
   communityId: string | number;
@@ -20,6 +23,13 @@ interface FeedsProps {
 
 export const Feeds = ({ communityId }: FeedsProps) => {
   const { userInformation } = useGlobalState();
+  const [commentSection, setCommentSection] = useState({
+    commentId: null,
+    openCommentSection: false,
+  });
+
+  const { commentId, openCommentSection } = commentSection;
+
   const { data, isLoading, refetch } = useQuery('getCommunityPosts', () =>
     getCommunityPosts(communityId)
   );
@@ -27,6 +37,22 @@ export const Feeds = ({ communityId }: FeedsProps) => {
   const { mutate: likePost } = useMutation('likePost', (postId: number) =>
     likeCommunityPost(postId)
   );
+
+  const { mutate: communityPostCommentApi, isLoading: isCreatingComments } =
+    useMutation(
+      'createCommunityPostComment',
+      (requestBody: { id: number; content: string }) =>
+        communityPostComment({
+          communityPostId: requestBody.id,
+          content: requestBody.content,
+        }),
+      {
+        onSuccess(data, variables, context) {
+          refetch();
+          setCommentSection({ commentId: null, openCommentSection: false });
+        },
+      }
+    );
 
   const { mutate: unLikePost } = useMutation('likePost', (id: number) =>
     unlikeCommunityPost(id)
@@ -41,7 +67,6 @@ export const Feeds = ({ communityId }: FeedsProps) => {
       }),
     {
       onSuccess(data) {
-        console.log('Post created');
         toast.success('Post created successfully', {
           duration: 3000,
         });
@@ -86,27 +111,65 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                   ? true
                   : false;
                 return (
-                  <Post
-                    key={index}
-                    userFullName={item.User.name}
-                    username={item.User.name}
-                    userImage={item.User.attachment.file_path}
-                    created_at={item.created_at}
-                    description={item.content}
-                    attachment={
-                      item.community_post?.file_path
-                        ? [item.community_post?.file_path]
-                        : []
-                    }
-                    likes={item._count.likes}
-                    comments={item._count.comments}
-                    hasUserLiked={liked}
-                    onComplete={() => {
-                      alert('hello');
-                    }}
-                    onUnlike={() => unLikePost(item.id)}
-                    onLike={() => likePost(item.id)}
-                  />
+                  <>
+                    <Post
+                      key={index}
+                      userFullName={item.User.name}
+                      username={item.User.name}
+                      userImage={item.User.attachment.file_path}
+                      created_at={item.created_at}
+                      description={item.content}
+                      attachment={
+                        item.community_post?.file_path
+                          ? [item.community_post?.file_path]
+                          : []
+                      }
+                      likes={item._count.likes}
+                      comments={item._count.comments}
+                      hasUserLiked={liked}
+                      handleComment={() => {
+                        setCommentSection({
+                          commentId: !openCommentSection ? item.id : null,
+                          openCommentSection: !openCommentSection,
+                        });
+                      }}
+                      onUnlike={() => unLikePost(item.id)}
+                      onLike={() => likePost(item.id)}
+                    />
+
+                    {commentId === item.id && openCommentSection ? (
+                      <div className="py-3">
+                        <CommentInput
+                          onValueChange={(value) => {
+                            if (value) {
+                              communityPostCommentApi({
+                                id: item.id,
+                                content: value,
+                              });
+                            }
+                          }}
+                        />
+                      </div>
+                    ) : null}
+                    {item.comments && (
+                      <>
+                        {item.comments.map((comment: any) => {
+                          return (
+                            <div className="mb-3 ml-5 ">
+                              <Comment
+                                avatarUrl={
+                                  comment.imageurl ||
+                                  '/assets/profile/teacherprofile.svg'
+                                }
+                                text={comment?.content}
+                                user={comment?.User?.name}
+                              />
+                            </div>
+                          );
+                        })}
+                      </>
+                    )}
+                  </>
                 );
               })}
             </>

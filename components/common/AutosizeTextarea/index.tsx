@@ -86,8 +86,6 @@ export const AutosizeTextarea = React.forwardRef<
       minHeight,
     }));
 
-    console.log(minHeight);
-
     React.useEffect(() => {
       if (value || props?.defaultValue) {
         setTriggerAutoSize(value as string);

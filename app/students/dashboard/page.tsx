@@ -7,9 +7,11 @@ import { Typography } from '@/components/common/Typography/Typography';
 import { StudentDashboardCard } from '@/components/common/StudentdashboardCard/StudentdashboardCard';
 import { Card, CardContent, CardHeader } from '@/components/ui';
 import { MoveRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function StudentDashboard() {
+  const route = useRouter();
   return (
     <div>
       <ClassRoomHeader
@@ -31,7 +33,7 @@ export default function StudentDashboard() {
             <div className="col-span-1">
               <StudentDashboardCard
                 className="h-64"
-                buttonOnClick={() => {}}
+                buttonOnClick={() => route.push('/students/penpalship')}
                 buttonText="Start"
                 cardType="primary"
                 description="Make a Global Friend"
@@ -46,7 +48,7 @@ export default function StudentDashboard() {
             <div className="col-span-1">
               <StudentDashboardCard
                 className="h-64"
-                buttonOnClick={() => {}}
+                buttonOnClick={() => route.push('/students/cq-communities')}
                 buttonText="Start"
                 cardType="default"
                 description="Explore CQ Communities "
@@ -62,7 +64,7 @@ export default function StudentDashboard() {
           <div className="grid grid-rows-1 grid-cols-1 gap-3 mt-2">
             <div className="col-span-1">
               <StudentDashboardCard
-                buttonOnClick={() => {}}
+                buttonOnClick={() => route.push('/students/cq-courses')}
                 buttonText="Explore Courses"
                 cardType="primary"
                 description="Learn more about your own culture and about all the other amazing cultures of the world. "

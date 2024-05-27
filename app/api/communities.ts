@@ -133,6 +133,15 @@ export const likeCommunityPost = (postId: number) => {
     communityPostId: postId,
   });
 };
+export const communityPostComment = (payload: {
+  communityPostId: number;
+  content: string;
+}) => {
+  return http.post(
+    `/community-post-comment/create-community-post-comment`,
+    payload
+  );
+};
 
 export const unlikeCommunityPost = (id: number) => {
   return http.delete(`/community-post-like/${id}/delete-community-post-like`);
