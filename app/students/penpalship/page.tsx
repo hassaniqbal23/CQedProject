@@ -6,6 +6,7 @@ import { Info } from 'lucide-react';
 import { TabsComponent as Tabs } from '@/components/ui';
 import { PenPalCommunity } from './(components)/penpalCommunity/penPalCommunity';
 import { AiMatch } from './(components)/aiMatch/aiMatch';
+import { MyPenpals } from './(components)/MyPenPals/MyPenpals';
 
 const Penpalship = () => {
   return (
@@ -48,7 +49,7 @@ const Penpalship = () => {
             },
             {
               value: 'myPenpals',
-              content: <div className="mt-5">My Penpals</div>,
+              content: <MyPenpals></MyPenpals>,
             },
           ]}
           variant="secondary"

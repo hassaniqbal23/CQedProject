@@ -5,20 +5,21 @@ import { Button } from '@/components/ui';
 import { Card } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 
-interface PenpalshipNewilyJoinedCardProps {
+interface PenpalshipCardProps {
   title?: string;
   label?: string;
   imgPath: string;
   buttonText?: string;
   description?: string;
   buttonOnClick: () => void;
+  buttonLoading?: boolean;
   countryFlag: string;
   countryName: string;
   studentAge: string | number;
   mutualFriends?: string | number;
 }
 
-const PenpalshipNewilyJoinedCard: React.FC<PenpalshipNewilyJoinedCardProps> = ({
+const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   title,
   imgPath,
   buttonText,
@@ -28,6 +29,7 @@ const PenpalshipNewilyJoinedCard: React.FC<PenpalshipNewilyJoinedCardProps> = ({
   countryFlag,
   countryName,
   studentAge,
+  buttonLoading,
 }) => {
   return (
     <Card>
@@ -37,13 +39,14 @@ const PenpalshipNewilyJoinedCard: React.FC<PenpalshipNewilyJoinedCardProps> = ({
             <Image
               src={imgPath}
               alt=""
-              className="  rounded-xl mt-2"
+              className="rounded-xl mt-2"
               width={70}
               height={70}
             />
             <Button
               onClick={buttonOnClick}
               className="rounded-full bg-[#ECEDF8] text-primary-500 w-32 h-12 "
+              loading={buttonLoading}
             >
               {buttonText}
             </Button>
@@ -105,4 +108,4 @@ const PenpalshipNewilyJoinedCard: React.FC<PenpalshipNewilyJoinedCardProps> = ({
   );
 };
 
-export { PenpalshipNewilyJoinedCard };
+export { PenpalshipCard };

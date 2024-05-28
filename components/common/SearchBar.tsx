@@ -16,7 +16,7 @@ const SearchBar: FC<IProps> = ({
   className,
   placeholder,
   inputValue,
-  inputClassName,
+  inputClassName = 'w-[166px]',
 }) => {
   const handleSearchTermChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (setSearchTerm) {
@@ -28,7 +28,7 @@ const SearchBar: FC<IProps> = ({
     <div className={cn(className)}>
       {setSearchTerm && (
         <div
-          className={`border flex items-center rounded-md w-[166px] ${inputClassName}`}
+          className={`border flex items-center rounded-md ${inputClassName}`}
         >
           <IoSearchOutline
             className={`text-[18px] text-right ml-[15px]  w-[20px] h-[20px]`}

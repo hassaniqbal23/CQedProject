@@ -1,3 +1,3 @@
-export * from './PenpalshipNewilyJoinedCard/PenpalshipNewilyJoinedCard';
+export * from './PenpalshipCard/PenpalshipCard';
 export * from './PenpalshipPublishStoryCard/PenpalshipPublishStoryCard';
 export * from './PenpalshipStoriesCard/PenpalshipStoriesCard';

@@ -1,6 +1,7 @@
 'use client';
 import { AutosizeTextarea } from '@/components/common/AutosizeTextarea';
 import {
+  Avatar,
   Button,
   Form,
   FormControl,
@@ -13,6 +14,7 @@ import { useForm } from 'react-hook-form';
 import EmojiPicker from 'emoji-picker-react';
 import Image from 'next/image';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { AvatarImage } from '@radix-ui/react-avatar';
 
 interface IProps {
   onValueChange?: (value: string) => void;
@@ -63,12 +65,12 @@ const CommentInput: FC<IProps> = ({ onValueChange }) => {
         onSubmit={handleSubmit(onSubmit)}
         className="flex items-center w-full gap-2 "
       >
-        <Image
-          src={userInformation?.attachment.file_path || '/images/avatar.png'}
-          height={32}
-          width={32}
-          alt="comment ist"
-        />
+        <Avatar className="w-14 h-14 rounded-full bg-lightgray absolute top-5 right-10 ">
+          <AvatarImage
+            src={userInformation?.attachment.file_path || '/images/avatar.png'}
+            alt={''}
+          />
+        </Avatar>
         <FormField
           name="content"
           render={({ field }) => {
@@ -79,7 +81,7 @@ const CommentInput: FC<IProps> = ({ onValueChange }) => {
                     <AutosizeTextarea
                       placeholder="Enter your comment"
                       {...field}
-                      className={`pb-auto rounded-full'}`}
+                      className={`pb-auto rounded-full resize-none bg-[#F3F3F3] border-none outline-none ring-0`}
                       icon={
                         <div className="flex gap-2 " ref={emojiPickerRef}>
                           <EmojiPicker
