@@ -19,6 +19,7 @@ interface InputProps {
   autocomplete?: string;
   required?: boolean;
   rounded?: boolean;
+  accept?: string;
   onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 }
 
@@ -41,6 +42,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       autocomplete = 'off',
       rounded = false, // Default value for rounded
       onKeyDown,
+      accept,
       ...props
     },
     ref
@@ -69,6 +71,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             type={inputType}
             id={id}
             name={name}
+            accept={accept}
             value={value}
             onChange={onChange}
             onBlur={onBlur}

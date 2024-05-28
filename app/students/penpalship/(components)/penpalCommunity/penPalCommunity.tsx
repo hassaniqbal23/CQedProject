@@ -4,17 +4,23 @@ import {
   PenpalshipPublishStoryCard,
   PenpalshipStoriesCard,
 } from '@/components/Penpalship';
+import { PublishStoryViewDialog } from '@/components/common/PublishStoryViewDialog/PublishStoryViewDialog';
 import { Typography } from '@/components/common/Typography/Typography';
 import { PublishStoryDialog } from '@/components/ui/PublishStoryDialog/PublishStoryDialog';
 import Loading from '@/components/ui/button/loading';
-import React from 'react';
+import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useRouter } from 'next/navigation';
+import { UserCreateStories, getAllUserStories } from '@/app/api/users';
 
 export const PenPalCommunity = () => {
   const queryCLient = useQueryClient();
+  const route = useRouter();
   const [creatingPanpalId, setCreatingPanpalId] = React.useState<number | null>(
     null
   );
+  const [openStoryModal, setOpenStroyModal] = useState<boolean>(false);
+  const [viewStoryModal, setViewStoryModal] = useState<boolean>(false);
 
   const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
     useMutation((id) => createPenpal({ receiverId: id }), {
@@ -26,6 +32,32 @@ export const PenPalCommunity = () => {
         console.error(error, 'Error =====> log');
       },
     });
+
+  const { mutate: createUserStories, isLoading: isCreatingStories } =
+    useMutation((story: string) => UserCreateStories({ story: story }), {
+      onSuccess: (res) => {
+        queryCLient.refetchQueries('getAllUserStories');
+        setOpenStroyModal(false);
+      },
+      onError: (error) => {
+        console.error(error, 'Error =====> log');
+      },
+    });
+
+  const { data: AllUserStories, isLoading: isGetingUserStories } = useQuery(
+    ['getAllUserStories'],
+    () =>
+      getAllUserStories().then((res) => {
+        return res.data.data;
+      }),
+    {
+      enabled: true,
+      onSuccess: (res) => {},
+      onError(err) {
+        console.log(err);
+      },
+    }
+  );
 
   const { data: suggestionsResponse, isLoading } = useQuery(
     ['penpalSuggestions'],
@@ -54,35 +86,59 @@ export const PenPalCommunity = () => {
   return (
     <>
       <div className="mb-8">
-        <Typography variant={'h3'} weight={'bold'} className="mb-4">
+        <Typography variant={'h3'} weight={'semibold'} className="mb-4">
           Stories
         </Typography>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          <PublishStoryDialog
-            onPublish={(story) => {
-              alert(story);
+          <PenpalshipPublishStoryCard
+            title={'Publish your story'}
+            iconOnClick={() => {
+              setOpenStroyModal(!openStoryModal);
             }}
-          >
-            <div>
-              <PenpalshipPublishStoryCard
-                title={'Publish your story'}
-                iconOnClick={() => {
-                  console.log('upload your image');
-                }}
-              />
-            </div>
-          </PublishStoryDialog>
-          {[1, 2, 3].map((item, index) => (
+          />
+          <PublishStoryDialog
+            loading={isCreatingStories}
+            open={openStoryModal}
+            onClose={() => {
+              setOpenStroyModal(false);
+            }}
+            onOpenChange={() => {
+              setOpenStroyModal(false);
+            }}
+            onPublish={(story) => {
+              createUserStories(story);
+            }}
+          />
+
+          {AllUserStories?.map((item: any, index: number) => (
             <PenpalshipStoriesCard
               key={index}
-              imgPath={'/Emily.png'}
-              title={'Emily - 12 - UK'}
+              imgPath={item?.User?.attachment?.file_path}
+              title={item?.User?.profile[0]?.fullname}
               link={'Read more'}
-              description={
-                'Hi I am Lily, an 8-year-old form United States with a passion for drawing and a heart full love'
-              }
+              onClickReadMore={() => {
+                setViewStoryModal(!viewStoryModal);
+              }}
+              description={item.story}
             />
           ))}
+
+          <PublishStoryViewDialog
+            initialValue="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti laboriosam cupiditate repellendus eius! Aperiam totam illum, ducimus iusto labore doloremque quis iste saepe, eligendi accusantium e"
+            open={viewStoryModal}
+            onClose={() => {
+              setViewStoryModal(false);
+            }}
+            onReply={() => route.push('/students/chats')}
+            userInfo={{
+              username: 'Inayat - 12',
+              location: {
+                name: 'Pakistan',
+                flag: '/assets/flags/pakistanFlagLogo.svg',
+              },
+              imageUrl: '/assets/profile/profile.svg',
+            }}
+          />
         </div>
       </div>
       <div>

@@ -17,10 +17,13 @@ export const Comment: React.FC<CommentProps> = ({
   created_at,
 }) => {
   return (
-    <div className="p-4 border rounded-lg">
+    <div className="p-4  rounded-lg">
       <div className="flex items-start">
         <Avatar className="w-14 h-14 ">
-          <AvatarImage src={avatarUrl} alt={`Profile Picture-${user}`} />
+          <AvatarImage
+            src={avatarUrl || '/assets/profile/profile.svg'}
+            alt={`Profile Picture-${user}`}
+          />
         </Avatar>
         <div className="ml-4 w-full">
           <div className="flex items-center justify-between">

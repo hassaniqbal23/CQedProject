@@ -11,13 +11,18 @@ export interface MyPenpalsProps {}
 
 export const MyPenpals: React.FC<MyPenpalsProps> = () => {
   const { userInformation } = useGlobalState();
-  const { data, isLoading } = useQuery(['getMyPenpals'], () => myPenpals(), {
-    enabled: true,
-    onSuccess: (res) => {},
-    onError(err) {
-      console.log(err);
-    },
-  });
+
+  const { data, isLoading, isError } = useQuery(
+    ['getMyPenpals'],
+    () => myPenpals(),
+    {
+      enabled: true,
+      onSuccess: (res) => {},
+      onError(err) {
+        console.log(err);
+      },
+    }
+  );
 
   const penpals = React.useMemo(() => {
     let list = data ? data.data.data || [] : [];
@@ -34,13 +39,13 @@ export const MyPenpals: React.FC<MyPenpalsProps> = () => {
 
   return (
     <div>
-      <div className="flex py-5 items-center">
-        <Typography variant={'h2'} weight={'medium'} className="mb-4">
+      <div className="flex py-5 justify-between flex-wrap items-end">
+        <Typography variant={'h3'} weight={'semibold'} className="mb-4">
           My Penpals
         </Typography>
-        <div className="ml-auto">
+        <div className="">
           <SearchBar
-            inputClassName="w-full"
+            inputClassName="w-full rounded-full"
             setSearchTerm={() => {}}
             placeholder="Search for Penpal"
           ></SearchBar>
@@ -69,7 +74,13 @@ export const MyPenpals: React.FC<MyPenpalsProps> = () => {
       ) : (
         <></>
       )}
-      {isLoading ? <Loading></Loading> : <></>}
+      {isLoading ? (
+        <div className="flex justify-center items-center py-10">
+          <Loading></Loading>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

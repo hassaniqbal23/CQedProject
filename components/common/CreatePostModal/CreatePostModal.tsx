@@ -21,6 +21,7 @@ interface CreatePostModalProps {
   buttonAction?: string;
   icon: string;
   onPublish?: (data: any) => void;
+  buttonActionLoading?: boolean;
 }
 
 export const CreatePostModal = ({
@@ -30,6 +31,7 @@ export const CreatePostModal = ({
   buttonAction,
   buttonTrigger,
   onPublish,
+  buttonActionLoading,
 }: CreatePostModalProps) => {
   const [showUpload, setShowUpload] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -54,26 +56,17 @@ export const CreatePostModal = ({
     setShowEmojiPicker(false);
   };
 
-  const handleSearchInputFocus = () => {
-    setSearchInputFocused(true);
-  };
-
-  const handleSearchInputBlur = () => {
-    setSearchInputFocused(false);
-  };
-
   const handleFileUploadClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
 
-  const { mutate: uploadPost } = useMutation(
+  const { mutate: uploadPost, isLoading: isUploadingPost } = useMutation(
     'post-upload',
     (data: FormData) => uploadImage(data),
     {
       onSuccess: (data) => {
-        console.log(data, 'data');
         setUploadedImage(data.data?.data);
       },
       onError: (error) => {
@@ -116,6 +109,8 @@ export const CreatePostModal = ({
   const handleOkClick = () => {
     onPublish &&
       onPublish({ content: textAreaValue, attachment_id: uploadedImage?.id });
+    setTextAreaValue('');
+    setUploadedImage(null);
     setIsVisible(false);
   };
 
@@ -188,6 +183,7 @@ export const CreatePostModal = ({
           <Button
             variant={'default'}
             size={'md'}
+            loading={isUploadingPost}
             className="mt-2 rounded-full"
             onClick={handleFileUploadClick}
           >
@@ -195,6 +191,7 @@ export const CreatePostModal = ({
             <Input
               type="file"
               id="picture"
+              accept="image/*"
               className="hidden"
               ref={fileInputRef}
               onChange={handleFileChange}
@@ -202,7 +199,7 @@ export const CreatePostModal = ({
           </Button>
         </div>
       )}
-      <div className="flex flex-col sm:flex-row justify-between mt-3 p-2">
+      <div className="flex flex-wrap flex-col sm:flex-row justify-between mt-3 p-2">
         <div className="flex flex-col sm:flex-row ml-3">
           <div
             onClick={handleShowUpload}
@@ -256,6 +253,7 @@ export const CreatePostModal = ({
           type="submit"
           className="rounded-full w-full sm:w-auto"
           size="md"
+          loading={buttonActionLoading}
           onClick={handleOkClick}
         >
           {buttonAction}

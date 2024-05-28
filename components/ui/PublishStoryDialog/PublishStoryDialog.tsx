@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -15,6 +15,7 @@ import {
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { X } from 'lucide-react';
 
 const formSchema = z.object({
   story: z
@@ -29,16 +30,20 @@ const formSchema = z.object({
 export interface PublishStoryDialogProps {
   onPublish: (story: string) => void;
   loading?: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: () => void;
+  onClose?: () => void;
 }
 
 export const PublishStoryDialog: React.FC<PublishStoryDialogProps> = ({
   onPublish,
   children,
   loading,
+  open,
+  onOpenChange,
+  onClose,
 }) => {
-  const [story, setStory] = useState<string>('');
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,18 +51,27 @@ export const PublishStoryDialog: React.FC<PublishStoryDialogProps> = ({
     },
   });
 
+  useEffect(() => {
+    if (!open) {
+      form.reset();
+    }
+  }, [open]);
+
   const onSubmit = form.handleSubmit((values) => {
     onPublish(values.story);
   });
 
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
-      <AlertDialogContent className="max-w-[400px]">
+      <AlertDialogContent className="max-w-[500px]">
         <Form {...form}>
           <form onSubmit={onSubmit} className="space-y-4">
-            <AlertDialogHeader className="">
-              <AlertDialogTitle>Write about yourself</AlertDialogTitle>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="flex justify-between items-center">
+                Write about yourself
+                <X className="cursor-pointer" onClick={onClose} />
+              </AlertDialogTitle>
             </AlertDialogHeader>
 
             <FormField

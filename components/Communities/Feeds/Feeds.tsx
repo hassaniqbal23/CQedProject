@@ -30,9 +30,11 @@ export const Feeds = ({ communityId }: FeedsProps) => {
 
   const { commentId, openCommentSection } = commentSection;
 
-  const { data, isLoading, refetch } = useQuery('getCommunityPosts', () =>
-    getCommunityPosts(communityId)
-  );
+  const {
+    data: communityPosts,
+    isLoading,
+    refetch,
+  } = useQuery('getCommunityPosts', () => getCommunityPosts(communityId));
 
   const { mutate: likePost } = useMutation('likePost', (postId: number) =>
     likeCommunityPost(postId)
@@ -58,7 +60,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
     unlikeCommunityPost(id)
   );
 
-  const { mutate: createPost } = useMutation(
+  const { mutate: createPost, isLoading: isCreatingPost } = useMutation(
     ['createPost'],
     (data: { content: string }) =>
       createCommunityPost({
@@ -74,8 +76,6 @@ export const Feeds = ({ communityId }: FeedsProps) => {
       },
     }
   );
-
-  console.log(data);
 
   return (
     <div className="mt-6 p-6 w-full bg-white rounded-xl shadow-md space-y-4">
@@ -96,6 +96,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
             title="Create a post"
             buttonTrigger={'Add Post'}
             buttonAction="Publish"
+            buttonActionLoading={isCreatingPost}
             onPublish={(data) => createPost(data)}
           />
         </div>
@@ -106,19 +107,19 @@ export const Feeds = ({ communityId }: FeedsProps) => {
             </div>
           ) : (
             <>
-              {data?.data?.map((item: any, index: number) => {
+              {communityPosts?.data?.map((item: any, index: number) => {
                 const liked = item.likes.find(
                   (i: any) => i.userId === userInformation?.id
                 )
                   ? true
                   : false;
                 return (
-                  <>
+                  <div key={index}>
                     <Post
                       key={index}
                       userFullName={item.User.name}
                       username={item.User.name}
-                      userImage={item.User.attachment.file_path}
+                      userImage={item.User?.attachment?.file_path}
                       created_at={item.created_at}
                       description={item.content}
                       attachment={
@@ -155,12 +156,12 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                     ) : null}
                     {item.comments && (
                       <>
-                        {item.comments.map((comment: any) => {
+                        {item.comments.map((comment: any, index: number) => {
                           return (
-                            <div className="mb-3 ml-5 ">
+                            <div className="mb-3 ml-5 " key={index}>
                               <Comment
                                 avatarUrl={
-                                  comment.User.attachment.file_path ||
+                                  comment.User?.attachment?.file_path ||
                                   '/assets/profile/teacherprofile.svg'
                                 }
                                 text={comment?.content}
@@ -172,7 +173,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                         })}
                       </>
                     )}
-                  </>
+                  </div>
                 );
               })}
             </>

@@ -65,9 +65,13 @@ const CommentInput: FC<IProps> = ({ onValueChange }) => {
         onSubmit={handleSubmit(onSubmit)}
         className="flex items-center w-full gap-2"
       >
-        <Avatar className="w-8 h-8 md:w-54 md:h-54 rounded-full bg-lightgray mb-3">
+        <Avatar className="w-9 h-9 md:w-54 md:h-54 rounded-full bg-lightgray ">
           <AvatarImage
-            src={userInformation?.attachment.file_path}
+            className="m-0 w-full"
+            src={
+              userInformation?.attachment.file_path ||
+              '/assets/profile/profile.svg'
+            }
             alt="Profile Picture"
           />
         </Avatar>

@@ -84,7 +84,7 @@ export const Post: FC<IProps> = ({
           {attachment && attachment.length > 0 && (
             <div className="mt-4 md:mt-0">
               <Image
-                className="w-full max-h-56 rounded-lg cursor-pointer object-contain"
+                className="w-full max-h-96 rounded-lg cursor-pointer"
                 loading="lazy"
                 alt="lvvvvvvvvvvvvvvvvvv"
                 src={attachment[0]}
