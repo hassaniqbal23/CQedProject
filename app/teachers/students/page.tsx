@@ -1,17 +1,17 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-// import http from '@/app/utils/http';
-import { IoEllipsisVertical } from 'react-icons/io5';
 import { PlusIcon } from 'lucide-react';
 import DataTable from '@/components/ui/table/table';
 import { Button } from '@/components/ui';
 import MultipleSelector from '@/components/common/From/MultiSelect';
 import { Input } from '@/components/ui';
+import Link from 'next/link';
 interface Student {
   fullname: string;
   nick_name?: string;
   gender: string;
   status: boolean;
+  id: number;
 }
 
 export default function TeacherStudents() {
@@ -24,18 +24,21 @@ export default function TeacherStudents() {
         nick_name: 'Jhonny',
         gender: 'Male',
         status: true,
+        id: 1,
       },
       {
         fullname: 'Jane Doe',
         nick_name: 'Janie',
         gender: 'Female',
         status: false,
+        id: 2,
       },
       {
         fullname: 'Jack Doe',
         nick_name: 'Jackie',
         gender: 'Male',
         status: true,
+        id: 3,
       },
     ]);
   }, []);
@@ -75,7 +78,20 @@ export default function TeacherStudents() {
           selection={true}
           noDataMessage={'No Students'}
           columns={[
-            { label: 'Full Name', key: 'fullname' },
+            {
+              label: 'Full Name',
+              key: 'fullname',
+              render: (row) => {
+                return (
+                  <Link
+                    className="text-primary-500"
+                    href={`/teachers/students/${row.id}`}
+                  >
+                    {row.fullname || 'N/A'}
+                  </Link>
+                );
+              },
+            },
             {
               label: 'Nick Name',
               key: 'nick_name',

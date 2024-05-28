@@ -71,7 +71,7 @@ export const DeleteClassDialog = ({
             </Button>
             <Button
               onClick={() => onClose && onClose()}
-              className="w-full text-[#4146B8] bg-white "
+              className="w-full text-primary-500 bg-white "
             >
               {ButtonCancel}
             </Button>

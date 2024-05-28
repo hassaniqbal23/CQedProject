@@ -11,7 +11,7 @@ interface IProps {
 const SidebarMobileItem: FC<IProps> = ({ sidebarLinks, pathname }) => {
   return (
     <li
-      className={`flex justify-center py-5 px-5 hover:bg-[#3F1C9F] ${pathname === sidebarLinks?.path ? 'bg-[#3F1C9F]' : ''} `}
+      className={`flex justify-center py-5 px-5 hover:bg-primary-600 ${pathname === sidebarLinks?.path ? 'bg-primary-600 ' : ''} `}
     >
       <Link
         href={sidebarLinks.path}

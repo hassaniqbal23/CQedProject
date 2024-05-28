@@ -8,6 +8,10 @@ import { Mail, MapPin, Phone } from 'lucide-react';
 import { getSchoolByID } from '@/app/api/schools';
 import { useQuery } from 'react-query';
 import { ISchoolProfile } from '@/types/school';
+import { Card } from '@/components/ui';
+import { TeacherProfileCard } from '../../teacherProfile/TeacherProfileCard';
+import { Typography } from '../../Typography/Typography';
+import Link from 'next/link';
 
 interface IProps {
   id: number;
@@ -16,6 +20,42 @@ export const SchoolProfileView: FC<IProps> = ({ id }) => {
   const { data: getProfileData } = useQuery(['getSchoolByID', id], () =>
     getSchoolByID(id).then((res) => res?.data?.data as ISchoolProfile)
   );
+  const teachers = [
+    {
+      profileImg: '/assets/teacher/EthanAvatar.svg',
+      about:
+        'Hi I am Ethan, an 8-year-old form United States with a passion for drawing and a heart full love',
+      name: 'Ethan',
+      buttonText: 'View Profile',
+      href: '/admin',
+    },
+
+    {
+      profileImg: '/assets/teacher/EthanAvatar.svg',
+      about:
+        'Hi I am Ethan, an 8-year-old form United States with a passion for drawing and a heart full love',
+      name: 'Lily',
+      buttonText: 'View Profile',
+      href: '/admin',
+    },
+
+    {
+      profileImg: '/assets/teacher/EthanAvatar.svg',
+      about:
+        'Hi I am Ethan, an 8-year-old form United States with a passion for drawing and a heart full love',
+      name: 'Moominmadeness',
+      buttonText: 'View Profile',
+      href: '/admin',
+    },
+    {
+      profileImg: '/assets/teacher/EthanAvatar.svg',
+      about:
+        'Hi I am Ethan, an 8-year-old form United States with a passion for drawing and a heart full love',
+      name: 'Ethan',
+      buttonText: 'View Profile',
+      href: '/admin',
+    },
+  ];
 
   return (
     <div className="space-y-4">
@@ -62,6 +102,38 @@ export const SchoolProfileView: FC<IProps> = ({ id }) => {
           />
         </div>
       </div>
+
+      <Card className="py-4">
+        <div className={'w-full flex px-7 py-4'}>
+          <div className={'flex gap-2 items-center'}>
+            <Typography variant={'h4'} weight={'semibold'}>
+              Teachers
+            </Typography>
+          </div>
+          <div className={'ml-auto'}>
+            <Link className="text-primary-500" href={'#'}>
+              View all
+            </Link>
+          </div>
+        </div>
+        <div className="grid grid-cols-12 px-7 gap-3 space-x-3 ">
+          {teachers &&
+            teachers?.map((teacher, index) => (
+              <div
+                key={index}
+                className="col-span-12 md:col-span-4 lg:col-span-3"
+              >
+                <TeacherProfileCard
+                  profileImg={teacher?.profileImg || ''}
+                  name={teacher?.name || ''}
+                  about={teacher?.about || ''}
+                  href={teacher?.href || ''}
+                  buttonText={teacher?.buttonText || ''}
+                />
+              </div>
+            ))}
+        </div>
+      </Card>
     </div>
   );
 };

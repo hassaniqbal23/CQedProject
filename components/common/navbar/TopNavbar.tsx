@@ -21,9 +21,9 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
     >
       <div className="flex items-center">
         <Image
-          src={'/assets/logos/topnavLogo.svg'}
-          width={90}
-          height={90}
+          src={'/assets/GCEd/NavGCEd.svg'}
+          width={180}
+          height={56}
           alt="logo"
         />
       </div>
@@ -34,7 +34,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
             icon={<LogOut />}
             iconPosition="left"
             onClick={onLogout}
-            className=" font-montserrat font-semibold text-sm md:text-base ml-2 text-[#222] bg-[#ECEDF8] "
+            className=" font-montserrat rounded-3xl px-4 font-semibold text-sm md:text-base ml-2 text-[#222] bg-[#ECEDF8] "
           >
             Logout
           </Button>

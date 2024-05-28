@@ -4,8 +4,11 @@ import { Dropdown } from '@/components/ui';
 import DataTable from '@/components/ui/table/table';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { IoEllipsisVertical } from 'react-icons/io5';
+import { DeleteClassDialog } from '../DeleteClassModal/DeleteClassModal';
+import { deleteTeacher } from '@/app/api/teachers';
+import { useMutation, useQueryClient } from 'react-query';
 
 export interface TeachersTableProps {
   data: any;
@@ -14,6 +17,32 @@ export interface TeachersTableProps {
 }
 
 function TeachersTable(props: TeachersTableProps) {
+  const useClient = useQueryClient();
+  const [isSelectTeacher, setIsSelectTeacher] = useState<{
+    id: number | null;
+    isOpenModal: boolean;
+  }>({
+    id: null,
+    isOpenModal: false,
+  });
+  const { id, isOpenModal } = isSelectTeacher;
+
+  const { mutate: deleteTeacherAPi, isLoading } = useMutation(
+    (id: number) => deleteTeacher(id),
+    {
+      onSuccess: (res) => {
+        useClient.invalidateQueries('getInvitedTeachers');
+        setIsSelectTeacher({
+          id: null,
+          isOpenModal: false,
+        });
+      },
+      onError(error, variables, context) {
+        console.log(error);
+      },
+    }
+  );
+
   return (
     <div className="w-full">
       <DataTable
@@ -97,7 +126,14 @@ function TeachersTable(props: TeachersTableProps) {
                       },
                       {
                         content: (
-                          <div onClick={() => console.log('akmsdkasd')}>
+                          <div
+                            onClick={() =>
+                              setIsSelectTeacher({
+                                id: data.id,
+                                isOpenModal: true,
+                              })
+                            }
+                          >
                             Remove Teacher
                           </div>
                         ),
@@ -109,6 +145,20 @@ function TeachersTable(props: TeachersTableProps) {
             },
           },
         ]}
+      />
+      <DeleteClassDialog
+        title="Remove teacher?  "
+        description="Are you sure want to remove  teacher"
+        ButtonAction="Delete this teacher"
+        ButtonCancel="Cancel"
+        open={isOpenModal}
+        onClose={() => setIsSelectTeacher({ id: null, isOpenModal: false })}
+        onClickOk={() => {
+          if (id) {
+            deleteTeacherAPi(id);
+          }
+        }}
+        okLoading={isLoading}
       />
     </div>
   );

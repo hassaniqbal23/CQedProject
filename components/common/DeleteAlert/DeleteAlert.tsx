@@ -26,7 +26,7 @@ const Delete: FC<IProps> = ({
       footer={
         <div className="wrap-button flex flex-col md:flex-row justify-end md:items-center gap-4 mt-4 md:mt-6">
           <Button
-            className="btn1 h-10 md:h-[42px] px-6 md:px-[40px] justify-center items-center flex-shrink-0 rounded-full shadow-btn font-bold font-montserrat text-base border border-primary-500 text-[#4146B8] bg-white"
+            className="btn1 h-10 md:h-[42px] px-6 md:px-[40px] justify-center items-center flex-shrink-0 rounded-full shadow-btn font-bold font-montserrat text-base border border-primary-500 text-primary-500 bg-white"
             onClick={() => onClose()}
           >
             No
