@@ -63,12 +63,12 @@ const CommentInput: FC<IProps> = ({ onValueChange }) => {
     <Form {...form}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex items-center w-full gap-2 "
+        className="flex items-center w-full gap-2"
       >
-        <Avatar className="w-14 h-14 rounded-full bg-lightgray absolute top-5 right-10 ">
+        <Avatar className="w-8 h-8 md:w-54 md:h-54 rounded-full bg-lightgray mb-3">
           <AvatarImage
-            src={userInformation?.attachment.file_path || '/images/avatar.png'}
-            alt={''}
+            src={userInformation?.attachment.file_path}
+            alt="Profile Picture"
           />
         </Avatar>
         <FormField
