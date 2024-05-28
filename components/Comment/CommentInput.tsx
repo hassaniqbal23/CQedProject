@@ -1,6 +1,7 @@
 'use client';
 import { AutosizeTextarea } from '@/components/common/AutosizeTextarea';
 import {
+  Avatar,
   Button,
   Form,
   FormControl,
@@ -8,17 +9,24 @@ import {
   FormItem,
 } from '@/components/ui';
 import { Smile } from 'lucide-react';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, FC } from 'react';
 import { useForm } from 'react-hook-form';
 import EmojiPicker from 'emoji-picker-react';
 import Image from 'next/image';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { AvatarImage } from '@radix-ui/react-avatar';
 
-function CommentInput() {
+interface IProps {
+  onValueChange?: (value: string) => void;
+}
+
+const CommentInput: FC<IProps> = ({ onValueChange }) => {
+  const { userInformation } = useGlobalState();
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
   const form = useForm<any>({
     defaultValues: {
-      message: '',
+      content: '',
     },
   });
 
@@ -44,34 +52,48 @@ function CommentInput() {
     };
   }, [showEmoji]);
 
+  const { handleSubmit } = form;
+
+  const onSubmit = (value: any) => {
+    onValueChange && onValueChange(value.content);
+    form.reset();
+  };
+
   return (
     <Form {...form}>
-      <form className="flex items-center w-full gap-2 ">
-        <Image
-          src={'/assets/profile/teacherprofile.svg'}
-          height={32}
-          width={32}
-          alt="comment ist"
-        />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex items-center w-full gap-2"
+      >
+        <Avatar className="w-9 h-9 md:w-54 md:h-54 rounded-full bg-lightgray ">
+          <AvatarImage
+            className="m-0 w-full"
+            src={
+              userInformation?.attachment.file_path ||
+              '/assets/profile/profile.svg'
+            }
+            alt="Profile Picture"
+          />
+        </Avatar>
         <FormField
-          name="message"
+          name="content"
           render={({ field }) => {
             return (
               <FormItem className="w-full mx-3">
                 <FormControl className="">
                   <div className="relative">
                     <AutosizeTextarea
-                      placeholder="Enter your message"
+                      placeholder="Enter your comment"
                       {...field}
-                      className={`pb-auto rounded-full'}`}
+                      className={`pb-auto rounded-full resize-none bg-[#F3F3F3] border-none outline-none ring-0`}
                       icon={
                         <div className="flex gap-2 " ref={emojiPickerRef}>
                           <EmojiPicker
                             onEmojiClick={(emoji) => {
                               const currentMessage =
-                                form.getValues('message') || '';
+                                form.getValues('content') || '';
                               form.setValue(
-                                'message',
+                                'content',
                                 currentMessage + emoji.emoji
                               );
                             }}
@@ -103,6 +125,6 @@ function CommentInput() {
       </form>
     </Form>
   );
-}
+};
 
 export { CommentInput };

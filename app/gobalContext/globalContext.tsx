@@ -1,7 +1,7 @@
 import { FC, createContext, useContext, useState } from 'react';
 import { IUserInformation } from './types';
 import { useQuery } from 'react-query';
-import { GetUserInformation } from '../api/auth';
+import { GetUserInformation, GetUserJoinedCommunities } from '../api/auth';
 import { getUserIdLocalStorage } from '../utils/encryption';
 
 type IGlobalState = {
@@ -9,6 +9,7 @@ type IGlobalState = {
   setIsUserGetInfo: (value: boolean) => void;
   userInformation: IUserInformation;
   setUserInformation: (value: IUserInformation) => void;
+  joinedCommunities: any[];
 };
 
 export const GlobalState = createContext<IGlobalState>({
@@ -16,6 +17,7 @@ export const GlobalState = createContext<IGlobalState>({
   setIsUserGetInfo: () => {},
   userInformation: {} as IUserInformation,
   setUserInformation: () => {},
+  joinedCommunities: [] as any[],
 });
 
 export const GlobalProvider: FC<any> = ({ children }) => {
@@ -23,6 +25,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   const [userInformation, setUserInformation] = useState<IUserInformation>(
     {} as IUserInformation
   );
+  const [joinedCommunities, setJoinedCommunities] = useState<any[]>([]);
   const userId = getUserIdLocalStorage();
 
   useQuery(
@@ -40,6 +43,22 @@ export const GlobalProvider: FC<any> = ({ children }) => {
       },
     }
   );
+
+  useQuery(
+    ['UserJoinedCommunities', userId],
+    () => GetUserJoinedCommunities(userId as string),
+    {
+      enabled: userId !== 'undefined' && userId !== null ? true : false,
+      onSuccess: (res) => {
+        setJoinedCommunities(res?.data?.data || []);
+      },
+      onError: (err) => {
+        setIsUserGetInfo(false);
+        console.log(err, '======> ERROR');
+      },
+    }
+  );
+
   return (
     <GlobalState.Provider
       value={{
@@ -47,6 +66,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         setIsUserGetInfo,
         userInformation,
         setUserInformation,
+        joinedCommunities,
       }}
     >
       {children}

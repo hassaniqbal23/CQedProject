@@ -489,7 +489,7 @@ const MultipleSelector = React.forwardRef<
                 data-fixed={option.fixed}
                 data-disabled={disabled}
               >
-                {option.label}
+                {option.render ? option.render() : option.label}
                 <button
                   className={cn(
                     'ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2',

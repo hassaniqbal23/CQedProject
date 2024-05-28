@@ -4,7 +4,7 @@ import { Send, MessageCircle, Heart } from 'lucide-react';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useState } from 'react';
 
 dayjs.extend(relativeTime);
@@ -18,8 +18,10 @@ interface IProps {
   attachment?: string[];
   likes?: number;
   comments?: number;
-  onComplete?: () => void;
+  handleComment?: () => void;
   onLike?: () => void;
+  onUnlike?: () => void;
+  hasUserLiked?: boolean;
 }
 
 export const Post: FC<IProps> = ({
@@ -31,26 +33,26 @@ export const Post: FC<IProps> = ({
   attachment,
   likes = 0,
   comments = 0,
-  onComplete,
+  hasUserLiked,
+  handleComment,
+  onLike,
+  onUnlike,
 }: IProps) => {
   const [liked, setLiked] = useState(false);
-  const [commented, setCommented] = useState(false);
+  const [likeCount, setLikedCount] = useState(likes);
+
+  useEffect(() => {
+    if (hasUserLiked) setLiked(true);
+  }, [hasUserLiked]);
 
   const handleLike = () => {
     setLiked(!liked);
     if (liked) {
-      likes -= 1;
+      onUnlike && onUnlike();
+      setLikedCount(likeCount - 1);
     } else {
-      likes += 1;
-    }
-  };
-
-  const handleComment = () => {
-    setCommented(!commented);
-    if (commented) {
-      comments -= 1;
-    } else {
-      comments += 1;
+      onLike && onLike();
+      setLikedCount(likeCount + 1);
     }
   };
 
@@ -82,7 +84,7 @@ export const Post: FC<IProps> = ({
           {attachment && attachment.length > 0 && (
             <div className="mt-4 md:mt-0">
               <Image
-                className="w-full rounded-lg cursor-pointer"
+                className="w-full max-h-96 rounded-lg cursor-pointer"
                 loading="lazy"
                 alt="lvvvvvvvvvvvvvvvvvv"
                 src={attachment[0]}
@@ -97,16 +99,13 @@ export const Post: FC<IProps> = ({
                 <Heart
                   className={`h-5 w-5 mr-1 cursor-pointer ${liked ? 'text-red-500 ' : ''}`}
                 />
-                <span>{liked ? likes + 1 : likes}</span>
+                <span>{likeCount}</span>
               </div>
-              <div
-                className="flex items-center mr-4"
-                onClick={handleComment || (onComplete && onComplete)}
-              >
+              <div className="flex items-center mr-4" onClick={handleComment}>
                 <MessageCircle
-                  className={`h-5 w-5 mr-1 cursor-pointer ${commented ? 'text-blue-500' : ''}`}
+                  className={`h-5 w-5 mr-1 cursor-pointer ${comments ? 'text-blue-500' : ''}`}
                 />
-                <span>{commented ? comments + 1 : comments}</span>
+                <span>{comments}</span>
               </div>
             </div>
             <div

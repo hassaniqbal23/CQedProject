@@ -49,6 +49,7 @@ const ImageUpload: FC<IProps> = ({
         </div>
         <input
           type="file"
+          accept="image/*"
           ref={fileInputRef}
           style={{ display: 'none' }}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {

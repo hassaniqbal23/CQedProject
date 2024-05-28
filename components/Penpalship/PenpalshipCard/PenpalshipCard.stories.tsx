@@ -1,20 +1,20 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { PenpalshipNewilyJoinedCard } from './PenpalshipNewilyJoinedCard';
+import { PenpalshipCard } from './PenpalshipCard';
 
-const meta: Meta<typeof PenpalshipNewilyJoinedCard> = {
-  title: 'Penpalship/PenpalshipNewilyJoinedCard',
-  component: PenpalshipNewilyJoinedCard,
+const meta: Meta<typeof PenpalshipCard> = {
+  title: 'Penpalship/PenpalshipCard',
+  component: PenpalshipCard,
 };
 
 export default meta;
 
-type Story = StoryObj<typeof PenpalshipNewilyJoinedCard>;
+type Story = StoryObj<typeof PenpalshipCard>;
 
 export const NewilyJoinedCard: Story = {
   render: (args) => (
     <div>
-      <PenpalshipNewilyJoinedCard
+      <PenpalshipCard
         {...args}
         imgPath={'/Emily1.png'}
         title="Moominmadness"
