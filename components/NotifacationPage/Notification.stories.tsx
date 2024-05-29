@@ -46,3 +46,17 @@ export const JoinInvite: Story = {
     onClickReject: () => {},
   },
 };
+
+export const rejectInvite: Story = {
+  render: (args) => <Notification {...args} />,
+  args: {
+    avatar: '/avatar2.svg',
+    message: 'Invite you to join their group',
+    boldName: 'ASArtist',
+    name: 'stmaryhighschool@',
+    time: '08:20 pm',
+    seen: true,
+    onClickJoin: () => {},
+    onClickReject: () => {},
+  },
+};
