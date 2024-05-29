@@ -11,10 +11,10 @@ import Image from 'next/image';
 const formSchema = z.object({
   memberid: z
     .string()
-    .min(1, 'MemberID is required and must be a positive number'),
+    .min(0, 'MemberID is required and must be a positive number'),
   username: z
     .string()
-    .min(2, 'Username is required and must be at least 2 characters long'),
+    .min(0, 'Username is required and must be at least 2 characters long'),
 });
 
 interface IPalSearchID {

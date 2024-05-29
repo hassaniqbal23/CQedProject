@@ -26,7 +26,7 @@ const PenpalshipStoriesCard: React.FC<PenpalshipStoriesCardProps> = ({
           src={imgPath}
           alt=""
           layout="fill"
-          objectFit="cover"
+          objectFit="fill"
           className="rounded-xl"
         />
       </div>
