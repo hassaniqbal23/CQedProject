@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState } from 'react';
 import Chip from './Chip'; // Assuming Chip component is in the same directory
 
@@ -22,6 +20,7 @@ interface ChipSelectorProps<T> {
     | 'link';
   onChange?: (value: T[] | T) => void;
   multiSelect?: boolean;
+  size?: 'sm' | 'md' | 'lg'; // Added size prop
 }
 
 function ChipSelector<T>({
@@ -32,6 +31,7 @@ function ChipSelector<T>({
   variant,
   multiSelect,
   value,
+  size,
 }: ChipSelectorProps<T>) {
   const [selectedValue, setSelectedValue] = useState(defaultValue || []);
 
@@ -63,7 +63,13 @@ function ChipSelector<T>({
 
   return (
     <div
-      className={`flex gap-2 items-start ${multiSelect && 'flex-wrap justify-center'}`}
+      className={`flex gap-2 items-start ${
+        multiSelect && 'flex-wrap justify-center'
+      } 
+        ${size === 'sm' ? 'gap-2' : ''}  {/* Added size specific class */}
+        ${size === 'md' ? 'gap-4' : ''}  {/* Added size specific class */}
+        ${size === 'lg' && 'flex-wrap gap-8 '}  {/* Added size specific class */}
+      `}
     >
       {options.map((chip, index) => (
         <Chip

@@ -13,6 +13,8 @@ interface Iprops {
   username: string;
   country: string;
   matches: string;
+  caption?: string;
+  userBio?: string;
 }
 export const ProfileNotification: FC<Iprops> = ({
   userImage,
@@ -22,10 +24,12 @@ export const ProfileNotification: FC<Iprops> = ({
   username,
   country,
   matches,
+  caption,
+  userBio,
 }: Iprops) => {
   return (
     <>
-      <div className="max-w-fit w-full bg-primary-50 p-4 lg:flex lg:items-center lg:flex-col  sm:flex sm:justify-between sm:items-center gap-8 ">
+      <div className="max-w-fit w-full bg-primary-50 p-4 py-16 lg:flex lg:items-center lg:flex-col  sm:flex sm:justify-between sm:items-center gap-8 ">
         <div>
           <div className="">
             <Typography
@@ -87,10 +91,13 @@ export const ProfileNotification: FC<Iprops> = ({
               </div>
 
               <div>
-                <p className="max-w-sm w-full lg:mt-4 lg:items-center lg:text-[14px] sm:text-[14px] text-foreground-secondary font-montserrat text-[12px] font-medium leading-[20.8px] sm:w-full md:w-[640px] lg:w-auto">
-                  Hi, I am John, an 8-year-old from the United States with a
-                  love for drawing and a passion for adventure.
-                </p>
+                <Typography
+                  variant={'body'}
+                  weight={'regular'}
+                  className="text-center mt-4 text-balance "
+                >
+                  {userBio}
+                </Typography>
               </div>
             </div>
           </div>
@@ -105,6 +112,11 @@ export const ProfileNotification: FC<Iprops> = ({
           >
             View Profile
           </Button>
+        </div>
+        <div className="bg-[#c5c7e3] p-4 w-3/4 rounded-xl text-center mt-32  ">
+          <Typography variant={'body'} weight={'semibold'}>
+            {caption}
+          </Typography>
         </div>
       </div>
     </>
