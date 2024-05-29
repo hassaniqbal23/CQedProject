@@ -77,6 +77,8 @@ export const Feeds = ({ communityId }: FeedsProps) => {
     }
   );
 
+  console.log(communityPosts, 'communityPosts');
+
   return (
     <div className="mt-6 p-6 w-full bg-white rounded-xl shadow-md space-y-4">
       <Typography variant="h3" weight="bold" className="flex items-center">
@@ -124,8 +126,8 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                       description={item.content}
                       attachment={
                         item.community_post?.file_path
-                          ? [item.community_post?.file_path]
-                          : []
+                          ? item.community_post?.file_path
+                          : ''
                       }
                       likes={item._count.likes}
                       comments={item._count.comments}

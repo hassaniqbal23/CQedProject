@@ -37,8 +37,6 @@ export const MyPenpals: React.FC<MyPenpalsProps> = () => {
     });
   }, [data]);
 
-  console.log(penpals, 'penpals');
-
   return (
     <div>
       <div className="flex py-5 justify-between flex-wrap items-end">
