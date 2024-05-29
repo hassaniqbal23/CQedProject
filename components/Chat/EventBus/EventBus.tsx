@@ -41,7 +41,9 @@ interface EventBusProviderProps {
   children: ReactNode;
 }
 
-export const EventBusProvider: React.FC<EventBusProviderProps> = ({ children }) => {
+export const EventBusProvider: React.FC<EventBusProviderProps> = ({
+  children,
+}) => {
   return (
     <EventBusContext.Provider
       value={{ subscribeEvent, unsubscribeEvent, dispatchEvent }}
