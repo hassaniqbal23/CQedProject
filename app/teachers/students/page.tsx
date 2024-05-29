@@ -59,13 +59,17 @@ export default function TeacherStudents() {
               label: 'Full Name',
               key: 'fullname',
               render: (row) => {
+                console.log(row);
                 return (
                   <Link
                     className="text-primary-500 flex gap-2 items-center"
                     href={`/teachers/students/${row.userId}`}
                   >
                     <Avatar>
-                      <AvatarImage src="/avatar1.svg" alt="profile_image" />
+                      <AvatarImage
+                        src={row.user?.attachment?.file_path}
+                        alt="profile_image"
+                      />
                     </Avatar>
                     {row.fullname || 'N/A'}
                   </Link>
