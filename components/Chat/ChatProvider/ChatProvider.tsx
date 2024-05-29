@@ -21,12 +21,16 @@ import {
 } from '../EventBus/constants';
 import { useChatGuard } from './ChatGuard';
 import { useSocket } from '../WithSockets/WithSockets';
-import { getAllConversations, startConversation } from '@/app/api/chat';
+import {
+  getAllConversations,
+  getConversationMessages,
+  startConversation,
+} from '@/app/api/chat';
 import { useMutation, useQuery } from 'react-query';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 
 interface ChatInterface {
   currentThread?: any;
-  setCurrentThreadId?: Dispatch<SetStateAction<number>>;
   fetchConversations?: () => void;
   memorizedConversationsList?: any[];
   memorizedMessagesList?: any[];
@@ -36,26 +40,24 @@ interface ChatInterface {
   unSendMessage?: (chatId: number) => void;
   deleteThread?: (id: number) => void;
   currentThreadId?: number | null;
-  chatLoading?: boolean;
   inboxResponse?: any;
   currentConvsersation: any;
+  currentConversationMessages: any[];
 }
 
 const ChatContext = createContext<ChatInterface>({
   currentThread: null,
-  setCurrentThreadId: () => {},
   fetchConversations: () => {},
   memorizedConversationsList: [],
   memorizedMessagesList: [],
   setSearchQuery: () => {},
-  inboxLoading: false,
   memorizedTotalUnreadMessages: [],
   unSendMessage: () => {},
   deleteThread: () => {},
   currentThreadId: null,
-  chatLoading: false,
   inboxResponse: null,
   currentConvsersation: null,
+  currentConversationMessages: [],
 });
 
 export const useChatFeatures = () => useContext(ChatContext);
@@ -74,11 +76,14 @@ export const ChatProvider = ({ children }: any) => {
   }: any = useChatGuard();
   const { subscribeEvent, unsubscribeEvent } = useEventBus();
   const [inboxResponse, setInboxResponse] = useState<any>(null);
-  const [currentThreadId, setCurrentThreadId] = useState<null | number>(null);
-  const [chatLoading, setChatLoading] = useState(true);
   const [convsersationId, setConversationId] = useState<
     number | string | undefined
   >();
+
+  const { userInformation } = useGlobalState();
+
+  const [currentConversationMessages, setCurrentConversationMessages] =
+    useState<any[]>([]);
   const [currentConvsersation, setCurrentConvsersation] = useState<any>();
 
   const { data, isLoading: inboxLoading } = useQuery(
@@ -92,10 +97,21 @@ export const ChatProvider = ({ children }: any) => {
     }
   );
 
+  const { isLoading: conversationLoading } = useQuery(
+    ['get-current-chat', convsersationId],
+    () => getConversationMessages(convsersationId as number),
+    {
+      enabled: !!convsersationId,
+      onSuccess(data) {
+        setCurrentConversationMessages(data.data.data);
+      },
+    }
+  );
+
   useEffect(() => {
     const handleSendMessage = (message: any) => {
       if (message) {
-        currentConvsersation.messages.push(message);
+        setCurrentConversationMessages((prev) => [...prev, message]);
       }
     };
 
@@ -106,185 +122,10 @@ export const ChatProvider = ({ children }: any) => {
     };
   }, [subscribeEvent, unsubscribeEvent, convsersationId, currentConvsersation]);
 
-  // const currentUser: Partial<any> = useSelector(getCurrentUser);
-
-  // const memorizedOnlineUsersList = useMemo(() => {
-  //     return [
-  //         ...get(inboxResponse, 'data.result.onlineUsers', []),
-  //         ...realtimeConnectedUsersIds,
-  //     ];
-  // }, [inboxResponse, realtimeConnectedUsersIds]);
-
-  // const memorizedTotalUnreadMessages = useMemo(() => {
-  //     return get(inboxResponse, 'data.result.inboxUnread', 0);
-  // }, [inboxResponse]);
-
-  // const memorizedConversationsList = useMemo(() => {
-  //     return get(inboxResponse, 'data.result.inbox', []).map((item:any) => {
-  //         const messages = get(item, 'messages', []);
-  //         const latestMessageItem = messages[0];
-  //         return {
-  //             ...item,
-  //             isUserOnline: memorizedOnlineUsersList.includes(item?.partner?.id)
-  //                 ? true
-  //                 : false,
-  //             chattingWith: item?.users?.find((user:any) => user.id !== currentUser.id),
-  //             totalUnreadMessages:
-  //                 get(inboxResponse, 'data.result.unread', []).find(
-  //                     (c:any) => c.chat_thread_id === item.id,
-  //                 )?.count || 0,
-  //             latestMessage: latestMessageItem?.messages || '',
-  //             latestMessageTime: latestMessageItem
-  //                 ? moment(latestMessageItem.created_at)
-  //                     .fromNow()
-  //                     .replace('minutes', 'min')
-  //                     .replace('months', 'mon')
-  //                     .replace('seconds', 'sec')
-  //                 : '',
-  //             isTyping: realtimeTypingUsersIds.includes(item?.partner?.id),
-  //         };
-  //     });
-  // }, [
-  //     currentUser.id,
-  //     inboxResponse,
-  //     memorizedOnlineUsersList,
-  //     realtimeTypingUsersIds,
-  // ]);
-
-  const fetchConversations = async () => {
-    // setInboxLoading(true);
-    try {
-      if (searchQuery) {
-        clearTimeout(timeoutSearchChat);
-        timeoutSearchChat = setTimeout(async () => {
-          // const searchResponse = await http.get('/v1/chat/search', {
-          //     params: { title: searchQuery },
-          // });
-          // const inboxResult = searchResponse.data.result;
-          // setInboxResponse({
-          //     ...inboxResponse,
-          //     data: {
-          //         ...inboxResponse.data,
-          //         result: {
-          //             ...inboxResponse.data.result,
-          //             inbox: inboxResult,
-          //         },
-          //     },
-          // });
-          // setInboxLoading(false);
-        }, 500);
-      } else {
-        // Clear the timeout and fetch inbox immediately
-        clearTimeout(timeoutSearchChat);
-        // const inboxResponse = await http.get('/v1/chat/inbox', {
-        //     headers: {
-        //         Authorization: `Bearer ${window.localStorage.token}`,
-        //     },
-        // });
-
-        // setInboxResponse({
-        //     config: inboxResponse?.config,
-        //     data: inboxResponse.data,
-        //     status: inboxResponse.status,
-        //     statusText: inboxResponse.statusText,
-        // });
-        // setInboxLoading(false);
-        setChatLoading(false);
-      }
-    } catch (error) {
-      console.error('Error fetching conversations:', error);
-      // setInboxLoading(false);
-    }
-  };
-
-  // const { mutate, } = useMutation(() => startConversation(), {
-  //     onSuccess: (res) => {
-  //         // setInviteSchool(false);
-  //         console.log(res, 'res')
-  //     },
-  //     onError: (error: any) => {
-  //         console.log(error, 'Error =====> log');
-  //     },
-  // })
-
-  // const currentThread = useMemo(() => {
-  //     if (!currentThreadId) return null;
-  //     // const list = memorizedConversationsList.find(
-  //     //     (c:any) => c.id === currentThreadId,
-  //     // );
-
-  //     // for (let index = list?.messages.length - 1; index >= 0; index--) {
-  //     //     const nextMessage =
-  //     //         index < list.messages.length - 1 ? list.messages[index + 1] : null;
-  //     //     const currentTime = new Date(list.messages[index].created_at).getTime();
-  //     //     const nextMessageTime = nextMessage
-  //     //         ? new Date(nextMessage.created_at).getTime()
-  //     //         : null;
-
-  //     //     const isLessThan30MinutesFromNext = nextMessageTime
-  //     //         ? currentTime - nextMessageTime < 30 * 60 * 1000
-  //     //         : false;
-
-  //     //     // Initialize the properties
-  //     //     list.messages[index].showProfile = false;
-  //     //     list.messages[index].showDate = false;
-
-  //     //     // If current and next message is from same user, show profile on current not on next
-  //     //     if (
-  //     //         nextMessage &&
-  //     //         list.messages[index].created_by === nextMessage.created_by &&
-  //     //         isLessThan30MinutesFromNext
-  //     //     ) {
-  //     //         list.messages[index].showProfile = true;
-  //     //         nextMessage.showProfile = false;
-  //     //         list.messages[index].showDate = false;
-  //     //         nextMessage.showDate = false;
-  //     //     }
-
-  //     //     // If current and next message is from different user, show profile on both
-  //     //     if (
-  //     //         nextMessage &&
-  //     //         list.messages[index].created_by !== nextMessage.created_by
-  //     //     ) {
-  //     //         list.messages[index].showProfile = true;
-  //     //         nextMessage.showProfile = true;
-  //     //         list.messages[index].showDate = true;
-  //     //         nextMessage.showDate = true;
-  //     //     }
-
-  //     //     // If the time between current and next message is greater than 30 mins, show profile on both
-  //     //     if (!isLessThan30MinutesFromNext) {
-  //     //         list.messages[index].showProfile = true;
-  //     //         list.messages[index].showDate = true;
-  //     //         if (nextMessage) {
-  //     //             nextMessage.showProfile = true;
-  //     //             nextMessage.showDate = true;
-  //     //         }
-  //     //     }
-  //     // }
-
-  //     socket?.emit('messageSeen', {
-  //         thread_id: list?.id,
-  //         user_id: list?.owner.id,
-  //     });
-  //     setChatLoading(false);
-
-  //     return list;
-  // }, [currentThreadId, memorizedConversationsList]);
-
-  // useEffect(() => {
-  //     mutate()
-  // }, [])
-
-  useEffect(() => {
-    fetchConversations();
-  }, [searchQuery]);
-
   useEffect(() => {
     const handleJoinRoom = (id: number | string) => {
       setConversationId(id);
       if (!inboxLoading && inboxResponse.data) {
-        console.log(data?.data.data, 'data');
         const current = inboxResponse?.data?.data.find((item: any) => {
           return item.id === id;
         });
@@ -301,66 +142,20 @@ export const ChatProvider = ({ children }: any) => {
 
   useEffect(() => {
     const handleAddMessageToInbox = (message: any) => {
-      // if (inboxResponse?.data?.result.inbox.length > 0) {
-      //     // const inbox = get(inboxResponse, 'data.result.inbox', []);
-      //     // const index = inbox.findIndex(
-      //     //     (item:any) => item?.id === message.data.chat_thread_id,
-      //     // );
-      //     // const unReadMessages = get(inboxResponse, 'data.result.unread', []);
-      //     // if (index !== -1) {
-      //     //     const thread = { ...inbox[index] };
-      //     //     const messageAlreadyAdded = thread.messages.find(
-      //     //         (item:any) => item.id === message.data.id,
-      //     //     );
-      //     //     if (messageAlreadyAdded) return;
-      //     //     thread.messages.unshift(message.data);
-      //     //     if (currentThread.id !== message.data.chat_thread_id) {
-      //     //         setTotalUnreadMessageCount(totalUnreadMessageCount + 1);
-      //     //         // const idx = get(inboxResponse, 'data.result.unread', []).findIndex(
-      //     //         //     (item) => item.chat_thread_id === message.data.chat_thread_id,
-      //     //         // );
-      //     //         // if (idx > -1) {
-      //     //         //     unReadMessages[idx].count = +unReadMessages[idx].count + 1;
-      //     //         // } else if (idx === -1) {
-      //     //         //     unReadMessages.push({
-      //     //         //         count: 1,
-      //     //         //         chat_thread_id: message.data.chat_thread_id,
-      //     //         //     });
-      //     //         // }
-      //     //     } else if (
-      //     //         currentThread.id === message.data.chat_thread_id &&
-      //     //         window.location.pathname !== '/chat'
-      //     //     ) {
-      //     //         setTotalUnreadMessageCount(totalUnreadMessageCount + 1);
-      //     //         const idx = get(inboxResponse, 'data.result.unread', []).findIndex(
-      //     //             (item) => item.chat_thread_id === message.data.chat_thread_id,
-      //     //         );
-      //     //         if (idx > -1) {
-      //     //             unReadMessages[idx].count = +unReadMessages[idx].count + 1;
-      //     //         } else if (idx === -1) {
-      //     //             unReadMessages.push({
-      //     //                 count: 1,
-      //     //                 chat_thread_id: message.data.chat_thread_id,
-      //     //             });
-      //     //         }
-      //     //     }
-      //     //     inbox.splice(index, 1);
-      //     //     inbox.unshift(thread);
-      //     // }
-      //     // setInboxResponse({
-      //     //     ...inboxResponse,
-      //     //     data: {
-      //     //         ...inboxResponse.data,
-      //     //         result: {
-      //     //             ...inboxResponse.data.result,
-      //     //             inboxUnread: totalUnreadMessageCount,
-      //     //             unread: unReadMessages,
-      //     //             inbox: inbox,
-      //     //         },
-      //     //     },
-      //     // });
-      //     setButtonLoading(false);
-      // }
+      if (message) {
+        if (userInformation.id !== message.toId) {
+          setCurrentConversationMessages((prev) => {
+            const filteredMessages = prev.filter((msg) => {
+              if (msg.id) {
+                return msg;
+              }
+            });
+            return [...filteredMessages, message];
+          });
+        } else {
+          setCurrentConversationMessages((prev) => [...prev, message]);
+        }
+      }
     };
 
     subscribeEvent(
@@ -374,17 +169,7 @@ export const ChatProvider = ({ children }: any) => {
         handleAddMessageToInbox
       );
     };
-  }, [
-    subscribeEvent,
-    unsubscribeEvent,
-    currentThreadId,
-    inboxLoading,
-    // currentThread?.id,
-    totalUnreadMessageCount,
-    setTotalUnreadMessageCount,
-    inboxResponse,
-    setButtonLoading,
-  ]);
+  }, [subscribeEvent, unsubscribeEvent, currentConversationMessages]);
 
   // const memorizedMessagesList = useMemo(() => {
   //     if (!currentThreadId) return [];
@@ -470,8 +255,7 @@ export const ChatProvider = ({ children }: any) => {
       value={{
         // currentThread,
         // setCurrentThreadId,
-        currentThreadId,
-        fetchConversations,
+        currentConversationMessages,
         // memorizedConversationsList,
         // memorizedMessagesList,
         setSearchQuery,
@@ -480,7 +264,6 @@ export const ChatProvider = ({ children }: any) => {
         // memorizedTotalUnreadMessages,
         // unSendMessage,
         // deleteThread,
-        chatLoading,
         currentConvsersation,
       }}
     >

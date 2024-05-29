@@ -14,29 +14,19 @@ interface IProps {
   userImage: string;
   userFullName: string;
   isOnline: boolean;
-  iconMenu: string;
-  Profile: string;
-  Settings: string;
-  onDeleteSubject?: (id: string) => void;
-  onEditSubjectName?: (id: string, name: string) => void;
+  onDeleteConversations?: (id: string | number) => void;
+  userId: string | number;
+  isTyping?: boolean;
 }
 
 export const ChatHeader: FC<IProps> = ({
   userImage,
   userFullName,
   isOnline,
-  iconMenu,
-  Profile,
-  Settings,
-  onDeleteSubject,
-  onEditSubjectName,
+  userId,
+  isTyping,
+  onDeleteConversations,
 }: IProps) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
   return (
     <div className="flex justify-between bg-[#F4F4F4] items-center px-10 mx-0 py-2 w-full">
       <div className="flex gap-3 justify-center items-center">
@@ -57,9 +47,9 @@ export const ChatHeader: FC<IProps> = ({
           <Typography
             variant="body"
             weight="medium"
-            className={`text-sm ${isOnline ? 'text-[#70C670]' : 'text-gray-400'}`}
+            className={`text-sm ${isOnline && !isTyping ? 'text-[#70C670]' : 'text-gray-400'}`}
           >
-            {isOnline ? 'Online..' : 'Offline..'}
+            {isTyping ? 'Typing...' : isOnline ? 'Online..' : 'Offline..'}
           </Typography>
         </div>
       </div>
@@ -76,22 +66,10 @@ export const ChatHeader: FC<IProps> = ({
               content: (
                 <div
                   onClick={() =>
-                    onDeleteSubject && onDeleteSubject('subject-id')
+                    onDeleteConversations && onDeleteConversations(userId)
                   }
                 >
-                  Remove Subject
-                </div>
-              ),
-            },
-            {
-              content: (
-                <div
-                  onClick={() =>
-                    onEditSubjectName &&
-                    onEditSubjectName('subject-id', 'subject-name')
-                  }
-                >
-                  Edit Subject
+                  Delete Conversations
                 </div>
               ),
             },

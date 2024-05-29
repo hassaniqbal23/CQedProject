@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import ChatMessage from './ChateMessage/ChatMessage';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useChatFeatures } from '../../ChatProvider/ChatProvider';
 interface Message {
   id: string | number;
   conversationId: string | number;
@@ -10,24 +12,42 @@ interface Message {
 }
 
 interface IChatMessages {
-  messages: Message[];
   user: any;
 }
 
-const ChatMessages: React.FC<IChatMessages> = ({ messages, user }) => {
+const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { userInformation } = useGlobalState();
+  const { currentConversationMessages } = useChatFeatures();
+  const messages = [...currentConversationMessages];
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   return (
     <div className="">
-      {messages.map((message, index) => (
-        <ChatMessage
-          key={index}
-          // date={message.date}
-          userImage={user.user.attachment.file_name}
-          content={message.message}
-          // isCurrentUser={message.isUserMessage}
-          // translateImage={''}
-          // UserMessage={''}
-        />
-      ))}
+      {messages.map((message: any, index) => {
+        return (
+          <ChatMessage
+            key={index}
+            id={message.id}
+            // date={message.date}
+            userImage={
+              (message.toId && message.toId !== userInformation.id) ||
+              message.senderId === userInformation.id
+                ? userInformation.attachment.file_path
+                : user?.attachment?.file_path || '/assets/profile/profile.svg'
+            }
+            content={message.message}
+            isCurrentUser={
+              (message.toId && message.toId !== userInformation.id) ||
+              message.senderId === userInformation.id
+            }
+          />
+        );
+      })}
+      <div ref={messagesEndRef}></div>
     </div>
   );
 };

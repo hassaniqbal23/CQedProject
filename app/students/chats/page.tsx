@@ -1,7 +1,14 @@
-import React from 'react';
+'use client';
 
-const Chats = () => {
-  return <div>Chats</div>;
-};
+import { Chat } from '@/components/Chat/Chat';
+import { ChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
 
-export default Chats;
+export default function TeacherChatsCommunities() {
+  return (
+    <div>
+      <ChatProvider>
+        <Chat />
+      </ChatProvider>
+    </div>
+  );
+}

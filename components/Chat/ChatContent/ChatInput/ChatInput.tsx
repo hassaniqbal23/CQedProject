@@ -64,15 +64,16 @@ function ChatInput({ onSendMessage }: any) {
     form.setValue('files', [...files]);
   };
 
-  const onSubmit: SubmitHandler<any> = async (
-    data: any
-  ) => {
-    onSendMessage(data)
+  const onSubmit: SubmitHandler<any> = async (data: any) => {
+    onSendMessage(data);
   };
 
   return (
     <Form {...form}>
-      <form className="flex w-full items-end gap-2 " onSubmit={form.handleSubmit(onSubmit)} >
+      <form
+        className="flex w-full items-end gap-2 "
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <FormField
           name="message"
           render={({ field }) => {
@@ -84,10 +85,18 @@ function ChatInput({ onSendMessage }: any) {
                       placeholder="Enter your message"
                       {...field}
                       minHeight={height}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          form.handleSubmit(onSubmit)();
+                          setHeight(41);
+                          form.setValue('message', '');
+                        }
+                      }}
                       maxHeight={
                         form.watch('files').length > 0 ? height / 2 : 120
                       }
-                      className={`${form.watch('files').length > 0 ? 'resize-none pb-20' : 'pb-auto'}`}
+                      className={`${form.watch('files').length > 0 ? 'pb-20' : 'pb-auto'} resize-none`}
                       icon={
                         <div className="flex gap-2" ref={emojiPickerRef}>
                           <ChatFileUploader
@@ -126,8 +135,9 @@ function ChatInput({ onSendMessage }: any) {
                         {form.watch('files').map((file: any, index: number) => (
                           <div
                             key={index}
-                            aria-roledescription={`file ${index + 1} containing ${file.name
-                              }`}
+                            aria-roledescription={`file ${index + 1} containing ${
+                              file.name
+                            }`}
                             className="p-0 size-20 group "
                           >
                             <AspectRatio className="size-full relative">

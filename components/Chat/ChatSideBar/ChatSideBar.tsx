@@ -5,22 +5,18 @@ import { Input } from '@/components/ui/input/input';
 import { ChatUserList } from './ChatUserList/ChatUserList';
 import { Typography } from '@/components/common/Typography/Typography';
 import { useChatFeatures } from '../ChatProvider/ChatProvider';
-import Loading from '../../ui/button/loading'
+import Loading from '../../ui/button/loading';
 
 interface IProps {
   chat: string;
 }
 
 export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
-  const { inboxResponse, inboxLoading } = useChatFeatures()
-  console.log(inboxResponse)
+  const { inboxResponse, inboxLoading } = useChatFeatures();
   return (
     <div>
-      <div className="max-w-sm border-r border-solid border-gray-200  h-[95vh] bg-[#FFF]  flex flex-col gap-4 px-4">
+      <div className="max-w-sm border-r border-solid border-gray-200  h-[calc(100vh_-_142px)] bg-[#FFF]  flex flex-col gap-4 px-4">
         <div className="flex justify-between  w-full ">
-          {/* <h1 className="ml-0 font-semibold text-black text-2xl font-montserrat ">
-           
-          </h1> */}
           <Typography
             variant="h3"
             weight="semibold"
@@ -33,15 +29,19 @@ export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
             <SquarePen className="items-center mt-2 ml-1.5" />
           </div>
         </div>
-        <div className="items-center w-full mb-4 ">
+        <div className="w-full mb-4 ">
           <Input
             placeholder="Search"
             type="search"
-            className="w-full h-auto  rounded-3xl  "
+            className="w-full h-auto rounded-3xl mb-3 "
           />
-          {inboxLoading ? <Loading /> : <ChatUserList
-            users={inboxResponse.data.data || []}
-          />}
+          {inboxLoading ? (
+            <div className="w-full h-[500px] flex items-center justify-center">
+              <Loading />
+            </div>
+          ) : (
+            <ChatUserList users={inboxResponse?.data?.data || []} />
+          )}
         </div>
       </div>
     </div>

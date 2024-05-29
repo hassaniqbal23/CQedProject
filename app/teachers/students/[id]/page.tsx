@@ -5,8 +5,24 @@ import { TabsComponent } from '@/components/ui';
 import ProfileStudent from '@/components/common/StudentProfile/StudentProfile';
 import { ProfileHeader } from '@/components/common/Profiles';
 import { StudentFeeds, StudentGroups, DailyReport } from './(components)';
+import { useParams, useRouter } from 'next/navigation';
+import { useMutation } from 'react-query';
+import { startConversation } from '@/app/api/chat';
 
 const Profile = () => {
+  const params = useParams();
+  const router = useRouter();
+
+  const { mutate } = useMutation(
+    ['startConversation'],
+    (params: { id: number | string }) => startConversation(params.id),
+    {
+      onSuccess(data) {
+        router.push('/teachers/chats');
+      },
+    }
+  );
+
   const tabContents = [
     {
       value: 'profile',
@@ -69,7 +85,9 @@ const Profile = () => {
         titleClass="text-3xl"
         buttonProps={{
           isVisbile: true,
-          onClick: () => {},
+          onClick: () => {
+            mutate(params as any);
+          },
           buttonText: 'Messages',
         }}
         profileIcon="/assets/profile/teacherprofile.svg"
