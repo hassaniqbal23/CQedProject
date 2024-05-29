@@ -23,7 +23,7 @@ export const PostWithImage: Story = {
     created_at: '2021-10-10T00:00:00.000Z',
     description:
       'You can’t buy happiness, but you can get happiness on the beach! This is labuan bajo, Indonesiaa',
-    attachment: ['/assets/images/img.png'],
+    attachment: '/assets/images/img.png',
     likes: 0,
     comments: 0,
     handleComment: () => {

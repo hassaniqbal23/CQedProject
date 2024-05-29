@@ -21,7 +21,7 @@ export const StudentFeeds = () => {
       </div>
       <div className="px-4 py-1">
         <Post
-          attachment={['/assets/images/img.png']}
+          attachment={'/assets/images/img.png'}
           comments={0}
           created_at="2021-10-10T00:00:00.000Z"
           description="You can’t buy happiness, but you can get happiness on the beach! This is labuan bajo, Indonesiaa"
