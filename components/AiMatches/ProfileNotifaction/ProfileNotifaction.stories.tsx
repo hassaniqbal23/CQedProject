@@ -19,5 +19,8 @@ export const ViewNotifcation: Story = {
     username: 'john -2',
     country: 'united states',
     matches: '5/7 interests matched',
+    caption: 'Did you know John has read 20 books last year 📖 🙂',
+    userBio: `Hi, I am John, a 24-year-old from the United States with a love for
+    drawing and a passion for adventure`,
   },
 };
