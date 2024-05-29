@@ -9,6 +9,7 @@ interface PenpalshipStoriesCardProps {
   title: string;
   link: string;
   description: string;
+  onClickReadMore?: () => void;
 }
 
 const PenpalshipStoriesCard: React.FC<PenpalshipStoriesCardProps> = ({
@@ -16,6 +17,7 @@ const PenpalshipStoriesCard: React.FC<PenpalshipStoriesCardProps> = ({
   title,
   link,
   description,
+  onClickReadMore,
 }) => {
   return (
     <div className="flex flex-col p-3 bg-[#F7F7F7] rounded-lg shadow-sm">
@@ -43,10 +45,11 @@ const PenpalshipStoriesCard: React.FC<PenpalshipStoriesCardProps> = ({
         >
           {description}
         </Typography>
-        <div className="flex items-center mt-4 text-primary-500 font-semibold">
-          <Link href={''} className="mr-1">
-            {link}
-          </Link>
+        <div
+          onClick={onClickReadMore}
+          className="flex items-center mt-4 text-primary-500 font-semibold cursor-pointer"
+        >
+          <div className="mr-1">{link}</div>
           <MoveRight size={18} />
         </div>
       </div>

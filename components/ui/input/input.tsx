@@ -19,6 +19,8 @@ interface InputProps {
   autocomplete?: string;
   required?: boolean;
   rounded?: boolean;
+  accept?: string;
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -39,6 +41,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       required,
       autocomplete = 'off',
       rounded = false, // Default value for rounded
+      onKeyDown,
+      accept,
       ...props
     },
     ref
@@ -67,11 +71,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             type={inputType}
             id={id}
             name={name}
+            accept={accept}
             value={value}
             onChange={onChange}
             onBlur={onBlur}
             required={required}
             autoComplete={autocomplete}
+            onKeyDown={onKeyDown}
             className={cn(
               'flex h-14 w-full bg-[#F8F9FB] border font-medium px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-black disabled:cursor-not-allowed disabled:opacity-50',
               isError ? 'border-red-500' : 'border-[#D1D5DB]',

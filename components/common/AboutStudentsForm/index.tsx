@@ -18,9 +18,12 @@ import { Input } from '@/components/ui';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Progressbar from '../Progressbar/Progressbar';
 import BottomNavbar from '../navbar/bottomNavbar';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { Camera, CircleUser, ImagePlus } from 'lucide-react';
+import ImageUpload from '../ImageUpload/ImageUpload';
+import { deleteProfileImage, uploadProfileImage } from '@/app/api/admin';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 
 const formSchema = z.object({
   bio: z.string().refine((value) => value.trim() !== '', {
@@ -47,7 +50,9 @@ const formSchema = z.object({
 });
 
 function AboutStudentsForm() {
+  const { userInformation, isUserGetInfo } = useGlobalState();
   const router = useRouter();
+  const refetch = useQueryClient();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,6 +61,36 @@ function AboutStudentsForm() {
       culture: '',
     },
   });
+
+  const { mutate: uploadProfile, isLoading: isUploadingProfile } = useMutation(
+    (file: FormData) => uploadProfileImage(file),
+    {
+      onSuccess: (res) => {
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+        });
+        refetch.invalidateQueries('userInformation');
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
+
+  const { mutate: deleteProfile, isLoading: isDeletingProfile } = useMutation(
+    (id: number) => deleteProfileImage(id),
+    {
+      onSuccess: (res) => {
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+        });
+        refetch.invalidateQueries('userInformation');
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
 
   // const onSubmit: SubmitHandler<any> = form.handleSubmit(async (values) => {
   //   // createStudents(values)
@@ -85,16 +120,20 @@ function AboutStudentsForm() {
                 render={({ field }) => (
                   <FormItem className="flex justify-center flex-col items-center w-full">
                     <FormControl>
-                      <div className="">
-                        <div className="p-2 w-40 h-40 flex items-center justify-center border-dashed relative border border-success rounded-full">
-                          <CircleUser />
-                          <div className="absolute p-2 bg-white border right-1 bottom-0 rounded-full cursor-pointer">
-                            <Camera />
-                          </div>
-                        </div>
-                      </div>
+                      <ImageUpload
+                        loading={
+                          isDeletingProfile ||
+                          isUploadingProfile ||
+                          isUserGetInfo
+                        }
+                        deleteProfile={deleteProfile}
+                        uploadProfile={uploadProfile}
+                        attachmentID={userInformation?.attachment?.id}
+                        attachmentFilepath={
+                          userInformation?.attachment?.file_path
+                        }
+                      />
                     </FormControl>
-                    <FormLabel>Choose your avatar</FormLabel>
                     <FormMessage />
                   </FormItem>
                 )}

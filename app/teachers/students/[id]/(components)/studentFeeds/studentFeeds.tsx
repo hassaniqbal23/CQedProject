@@ -26,7 +26,7 @@ export const StudentFeeds = () => {
           created_at="2021-10-10T00:00:00.000Z"
           description="You can’t buy happiness, but you can get happiness on the beach! This is labuan bajo, Indonesiaa"
           likes={0}
-          onComplete={() => {}}
+          handleComment={() => {}}
           userFullName="Alexander John"
           userImage="/assets/profile/profile.svg"
           username="alexander john"

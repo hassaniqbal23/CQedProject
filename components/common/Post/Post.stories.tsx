@@ -26,7 +26,7 @@ export const PostWithImage: Story = {
     attachment: ['/assets/images/img.png'],
     likes: 0,
     comments: 0,
-    onComplete: () => {
+    handleComment: () => {
       alert('hello');
     },
   },
@@ -47,7 +47,7 @@ export const PostWithoutImage: Story = {
 
     likes: 0,
     comments: 0,
-    onComplete: () => {
+    handleComment: () => {
       alert('hello');
     },
   },

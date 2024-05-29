@@ -9,7 +9,8 @@ interface CommunityHeaderProps {
   description: string;
   rightImage: string;
   leftImage: string;
-  onInputChange(e: React.ChangeEvent<HTMLInputElement>): void;
+  onInputChange(e: React.KeyboardEvent<HTMLInputElement>): void;
+  createCommunityLink?: string;
 }
 
 const CommunityHeader: React.FC<CommunityHeaderProps> = ({
@@ -19,9 +20,10 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
   rightImage,
   leftImage,
   onInputChange,
+  createCommunityLink = '/students/cq-communities/create',
 }) => {
   return (
-    <div className="bg-primary-500 p-5">
+    <div className="bg-primary-500 px-5 py-7">
       <div className="sm:flex sm:justify-center sm:items-center sm:gap-2 sm:w-full md:flex md:justify-between md:gap-4">
         <div className="mt-2 self-end hidden md:block  sm:hidden ">
           <Image src={leftImage} alt="" width={152} height={162} />
@@ -38,10 +40,13 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
               className="text-black"
               placeholder="Explore Communities"
               type="search"
-              onChange={onInputChange}
+              onKeyDown={onInputChange}
             />
           </div>
-          <Link href="#" className="text-lg font-normal text-white">
+          <Link
+            href={createCommunityLink}
+            className="text-lg font-normal text-white"
+          >
             Or <span className="text-secondary-500">create your own.</span>{' '}
           </Link>
         </div>

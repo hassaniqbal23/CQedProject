@@ -247,7 +247,6 @@ const MultipleSelector = React.forwardRef<
         setSelected(value);
       }
     }, [value]);
-    console.log(groupBy);
 
     useEffect(() => {
       if (!arrayOptions || onSearch) {
@@ -483,13 +482,13 @@ const MultipleSelector = React.forwardRef<
                 key={option.value}
                 className={cn(
                   'data-[disabled]:bg-muted-foreground data-[disabled]:text-muted data-[disabled]:hover:bg-muted-foreground bg-white border-gray-300 p-3',
-                  'data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground',
+                  'data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground pt-2 pb-2',
                   badgeClassName
                 )}
                 data-fixed={option.fixed}
                 data-disabled={disabled}
               >
-                {option.label}
+                {option.render ? option.render() : option.label}
                 <button
                   className={cn(
                     'ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2',

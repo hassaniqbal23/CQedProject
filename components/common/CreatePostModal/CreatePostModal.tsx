@@ -9,31 +9,35 @@ import { Typography } from '../Typography/Typography';
 import dynamic from 'next/dynamic';
 import { EmojiClickData } from 'emoji-picker-react';
 import Modal from '@/components/common/Modal/Modal';
+import { useMutation } from 'react-query';
+import { uploadImage } from '@/app/api/communities';
 
 const Picker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
 interface CreatePostModalProps {
   title?: string;
   textarea?: string;
-  buttonTrigger: string;
-  description?: string;
+  buttonTrigger: React.ReactNode;
   buttonAction?: string;
   icon: string;
+  onPublish?: (data: any) => void;
+  buttonActionLoading?: boolean;
 }
 
 export const CreatePostModal = ({
   icon,
   title,
   textarea,
-  description,
   buttonAction,
   buttonTrigger,
+  onPublish,
+  buttonActionLoading,
 }: CreatePostModalProps) => {
   const [showUpload, setShowUpload] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState(textarea || '');
   const [searchInputFocused, setSearchInputFocused] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<any | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -52,29 +56,31 @@ export const CreatePostModal = ({
     setShowEmojiPicker(false);
   };
 
-  const handleSearchInputFocus = () => {
-    setSearchInputFocused(true);
-  };
-
-  const handleSearchInputBlur = () => {
-    setSearchInputFocused(false);
-  };
-
   const handleFileUploadClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
 
+  const { mutate: uploadPost, isLoading: isUploadingPost } = useMutation(
+    'post-upload',
+    (data: FormData) => uploadImage(data),
+    {
+      onSuccess: (data) => {
+        setUploadedImage(data.data?.data);
+      },
+      onError: (error) => {
+        console.log(error, 'error');
+      },
+    }
+  );
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setUploadedImage(reader.result as string);
-        setShowUpload(false);
-      };
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append('file', event.target.files?.[0] as any);
+      uploadPost(formData);
     }
   };
 
@@ -101,7 +107,10 @@ export const CreatePostModal = ({
   );
 
   const handleOkClick = () => {
-    // Handle OK click logic here
+    onPublish &&
+      onPublish({ content: textAreaValue, attachment_id: uploadedImage?.id });
+    setTextAreaValue('');
+    setUploadedImage(null);
     setIsVisible(false);
   };
 
@@ -134,7 +143,7 @@ export const CreatePostModal = ({
         {uploadedImage && (
           <div className="relative mt-4">
             <Image
-              src={uploadedImage}
+              src={uploadedImage.file_path}
               alt="Uploaded"
               width={100}
               height={100}
@@ -174,6 +183,7 @@ export const CreatePostModal = ({
           <Button
             variant={'default'}
             size={'md'}
+            loading={isUploadingPost}
             className="mt-2 rounded-full"
             onClick={handleFileUploadClick}
           >
@@ -181,6 +191,7 @@ export const CreatePostModal = ({
             <Input
               type="file"
               id="picture"
+              accept="image/*"
               className="hidden"
               ref={fileInputRef}
               onChange={handleFileChange}
@@ -188,7 +199,7 @@ export const CreatePostModal = ({
           </Button>
         </div>
       )}
-      <div className="flex flex-col sm:flex-row justify-between mt-3 p-2">
+      <div className="flex flex-wrap flex-col sm:flex-row justify-between mt-3 p-2">
         <div className="flex flex-col sm:flex-row ml-3">
           <div
             onClick={handleShowUpload}
@@ -242,6 +253,7 @@ export const CreatePostModal = ({
           type="submit"
           className="rounded-full w-full sm:w-auto"
           size="md"
+          loading={buttonActionLoading}
           onClick={handleOkClick}
         >
           {buttonAction}
