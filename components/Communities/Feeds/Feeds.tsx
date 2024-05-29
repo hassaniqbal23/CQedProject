@@ -124,8 +124,8 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                       description={item.content}
                       attachment={
                         item.community_post?.file_path
-                          ? [item.community_post?.file_path]
-                          : []
+                          ? item.community_post?.file_path
+                          : ''
                       }
                       likes={item._count.likes}
                       comments={item._count.comments}

@@ -101,7 +101,15 @@ export const CreatePostModal = ({
   }, []);
 
   const openModalButton = (
-    <Button variant="outline" size="md" onClick={() => setIsVisible(true)}>
+    <Button
+      variant="outline"
+      size="md"
+      onClick={() => {
+        setUploadedImage(null);
+        setIsVisible(true);
+        setTextAreaValue('');
+      }}
+    >
       {buttonTrigger}
     </Button>
   );
@@ -143,7 +151,7 @@ export const CreatePostModal = ({
         {uploadedImage && (
           <div className="relative mt-4">
             <Image
-              src={uploadedImage.file_path}
+              src={uploadedImage?.file_path}
               alt="Uploaded"
               width={100}
               height={100}
