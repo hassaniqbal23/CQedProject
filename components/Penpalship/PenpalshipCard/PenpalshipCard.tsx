@@ -37,7 +37,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
         <div>
           <div className="flex p-2 justify-between">
             <Image
-              src={imgPath}
+              src={imgPath || '/assets/profile/profile.svg'}
               alt=""
               className="rounded-xl mt-2"
               width={70}

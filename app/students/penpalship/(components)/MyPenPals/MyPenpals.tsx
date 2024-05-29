@@ -37,6 +37,8 @@ export const MyPenpals: React.FC<MyPenpalsProps> = () => {
     });
   }, [data]);
 
+  console.log(penpals, 'penpals');
+
   return (
     <div>
       <div className="flex py-5 justify-between flex-wrap items-end">
@@ -51,7 +53,7 @@ export const MyPenpals: React.FC<MyPenpalsProps> = () => {
           ></SearchBar>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {penpals.map((item: any, index: number) => (
           <PenpalshipCard
             key={index}

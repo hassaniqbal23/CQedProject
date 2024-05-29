@@ -79,14 +79,14 @@ export const Post: FC<IProps> = ({
           </div>
         </div>
         <div className="flex flex-col flex-grow">
-          <div className="text-gray-600 mb-4">{description}</div>{' '}
+          <div className="text-gray-600 mb-2">{description}</div>{' '}
           {/* Description here */}
           {attachment && attachment.length > 0 && (
             <div className="mt-4 md:mt-0">
               <Image
                 className="w-full max-h-96 rounded-lg cursor-pointer"
                 loading="lazy"
-                alt="lvvvvvvvvvvvvvvvvvv"
+                alt={`post by ${username}`}
                 src={attachment[0]}
                 width={1053}
                 height={342}

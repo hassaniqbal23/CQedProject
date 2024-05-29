@@ -66,6 +66,12 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
     },
   });
 
+  useEffect(() => {
+    if (initialValue) {
+      form.setValue('story', initialValue);
+    }
+  }, [initialValue]);
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
