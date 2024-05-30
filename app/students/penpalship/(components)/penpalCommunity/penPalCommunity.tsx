@@ -109,7 +109,7 @@ export const PenPalCommunity = () => {
         <Typography variant={'h3'} weight={'semibold'} className="mb-4">
           Stories
         </Typography>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 min-h-96">
           <PenpalshipPublishStoryCard
             title={'Publish your story'}
             iconOnClick={() => {
