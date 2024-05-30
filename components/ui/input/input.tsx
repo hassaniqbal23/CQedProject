@@ -79,7 +79,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             autoComplete={autocomplete}
             onKeyDown={onKeyDown}
             className={cn(
-              'flex h-14 w-full bg-[#F8F9FB] border font-medium px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-black disabled:cursor-not-allowed disabled:opacity-50',
+              'flex h-14 w-full bg-[#F8F9FB] border font-medium px-3 py-3 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-black disabled:cursor-not-allowed disabled:opacity-50',
               isError ? 'border-red-500' : 'border-[#D1D5DB]',
               isSearchInput ? 'px-10' : '',
               rounded ? 'rounded-full' : 'rounded-md',
@@ -99,10 +99,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           {type === 'search' && (
             <button
               type="button"
-              className="absolute inset-y-0 left-2 flex items-center focus:outline-none"
-              onClick={() => {}}
+              className="absolute inset-y-0 left-4 flex items-center focus:outline-none"
+              onClick={() => { }}
             >
-              <Search size={25} />
+              <Search size={18} />
             </button>
           )}
           {isError && (

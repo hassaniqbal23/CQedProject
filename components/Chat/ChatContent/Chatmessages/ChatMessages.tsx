@@ -2,6 +2,12 @@ import React, { useEffect, useRef } from 'react';
 import ChatMessage from './ChateMessage/ChatMessage';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
 import { useChatFeatures } from '../../ChatProvider/ChatProvider';
+import { useMutation } from 'react-query';
+import {
+  deleteMessage,
+} from '@/app/api/chat';
+import { toast } from 'react-toastify';
+
 interface Message {
   id: string | number;
   conversationId: string | number;
@@ -25,6 +31,26 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const { mutate: removeThread, isLoading: isDeletingThread } =
+    useMutation((id: number) => deleteMessage(id), {
+      onSuccess: (res) => {
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+        });
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+        toast.error(`Failed to delete thread: ${error.message}`, {
+          position: 'bottom-center',
+        });
+      },
+    });
+
+  const handleDeleteMessage = (id: string | number) => {
+    const numericId = typeof id === 'string' ? parseInt(id) : id;
+    removeThread(numericId);
+  };
+
   return (
     <div className="">
       {messages.map((message: any, index) => {
@@ -32,14 +58,14 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
           <ChatMessage
             key={index}
             id={message.id}
-            // date={message.date}
             userImage={
               (message.toId && message.toId !== userInformation.id) ||
-              message.senderId === userInformation.id
+                message.senderId === userInformation.id
                 ? userInformation.attachment.file_path
                 : user?.attachment?.file_path || '/assets/profile/profile.svg'
             }
             content={message.message}
+            onDeleteMessage={handleDeleteMessage}
             isCurrentUser={
               (message.toId && message.toId !== userInformation.id) ||
               message.senderId === userInformation.id

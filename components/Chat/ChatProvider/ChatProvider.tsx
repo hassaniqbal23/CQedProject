@@ -24,10 +24,11 @@ import { useSocket } from '../WithSockets/WithSockets';
 import {
   getAllConversations,
   getConversationMessages,
-  startConversation,
+  deleteMessage,
 } from '@/app/api/chat';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { toast } from 'react-toastify';
 
 interface ChatInterface {
   currentThread?: any;
@@ -38,7 +39,6 @@ interface ChatInterface {
   inboxLoading?: boolean;
   memorizedTotalUnreadMessages?: any[];
   unSendMessage?: (chatId: number) => void;
-  deleteThread?: (id: number) => void;
   currentThreadId?: number | null;
   inboxResponse?: any;
   currentConvsersation: any;
@@ -47,13 +47,12 @@ interface ChatInterface {
 
 const ChatContext = createContext<ChatInterface>({
   currentThread: null,
-  fetchConversations: () => {},
+  fetchConversations: () => { },
   memorizedConversationsList: [],
   memorizedMessagesList: [],
-  setSearchQuery: () => {},
+  setSearchQuery: () => { },
   memorizedTotalUnreadMessages: [],
-  unSendMessage: () => {},
-  deleteThread: () => {},
+  unSendMessage: () => { },
   currentThreadId: null,
   inboxResponse: null,
   currentConvsersation: null,

@@ -31,16 +31,15 @@ export const ChatHeader: FC<IProps> = ({
     <div className="flex justify-between bg-[#F4F4F4] items-center px-10 mx-0 py-2 w-full">
       <div className="flex gap-3 justify-center items-center">
         <div>
-          <Avatar className="w-14 h-14 rounded-full bg-lightgray">
+          <Avatar className="w-14 h-14 md:w-[48px] md:h-[48px] rounded-full bg-lightgray">
             <AvatarImage src={userImage} alt="Profile Picture" />
           </Avatar>
         </div>
-
         <div>
           <Typography
             variant="body"
             weight="medium"
-            className="text-[#1E1F21] text-lg font-semibold"
+            className="text-[#1E1F21] text-[17px] font-semibold"
           >
             {userFullName}
           </Typography>
@@ -49,7 +48,7 @@ export const ChatHeader: FC<IProps> = ({
             weight="medium"
             className={`text-sm ${isOnline && !isTyping ? 'text-[#70C670]' : 'text-gray-400'}`}
           >
-            {isTyping ? 'Typing...' : isOnline ? 'Online..' : 'Offline..'}
+            {isTyping ? 'Typing...' : isOnline ? 'Online' : 'Offline'}
           </Typography>
         </div>
       </div>

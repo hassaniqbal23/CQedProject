@@ -11,7 +11,7 @@ import { useGlobalState } from '@/app/gobalContext/globalContext';
 
 const ChatContent: FC = () => {
   const { sendMessage } = useChatGuard();
-  const { currentConvsersation } = useChatFeatures();
+  const { currentConvsersation, inboxResponse } = useChatFeatures();
   const { userInformation } = useGlobalState();
 
   const onSendMessage = (data: any) => {
@@ -25,11 +25,12 @@ const ChatContent: FC = () => {
     };
     sendMessage(messageData);
   };
+  let NoChatfound = inboxResponse && inboxResponse.data.data.length > 0 ? "No chat selected" : "No Conversation found";
 
   return (
     <>
       {currentConvsersation ? (
-        <div className="flex flex-col w-full h-[calc(100vh_-_142px)] overflow-hidden bg-white ">
+        <div className="flex flex-col w-full h-[calc(100vh_-_127px)] overflow-hidden bg-white ">
           <div className="sticky top-0 bg-white">
             <ChatHeader
               userImage={
@@ -45,13 +46,13 @@ const ChatContent: FC = () => {
           <div className="flex-grow overflow-y-auto">
             <ChatMessages user={currentConvsersation.user} />
           </div>
-          <div className="sticky bottom-0 bg-white py-3 px-6">
+          <div className="sticky bottom-0 bg-white py-3 px-6 border-t">
             <ChatInput onSendMessage={onSendMessage} />
           </div>
         </div>
       ) : (
         <div className="w-full h-[calc(100vh_-_142px)] bg-white">
-          <NoChatFound text="No Conversation found" />
+          <NoChatFound text={NoChatfound} />
         </div>
       )}
     </>
