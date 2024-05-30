@@ -1,8 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { MoveRight } from 'lucide-react';
-import Link from 'next/link';
 import { Typography } from '@/components/common/Typography/Typography';
+import { truncateText } from '@/app/utils/helpers';
 
 interface PenpalshipStoriesCardProps {
   imgPath: string;
@@ -19,18 +19,20 @@ const PenpalshipStoriesCard: React.FC<PenpalshipStoriesCardProps> = ({
   description,
   onClickReadMore,
 }) => {
+  const truncatedDescription =
+    (description && truncateText(description, 20)) || '';
   return (
-    <div className="flex flex-col p-3 bg-[#F7F7F7] rounded-lg shadow-sm">
+    <div className="flex flex-col p-3 bg-[#F7F7F7] rounded-lg shadow-sm h-full">
       <div className="relative w-full h-56">
         <Image
           src={imgPath}
           alt=""
           layout="fill"
           objectFit="fill"
-          className="rounded-xl"
+          className="rounded-xl object-contain"
         />
       </div>
-      <div className="p-3 pb-1">
+      <div className="flex flex-col flex-grow p-3 pb-1">
         <Typography
           variant="body"
           weight="bold"
@@ -40,14 +42,14 @@ const PenpalshipStoriesCard: React.FC<PenpalshipStoriesCardProps> = ({
         </Typography>
         <Typography
           variant="body"
-          weight="regular"
-          className="text-[#131517] mt-2 leading-normal"
+          weight="medium"
+          className="text-[#131517] mt-2 text-sm flex-grow"
         >
-          {description}
+          {truncatedDescription}
         </Typography>
         <div
           onClick={onClickReadMore}
-          className="flex items-center mt-4 text-primary-500 font-semibold cursor-pointer"
+          className="flex items-center mt-4 text-primary-500 font-semibold cursor-pointer text-sm"
         >
           <div className="mr-1">{link}</div>
           <MoveRight size={18} />
