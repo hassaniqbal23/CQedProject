@@ -90,12 +90,12 @@ const TabsComponent = ({
   return (
     <Tabs
       defaultValue={defaultValue}
-      className="w-full"
+      className="w-full "
       onValueChange={onValueChange}
     >
       <TabsList
         variant={variant}
-        className={`flex w-full gap-2 ${secondaryClass} items-start ${variant !== 'secondary' ? 'p-2' : ''}`}
+        className={`flex w-full gap-2 overflow-x-auto whitespace-nowrap ${secondaryClass} items-start ${variant !== 'secondary' ? 'p-2' : ''}`}
       >
         {tabs.map((item: TabsProps, index) => (
           <TabsTrigger value={item.value} key={index} variant={variant}>

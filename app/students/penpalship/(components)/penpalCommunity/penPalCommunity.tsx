@@ -109,7 +109,7 @@ export const PenPalCommunity = () => {
         <Typography variant={'h3'} weight={'semibold'} className="mb-4">
           Stories
         </Typography>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
           <PenpalshipPublishStoryCard
             title={'Publish your story'}
             iconOnClick={() => {
@@ -163,6 +163,7 @@ export const PenPalCommunity = () => {
             }}
             userInfo={{
               username: getUserStory?.User?.name,
+              userId: getUserStory?.userId,
               location: {
                 name: 'Pakistan',
                 flag: '/assets/flags/pakistanFlagLogo.svg',
@@ -176,8 +177,8 @@ export const PenPalCommunity = () => {
         <Typography variant={'h3'} weight={'semibold'} className="mb-4">
           Newly Joined
         </Typography>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-2">
-          {suggestions.map((item: any, index: number) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+          {suggestions?.map((item: any, index: number) => (
             <PenpalshipCard
               key={index}
               imgPath={item?.attachment?.file_path}

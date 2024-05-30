@@ -21,6 +21,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
 import { Typography } from '../Typography/Typography';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 
 const formSchema = z.object({
   story: z
@@ -44,6 +45,7 @@ export interface IPublishStoryViewDialogProps {
   userInfo?: {
     username: string;
     imageUrl: string;
+    userId: number;
     location: { flag: string; name: string };
   };
 }
@@ -71,6 +73,8 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
       form.setValue('story', initialValue);
     }
   }, [initialValue]);
+
+  const { userInformation } = useGlobalState();
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -134,18 +138,20 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
             />
             <AlertDialogFooter className="gap-4 px-5 py-6">
               <div className="flex items-center">
+                {userInformation?.id !== userInfo?.userId && (
+                  <Button
+                    className="rounded-full h-12"
+                    size={'md'}
+                    variant={'info'}
+                    loading={loading}
+                    onClick={onAddFriend}
+                    type="button"
+                  >
+                    Add Friend
+                  </Button>
+                )}
                 <Button
-                  className="rounded-full"
-                  size={'md'}
-                  variant={'info'}
-                  loading={loading}
-                  onClick={onAddFriend}
-                  type="button"
-                >
-                  Add Friend
-                </Button>
-                <Button
-                  className="ml-5 rounded-full"
+                  className="ml-5 rounded-full h-12"
                   size={'md'}
                   variant={'outline'}
                   type="button"

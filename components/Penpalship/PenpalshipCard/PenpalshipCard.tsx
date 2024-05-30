@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui';
 import { Card } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
+import { truncateText } from '@/app/utils/helpers';
 
 interface PenpalshipCardProps {
   title?: string;
@@ -31,73 +32,68 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   studentAge,
   buttonLoading,
 }) => {
+  const truncatedDescription =
+    (description && truncateText(description, 12)) || '';
   return (
-    <Card>
-      <div className="w-full flex flex-col p-2 rounded-sm ">
-        <div>
-          <div className="flex p-2 justify-between">
-            <Image
-              src={imgPath || '/assets/profile/profile.svg'}
-              alt=""
-              className="rounded-xl mt-2"
-              width={70}
-              height={70}
-            />
-            <Button
-              onClick={buttonOnClick}
-              className="rounded-full bg-[#ECEDF8] text-primary-500 w-32 h-12 "
-              loading={buttonLoading}
-            >
-              {buttonText}
-            </Button>
-          </div>
-          <div className="ml-2">
-            <Typography
-              variant={'body'}
-              weight={'bold'}
-              className="text-black text-lg font-semibold mt-2"
-            >
-              {title}
-            </Typography>
-            <Typography
-              variant={'p'}
-              weight={'semibold'}
-              className="mb-1 mt-1 "
-            >
-              <Link href={''} className="text-primary-500 ">
-                {mutualFriends}
-              </Link>
-            </Typography>
-
-            <Typography
-              variant={'body'}
-              weight={'regular'}
-              className='className=" text-[#131517]   mt-1 leading-relaxed'
-            >
-              {description}
-            </Typography>
-
-            <Typography
-              variant={'body'}
-              weight={'regular'}
-              className="text-primary-500 font-semibold mt-1 mb-1"
-            ></Typography>
-          </div>
-          <div className="flex justify-between p-2 items-center">
+    <Card className="flex flex-col h-full">
+      <div className="flex flex-col flex-grow p-2 rounded-sm">
+        <div className="flex p-2 justify-between mt-2">
+          <Image
+            src={imgPath || '/assets/profile/profile.svg'}
+            alt=""
+            className="rounded-xl"
+            width={70}
+            height={70}
+          />
+          <Button
+            onClick={buttonOnClick}
+            className="rounded-full bg-[#ECEDF8] text-primary-500 w-32 h-10"
+            loading={buttonLoading}
+          >
+            {buttonText}
+          </Button>
+        </div>
+        <div className="ml-2">
+          <Typography
+            variant="body"
+            weight="bold"
+            className="text-black break-words break-all text-lg font-semibold mt-2"
+          >
+            {title}
+          </Typography>
+          <Typography variant="p" weight="semibold" className="mb-1 text-xs">
+            <Link href="" className="text-primary-500">
+              {mutualFriends}
+            </Link>
+          </Typography>
+          <Typography
+            variant="body"
+            weight="medium"
+            className="text-[#131517] mt-1 leading-relaxed"
+          >
+            {truncatedDescription}
+          </Typography>
+        </div>
+        <div className="mt-auto">
+          <div className="block sm:flex justify-between p-2 items-center">
             <div className="flex">
               <Image
                 src={countryFlag}
                 alt="flag"
-                className=" "
+                className=""
                 width={38}
                 height={38}
               />
-              <Typography variant={'h5'} weight={'regular'} className="ml-2">
+              <Typography variant="h6" weight="medium" className="ml-2 text-sm">
                 {countryName}
               </Typography>
             </div>
             <div>
-              <Typography variant={'h5'} weight={'regular'} className="flex ">
+              <Typography
+                variant="h6"
+                weight="medium"
+                className="flex text-sm mt-2 sm:mt-0"
+              >
                 {studentAge}
               </Typography>
             </div>
