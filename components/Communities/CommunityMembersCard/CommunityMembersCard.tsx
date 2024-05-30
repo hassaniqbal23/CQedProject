@@ -1,10 +1,9 @@
 import { Typography } from '@/components/common/Typography/Typography';
-import { Card } from '@/components/ui';
+import { Card, Separator } from '@/components/ui';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-
 interface CommunityMembersCardProps {
   members: any[];
   totalMembers: number;
@@ -15,8 +14,8 @@ export const CommunityMembersCard = ({
   members,
 }: CommunityMembersCardProps) => {
   return (
-    <Card className="p-6 w-full bg-white rounded-xl min-h-96 shadow-md space-y-4">
-      <div className="flex items-rn mb-4">
+    <Card className="p-10 w-full bg-white rounded-xl min-h-96 shadow-md space-y-4">
+      <div className="flex items-rn mb-4  ">
         <Image
           src="/membersCard.svg"
           alt="Members Icon"
@@ -28,8 +27,10 @@ export const CommunityMembersCard = ({
           Members
         </Typography>
       </div>
+      <Separator />
+
       <div className="grid grid-cols-6 md:grid-cols-4 gap-4">
-        {members?.map((image, index) => (
+        {members?.slice(0, 20).map((image, index) => (
           <Avatar key={index}>
             <AvatarImage
               src={image?.User?.attachment?.file_path}
@@ -39,10 +40,10 @@ export const CommunityMembersCard = ({
           </Avatar>
         ))}
       </div>
-      {totalMembers > 15 && (
+      {totalMembers > 20 && (
         <Link
           href="#"
-          className="flex items-end justify-center text-blue-600 font-semibold mt-4"
+          className="flex items-end justify-start text-primary-500 font-semibold mt-4"
         >
           See All {totalMembers} Members
         </Link>

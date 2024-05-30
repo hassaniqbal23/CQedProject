@@ -93,7 +93,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
   return (
     <div className="w-full flex flex-col gap-4">
       <Button
-        className="bg-transparent self-start text-black"
+        className="bg-transparent self-start text-black ml-[-12px]"
         onClick={handleButtonClick}
       >
         <ArrowLeft /> {buttonText}
@@ -102,6 +102,9 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
         <div className="w-full">
           <Input
             type="search"
+            placeholder="Kids"
+            iconPosition="right"
+            iconColor="#535353"
             value={inputValue || ''}
             onKeyDown={onSearchClick}
             onChange={(e) => {
@@ -115,7 +118,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
             }}
           />
         </div>
-        {/* <div className="w-[10%]">
+        <div className="w-40">
           <SelectInput
             options={[
               { label: 'English', value: 'english' },
@@ -131,7 +134,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
             }}
             placeholder="Language"
           />
-        </div> */}
+        </div>
       </div>
       <div className="overflow-auto NiceScrollBar">
         <Scrollbar marginHeight={120} style={{ width: '100%', height: '50px' }}>
