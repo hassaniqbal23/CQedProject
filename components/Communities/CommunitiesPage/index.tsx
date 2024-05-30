@@ -1,9 +1,8 @@
 import React from 'react';
 import { CommunityHeader } from '../../ui/communityHeader/CommunityHeader';
-import worldHand from '@/public/worldHand.svg';
-import World from '@/public/World.svg';
 import { PopularCommunitiesList } from '../PopularCommunitiesList/PopularCommunitiesList';
 import { usePathname, useRouter } from 'next/navigation';
+import { Card } from '@/components/ui';
 
 interface CommunitiesPageProps {
   module: 'teachers' | 'students';
@@ -17,8 +16,8 @@ const CommunitiesPage: React.FC<CommunitiesPageProps> = (props) => {
     <div>
       <CommunityHeader
         title={'Find your CQED Community'}
-        rightImage={worldHand}
-        leftImage={World}
+        rightImage={'/assets/students/map.svg'}
+        leftImage={'/assets/students/communityGroup.svg'}
         subtitle="From gaming, to music, to learning, there’s a place for you."
         description="What are CQED Communities?"
         createCommunityLink={
@@ -41,9 +40,9 @@ const CommunitiesPage: React.FC<CommunitiesPageProps> = (props) => {
         }}
       />
 
-      <div className="mt-5">
+      <Card className="mt-5 py-5 px-10 rounded-xl">
         <PopularCommunitiesList module={module} />
-      </div>
+      </Card>
     </div>
   );
 };
