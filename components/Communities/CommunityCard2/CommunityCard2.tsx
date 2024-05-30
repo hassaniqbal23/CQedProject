@@ -43,8 +43,7 @@ export const CommunityCard = ({
               weight="regular"
               className="text-gray-700 pt-2"
             >
-              {description} Welcome to a place from where your sharing and learn
-              about different cultures from all over the world.
+              {description}
             </Typography>
           </div>
         </Link>
