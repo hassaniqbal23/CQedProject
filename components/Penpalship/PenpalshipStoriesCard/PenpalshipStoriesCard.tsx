@@ -26,7 +26,8 @@ const PenpalshipStoriesCard: React.FC<PenpalshipStoriesCardProps> = ({
       <div className="relative w-full h-56">
         <Image
           src={imgPath}
-          alt=""
+          alt={title ?? 'avatar'}
+          placeholder="blur"
           layout="fill"
           objectFit="fill"
           className="rounded-xl object-contain"

@@ -82,7 +82,7 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
             onLogout={() => {
               removeToken();
               removeUserId();
-              router.push('/login');
+              router.push('/students/sign-in');
             }}
             links={[
               { src: 'chat', type: 'icon', icon: <MessageCircle /> },

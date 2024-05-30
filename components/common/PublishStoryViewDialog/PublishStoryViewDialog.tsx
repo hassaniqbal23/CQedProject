@@ -139,26 +139,28 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
             <AlertDialogFooter className="gap-4 px-5 py-6">
               <div className="flex items-center">
                 {userInformation?.id !== userInfo?.userId && (
-                  <Button
-                    className="rounded-full h-12"
-                    size={'md'}
-                    variant={'info'}
-                    loading={loading}
-                    onClick={onAddFriend}
-                    type="button"
-                  >
-                    Add Friend
-                  </Button>
+                  <>
+                    <Button
+                      className="rounded-full h-12"
+                      size={'md'}
+                      variant={'info'}
+                      loading={loading}
+                      onClick={onAddFriend}
+                      type="button"
+                    >
+                      Add Friend
+                    </Button>
+                    <Button
+                      className="ml-5 rounded-full h-12"
+                      size={'md'}
+                      variant={'outline'}
+                      type="button"
+                      onClick={onReply}
+                    >
+                      Reply
+                    </Button>
+                  </>
                 )}
-                <Button
-                  className="ml-5 rounded-full h-12"
-                  size={'md'}
-                  variant={'outline'}
-                  type="button"
-                  onClick={onReply}
-                >
-                  Reply
-                </Button>
               </div>
             </AlertDialogFooter>
           </form>
