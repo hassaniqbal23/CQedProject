@@ -10,9 +10,10 @@ import { useResponsive } from '@/lib/hooks';
 import { Bell, MessageCircle } from 'lucide-react';
 interface IProps {
   children: ReactNode;
+  className?: string;
 }
 
-export const StudentsLayout: FC<IProps> = ({ children }) => {
+export const StudentsLayout: FC<IProps> = ({ children, className }) => {
   const pathname = usePathname();
   const router = useRouter();
   const { isTabletMini } = useResponsive();
@@ -39,11 +40,6 @@ export const StudentsLayout: FC<IProps> = ({ children }) => {
       icon: '/assets/sidebaricons/chat.svg',
       title: 'Chats',
       path: '/students/chats',
-    },
-    {
-      icon: '/assets/sidebaricons/classroomstudents.svg',
-      title: 'Classroom',
-      path: '/students/classroom',
     },
     {
       icon: '/assets/sidebaricons/penpalship.svg',
@@ -104,7 +100,7 @@ export const StudentsLayout: FC<IProps> = ({ children }) => {
         </div>
       </div>
       <div
-        className={`block md:w-full ${isTabletMini ? 'px-6 pb-24' : ''} lg:pl-8 pt-[60px] overflow-hidden bg-[#FDFDFD]`}
+        className={`block md:w-full ${isTabletMini ? 'px-6 pb-24' : ''} lg:pl-8 pt-[60px] overflow-hidden ${pathname?.includes('cq-communities') ? 'bg-[#EEF3FE]' : 'bg-[#FDFDFD]'}`}
       >
         <div
           className={`mx-[10px] my-[30px] ${isTabletMini ? '' : 'md:m-[40px]'}`}
