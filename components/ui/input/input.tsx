@@ -20,6 +20,8 @@ interface InputProps {
   required?: boolean;
   rounded?: boolean;
   accept?: string;
+  iconPosition?: 'left' | 'right';
+  iconColor?: string;
   onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 }
 
@@ -42,6 +44,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       autocomplete = 'off',
       rounded = false, // Default value for rounded
       onKeyDown,
+      iconPosition = 'left',
+      iconColor = '',
       accept,
       ...props
     },
@@ -97,13 +101,25 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             </button>
           )}
           {type === 'search' && (
-            <button
-              type="button"
-              className="absolute inset-y-0 left-2 flex items-center focus:outline-none"
-              onClick={() => {}}
-            >
-              <Search size={25} />
-            </button>
+            <>
+              {iconPosition === 'left' ? (
+                <button
+                  type="button"
+                  className="absolute inset-y-0 left-2 flex items-center focus:outline-none"
+                  onClick={() => {}}
+                >
+                  <Search color={iconColor} size={25} />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-2 flex items-center focus:outline-none"
+                  onClick={() => {}}
+                >
+                  <Search color={iconColor} size={25} />
+                </button>
+              )}
+            </>
           )}
           {isError && (
             <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-red-500">
