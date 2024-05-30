@@ -18,6 +18,7 @@ export const PublishStoryView = () => (
     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti laboriosam cupiditate repellendus e"
     open={false}
     userInfo={{
+      userId: 12,
       username: 'Inayat - 12',
       location: {
         name: 'Pakistan',
