@@ -18,7 +18,9 @@ interface IChatMessages {
 const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { userInformation } = useGlobalState();
-  const { currentConversationMessages } = useChatFeatures();
+  const { currentConversationMessages, memoizedMessagesList } =
+    useChatFeatures();
+  console.log(memoizedMessagesList, 'memoizedMessagesList');
   const messages = [...currentConversationMessages];
 
   useEffect(() => {
@@ -26,13 +28,15 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
   }, [messages]);
 
   return (
-    <div className="">
+    <div className="p-3">
       {messages.map((message: any, index) => {
         return (
           <ChatMessage
             key={index}
             id={message.id}
-            // date={message.date}
+            date={message.created_at}
+            showProfile={message.showProfile}
+            showDate={message.showDate}
             userImage={
               (message.toId && message.toId !== userInformation.id) ||
               message.senderId === userInformation.id

@@ -4,6 +4,8 @@ import { Avatar, AvatarImage } from '@/components/ui';
 import { Ellipsis } from 'lucide-react';
 import { Dropdown } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 interface Iprops {
   date?: string;
@@ -13,7 +15,11 @@ interface Iprops {
   isCurrentUser?: boolean;
   onDeleteMessage?: (id: string | number) => void;
   id: string | number;
+  showProfile?: boolean;
+  showDate?: boolean;
 }
+
+dayjs.extend(relativeTime);
 
 const ChatMessage: FC<Iprops> = ({
   date,
@@ -22,19 +28,25 @@ const ChatMessage: FC<Iprops> = ({
   isCurrentUser,
   id,
   onDeleteMessage,
+  showDate,
+  showProfile,
 }: Iprops) => {
   return (
     <div
-      className={`flex flex-col m-10 gap-4 ${isCurrentUser ? 'items-end' : 'items-start'}`}
+      className={`flex flex-col gap-1 mb-5 ${isCurrentUser ? 'items-end' : 'items-start'}`}
     >
       <div
-        className={`flex gap-4 items-start group ${isCurrentUser ? 'flex-row-reverse' : ''}`}
+        className={`flex gap-2 items-start group ${isCurrentUser ? 'flex-row-reverse' : ''}`}
       >
-        <Avatar className="w-14 h-14 rounded-full bg-lightgray">
-          <AvatarImage src={userImage} alt="Profile Picture" />
-        </Avatar>
+        {showProfile ? (
+          <Avatar className="w-14 h-14 rounded-full bg-lightgray">
+            <AvatarImage src={userImage} alt="Profile Picture" />
+          </Avatar>
+        ) : (
+          <div className="w-14 h-14 rounded-full" />
+        )}
         <div
-          className={`flex items-center gap-2 ${isCurrentUser ? 'flex-row-reverse' : 'flex-row'}`}
+          className={`flex items-center ${isCurrentUser ? 'flex-row-reverse' : 'flex-row'}`}
         >
           <Typography
             variant="h4"
@@ -63,8 +75,12 @@ const ChatMessage: FC<Iprops> = ({
           </div>
         </div>
       </div>
-      <Typography variant="p" weight="medium">
-        {date}
+      <Typography
+        variant="p"
+        weight="medium"
+        className={isCurrentUser ? 'mr-14' : 'ml-14'}
+      >
+        {showDate && dayjs(date).fromNow()}
       </Typography>
     </div>
   );

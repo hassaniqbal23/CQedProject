@@ -18,7 +18,7 @@ export const ExpandableText = ({
   return (
     <div className={isExpanded ? '' : 'flex'}>
       <p className={`${className}`}>
-        {isExpanded ? text : `${text.substring(0, maxLength).trim()}`}
+        {isExpanded ? text : `${text?.substring(0, maxLength).trim()}`}
       </p>
       <span
         className="text-sm font-normal cursor-pointer hover:text-primary-500 ml-1"

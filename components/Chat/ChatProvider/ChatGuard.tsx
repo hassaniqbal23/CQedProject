@@ -119,6 +119,7 @@ export const ChatGuardProvider = ({ children }: any) => {
     if (socket) {
       dispatchEvent(SEND_MESSAGE, message);
       delete message?.senderId;
+      delete message?.created_at;
       socket.emit('MESSAGE', { ...message });
     }
   };

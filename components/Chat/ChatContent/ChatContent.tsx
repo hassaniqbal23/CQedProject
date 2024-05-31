@@ -22,6 +22,7 @@ const ChatContent: FC = () => {
       toId: currentConvsersation.user.id,
       users: currentConvsersation.users,
       senderId: userInformation.id,
+      created_at: new Date().toISOString(),
     };
     sendMessage(messageData);
   };

@@ -6,6 +6,7 @@ import { ChatUserList } from './ChatUserList/ChatUserList';
 import { Typography } from '@/components/common/Typography/Typography';
 import { useChatFeatures } from '../ChatProvider/ChatProvider';
 import Loading from '../../ui/button/loading';
+import CreateChatModal from '../ChatContent/CreateChatModal/CreateChatModal';
 
 interface IProps {
   chat: string;
@@ -26,7 +27,7 @@ export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
           </Typography>
 
           <div className="h-[40px] w-[40px] border border-gray-500 rounded-3xl items-center">
-            <SquarePen className="items-center mt-2 ml-1.5" />
+            <CreateChatModal />
           </div>
         </div>
         <div className="w-full mb-4 ">

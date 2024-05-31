@@ -13,14 +13,11 @@ type Story = StoryObj<typeof ChatHeader>;
 export const ChatHeaderItems: Story = {
   render: (args) => (
     <div>
-      <ChatHeader {...args} iconMenu={iconMenu} />
+      <ChatHeader {...args} />
     </div>
   ),
   args: {
     userImage: '/assets/profile/profile.svg',
     userFullName: 'ASArtist',
-    description: 'Online..',
-    Profile: 'Profile',
-    Settings: 'Settings',
   },
 };

@@ -43,6 +43,7 @@ interface ChatInterface {
   inboxResponse?: any;
   currentConvsersation: any;
   currentConversationMessages: any[];
+  memoizedMessagesList: any[];
 }
 
 const ChatContext = createContext<ChatInterface>({
@@ -58,11 +59,69 @@ const ChatContext = createContext<ChatInterface>({
   inboxResponse: null,
   currentConvsersation: null,
   currentConversationMessages: [],
+  memoizedMessagesList: [],
 });
 
 export const useChatFeatures = () => useContext(ChatContext);
 
 let timeoutSearchChat: any;
+
+const handleShowProfileAndDate = (messages: any) => {
+  return messages.map((item: any, index: number) => {
+    const nextMessage = messages[index + 1];
+
+    // Initialize the properties
+    item.showProfile = true;
+    item.showDate = true;
+
+    if (nextMessage) {
+      const currentTime = new Date(item.created_at).getTime();
+      const nextMessageTime = new Date(nextMessage.created_at).getTime();
+
+      const isLessThan30MinutesFromNext =
+        Math.abs(currentTime - nextMessageTime) < 30 * 60 * 1000;
+
+      const itemSenderId = item.receiverId || item.toId;
+      const nextMessageSenderId = nextMessage.receiverId || nextMessage.toId;
+
+      console.log(item);
+
+      console.log({
+        currentMessage: item.message,
+        nextMessage: nextMessage.message,
+        itemSenderId,
+        nextMessageSenderId,
+        isLessThan30MinutesFromNext,
+      });
+
+      // If current and next message are from the same user and within 30 minutes, hide profile and date for the current message
+      if (itemSenderId === nextMessageSenderId && isLessThan30MinutesFromNext) {
+        item.showProfile = false;
+        item.showDate = false;
+        nextMessage.showProfile = true;
+        nextMessage.showDate = true;
+      }
+
+      // If current and next message are from different users, show profile on both
+      if (itemSenderId !== nextMessageSenderId) {
+        item.showProfile = true;
+        nextMessage.showProfile = true;
+        item.showDate = true;
+        nextMessage.showDate = true;
+      }
+
+      // If the time between current and next message is greater than 30 mins, show profile and date for both messages
+      if (!isLessThan30MinutesFromNext) {
+        item.showProfile = true;
+        item.showDate = true;
+        nextMessage.showProfile = true;
+        nextMessage.showDate = true;
+      }
+    }
+
+    return item;
+  });
+};
 
 export const ChatProvider = ({ children }: any) => {
   const { socket } = useSocket();
@@ -79,6 +138,9 @@ export const ChatProvider = ({ children }: any) => {
   const [convsersationId, setConversationId] = useState<
     number | string | undefined
   >();
+  const [lastMessagesList, setLastMessagesList] = useState<
+    { ['key']: string }[]
+  >([]);
 
   const { userInformation } = useGlobalState();
 
@@ -86,7 +148,7 @@ export const ChatProvider = ({ children }: any) => {
     useState<any[]>([]);
   const [currentConvsersation, setCurrentConvsersation] = useState<any>();
 
-  const { data, isLoading: inboxLoading } = useQuery(
+  const { isLoading: inboxLoading } = useQuery(
     ['get-all-conversations'],
     () => getAllConversations(),
     {
@@ -97,21 +159,54 @@ export const ChatProvider = ({ children }: any) => {
     }
   );
 
-  const { isLoading: conversationLoading } = useQuery(
+  const { isLoading: messagesLoading } = useQuery(
     ['get-current-chat', convsersationId],
     () => getConversationMessages(convsersationId as number),
     {
       enabled: !!convsersationId,
       onSuccess(data) {
-        setCurrentConversationMessages(data.data.data);
+        setCurrentConversationMessages((prev) => {
+          return handleShowProfileAndDate(data.data.data);
+        });
+        // setCurrentConversationMessages(data.data.data);
       },
     }
   );
 
+  const memoizedMessagesList = useMemo(() => {
+    return currentConversationMessages;
+  }, [
+    currentConvsersation,
+    convsersationId,
+    messagesLoading,
+    currentConversationMessages,
+  ]);
+
   useEffect(() => {
     const handleSendMessage = (message: any) => {
       if (message) {
-        setCurrentConversationMessages((prev) => [...prev, message]);
+        setInboxResponse((prev: any) => {
+          const inbox = prev.data.data.map((item: any) => {
+            if (item.id === message.conversationId) {
+              return {
+                ...item,
+                messages: [...item.messages, message],
+              };
+            }
+            return item;
+          });
+
+          return {
+            ...prev,
+            data: {
+              ...prev.data,
+              data: inbox,
+            },
+          };
+        });
+        setCurrentConversationMessages((prev) => {
+          return handleShowProfileAndDate([...prev, message]);
+        });
       }
     };
 
@@ -150,10 +245,13 @@ export const ChatProvider = ({ children }: any) => {
                 return msg;
               }
             });
-            return [...filteredMessages, message];
+            return handleShowProfileAndDate([...filteredMessages, message]);
           });
+          handleShowProfileAndDate(currentConversationMessages);
         } else {
-          setCurrentConversationMessages((prev) => [...prev, message]);
+          setCurrentConversationMessages((prev) =>
+            handleShowProfileAndDate([...prev, message])
+          );
         }
       }
     };
@@ -265,6 +363,7 @@ export const ChatProvider = ({ children }: any) => {
         // unSendMessage,
         // deleteThread,
         currentConvsersation,
+        memoizedMessagesList,
       }}
     >
       {children}
