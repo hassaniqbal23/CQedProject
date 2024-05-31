@@ -2,8 +2,9 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { NewFeeds } from './NewFeeds';
 const meta: Meta<typeof NewFeeds> = {
-  title: 'StaticPostInput',
+  title: 'Blog/StaticPostInput',
   component: NewFeeds,
+  tags: ['autodocs'],
 };
 
 export default meta;

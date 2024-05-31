@@ -45,6 +45,7 @@ export const PopularCommunitiesList: React.FC<PopularCommunitiesList> = ({
               data?.data &&
               data?.data?.map((item: any, index: number) => (
                 <CommunityCard
+                  loading={isLoading}
                   description={item.description}
                   title={item.name}
                   id={item.id}
