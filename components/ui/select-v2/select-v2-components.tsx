@@ -45,7 +45,7 @@ const SelectCountry = (props: SelectCountryProps) => {
           }),
           valueContainer: (style) => ({
             ...style,
-            height: '54px',
+            height: '49px',
             display: 'flex',
           }),
         }}

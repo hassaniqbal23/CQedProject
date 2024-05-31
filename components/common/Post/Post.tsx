@@ -15,7 +15,7 @@ interface IProps {
   username: string;
   created_at: string;
   description: string;
-  attachment?: string[];
+  attachment?: string;
   likes?: number;
   comments?: number;
   handleComment?: () => void;
@@ -79,20 +79,20 @@ export const Post: FC<IProps> = ({
           </div>
         </div>
         <div className="flex flex-col flex-grow">
-          <div className="text-gray-600 mb-4">{description}</div>{' '}
+          <div className="text-gray-600 mb-2">{description}</div>{' '}
           {/* Description here */}
-          {attachment && attachment.length > 0 && (
+          {attachment ? (
             <div className="mt-4 md:mt-0">
               <Image
                 className="w-full max-h-96 rounded-lg cursor-pointer"
                 loading="lazy"
-                alt="lvvvvvvvvvvvvvvvvvv"
-                src={attachment[0]}
+                alt={`post by ${username}`}
+                src={attachment}
                 width={1053}
                 height={342}
               />
             </div>
-          )}
+          ) : null}
           <div className="flex justify-between mt-4 md:mt-6 items-center w-full">
             <div className="flex items-center text-gray-600 mr-4">
               <div className="flex items-center mr-4" onClick={handleLike}>

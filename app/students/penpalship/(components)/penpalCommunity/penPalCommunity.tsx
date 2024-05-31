@@ -11,22 +11,27 @@ import Loading from '@/components/ui/button/loading';
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useRouter } from 'next/navigation';
-import { UserCreateStories, getAllUserStories } from '@/app/api/users';
+import {
+  UserCreateStories,
+  getAllUserStories,
+  getUserStoriesById,
+} from '@/app/api/users';
 
 export const PenPalCommunity = () => {
   const queryCLient = useQueryClient();
   const route = useRouter();
-  const [creatingPanpalId, setCreatingPanpalId] = React.useState<number | null>(
-    null
-  );
+  const [viewUserStoryId, setViewUserStoryId] = useState<number | null>(null);
+  const [creatingPanpalId, setCreatingPanpalId] = useState<number | null>(null);
   const [openStoryModal, setOpenStroyModal] = useState<boolean>(false);
   const [viewStoryModal, setViewStoryModal] = useState<boolean>(false);
 
   const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
-    useMutation((id) => createPenpal({ receiverId: id }), {
+    useMutation((id: number) => createPenpal({ receiverId: id }), {
       onSuccess: (res) => {
         queryCLient.refetchQueries('penpalSuggestions');
         setCreatingPanpalId(null);
+        setViewStoryModal(false);
+        setViewUserStoryId(null);
       },
       onError: (error) => {
         console.error(error, 'Error =====> log');
@@ -43,6 +48,21 @@ export const PenPalCommunity = () => {
         console.error(error, 'Error =====> log');
       },
     });
+
+  const { data: getUserStory, isLoading: isGetingUserStory } = useQuery(
+    ['getUserStoriesById', viewUserStoryId],
+    (viewUserStoryId: any) =>
+      getUserStoriesById(Number(viewUserStoryId.queryKey[1])).then((res) => {
+        return res.data.data;
+      }),
+    {
+      enabled: typeof viewUserStoryId === 'number' ? true : false,
+      onSuccess: (res) => {},
+      onError(err) {
+        console.log(err);
+      },
+    }
+  );
 
   const { data: AllUserStories, isLoading: isGetingUserStories } = useQuery(
     ['getAllUserStories'],
@@ -89,7 +109,7 @@ export const PenPalCommunity = () => {
         <Typography variant={'h3'} weight={'semibold'} className="mb-4">
           Stories
         </Typography>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 min-h-96">
           <PenpalshipPublishStoryCard
             title={'Publish your story'}
             iconOnClick={() => {
@@ -117,6 +137,7 @@ export const PenPalCommunity = () => {
               title={item?.User?.profile[0]?.fullname}
               link={'Read more'}
               onClickReadMore={() => {
+                setViewUserStoryId(item?.id);
                 setViewStoryModal(!viewStoryModal);
               }}
               description={item.story}
@@ -124,29 +145,40 @@ export const PenPalCommunity = () => {
           ))}
 
           <PublishStoryViewDialog
-            initialValue="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti laboriosam cupiditate repellendus eius! Aperiam totam illum, ducimus iusto labore doloremque quis iste saepe, eligendi accusantium e"
+            initialValue={getUserStory?.story}
             open={viewStoryModal}
+            loading={isCreatingPanpal}
             onClose={() => {
+              setViewUserStoryId(null);
               setViewStoryModal(false);
             }}
-            onReply={() => route.push('/students/chats')}
+            onReply={() => {
+              setViewUserStoryId(null);
+              route.push('/students/chats');
+            }}
+            onAddFriend={() => {
+              if (typeof viewUserStoryId === 'number') {
+                sendPanpalRequest(viewUserStoryId);
+              }
+            }}
             userInfo={{
-              username: 'Inayat - 12',
+              username: getUserStory?.User?.name,
+              userId: getUserStory?.userId,
               location: {
                 name: 'Pakistan',
                 flag: '/assets/flags/pakistanFlagLogo.svg',
               },
-              imageUrl: '/assets/profile/profile.svg',
+              imageUrl: getUserStory?.User?.attachment?.file_path,
             }}
           />
         </div>
       </div>
       <div>
-        <Typography variant={'h3'} weight={'bold'} className="mb-4">
+        <Typography variant={'h3'} weight={'semibold'} className="mb-4">
           Newly Joined
         </Typography>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          {suggestions.map((item: any, index: number) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+          {suggestions?.map((item: any, index: number) => (
             <PenpalshipCard
               key={index}
               imgPath={item?.attachment?.file_path}

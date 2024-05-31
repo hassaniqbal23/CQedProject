@@ -61,9 +61,9 @@ const CommunityJoinLeaveActionButton: React.FC<
           : () => joinCommunityAsMember()
       }
       disabled={isLeavingCommunity || isJoiningCommunity}
-      className={`ml-auto py-2 px-4 rounded-full ${isMember ? 'bg-red-100 text-red-600' : 'bg-primary-50 text-blue-600'}`}
+      className={`ml-auto py-2 px-8 rounded-full ${isMember ? 'bg-red-100 text-red-600' : 'bg-primary-50 text-primary-500'}`}
     >
-      {isMember ? 'Leave Group' : 'Join Group'}
+      {isMember ? 'Leave' : 'Join'}
     </Button>
   );
 };

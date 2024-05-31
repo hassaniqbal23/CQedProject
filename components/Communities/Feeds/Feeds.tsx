@@ -34,7 +34,9 @@ export const Feeds = ({ communityId }: FeedsProps) => {
     data: communityPosts,
     isLoading,
     refetch,
-  } = useQuery('getCommunityPosts', () => getCommunityPosts(communityId));
+  } = useQuery('getCommunityPosts', () => getCommunityPosts(communityId), {
+    enabled: communityId ? true : false,
+  });
 
   const { mutate: likePost } = useMutation('likePost', (postId: number) =>
     likeCommunityPost(postId)
@@ -90,7 +92,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
         Feed
       </Typography>
       <div className="mt-4">
-        <div className="flex justify-end p-4 w-full border-t border-gray-300">
+        <div className="flex justify-center p-4 w-full border-t border-gray-300">
           <CreatePostModal
             icon="/uplode.svg"
             title="Create a post"
@@ -124,8 +126,8 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                       description={item.content}
                       attachment={
                         item.community_post?.file_path
-                          ? [item.community_post?.file_path]
-                          : []
+                          ? item.community_post?.file_path
+                          : ''
                       }
                       likes={item._count.likes}
                       comments={item._count.comments}

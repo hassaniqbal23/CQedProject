@@ -17,6 +17,7 @@ import { Montserrat } from 'next/font/google';
 import { EventBusProvider } from '@/components/Chat/EventBus/EventBus';
 import { SocketProvider } from '@/components/Chat/WithSockets/WithSockets';
 import { ChatGuardProvider } from '@/components/Chat/ChatProvider/ChatGuard';
+import NextTopLoader from 'nextjs-toploader';
 
 const montserrat = Montserrat({
   weight: ['400', '500', '600', '700'],
@@ -55,6 +56,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <head />
       <body suppressHydrationWarning={false} className={montserrat.className}>
+        <NextTopLoader />
+
         <Toaster />
         <QueryClientProvider client={queryClient}>
           <EventBusProvider>

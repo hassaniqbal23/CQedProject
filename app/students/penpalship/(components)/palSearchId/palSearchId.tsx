@@ -11,10 +11,10 @@ import Image from 'next/image';
 const formSchema = z.object({
   memberid: z
     .string()
-    .min(1, 'MemberID is required and must be a positive number'),
+    .min(0, 'MemberID is required and must be a positive number'),
   username: z
     .string()
-    .min(2, 'Username is required and must be at least 2 characters long'),
+    .min(0, 'Username is required and must be at least 2 characters long'),
 });
 
 interface IPalSearchID {
@@ -80,7 +80,7 @@ export const PalSearchId = () => {
           </form>
         </Form>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {searchPenpalList.length !== 0 ? (
           <>
             {searchPenpalList.map((item: any, index: number) => {
