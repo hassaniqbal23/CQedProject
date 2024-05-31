@@ -144,6 +144,8 @@ export const ChatProvider = ({ children }: any) => {
       onSuccess(data) {
         setInboxResponse(data);
       },
+      retry: 100,
+      retryDelay: 5000,
     }
   );
 
@@ -158,6 +160,8 @@ export const ChatProvider = ({ children }: any) => {
         });
         // setCurrentConversationMessages(data.data.data);
       },
+      retry: 100,
+      retryDelay: 5000,
     }
   );
 

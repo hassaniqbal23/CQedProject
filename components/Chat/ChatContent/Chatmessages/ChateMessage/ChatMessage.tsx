@@ -17,6 +17,7 @@ interface Iprops {
   id: string | number;
   showProfile?: boolean;
   showDate?: boolean;
+  hasDeleted?: boolean;
 }
 
 dayjs.extend(relativeTime);
@@ -30,7 +31,10 @@ const ChatMessage: FC<Iprops> = ({
   onDeleteMessage,
   showDate,
   showProfile,
+  hasDeleted,
 }: Iprops) => {
+  if (hasDeleted) return <></>;
+
   return (
     <div
       className={`flex flex-col gap-1 mb-5 ${isCurrentUser ? 'items-end' : 'items-start'}`}

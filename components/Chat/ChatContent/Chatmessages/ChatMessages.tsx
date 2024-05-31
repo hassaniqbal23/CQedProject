@@ -22,6 +22,7 @@ interface IChatMessages {
 const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { userInformation } = useGlobalState();
+  const [deletedMessage, setDeletedMessage] = React.useState<Number[]>([]);
   const { currentConversationMessages, memoizedMessagesList } =
     useChatFeatures();
   const messages = [...currentConversationMessages];
@@ -33,16 +34,11 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
   const { mutate: removeThread, isLoading: isDeletingThread } = useMutation(
     (id: number) => deleteMessage(id),
     {
-      onSuccess: (res) => {
-        toast.success(`${res.data.message}`, {
-          position: 'bottom-center',
-        });
+      onSuccess: (res, message_id) => {
+        setDeletedMessage([...deletedMessage, message_id]);
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
-        toast.error(`Failed to delete thread: ${error.message}`, {
-          position: 'bottom-center',
-        });
       },
     }
   );
@@ -74,6 +70,7 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
               (message.toId && message.toId !== userInformation.id) ||
               message.senderId === userInformation.id
             }
+            hasDeleted={deletedMessage.includes(message.id)}
           />
         );
       })}

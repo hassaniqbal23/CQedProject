@@ -14,9 +14,20 @@ interface IProps {
 
 export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
   const { inboxResponse, inboxLoading } = useChatFeatures();
+  const [search, setSearch] = React.useState('');
+
+  const filtered = React.useMemo(() => {
+    if (!search) return inboxResponse?.data?.data || [];
+    return (
+      inboxResponse?.data?.data.filter((user: any) =>
+        user.user.name.toLowerCase().includes(search.toLowerCase())
+      ) || []
+    );
+  }, [inboxResponse, search]);
+
   return (
     <div className="w-[32rem]">
-      <div className="max-w-sm border-r border-solid border-gray-200  h-[calc(100vh_-_142px)] bg-[#FFF] flex flex-col pl-2 gap-4">
+      <div className="max-w-sm py-5 border-r border-solid border-gray-200  h-[calc(100vh_-_73px)] bg-[#FFF] flex flex-col pl-2 gap-4">
         <div className="flex justify-between w-full px-3 mb-2">
           <Typography
             variant="h3"
@@ -35,6 +46,9 @@ export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
               placeholder="Search for chats"
               type="search"
               className="w-full h-auto rounded-3xl mb-3 text-sm !placeholder-[#282828] outline-none"
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
             />
           </div>
 
@@ -43,7 +57,7 @@ export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
               <Loading />
             </div>
           ) : (
-            <ChatUserList users={inboxResponse?.data?.data || []} />
+            <ChatUserList users={filtered} />
           )}
         </div>
       </div>

@@ -68,7 +68,7 @@ export const ChatHeader: FC<IProps> = ({
                     onDeleteConversations && onDeleteConversations(userId)
                   }
                 >
-                  Delete Conversations
+                  Delete Conversation
                 </div>
               ),
             },

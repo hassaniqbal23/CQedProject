@@ -33,6 +33,8 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     () => GetUserInformation(userId as string),
     {
       enabled: userId !== 'undefined' && userId !== null ? true : false,
+      retry: 100,
+      retryDelay: 5000,
       onSuccess: (res) => {
         setIsUserGetInfo(false);
         setUserInformation(res.data.data);
@@ -56,6 +58,8 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         setIsUserGetInfo(false);
         console.log(err, '======> ERROR');
       },
+      retry: 100,
+      retryDelay: 5000,
     }
   );
 

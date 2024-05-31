@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { getAccessToken, removeToken, removeUserId } from './encryption';
 import { toast } from 'react-toastify';
+import { toast as sonnerToast } from 'sonner';
 
 const createHttpInstance = () => {
   let baseURL = process.env.NEXT_PUBLIC_API_HOST || '';
@@ -37,7 +38,11 @@ const createHttpInstance = () => {
         error.response?.data?.error ||
         error.message ||
         'Something went wrong';
-      toast.error(message);
+
+      sonnerToast.error(message, {
+        id: message,
+      });
+
       if (error.response && error.response.status === 401) {
         redirectToLoginPage();
       }

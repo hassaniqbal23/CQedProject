@@ -34,7 +34,7 @@ const ChatContent: FC = () => {
   return (
     <>
       {currentConvsersation ? (
-        <div className="flex flex-col w-full h-[calc(100vh_-_127px)] overflow-hidden bg-white ">
+        <div className="flex flex-col w-full h-[calc(100vh_-_79px)] overflow-hidden bg-white ">
           <div className="sticky top-0 bg-white">
             <ChatHeader
               userImage={

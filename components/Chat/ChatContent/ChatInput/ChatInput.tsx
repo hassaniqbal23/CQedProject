@@ -14,8 +14,10 @@ import { ChatEmojiPicker } from './ChatEmojiPicker/ChatEmojiPicker';
 import { ChatFileUploader } from './ChatFileUploader/ChatFileUploader';
 import { AspectRatio } from '@/components/ui/aspect-ratio/aspect-ratio';
 import Image from 'next/image';
+import { useSocket } from '../../WithSockets/WithSockets';
 
 function ChatInput({ onSendMessage }: any) {
+  const { isConnected } = useSocket();
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<number>(41);
@@ -87,6 +89,7 @@ function ChatInput({ onSendMessage }: any) {
                       placeholder="Enter your message"
                       {...field}
                       minHeight={height}
+                      disabled={!isConnected}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault();
@@ -170,6 +173,7 @@ function ChatInput({ onSendMessage }: any) {
           <Button
             className="w-full bg-blue-100 h-[54px] w-[54px]"
             type="submit"
+            disabled={!isConnected}
           >
             <SendHorizontal className="text-primary " />
           </Button>

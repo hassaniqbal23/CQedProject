@@ -25,28 +25,37 @@ const SocketContext = createContext<{
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }: any) => {
-  const isConnectedRef = useRef(false);
-  const hasDisconnectedBeforeRef = useRef(false);
+  const [isConnected, setIsConnected] = useState(false);
+  const isDisconnectedBefore = useRef(false);
   const [socketInstance, setSocketInstance] = useState<SocketType | null>(null);
   const token = getAccessToken();
 
   const onConnect = useCallback(() => {
-    isConnectedRef.current = true;
-    if (hasDisconnectedBeforeRef.current) {
-      toast.dismiss('socket-disconnect');
-      hasDisconnectedBeforeRef.current = false;
-      toast.success("Back online! You're all set!", {
-        id: 'socket-connected',
-        position: 'top-right',
-        closeButton: true,
-        duration: 4000,
-      });
-    }
+    if (!isDisconnectedBefore.current) return;
+    setIsConnected(true);
+    toast.dismiss('socket-disconnect');
+    toast.success("Back online! You're all set!", {
+      id: 'socket-connected',
+      position: 'top-right',
+      closeButton: true,
+      duration: 4000,
+    });
   }, []);
 
   const onDisconnect = useCallback(() => {
-    isConnectedRef.current = false;
-    hasDisconnectedBeforeRef.current = true;
+    isDisconnectedBefore.current = true;
+    setIsConnected(false);
+    toast.dismiss('socket-connected');
+    toast.loading('Oh! we lost connection to our servers, connecting...', {
+      duration: Infinity,
+      id: 'socket-disconnect',
+      position: 'top-right',
+      closeButton: false,
+    });
+  }, []);
+
+  const onConnectError = useCallback(() => {
+    isDisconnectedBefore.current = true;
     toast.dismiss('socket-connected');
     toast.loading('Oh! we lost connection to our servers, connecting...', {
       duration: Infinity,
@@ -77,10 +86,12 @@ export const SocketProvider = ({ children }: any) => {
 
       socket.on('connect', onConnect);
       socket.on('disconnect', onDisconnect);
+      socket.on('connect_error', onConnectError);
 
       return () => {
         socket.off('connect', onConnect);
         socket.off('disconnect', onDisconnect);
+        socket.off('connect_error', onConnectError);
         socket.disconnect();
       };
     } else {
@@ -91,7 +102,7 @@ export const SocketProvider = ({ children }: any) => {
   return (
     <SocketContext.Provider
       value={{
-        isConnected: isConnectedRef.current,
+        isConnected,
         socket: socketInstance,
         setSocket: setSocketInstance,
       }}
