@@ -11,6 +11,8 @@ import { EmojiClickData } from 'emoji-picker-react';
 import Modal from '@/components/common/Modal/Modal';
 import { useMutation } from 'react-query';
 import { uploadImage } from '@/app/api/communities';
+import { NewFeeds } from '@/components/NewFeeds/NewFeeds';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 
 const Picker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
@@ -33,6 +35,8 @@ export const CreatePostModal = ({
   onPublish,
   buttonActionLoading,
 }: CreatePostModalProps) => {
+  const { userInformation } = useGlobalState();
+
   const [showUpload, setShowUpload] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState(textarea || '');
@@ -101,17 +105,17 @@ export const CreatePostModal = ({
   }, []);
 
   const openModalButton = (
-    <Button
-      variant="outline"
-      size="md"
+    <NewFeeds
+      className="w-full"
+      userImage={
+        userInformation?.attachment?.file_path || '/assets/profile/profile.svg'
+      }
       onClick={() => {
         setUploadedImage(null);
         setIsVisible(true);
         setTextAreaValue('');
       }}
-    >
-      {buttonTrigger}
-    </Button>
+    />
   );
 
   const handleOkClick = () => {
