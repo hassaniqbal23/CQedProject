@@ -36,7 +36,11 @@ export const FormInput: FC<InputProps> = ({
         <FormItem>
           <FormLabel className="text-sm">{label}</FormLabel>
           <FormControl>
-            <Input placeholder={placeholder} {...field} {...inputProps} />
+            <Input
+              placeholder={placeholder}
+              {...field}
+              {...(inputProps as any)}
+            />
           </FormControl>
           <FormDescription>{description}</FormDescription>
           <FormMessage />
