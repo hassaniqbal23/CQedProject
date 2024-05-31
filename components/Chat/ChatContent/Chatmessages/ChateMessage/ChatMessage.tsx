@@ -31,7 +31,6 @@ const ChatMessage: FC<Iprops> = ({
   showDate,
   showProfile,
 }: Iprops) => {
-  console.log('ChatMessage', id);
   return (
     <div
       className={`flex flex-col gap-1 mb-5 ${isCurrentUser ? 'items-end' : 'items-start'}`}

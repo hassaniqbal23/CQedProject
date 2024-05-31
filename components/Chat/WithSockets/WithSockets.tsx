@@ -1,23 +1,60 @@
 'use client';
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { io } from 'socket.io-client';
 import type { Socket as SocketType } from 'socket.io-client';
-// import { parseCookies } from 'nookies';
+import { toast } from 'sonner';
 import { getAccessToken } from '@/app/utils/encryption';
 
 const SocketContext = createContext<{
   socket: SocketType | null;
   setSocket: (socket: SocketType) => void;
+  isConnected: boolean;
 }>({
   socket: null,
   setSocket: () => {},
+  isConnected: false,
 });
 
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }: any) => {
+  const isConnectedRef = useRef(false);
+  const hasDisconnectedBeforeRef = useRef(false);
   const [socketInstance, setSocketInstance] = useState<SocketType | null>(null);
   const token = getAccessToken();
+
+  const onConnect = useCallback(() => {
+    isConnectedRef.current = true;
+    if (hasDisconnectedBeforeRef.current) {
+      toast.dismiss('socket-disconnect');
+      hasDisconnectedBeforeRef.current = false;
+      toast.success("Back online! You're all set!", {
+        id: 'socket-connected',
+        position: 'top-right',
+        closeButton: true,
+        duration: 4000,
+      });
+    }
+  }, []);
+
+  const onDisconnect = useCallback(() => {
+    isConnectedRef.current = false;
+    hasDisconnectedBeforeRef.current = true;
+    toast.dismiss('socket-connected');
+    toast.loading('Oh! we lost connection to our servers, connecting...', {
+      duration: Infinity,
+      id: 'socket-disconnect',
+      position: 'top-right',
+      closeButton: false,
+    });
+  }, []);
 
   useEffect(() => {
     const url = process.env.NEXT_PUBLIC_API_HOST || '';
@@ -33,15 +70,17 @@ export const SocketProvider = ({ children }: any) => {
       reconnectionAttempts: Infinity,
       jsonp: false,
     };
+
     if (token) {
       const socket = io(url, options);
-
       setSocketInstance(socket);
 
-      console.log(socket);
+      socket.on('connect', onConnect);
+      socket.on('disconnect', onDisconnect);
 
-      // Cleanup function
       return () => {
+        socket.off('connect', onConnect);
+        socket.off('disconnect', onDisconnect);
         socket.disconnect();
       };
     } else {
@@ -51,7 +90,11 @@ export const SocketProvider = ({ children }: any) => {
 
   return (
     <SocketContext.Provider
-      value={{ socket: socketInstance, setSocket: setSocketInstance }}
+      value={{
+        isConnected: isConnectedRef.current,
+        socket: socketInstance,
+        setSocket: setSocketInstance,
+      }}
     >
       {children}
     </SocketContext.Provider>

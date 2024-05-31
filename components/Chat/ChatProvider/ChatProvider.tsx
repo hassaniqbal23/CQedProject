@@ -83,16 +83,6 @@ const handleShowProfileAndDate = (messages: any) => {
       const itemSenderId = item.receiverId || item.toId;
       const nextMessageSenderId = nextMessage.receiverId || nextMessage.toId;
 
-      console.log(item);
-
-      console.log({
-        currentMessage: item.message,
-        nextMessage: nextMessage.message,
-        itemSenderId,
-        nextMessageSenderId,
-        isLessThan30MinutesFromNext,
-      });
-
       // If current and next message are from the same user and within 30 minutes, hide profile and date for the current message
       if (itemSenderId === nextMessageSenderId && isLessThan30MinutesFromNext) {
         item.showProfile = false;
@@ -152,7 +142,6 @@ export const ChatProvider = ({ children }: any) => {
     () => getAllConversations(),
     {
       onSuccess(data) {
-        console.log(data, 'data');
         setInboxResponse(data);
       },
     }

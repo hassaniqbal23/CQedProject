@@ -13,7 +13,7 @@ export const ChatUserList: FC<IProps> = ({ users }: IProps) => {
   const { joinConversation } = useChatGuard();
   const [activeUserId, setActiveUserId] = useState<string | null>(null);
 
-  const handleUserClick = (userId: string) => {
+  const handleSelectConversation = (userId: string) => {
     setActiveUserId(userId);
     joinConversation(userId);
   };
@@ -21,7 +21,7 @@ export const ChatUserList: FC<IProps> = ({ users }: IProps) => {
   return (
     <div className="flex flex-col gap-3">
       {users.map((user) => (
-        <div key={user.id} onClick={() => handleUserClick(user.id)}>
+        <div key={user.id} onClick={() => handleSelectConversation(user.id)}>
           <div
             className={`flex gap-3 p-3 items-center transition-all cursor-pointer rounded-l-lg 
               ${activeUserId === user.id ? 'bg-primary-50 text-primary-600' : 'hover:bg-primary-50 hover:text-primary-500 active:bg-primary-50'}

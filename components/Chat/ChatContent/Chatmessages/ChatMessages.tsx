@@ -24,7 +24,6 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
   const { userInformation } = useGlobalState();
   const { currentConversationMessages, memoizedMessagesList } =
     useChatFeatures();
-  console.log(memoizedMessagesList, 'memoizedMessagesList');
   const messages = [...currentConversationMessages];
 
   useEffect(() => {

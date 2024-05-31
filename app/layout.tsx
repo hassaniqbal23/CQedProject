@@ -79,7 +79,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </SocketProvider>
           </EventBusProvider>
         </QueryClientProvider>
-        <Sonner />
+        <Sonner richColors />
       </body>
     </html>
   );
