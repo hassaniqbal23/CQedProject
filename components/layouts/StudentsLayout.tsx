@@ -10,12 +10,13 @@ import { useResponsive } from '@/lib/hooks';
 import { Bell, MessageCircle } from 'lucide-react';
 interface IProps {
   children: ReactNode;
+  className?: string;
 }
 
-export const StudentsLayout: FC<IProps> = ({ children }) => {
+export const StudentsLayout: FC<IProps> = ({ children, className }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const { isMobile } = useResponsive();
+  const { isTabletMini } = useResponsive();
 
   const showLayout = useMemo(() => {
     if (!pathname) return false;
@@ -39,11 +40,6 @@ export const StudentsLayout: FC<IProps> = ({ children }) => {
       icon: '/assets/sidebaricons/chat.svg',
       title: 'Chats',
       path: '/students/chats',
-    },
-    {
-      icon: '/assets/sidebaricons/classroomstudents.svg',
-      title: 'Classroom',
-      path: '/students/classroom',
     },
     {
       icon: '/assets/sidebaricons/penpalship.svg',
@@ -72,10 +68,12 @@ export const StudentsLayout: FC<IProps> = ({ children }) => {
 
   return (
     <div className="md:flex md:justify-stretch min-h-screen">
-      <div className="block w-[70px] md:w-[240px] bg-[#F6F8F9] dark:bg-slate-900">
+      <div
+        className={`block ${isTabletMini ? '' : 'w-[70px] md:w-[240px]'} bg-[#F6F8F9] dark:bg-slate-900`}
+      >
         <div className="flex">
           <Sidebar
-            isMobileSidebar={isMobile}
+            isMobileSidebar={isTabletMini}
             isVerticalIcon={true}
             pathname={pathname as string}
             sidebarLinks={sidebarLinks}
@@ -84,7 +82,7 @@ export const StudentsLayout: FC<IProps> = ({ children }) => {
             onLogout={() => {
               removeToken();
               removeUserId();
-              router.push('/login');
+              router.push('/students/sign-in');
             }}
             links={[
               { src: 'chat', type: 'icon', icon: <MessageCircle /> },
@@ -101,9 +99,13 @@ export const StudentsLayout: FC<IProps> = ({ children }) => {
           />
         </div>
       </div>
-      <div className="block md:w-full pl-0 md:pl-8 pt-[60px] overflow-hidden bg-[#FDFDFD]">
-        <div className="mx-[10px] my-[30px] md:m-[40px]">
-          <div className="student-layout">{children}</div>
+      <div
+        className={`block md:w-full ${isTabletMini ? 'px-6 pb-24' : ''} lg:pl-8 pt-[60px] overflow-hidden ${pathname?.includes('cq-communities') ? 'bg-[#EEF3FE]' : 'bg-[#FDFDFD]'}`}
+      >
+        <div
+          className={`mx-[10px] my-[30px] ${isTabletMini ? '' : 'md:m-[40px]'}`}
+        >
+          <div className="school-layout">{children}</div>
         </div>
       </div>
     </div>

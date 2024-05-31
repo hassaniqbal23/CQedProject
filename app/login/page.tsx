@@ -83,7 +83,12 @@ export default function Login() {
       <div className="flex justify-center items-center bg-white rounded-md shadow-md pt-8 md:pt-12 px-4 md:px-6 pb-10 md:pb-12 w-11/12 md:w-5/6 lg:w-2/3 xl:w-1/3 mx-auto">
         <div className="bg-secondary-light w-full md:w-10/12  flex flex-col gap-[30px]  ">
           <div className="flex items-center justify-center">
-            <Image alt="logo" width={150} height={150} src="/logo.svg" />
+            <Image
+              alt="logo"
+              width={150}
+              height={150}
+              src="/assets/GCEd/NavGCEd.svg"
+            />
           </div>
           <div className="text-center mb-0">
             <h1 className="font-semibold text-center text-lg mb-1 md:text-xl ">

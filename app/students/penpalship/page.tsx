@@ -4,8 +4,12 @@ import React from 'react';
 import { Typography } from '@/components/common/Typography/Typography';
 import { Info } from 'lucide-react';
 import { TabsComponent as Tabs } from '@/components/ui';
-import { PenPalCommunity } from './(components)/penpalCommunity/penPalCommunity';
-import { AiMatch } from './(components)/aiMatch/aiMatch';
+import {
+  AiMatch,
+  MyPenpals,
+  PalSearchId,
+  PenPalCommunity,
+} from './(components)';
 
 const Penpalship = () => {
   return (
@@ -18,6 +22,7 @@ const Penpalship = () => {
       </div>
       <div className="mt-2 mb-3">
         <Tabs
+          defaultValue="penpalCommunity"
           tabs={[
             { label: 'PenPal Community', value: 'penpalCommunity' },
             { label: 'AI Matches', value: 'aiMatches' },
@@ -43,11 +48,15 @@ const Penpalship = () => {
             },
             {
               value: 'palIDSearch',
-              content: <div className="mt-5">Pal ID Search</div>,
+              content: (
+                <div className="mt-5">
+                  <PalSearchId />
+                </div>
+              ),
             },
             {
               value: 'myPenpals',
-              content: <div className="mt-5">My Penpals</div>,
+              content: <MyPenpals />,
             },
           ]}
           variant="secondary"

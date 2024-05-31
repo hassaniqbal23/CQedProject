@@ -62,7 +62,7 @@ export const SchoolProfileView: FC<IProps> = ({ id }) => {
       <ProfileHeader
         name={getProfileData?.name || ''}
         role="10th Grade Geometry at "
-        subrole=" Oak Ridge H.S."
+        subrole="Oak Ridge H.S."
         location={getProfileData?.address || ''}
         profileIcon="/assets/profile/teacherprofile.svg"
       />

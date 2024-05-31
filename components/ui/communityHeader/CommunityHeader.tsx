@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input/input';
+import { Typography } from '@/components/common/Typography/Typography';
 
 interface CommunityHeaderProps {
   title: string;
@@ -9,7 +10,8 @@ interface CommunityHeaderProps {
   description: string;
   rightImage: string;
   leftImage: string;
-  onInputChange(e: React.ChangeEvent<HTMLInputElement>): void;
+  onInputChange(e: React.KeyboardEvent<HTMLInputElement>): void;
+  createCommunityLink?: string;
 }
 
 const CommunityHeader: React.FC<CommunityHeaderProps> = ({
@@ -19,29 +21,39 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
   rightImage,
   leftImage,
   onInputChange,
+  createCommunityLink = '/students/cq-communities/create',
 }) => {
   return (
-    <div className="bg-primary-500 p-5">
+    <div className="bg-primary-500 px-8 pt-7 pb-4 rounded-lg">
       <div className="sm:flex sm:justify-center sm:items-center sm:gap-2 sm:w-full md:flex md:justify-between md:gap-4">
         <div className="mt-2 self-end hidden md:block  sm:hidden ">
           <Image src={leftImage} alt="" width={152} height={162} />
         </div>
         <div className="flex flex-col items-center  gap-2">
-          <h2 className="sm:text-xl md:text-2xl font-bold lg:text-3xl  text-white">
+          <Typography weight="bold" variant="h2" className=" text-white">
             {title}
-          </h2>
-          <h3 className="sm:text-[10px] sm:font-semibold md:text-sm md:font-medium lg:text-lg lg:font-medium text-white">
+          </Typography>
+          <Typography
+            variant="h6"
+            weight="medium"
+            className="text-center text-white"
+          >
             {subtitle}
-          </h3>
-          <div className="w-full">
+          </Typography>
+          <div className="w-11/12">
             <Input
+              iconColor="#5D5E68"
+              iconPosition="right"
               className="text-black"
               placeholder="Explore Communities"
               type="search"
-              onChange={onInputChange}
+              onKeyDown={onInputChange}
             />
           </div>
-          <Link href="#" className="text-lg font-normal text-white">
+          <Link
+            href={createCommunityLink}
+            className="text-lg font-normal text-white"
+          >
             Or <span className="text-secondary-500">create your own.</span>{' '}
           </Link>
         </div>
@@ -49,13 +61,10 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
           <Image src={rightImage} alt="" width={112} height={111} />
         </div>
       </div>
-      <div className="lg:block hidden md:block relative">
-        <a
-          href="#"
-          className="absolute right-0 bottom-[-20px] text-white text-lg font-medium mt-2"
-        >
+      <div className="flex justify-end items-end pt-2">
+        <Typography variant="h6" weight="medium" className=" text-white">
           {description}
-        </a>
+        </Typography>
       </div>
     </div>
   );

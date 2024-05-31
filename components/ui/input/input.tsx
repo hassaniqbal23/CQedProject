@@ -19,6 +19,11 @@ interface InputProps {
   autocomplete?: string;
   required?: boolean;
   rounded?: boolean;
+  accept?: string;
+  iconPosition?: 'left' | 'right';
+  iconColor?: string;
+  onClick?: () => void;
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -39,6 +44,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       required,
       autocomplete = 'off',
       rounded = false, // Default value for rounded
+      onKeyDown,
+      iconPosition = 'left',
+      iconColor = '',
+      accept,
+      onClick,
       ...props
     },
     ref
@@ -67,11 +77,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             type={inputType}
             id={id}
             name={name}
+            accept={accept}
             value={value}
             onChange={onChange}
             onBlur={onBlur}
             required={required}
             autoComplete={autocomplete}
+            onKeyDown={onKeyDown}
+            onClick={onClick}
             className={cn(
               'flex h-14 w-full bg-[#F8F9FB] border font-medium px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-black disabled:cursor-not-allowed disabled:opacity-50',
               isError ? 'border-red-500' : 'border-[#D1D5DB]',
@@ -91,13 +104,25 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             </button>
           )}
           {type === 'search' && (
-            <button
-              type="button"
-              className="absolute inset-y-0 left-2 flex items-center focus:outline-none"
-              onClick={() => {}}
-            >
-              <Search size={25} />
-            </button>
+            <>
+              {iconPosition === 'left' ? (
+                <button
+                  type="button"
+                  className="absolute inset-y-0 left-2 flex items-center focus:outline-none"
+                  onClick={() => {}}
+                >
+                  <Search color={iconColor} size={25} />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-5 flex items-center focus:outline-none"
+                  onClick={() => {}}
+                >
+                  <Search color={iconColor} size={25} />
+                </button>
+              )}
+            </>
           )}
           {isError && (
             <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-red-500">

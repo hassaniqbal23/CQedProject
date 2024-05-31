@@ -4,9 +4,9 @@ import { toast } from 'react-toastify';
 
 const createHttpInstance = () => {
   let baseURL = process.env.NEXT_PUBLIC_API_HOST || '';
-  if (process.env.NODE_ENV === 'production') {
-    baseURL = '/api';
-  }
+  // if (process.env.NODE_ENV === 'production') {
+  //   baseURL = '/api';
+  // }
 
   const http = axios.create({
     baseURL,

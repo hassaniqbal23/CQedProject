@@ -14,6 +14,9 @@ export const UpdateUserPassword = (payload: UpdatePasswordBody) =>
 
 export const GetUserInformation = (id: string) => http.get(`/users/me`);
 
+export const GetUserJoinedCommunities = (id: string) =>
+  http.get('/community/communities-joined');
+
 export const UserAcceptInvitation = (payload: IAcceptInvitation) =>
   http.post('/invitation/accept-invite', payload);
 

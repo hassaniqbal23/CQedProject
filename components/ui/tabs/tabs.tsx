@@ -37,7 +37,7 @@ const TabsTrigger = forwardRef<
     <RadixUITabs.Trigger
       ref={ref}
       className={cn(
-        `border-b-2 border-transparent inline-flex items-center justify-center whitespace-nowrap py-2.5 px-7 text-base font-medium hover:ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded data-[state=active]:text-white data-[state=active]:font-semibold data-[state=active]:bg-primary data-[state=active]:shadow  `,
+        `border-b-2 border-transparent inline-flex items-center justify-center whitespace-nowrap py-2.5 px-7 text-base font-medium hover:ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded data-[state=active]:text-white data-[state=active]:font-medium data-[state=active]:bg-primary data-[state=active]:shadow  `,
         variant === 'linked' ? 'data-[state=active]:border-primary' : '',
         variant === 'secondary'
           ? 'rounded-md data-[state=active]:bg-background data-[state=active]:shadow data-[state=active]:text-primary'
@@ -90,12 +90,12 @@ const TabsComponent = ({
   return (
     <Tabs
       defaultValue={defaultValue}
-      className="w-full"
+      className="w-full "
       onValueChange={onValueChange}
     >
       <TabsList
         variant={variant}
-        className={`flex w-full gap-2 ${secondaryClass} items-start ${variant !== 'secondary' ? 'p-2' : ''}`}
+        className={`flex w-full gap-2 overflow-x-auto whitespace-nowrap ${secondaryClass} items-start ${variant !== 'secondary' ? 'p-2' : ''}`}
       >
         {tabs.map((item: TabsProps, index) => (
           <TabsTrigger value={item.value} key={index} variant={variant}>

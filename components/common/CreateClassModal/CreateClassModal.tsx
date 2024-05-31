@@ -124,7 +124,7 @@ export const CreateClassDialog = ({
                     {ButtonAction}
                   </Button>
                   <DialogClose asChild>
-                    <Button className="bg-white text-[#4146B8] ">
+                    <Button className="bg-white text-primary-500 ">
                       {ButtonCancel}
                     </Button>
                   </DialogClose>

@@ -1,17 +1,16 @@
-'use client';
-
 import React, { useState } from 'react';
 import Chip from './Chip'; // Assuming Chip component is in the same directory
 
-interface ChipItem {
+export interface ChipItem<T> {
   label: string;
-  value: string;
+  value: T;
   render?: (data: any) => React.ReactNode;
 }
 
-interface ChipSelectorProps {
-  options: ChipItem[];
-  defaultValue?: string[];
+interface ChipSelectorProps<T> {
+  options: ChipItem<T>[];
+  defaultValue?: any[];
+  value?: T;
   rounded?: boolean;
   variant?:
     | 'primary'
@@ -19,21 +18,34 @@ interface ChipSelectorProps {
     | 'outlined'
     | 'secondary-outlined'
     | 'link';
-  onChange?: (value: string[] | string) => void;
+  onChange?: (value: T[] | T) => void;
   multiSelect?: boolean;
+  size?: 'sm' | 'md' | 'lg'; // Added size prop
 }
 
-const ChipSelector = ({
+function ChipSelector<T>({
   options,
   defaultValue,
   onChange,
   rounded,
   variant,
   multiSelect,
-}: ChipSelectorProps) => {
+  value,
+  size,
+}: ChipSelectorProps<T>) {
   const [selectedValue, setSelectedValue] = useState(defaultValue || []);
 
-  const handleChipClick = (value: string) => {
+  React.useEffect(() => {
+    if (value) {
+      if (Array.isArray(value)) {
+        setSelectedValue(value);
+      } else {
+        setSelectedValue([value]);
+      }
+    }
+  }, [value]);
+
+  const handleChipClick = (value: T) => {
     const isSelected = selectedValue.includes(value);
 
     if (multiSelect) {
@@ -51,7 +63,13 @@ const ChipSelector = ({
 
   return (
     <div
-      className={`flex gap-2 items-start ${multiSelect && 'flex-wrap justify-center'}`}
+      className={`flex gap-2 items-start ${
+        multiSelect && 'flex-wrap justify-center'
+      } 
+        ${size === 'sm' ? 'gap-2' : ''}  {/* Added size specific class */}
+        ${size === 'md' ? 'gap-4' : ''}  {/* Added size specific class */}
+        ${size === 'lg' && 'flex-wrap gap-8 '}  {/* Added size specific class */}
+      `}
     >
       {options.map((chip, index) => (
         <Chip
@@ -71,6 +89,6 @@ const ChipSelector = ({
       ))}
     </div>
   );
-};
+}
 
 export default ChipSelector;

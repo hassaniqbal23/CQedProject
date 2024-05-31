@@ -12,12 +12,15 @@ const PenpalshipPublishStoryCard: React.FC<PenpalshipPublishStoryCardProps> = ({
   iconOnClick,
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center p-3 border-dashed border-2 border-[#75767e] rounded-lg shadow-sm">
-      <div onClick={iconOnClick}>
-        <Plus size={50} className="text-[#4146B8] cursor-pointer" />
+    <div
+      onClick={iconOnClick}
+      className="flex flex-col items-center text-center justify-center p-3 border-dashed border-2 border-[#75767e] rounded-2xl shadow-sm"
+    >
+      <div>
+        <Plus size={50} className="text-primary-500  cursor-pointer" />
       </div>
       <div className="p-3 pb-1">
-        <Typography variant="h3" weight="bold" className="text-[#4146B8]  ">
+        <Typography variant="h3" weight="bold" className="text-primary-500   ">
           {title}
         </Typography>
       </div>
