@@ -121,3 +121,8 @@
 .NiceScrollBar:hover .ScrollbarsCustom-Track {
   opacity: 0.8;
 }
+
+
+.ql-snow .ql-tooltip {
+  z-index: 99;
+}
