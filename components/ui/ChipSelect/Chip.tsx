@@ -15,6 +15,7 @@ interface ChipProps<T> {
     | 'outlined'
     | 'secondary-outlined'
     | 'link';
+  className?: string;
 }
 
 function Chip<T>({
@@ -24,6 +25,7 @@ function Chip<T>({
   children,
   rounded,
   variant,
+  className,
 }: ChipProps<T>) {
   return (
     <div
@@ -36,7 +38,8 @@ function Chip<T>({
           : '',
         variant === 'link'
           ? `bg-transparent ${active && 'bg-primary-50'} border-none text-sm`
-          : ''
+          : '',
+        (className = 'whitespace-nowrap')
       )}
     >
       {children}
