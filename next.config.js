@@ -6,17 +6,11 @@ const nextConfig = {
     forceSwcTransforms: true,
   },
   images: {
-    domains: ['cqed.ams3.digitaloceanspaces.com'],
+    domains: ['loremflickr.com', 'cqed.ams3.digitaloceanspaces.com'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**.cqed.ams3.digitaloceanspaces.com',
-        port: '',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cqed.ams3.digitaloceanspaces.com',
-        port: '',
+        hostname: '**',
       },
     ],
   },
