@@ -67,7 +67,9 @@ const ChatMessage: FC<Iprops> = ({
                 options={[
                   {
                     content: (
-                      <div onClick={() => onDeleteMessage && onDeleteMessage(id)}>
+                      <div
+                        onClick={() => onDeleteMessage && onDeleteMessage(id)}
+                      >
                         Delete Message
                       </div>
                     ),

@@ -30,20 +30,31 @@ export const ChatUserList: FC<IProps> = ({ users }: IProps) => {
             <div>
               <Avatar className="w-14 h-14 md:w-[48px] md:h-[48px] rounded-full bg-lightgray">
                 <AvatarImage
-                  src={user.user.attachment?.file_path || '/assets/profile/profile.svg'}
+                  src={
+                    user.user.attachment?.file_path ||
+                    '/assets/profile/profile.svg'
+                  }
                   alt="Profile Picture"
                 />
               </Avatar>
             </div>
             <div>
-              <Typography className="text-lg font-semibold" variant="body" weight="medium">
+              <Typography
+                className="text-lg font-semibold"
+                variant="body"
+                weight="medium"
+              >
                 {user.user.name}
               </Typography>
-              <ExpandableText className="text-sm font-medium" text={user.lastMessageReceived} maxLength={12} />
+              <ExpandableText
+                className="text-sm font-medium"
+                text={user.lastMessageReceived}
+                maxLength={12}
+              />
             </div>
           </div>
-        );
-      })}
+        </div>
+      ))}
     </div>
   );
 };

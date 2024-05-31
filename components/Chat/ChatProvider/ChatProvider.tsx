@@ -48,12 +48,12 @@ interface ChatInterface {
 
 const ChatContext = createContext<ChatInterface>({
   currentThread: null,
-  fetchConversations: () => { },
+  fetchConversations: () => {},
   memorizedConversationsList: [],
   memorizedMessagesList: [],
-  setSearchQuery: () => { },
+  setSearchQuery: () => {},
   memorizedTotalUnreadMessages: [],
-  unSendMessage: () => { },
+  unSendMessage: () => {},
   currentThreadId: null,
   inboxResponse: null,
   currentConvsersation: null,

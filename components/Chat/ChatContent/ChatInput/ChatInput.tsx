@@ -135,8 +135,9 @@ function ChatInput({ onSendMessage }: any) {
                         {form.watch('files').map((file: any, index: number) => (
                           <div
                             key={index}
-                            aria-roledescription={`file ${index + 1} containing ${file.name
-                              }`}
+                            aria-roledescription={`file ${index + 1} containing ${
+                              file.name
+                            }`}
                             className="p-0 size-20 group "
                           >
                             <AspectRatio className="size-full relative">
@@ -164,7 +165,10 @@ function ChatInput({ onSendMessage }: any) {
           }}
         />
         <div>
-          <Button className="w-full bg-blue-100 h-[54px] w-[54px]" type="submit">
+          <Button
+            className="w-full bg-blue-100 h-[54px] w-[54px]"
+            type="submit"
+          >
             <SendHorizontal className="text-primary " />
           </Button>
         </div>

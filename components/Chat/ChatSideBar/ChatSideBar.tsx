@@ -15,7 +15,7 @@ interface IProps {
 export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
   const { inboxResponse, inboxLoading } = useChatFeatures();
   return (
-    <div className='w-[32rem]'>
+    <div className="w-[32rem]">
       <div className="max-w-sm border-r border-solid border-gray-200  h-[calc(100vh_-_142px)] bg-[#FFF] flex flex-col pl-2 gap-4">
         <div className="flex justify-between w-full px-3 mb-2">
           <Typography
@@ -30,7 +30,7 @@ export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
           </div>
         </div>
         <div className="w-full mb-4">
-          <div className='px-3'>
+          <div className="px-3">
             <Input
               placeholder="Search for chats"
               type="search"

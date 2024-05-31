@@ -17,4 +17,4 @@ export const getConversationMessages = (id: string | number) => {
 
 export const deleteMessage = (id: string | number) => {
   return http.delete(`/messages/${id}/delete-message`);
-};  
+};

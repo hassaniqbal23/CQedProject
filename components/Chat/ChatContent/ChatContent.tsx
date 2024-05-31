@@ -26,7 +26,10 @@ const ChatContent: FC = () => {
     };
     sendMessage(messageData);
   };
-  let NoChatfound = inboxResponse && inboxResponse.data.data.length > 0 ? "No chat selected" : "No Conversation found";
+  let NoChatfound =
+    inboxResponse && inboxResponse.data.data.length > 0
+      ? 'No chat selected'
+      : 'No Conversation found';
 
   return (
     <>
