@@ -22,6 +22,7 @@ interface InputProps {
   accept?: string;
   iconPosition?: 'left' | 'right';
   iconColor?: string;
+  onClick?: () => void;
   onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
 }
 
@@ -47,6 +48,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       iconPosition = 'left',
       iconColor = '',
       accept,
+      onClick,
       ...props
     },
     ref
@@ -82,6 +84,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             required={required}
             autoComplete={autocomplete}
             onKeyDown={onKeyDown}
+            onClick={onClick}
             className={cn(
               'flex h-14 w-full bg-[#F8F9FB] border font-medium px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-black disabled:cursor-not-allowed disabled:opacity-50',
               isError ? 'border-red-500' : 'border-[#D1D5DB]',
@@ -113,7 +116,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               ) : (
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-2 flex items-center focus:outline-none"
+                  className="absolute inset-y-0 right-5 flex items-center focus:outline-none"
                   onClick={() => {}}
                 >
                   <Search color={iconColor} size={25} />

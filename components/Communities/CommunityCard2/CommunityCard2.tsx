@@ -1,5 +1,5 @@
 import { Typography } from '@/components/common/Typography/Typography';
-import { Avatar, AvatarImage, Button, Separator } from '@/components/ui';
+import { Avatar, AvatarImage, Separator, Skeleton } from '@/components/ui';
 import Link from 'next/link';
 import React from 'react';
 import { CommunityJoinLeaveActionButton } from '../CommunityJoinLeaveActionButton/CommunityJoinLeaveActionButton';
@@ -11,6 +11,7 @@ interface CommunityCardProps {
   description: string;
   id: number;
   module?: 'students' | 'teachers';
+  loading?: boolean;
 }
 
 export const CommunityCard = ({
@@ -20,38 +21,61 @@ export const CommunityCard = ({
   description,
   id,
   module = 'students',
+  loading,
 }: CommunityCardProps) => {
   return (
     <>
-      <div className="flex items-center p-4 rounded-md ">
+      <div className="flex items-center p-4 rounded-md">
         <Link
           href={`/${module}/cq-communities/${id}`}
           className="flex items-center"
         >
-          <Avatar className="w-16 h-16 md:w-54 md:h-54 mr-2 rounded-full bg-lightgray ">
-            <AvatarImage src={image} alt="Profile Picture" />
-          </Avatar>
+          {loading ? (
+            <Skeleton className="w-16 h-16 md:w-54 md:h-54 mr-2 rounded-full" />
+          ) : (
+            <Avatar className="w-16 h-16 md:w-54 md:h-54 mr-2 rounded-full bg-lightgray">
+              <AvatarImage src={image} alt="Profile Picture" />
+            </Avatar>
+          )}
           <div className="ml-2">
-            <Typography variant="h5" weight="semibold">
-              {title}
-            </Typography>
-            <Typography variant="p" weight="regular" className="text-gray-500">
-              {members} {members > 1 ? 'Members' : 'Member'}
-            </Typography>
-            <Typography
-              variant="p"
-              weight="regular"
-              className="text-gray-700 pt-2"
-            >
-              {description}
-            </Typography>
+            {loading ? (
+              <Skeleton className="h-6 w-40 mb-2" />
+            ) : (
+              <Typography variant="h5" weight="semibold">
+                {title}
+              </Typography>
+            )}
+            {loading ? (
+              <Skeleton className="h-4 w-20 mb-2" />
+            ) : (
+              <Typography
+                variant="p"
+                weight="regular"
+                className="text-gray-500"
+              >
+                {members} {members > 1 ? 'Members' : 'Member'}
+              </Typography>
+            )}
+            {loading ? (
+              <Skeleton className="h-4 w-60 mt-2" />
+            ) : (
+              <Typography
+                variant="p"
+                weight="regular"
+                className="text-gray-700 pt-2"
+              >
+                {description}
+              </Typography>
+            )}
           </div>
         </Link>
-        <CommunityJoinLeaveActionButton
-          communityId={id}
-        ></CommunityJoinLeaveActionButton>
+        {loading ? (
+          <Skeleton className="w-32 h-10 ml-auto" />
+        ) : (
+          <CommunityJoinLeaveActionButton communityId={id} />
+        )}
       </div>
-      <Separator></Separator>
+      <Separator />
     </>
   );
 };

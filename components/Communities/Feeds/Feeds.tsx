@@ -34,7 +34,9 @@ export const Feeds = ({ communityId }: FeedsProps) => {
     data: communityPosts,
     isLoading,
     refetch,
-  } = useQuery('getCommunityPosts', () => getCommunityPosts(communityId));
+  } = useQuery('getCommunityPosts', () => getCommunityPosts(communityId), {
+    enabled: communityId ? true : false,
+  });
 
   const { mutate: likePost } = useMutation('likePost', (postId: number) =>
     likeCommunityPost(postId)
@@ -77,8 +79,6 @@ export const Feeds = ({ communityId }: FeedsProps) => {
     }
   );
 
-  console.log(communityPosts, 'communityPosts');
-
   return (
     <div className="mt-6 p-6 w-full bg-white rounded-xl shadow-md space-y-4">
       <Typography variant="h3" weight="bold" className="flex items-center">
@@ -92,7 +92,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
         Feed
       </Typography>
       <div className="mt-4">
-        <div className="flex justify-end p-4 w-full border-t border-gray-300">
+        <div className="flex justify-center p-4 w-full border-t border-gray-300">
           <CreatePostModal
             icon="/uplode.svg"
             title="Create a post"
