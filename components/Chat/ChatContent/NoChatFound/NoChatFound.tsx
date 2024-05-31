@@ -8,7 +8,7 @@ interface Iprops {
 const NoChatFound: FC<Iprops> = ({ text }: Iprops) => {
   return (
     <div className="flex flex-col items-center justify-center h-screen text-center">
-      <div className="w-12 h-12 mb-4 relative">
+      <div className="w-[171px] h-[171px] mb-4 relative">
         <Image
           src="/Chat.svg"
           alt="Message Icon"
@@ -16,7 +16,7 @@ const NoChatFound: FC<Iprops> = ({ text }: Iprops) => {
           objectFit="contain"
         />
       </div>
-      <div className="text-lg text-gray-700">{text}</div>
+      <div className="text-xl font-semibold text-[#676BC6]">{text}</div>
     </div>
   );
 };

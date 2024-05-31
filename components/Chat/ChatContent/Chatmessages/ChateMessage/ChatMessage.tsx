@@ -31,6 +31,7 @@ const ChatMessage: FC<Iprops> = ({
   showDate,
   showProfile,
 }: Iprops) => {
+  console.log('ChatMessage', id);
   return (
     <div
       className={`flex flex-col gap-1 mb-5 ${isCurrentUser ? 'items-end' : 'items-start'}`}
@@ -55,24 +56,26 @@ const ChatMessage: FC<Iprops> = ({
           >
             {content}
           </Typography>
-          <div className="relative">
-            <Dropdown
-              trigger={
-                <div>
-                  <Ellipsis className="cursor-pointer group-hover:block hidden" />
-                </div>
-              }
-              options={[
-                {
-                  content: (
-                    <div onClick={() => onDeleteMessage && onDeleteMessage(id)}>
-                      Delete Message
-                    </div>
-                  ),
-                },
-              ]}
-            />
-          </div>
+          {isCurrentUser && (
+            <div className="relative">
+              <Dropdown
+                trigger={
+                  <div>
+                    <Ellipsis className="cursor-pointer group-hover:block hidden" />
+                  </div>
+                }
+                options={[
+                  {
+                    content: (
+                      <div onClick={() => onDeleteMessage && onDeleteMessage(id)}>
+                        Delete Message
+                      </div>
+                    ),
+                  },
+                ]}
+              />
+            </div>
+          )}
         </div>
       </div>
       <Typography

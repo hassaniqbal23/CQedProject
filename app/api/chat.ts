@@ -14,3 +14,7 @@ export const getAllConversations = () => {
 export const getConversationMessages = (id: string | number) => {
   return http.get(`/messages/all-messages?id=${id}`);
 };
+
+export const deleteMessage = (id: string | number) => {
+  return http.delete(`/messages/${id}/delete-message`);
+};  
