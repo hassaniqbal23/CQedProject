@@ -7,9 +7,9 @@ const nextConfig = {
   },
   images: {
     domains: [
-      'loremflickr.com',
       'cqed.ams3.digitaloceanspaces.com',
       'picsum.photos',
+      'loremflickr.com',
     ],
     remotePatterns: [
       {
