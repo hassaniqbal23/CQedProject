@@ -30,6 +30,19 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
     return routes.some((route) => pathname.startsWith(route));
   }, [pathname]);
 
+  const isChatPage = useMemo(() => {
+    const routes = [
+      '/students/chats',
+      '/teachers/chats',
+      '/students/chat',
+      '/teachers/chat',
+      '/schools/chat',
+      '/schools/chats',
+    ];
+    if (!pathname) return false;
+    return !!routes.find((route) => pathname.startsWith(route));
+  }, [pathname]);
+
   const sidebarLinks = [
     {
       icon: '/assets/sidebaricons/dashboard.svg',
@@ -100,12 +113,12 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
         </div>
       </div>
       <div
-        className={`block md:w-full ${isTabletMini ? 'px-6 pb-24' : ''} lg:pl-8 pt-[60px] overflow-hidden ${pathname?.includes('cq-communities') ? 'bg-[#EEF3FE]' : 'bg-[#FDFDFD]'}`}
+        className={`block md:w-full ${isTabletMini ? 'px-6 pb-24' : ''} ${isChatPage ? '' : 'lg:pl-8'} ${isChatPage ? 'pt-[73px] pl-[42px]' : 'pt-[60px]'} overflow-hidden ${pathname?.includes('cq-communities') ? 'bg-[#EEF3FE]' : 'bg-[#FDFDFD]'}`}
       >
         <div
-          className={`mx-[10px] my-[30px] ${isTabletMini ? '' : 'md:m-[40px]'}`}
+          className={`${isChatPage ? '' : 'mx-[10px] my-[30px]'} ${isTabletMini ? '' : `${isChatPage ? '' : 'md:m-[40px]'}`}`}
         >
-          <div className="school-layout">{children}</div>
+          {children}
         </div>
       </div>
     </div>

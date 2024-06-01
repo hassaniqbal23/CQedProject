@@ -14,6 +14,9 @@ import { Toaster } from '@/components/ui/toaster/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner/sonner';
 import localFont from 'next/font/local';
 import { Montserrat } from 'next/font/google';
+import { EventBusProvider } from '@/components/Chat/EventBus/EventBus';
+import { SocketProvider } from '@/components/Chat/WithSockets/WithSockets';
+import { ChatGuardProvider } from '@/components/Chat/ChatProvider/ChatGuard';
 import NextTopLoader from 'nextjs-toploader';
 
 const montserrat = Montserrat({
@@ -57,20 +60,26 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
         <Toaster />
         <QueryClientProvider client={queryClient}>
-          <GlobalProvider>
-            <FormProvider {...methods}>
-              {/* <ThemeProvider
+          <EventBusProvider>
+            <SocketProvider>
+              <GlobalProvider>
+                <ChatGuardProvider>
+                  <FormProvider {...methods}>
+                    {/* <ThemeProvider
                 attribute="class"
                 defaultTheme="system"
                 enableSystem
               > */}
-              {children}
-              {/* </ThemeProvider> */}
-              <ToastContainer autoClose={1000} />
-            </FormProvider>
-          </GlobalProvider>
+                    {children}
+                    {/* </ThemeProvider> */}
+                    <ToastContainer autoClose={1000} />
+                  </FormProvider>
+                </ChatGuardProvider>
+              </GlobalProvider>
+            </SocketProvider>
+          </EventBusProvider>
         </QueryClientProvider>
-        <Sonner />
+        <Sonner richColors />
       </body>
     </html>
   );

@@ -5,7 +5,7 @@ import ChatContent from './ChatContent/ChatContent';
 export const Chat: FC = () => {
   return (
     <div className="flex w-full">
-      <ChatSideBar chat={'Chat'} />
+      <ChatSideBar chat={'Chats'} />
       <ChatContent />
     </div>
   );

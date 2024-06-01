@@ -9,13 +9,15 @@ import {
 } from '@/components/ui';
 import { CircleX, SendHorizontal, Smile } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { ChatEmojiPicker } from './ChatEmojiPicker/ChatEmojiPicker';
 import { ChatFileUploader } from './ChatFileUploader/ChatFileUploader';
 import { AspectRatio } from '@/components/ui/aspect-ratio/aspect-ratio';
 import Image from 'next/image';
+import { useSocket } from '../../WithSockets/WithSockets';
 
-function ChatInput() {
+function ChatInput({ onSendMessage }: any) {
+  const { isConnected } = useSocket();
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<number>(41);
@@ -64,9 +66,18 @@ function ChatInput() {
     form.setValue('files', [...files]);
   };
 
+  const onSubmit: SubmitHandler<any> = async (data: any) => {
+    if (!data.message && data.files.length === 0) return;
+    onSendMessage(data);
+    form.reset();
+  };
+
   return (
     <Form {...form}>
-      <form className="flex w-full items-end gap-2 ">
+      <form
+        className="flex w-full items-end gap-2 "
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <FormField
           name="message"
           render={({ field }) => {
@@ -78,10 +89,19 @@ function ChatInput() {
                       placeholder="Enter your message"
                       {...field}
                       minHeight={height}
+                      disabled={!isConnected}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          form.handleSubmit(onSubmit)();
+                          setHeight(41);
+                          form.setValue('message', '');
+                        }
+                      }}
                       maxHeight={
                         form.watch('files').length > 0 ? height / 2 : 120
                       }
-                      className={`${form.watch('files').length > 0 ? 'resize-none pb-20' : 'pb-auto'}`}
+                      className={`${form.watch('files').length > 0 ? 'pb-20' : 'pb-auto'} resize-none`}
                       icon={
                         <div className="flex gap-2" ref={emojiPickerRef}>
                           <ChatFileUploader
@@ -150,8 +170,12 @@ function ChatInput() {
           }}
         />
         <div>
-          <Button className="w-full bg-blue-100 h-[44px]" type="submit">
-            <SendHorizontal className="text-primary" />
+          <Button
+            className="w-full bg-blue-100 h-[54px] w-[54px]"
+            type="submit"
+            disabled={!isConnected}
+          >
+            <SendHorizontal className="text-primary " />
           </Button>
         </div>
       </form>

@@ -11,14 +11,14 @@ export const ExpandableText = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  if (text.length <= maxLength) {
+  if (text?.length <= maxLength) {
     return <p className={className}>{text}</p>;
   }
 
   return (
     <div className={isExpanded ? '' : 'flex'}>
       <p className={`${className}`}>
-        {isExpanded ? text : `${text.substring(0, maxLength).trim()}`}
+        {isExpanded ? text : `${text?.substring(0, maxLength).trim()}`}
       </p>
       <span
         className="text-sm font-normal cursor-pointer hover:text-primary-500 ml-1"
