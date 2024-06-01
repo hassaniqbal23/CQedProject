@@ -1,109 +1,80 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import ChatMessage from './ChateMessage/ChatMessage';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useChatFeatures } from '../../ChatProvider/ChatProvider';
+import { useMutation } from 'react-query';
+import { deleteMessage } from '@/app/api/chat';
+import { toast } from 'react-toastify';
 
 interface Message {
-  date: string;
-  userImage: string;
-  content: string;
-  isUserMessage: boolean;
+  id: string | number;
+  conversationId: string | number;
+  attachment: any;
+  message: string;
+  receiverId: number | string;
+  senderId: number | string;
 }
 
-const messages: Message[] = [
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content: '尽管我们的文化背景和生活方式完全不同',
+interface IChatMessages {
+  user: any;
+}
 
-    isUserMessage: false,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content: '尽管我们的文化背景和生活方式完全不同',
+const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { userInformation } = useGlobalState();
+  const [deletedMessage, setDeletedMessage] = React.useState<Number[]>([]);
+  const { currentConversationMessages, memoizedMessagesList } =
+    useChatFeatures();
+  const messages = [...currentConversationMessages];
 
-    isUserMessage: true,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
-    isUserMessage: false,
-  },
+  const { mutate: removeThread, isLoading: isDeletingThread } = useMutation(
+    (id: number) => deleteMessage(id),
+    {
+      onSuccess: (res, message_id) => {
+        setDeletedMessage([...deletedMessage, message_id]);
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
 
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
+  const handleDeleteMessage = (id: string | number) => {
+    const numericId = typeof id === 'string' ? parseInt(id) : id;
+    removeThread(numericId);
+  };
 
-    isUserMessage: true,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
-
-    isUserMessage: true,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
-
-    isUserMessage: false,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
-
-    isUserMessage: true,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
-
-    isUserMessage: false,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
-
-    isUserMessage: true,
-  },
-  {
-    date: '2021-10-10',
-    userImage: '/assets/profile/profile.svg',
-    content:
-      'I’ve a beautiful family of penpals who write to me on a constant basis and they never fail to bring a smile to my face.',
-
-    isUserMessage: false,
-  },
-];
-
-const ChatMessages: React.FC = () => {
   return (
-    <div className="">
-      {messages.map((message, index) => (
-        <ChatMessage
-          key={index}
-          date={message.date}
-          userImage={message.userImage}
-          content={message.content}
-          isUserMessage={message.isUserMessage}
-          translateImage={''}
-          UserMessage={''}
-        />
-      ))}
+    <div className="p-3">
+      {messages.map((message: any, index) => {
+        return (
+          <ChatMessage
+            key={index}
+            id={message.id}
+            date={message.created_at}
+            showProfile={message.showProfile}
+            showDate={message.showDate}
+            userImage={
+              (message.toId && message.toId !== userInformation.id) ||
+              message.senderId === userInformation.id
+                ? userInformation.attachment.file_path
+                : user?.attachment?.file_path || '/assets/profile/profile.svg'
+            }
+            content={message.message}
+            onDeleteMessage={handleDeleteMessage}
+            isCurrentUser={
+              (message.toId && message.toId !== userInformation.id) ||
+              message.senderId === userInformation.id
+            }
+            hasDeleted={deletedMessage.includes(message.id)}
+          />
+        );
+      })}
+      <div ref={messagesEndRef}></div>
     </div>
   );
 };

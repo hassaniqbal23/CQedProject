@@ -2,10 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { PlusIcon } from 'lucide-react';
 import DataTable from '@/components/ui/table/table';
-import { Button } from '@/components/ui';
+import { Avatar, AvatarImage, Button } from '@/components/ui';
 import MultipleSelector from '@/components/common/From/MultiSelect';
 import { Input } from '@/components/ui';
 import Link from 'next/link';
+import { useQuery } from 'react-query';
+import { getAllStudents } from '@/app/api/students';
 interface Student {
   fullname: string;
   nick_name?: string;
@@ -15,33 +17,7 @@ interface Student {
 }
 
 export default function TeacherStudents() {
-  const [students, setStudents] = useState<Student[]>([]);
-
-  useEffect(() => {
-    setStudents([
-      {
-        fullname: 'John Doe',
-        nick_name: 'Jhonny',
-        gender: 'Male',
-        status: true,
-        id: 1,
-      },
-      {
-        fullname: 'Jane Doe',
-        nick_name: 'Janie',
-        gender: 'Female',
-        status: false,
-        id: 2,
-      },
-      {
-        fullname: 'Jack Doe',
-        nick_name: 'Jackie',
-        gender: 'Male',
-        status: true,
-        id: 3,
-      },
-    ]);
-  }, []);
+  const { data, isLoading } = useQuery('students', () => getAllStudents());
 
   return (
     <>
@@ -74,19 +50,27 @@ export default function TeacherStudents() {
         </div>
 
         <DataTable
-          data={students}
+          data={data?.data.data || []}
           selection={true}
+          loading={isLoading}
           noDataMessage={'No Students'}
           columns={[
             {
               label: 'Full Name',
               key: 'fullname',
               render: (row) => {
+                console.log(row);
                 return (
                   <Link
-                    className="text-primary-500"
-                    href={`/teachers/students/${row.id}`}
+                    className="text-primary-500 flex gap-2 items-center"
+                    href={`/teachers/students/${row.userId}`}
                   >
+                    <Avatar>
+                      <AvatarImage
+                        src={row.user?.attachment?.file_path}
+                        alt="profile_image"
+                      />
+                    </Avatar>
                     {row.fullname || 'N/A'}
                   </Link>
                 );

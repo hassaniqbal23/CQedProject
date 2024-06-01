@@ -10,6 +10,7 @@ import {
   DialogTrigger,
   Separator,
 } from '@/components/ui';
+import { cn } from '@/lib/utils';
 import React from 'react';
 
 interface ModalProps {
@@ -25,6 +26,7 @@ interface ModalProps {
   footerOkButton?: React.ReactNode | string;
   onOpenChange?: () => void;
   isSeperator?: boolean;
+  className?: string;
 }
 
 function Modal({
@@ -40,11 +42,12 @@ function Modal({
   isVisible,
   onOpenChange,
   isSeperator = true,
+  className,
 }: ModalProps) {
   return (
     <Dialog open={isVisible} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{openModalButton}</DialogTrigger>
-      <DialogContent className="!flex flex-col">
+      <DialogContent className={cn('!flex flex-col', className)}>
         <DialogHeader>
           {header === true ? (
             <>

@@ -16,7 +16,7 @@ export const PostWithImage: Story = {
     </div>
   ),
   args: {
-    users: [
+    conversations: [
       {
         id: 1,
         userImage: '/assets/profile/profile.svg',

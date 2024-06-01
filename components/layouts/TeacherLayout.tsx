@@ -38,7 +38,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
     {
       icon: '/assets/sidebaricons/chat.svg',
       title: 'Chat & Communities',
-      path: '/teachers/chats-communities',
+      path: '/teachers/chats',
     },
     {
       icon: '/assets/sidebaricons/classroom.svg',

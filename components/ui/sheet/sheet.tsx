@@ -132,9 +132,15 @@ interface SheetDemoProps {
   className?: string;
   buttonTitle?: string;
   description?: string;
+  children?: React.ReactNode;
 }
 
-export function SheetDemo({ title, description, buttonTitle }: SheetDemoProps) {
+export function SheetDemo({
+  title,
+  description,
+  buttonTitle,
+  children,
+}: SheetDemoProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -145,7 +151,7 @@ export function SheetDemo({ title, description, buttonTitle }: SheetDemoProps) {
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>
         </SheetHeader>
-        {/* ... rest of the component structure */}
+        {children}
       </SheetContent>
     </Sheet>
   );

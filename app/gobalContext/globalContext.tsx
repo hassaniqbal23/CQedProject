@@ -3,6 +3,7 @@ import { IUserInformation } from './types';
 import { useQuery } from 'react-query';
 import { GetUserInformation, GetUserJoinedCommunities } from '../api/auth';
 import { getUserIdLocalStorage } from '../utils/encryption';
+import { myPenpals as getMyPenpals } from '../api/penpals';
 
 type IGlobalState = {
   isUserGetInfo: boolean;
@@ -10,6 +11,7 @@ type IGlobalState = {
   userInformation: IUserInformation;
   setUserInformation: (value: IUserInformation) => void;
   joinedCommunities: any[];
+  myPenpals: any[];
 };
 
 export const GlobalState = createContext<IGlobalState>({
@@ -18,6 +20,7 @@ export const GlobalState = createContext<IGlobalState>({
   userInformation: {} as IUserInformation,
   setUserInformation: () => {},
   joinedCommunities: [] as any[],
+  myPenpals: [] as any[],
 });
 
 export const GlobalProvider: FC<any> = ({ children }) => {
@@ -25,6 +28,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   const [userInformation, setUserInformation] = useState<IUserInformation>(
     {} as IUserInformation
   );
+  const [myPenpals, setMyPenpals] = useState<any[]>([]);
   const [joinedCommunities, setJoinedCommunities] = useState<any[]>([]);
   const userId = getUserIdLocalStorage();
 
@@ -33,6 +37,8 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     () => GetUserInformation(userId as string),
     {
       enabled: userId !== 'undefined' && userId !== null ? true : false,
+      retry: 100,
+      retryDelay: 5000,
       onSuccess: (res) => {
         setIsUserGetInfo(false);
         setUserInformation(res.data.data);
@@ -56,8 +62,28 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         setIsUserGetInfo(false);
         console.log(err, '======> ERROR');
       },
+      retry: 100,
+      retryDelay: 5000,
     }
   );
+
+  useQuery(['MyPenPals', userId], () => getMyPenpals(), {
+    enabled: userId !== 'undefined' && userId !== null ? true : false,
+    onSuccess: (res) => {
+      let list = res?.data?.data || [];
+      setMyPenpals(
+        list.map((c: any) => {
+          return {
+            ...c,
+            friend: c.sender.id == userId ? c.receiver : c.sender,
+          };
+        })
+      );
+    },
+    onError: (err) => {},
+    retry: 100,
+    retryDelay: 5000,
+  });
 
   return (
     <GlobalState.Provider
@@ -67,6 +93,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         userInformation,
         setUserInformation,
         joinedCommunities,
+        myPenpals,
       }}
     >
       {children}

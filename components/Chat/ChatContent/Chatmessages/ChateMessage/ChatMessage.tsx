@@ -3,80 +3,93 @@ import React, { FC } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui';
 import { Ellipsis } from 'lucide-react';
 import { Dropdown } from '@/components/ui';
+import { Typography } from '@/components/common/Typography/Typography';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 interface Iprops {
-  date: string;
+  date?: string;
   userImage: string;
-  content: string;
-  translateImage: string;
-  UserMessage: string;
-  isUserMessage: boolean;
-  onDeleteSubject?: (id: string) => void;
-  onEditSubjectName?: (id: string, name: string) => void;
+  content?: string;
+  translateImage?: string;
+  isCurrentUser?: boolean;
+  onDeleteMessage?: (id: string | number) => void;
+  id: string | number;
+  showProfile?: boolean;
+  showDate?: boolean;
+  hasDeleted?: boolean;
 }
+
+dayjs.extend(relativeTime);
 
 const ChatMessage: FC<Iprops> = ({
   date,
   userImage,
   content,
-  isUserMessage,
-  onDeleteSubject,
-  onEditSubjectName,
+  isCurrentUser,
+  id,
+  onDeleteMessage,
+  showDate,
+  showProfile,
+  hasDeleted,
 }: Iprops) => {
+  if (hasDeleted) return <></>;
+
   return (
     <div
-      className={`flex flex-col m-10 gap-4 ${isUserMessage ? 'items-end' : 'items-start'}`}
+      className={`flex flex-col gap-1 mb-5 ${isCurrentUser ? 'items-end' : 'items-start'}`}
     >
       <div
-        className={`flex gap-4 items-start ${isUserMessage ? 'flex-row-reverse' : ''}`}
+        className={`flex gap-2 items-start group ${isCurrentUser ? 'flex-row-reverse' : ''}`}
       >
-        <Avatar className="w-14 h-14 rounded-full bg-lightgray">
-          <AvatarImage src={userImage} alt="Profile Picture" />
-        </Avatar>
+        {showProfile ? (
+          <Avatar className="w-14 h-14 rounded-full bg-lightgray">
+            <AvatarImage src={userImage} alt="Profile Picture" />
+          </Avatar>
+        ) : (
+          <div className="w-14 h-14 rounded-full" />
+        )}
         <div
-          className={`flex items-center gap-2 ${isUserMessage ? 'flex-row-reverse' : 'flex-row'}`}
+          className={`flex items-center ${isCurrentUser ? 'flex-row-reverse' : 'flex-row'}`}
         >
-          <h1
-            className={`font-medium font-montserrat max-w-lg rounded-sm text-14 leading-26 p-3 ${isUserMessage ? 'text-[#4E5D78] bg-gray-50' : 'text-white bg-[#377DFF]'}`}
+          <Typography
+            variant="h4"
+            weight="medium"
+            className={`font-medium font-montserrat max-w-lg rounded-sm text-14 leading-26 p-3 ${isCurrentUser ? 'text-[#4E5D78] bg-gray-50' : 'text-white bg-[#377DFF]'}`}
           >
             {content}
-          </h1>
-          <div className="relative">
-            <Dropdown
-              trigger={
-                <div>
-                  <Ellipsis className="cursor-pointer" />
-                </div>
-              }
-              options={[
-                {
-                  content: (
-                    <div
-                      onClick={() =>
-                        onDeleteSubject && onDeleteSubject('subject-id')
-                      }
-                    >
-                      Remove Subject
-                    </div>
-                  ),
-                },
-                {
-                  content: (
-                    <div
-                      onClick={() =>
-                        onEditSubjectName &&
-                        onEditSubjectName('subject-id', 'subject-name')
-                      }
-                    >
-                      Edit Subject
-                    </div>
-                  ),
-                },
-              ]}
-            />
-          </div>
+          </Typography>
+          {isCurrentUser && (
+            <div className="relative">
+              <Dropdown
+                trigger={
+                  <div>
+                    <Ellipsis />
+                  </div>
+                }
+                options={[
+                  {
+                    content: (
+                      <div
+                        onClick={() => onDeleteMessage && onDeleteMessage(id)}
+                      >
+                        Delete Message
+                      </div>
+                    ),
+                  },
+                ]}
+              />
+            </div>
+          )}
         </div>
       </div>
+      <Typography
+        variant="p"
+        weight="medium"
+        className={isCurrentUser ? 'mr-14' : 'ml-14'}
+      >
+        {showDate && dayjs(date).fromNow()}
+      </Typography>
     </div>
   );
 };

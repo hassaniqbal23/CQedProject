@@ -18,7 +18,6 @@ export const GroupCard: React.FC<IGroupCardProps> = ({
   label,
   description,
 }) => {
-  console.log(imageUrl, 'checkinfg');
   return (
     <div className="w-full flex flex-col p-4  bg-[#F7F7F7] rounded-sm ">
       <div>
