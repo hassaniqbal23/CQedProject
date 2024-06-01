@@ -122,13 +122,8 @@ export const ChatProvider = ({ children }: any) => {
   } = useChatGuard();
   const { socket } = useSocket();
   const [searchQuery, setSearchQuery] = useState('');
-  const {
-    realtimeConnectedUsersIds,
-    realtimeTypingUsersIds,
-    setButtonLoading,
-    setTotalUnreadMessageCount,
-    totalUnreadMessageCount,
-  }: any = useChatGuard();
+  const { realtimeConnectedUsersIds, setRealtimeConnectedUsersIds }: any =
+    useChatGuard();
   const { subscribeEvent, unsubscribeEvent } = useEventBus();
   const [inboxResponse, setInboxResponse] = useState<any>(null);
   const [lastMessagesList, setLastMessagesList] = useState<
@@ -153,10 +148,12 @@ export const ChatProvider = ({ children }: any) => {
           });
         },
         retry: false,
+        cacheTime: 0,
+        staleTime: 0,
       }
     );
 
-  const { isLoading: inboxLoading } = useQuery(
+  const { isLoading: inboxLoading, data: allConversationResponse } = useQuery(
     ['get-all-conversations'],
     () => getAllConversations(),
     {
@@ -173,6 +170,8 @@ export const ChatProvider = ({ children }: any) => {
       },
       retry: 100,
       retryDelay: 5000,
+      cacheTime: 0,
+      staleTime: 0,
     }
   );
 
@@ -190,6 +189,17 @@ export const ChatProvider = ({ children }: any) => {
       refetchConversationMessages();
     }
   }, [selectedConversationId]);
+
+  useEffect(() => {
+    const chatList = allConversationResponse?.data?.data || [];
+    const onlineUsers = chatList.flatMap((c: any) => {
+      return c.onlineUsers;
+    });
+    setRealtimeConnectedUsersIds([
+      ...onlineUsers,
+      ...realtimeConnectedUsersIds,
+    ]);
+  }, [allConversationResponse]);
 
   useEffect(() => {
     const handleSendMessage = (message: any) => {
@@ -234,6 +244,7 @@ export const ChatProvider = ({ children }: any) => {
   useEffect(() => {
     const handleJoinRoom = (id: number | string | null) => {
       if (id == selectedConversationId) return;
+      setCurrentConversationMessages([]);
       setSelectedConversationId(id);
       if (!inboxLoading && inboxResponse.data) {
         const current = inboxResponse?.data?.data.find((item: any) => {

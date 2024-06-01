@@ -15,8 +15,14 @@ import { ChatFileUploader } from './ChatFileUploader/ChatFileUploader';
 import { AspectRatio } from '@/components/ui/aspect-ratio/aspect-ratio';
 import Image from 'next/image';
 import { useSocket } from '../../WithSockets/WithSockets';
+import { useChatFeatures } from '../../ChatProvider/ChatProvider';
+import { useChatGuard } from '../../ChatProvider/ChatGuard';
+
+let TypingTimeout: any;
 
 function ChatInput({ onSendMessage }: any) {
+  const { currentConversation } = useChatFeatures();
+  const { userIsTyping } = useChatGuard();
   const { isConnected } = useSocket();
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
@@ -97,6 +103,13 @@ function ChatInput({ onSendMessage }: any) {
                           setHeight(41);
                           form.setValue('message', '');
                         }
+
+                        if (!currentConversation) return;
+
+                        clearTimeout(TypingTimeout);
+                        TypingTimeout = setTimeout(() => {
+                          userIsTyping(currentConversation.id);
+                        }, 100);
                       }}
                       maxHeight={
                         form.watch('files').length > 0 ? height / 2 : 120

@@ -15,7 +15,12 @@ const ChatContent: FC = () => {
   const { sendMessage } = useChatGuard();
   const { currentConversation, inboxResponse, onConversationDelete } =
     useChatFeatures();
-  const { setSelectedConversationId, selectedConversationId } = useChatGuard();
+  const {
+    setSelectedConversationId,
+    selectedConversationId,
+    realtimeConnectedUsersIds,
+    realtimeTypingUsersIds,
+  } = useChatGuard();
   const { userInformation } = useGlobalState();
   const queryClient = useQueryClient();
 
@@ -61,8 +66,12 @@ const ChatContent: FC = () => {
                 '/assets/profile/profile.svg'
               }
               userFullName={currentConversation.user.name}
-              isOnline={true}
-              isTyping={false}
+              isOnline={realtimeConnectedUsersIds.includes(
+                currentConversation.user.id
+              )}
+              isTyping={realtimeTypingUsersIds.includes(
+                currentConversation.user.id
+              )}
               userId={currentConversation.user.id}
               onDeleteConversations={() => {
                 handleDeleteConversation(currentConversation.id);

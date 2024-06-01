@@ -116,11 +116,11 @@ const CreateChatModal = (props: ICreateChatModalProps) => {
                       }
                       formatOptionLabel={(option: any) => {
                         return (
-                          <div className="flex items-center gap-[3px] ">
+                          <div className="flex items-center gap-[3px] cursor-pointer">
                             <Avatar className="items-center">
                               <AvatarImage
                                 src={option?.image}
-                                className="w-8 h-8"
+                                className="w-8 h-8 rounded-full"
                               />
                             </Avatar>
                             <Typography
