@@ -6,32 +6,33 @@ import { useChatGuard } from '../../ChatProvider/ChatGuard';
 import { useChatFeatures } from '../../ChatProvider/ChatProvider';
 
 interface IProps {
-  users: any[];
+  conversations: any[];
 }
 
-export const ChatUserList: FC<IProps> = ({ users }: IProps) => {
-  const { joinConversation } = useChatGuard();
-  const [activeUserId, setActiveUserId] = useState<string | null>(null);
+export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
+  const { joinConversation, selectedConversationId } = useChatGuard();
 
   const handleSelectConversation = (userId: string) => {
-    setActiveUserId(userId);
     joinConversation(userId);
   };
 
   return (
     <div className="flex flex-col gap-3">
-      {users.map((user) => (
-        <div key={user.id} onClick={() => handleSelectConversation(user.id)}>
+      {conversations.map((conversation) => (
+        <div
+          key={conversation.id}
+          onClick={() => handleSelectConversation(conversation.id)}
+        >
           <div
             className={`flex gap-3 p-3 items-center transition-all cursor-pointer rounded-l-lg 
-              ${activeUserId === user.id ? 'bg-primary-50 text-primary-600' : 'hover:bg-primary-50 hover:text-primary-500 active:bg-primary-50'}
+              ${selectedConversationId === conversation.id ? 'bg-primary-50 text-primary-600' : 'hover:bg-primary-50 hover:text-primary-500 active:bg-primary-50'}
             `}
           >
             <div>
               <Avatar className="w-14 h-14 md:w-[48px] md:h-[48px] rounded-full bg-lightgray">
                 <AvatarImage
                   src={
-                    user.user.attachment?.file_path ||
+                    conversation.user.attachment?.file_path ||
                     '/assets/profile/profile.svg'
                   }
                   alt="Profile Picture"
@@ -44,11 +45,11 @@ export const ChatUserList: FC<IProps> = ({ users }: IProps) => {
                 variant="body"
                 weight="medium"
               >
-                {user.user.name}
+                {conversation.user.name}
               </Typography>
               <ExpandableText
                 className="text-sm font-medium"
-                text={user.lastMessageReceived}
+                text={conversation.lastMessageReceived}
                 maxLength={12}
               />
             </div>

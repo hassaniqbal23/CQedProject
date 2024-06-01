@@ -64,7 +64,7 @@ const ChatMessage: FC<Iprops> = ({
               <Dropdown
                 trigger={
                   <div>
-                    <Ellipsis className="cursor-pointer group-hover:block hidden" />
+                    <Ellipsis />
                   </div>
                 }
                 options={[

@@ -31,12 +31,12 @@ export const SocketProvider = ({ children }: any) => {
   const token = getAccessToken();
 
   const onConnect = useCallback(() => {
-    if (!isDisconnectedBefore.current) return;
     setIsConnected(true);
+    if (!isDisconnectedBefore.current) return;
     toast.dismiss('socket-disconnect');
     toast.success("Back online! You're all set!", {
       id: 'socket-connected',
-      position: 'top-right',
+      position: 'bottom-right',
       closeButton: true,
       duration: 4000,
     });
@@ -46,22 +46,22 @@ export const SocketProvider = ({ children }: any) => {
     isDisconnectedBefore.current = true;
     setIsConnected(false);
     toast.dismiss('socket-connected');
-    toast.loading('Oh! we lost connection to our servers, connecting...', {
+    toast.error('Oh! we lost connection to our servers, connecting...', {
       duration: Infinity,
       id: 'socket-disconnect',
-      position: 'top-right',
-      closeButton: false,
+      position: 'bottom-right',
+      closeButton: true,
     });
   }, []);
 
   const onConnectError = useCallback(() => {
     isDisconnectedBefore.current = true;
     toast.dismiss('socket-connected');
-    toast.loading('Oh! we lost connection to our servers, connecting...', {
-      duration: Infinity,
+    toast.error('Oh! we lost connection to our servers, connecting...', {
+      duration: 15000,
       id: 'socket-disconnect',
-      position: 'top-right',
-      closeButton: false,
+      position: 'bottom-right',
+      closeButton: true,
     });
   }, []);
 

@@ -7,6 +7,7 @@ import { Typography } from '@/components/common/Typography/Typography';
 import { useChatFeatures } from '../ChatProvider/ChatProvider';
 import Loading from '../../ui/button/loading';
 import CreateChatModal from '../ChatContent/CreateChatModal/CreateChatModal';
+import { useChatGuard } from '../ChatProvider/ChatGuard';
 
 interface IProps {
   chat: string;
@@ -14,6 +15,8 @@ interface IProps {
 
 export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
   const { inboxResponse, inboxLoading } = useChatFeatures();
+  const { joinConversation } = useChatGuard();
+
   const [search, setSearch] = React.useState('');
 
   const filtered = React.useMemo(() => {
@@ -37,7 +40,11 @@ export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
             {chat}
           </Typography>
           <div className="h-[40px] w-[40px] border border-gray-500 rounded-3xl items-center">
-            <CreateChatModal />
+            <CreateChatModal
+              onChatCreated={(id) => {
+                joinConversation(id);
+              }}
+            />
           </div>
         </div>
         <div className="w-full mb-4">
@@ -52,13 +59,15 @@ export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
             />
           </div>
 
-          {inboxLoading ? (
-            <div className="w-full h-[500px] flex items-center justify-center">
-              <Loading />
-            </div>
-          ) : (
-            <ChatUserList users={filtered} />
-          )}
+          <div className="h-[calc(100vh_-_215px)] overflow-y-auto">
+            {inboxLoading ? (
+              <div className="w-full h-[500px] flex items-center justify-center">
+                <Loading />
+              </div>
+            ) : (
+              <ChatUserList conversations={filtered} />
+            )}
+          </div>
         </div>
       </div>
     </div>

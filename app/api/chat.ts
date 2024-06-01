@@ -15,10 +15,14 @@ export const getAllConversations = () => {
   return http.get('/messages/get-conversations');
 };
 
-export const getConversationMessages = (id: string | number) => {
+export const getConversationMessages = (id: string | number | null) => {
   return http.get(`/messages/all-messages?id=${id}`);
 };
 
 export const deleteMessage = (id: string | number) => {
   return http.delete(`/messages/${id}/delete-message`);
+};
+
+export const deleteConversation = (id: string | number) => {
+  return http.delete(`/messages/${id}/delete-conversation`);
 };

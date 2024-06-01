@@ -20,7 +20,11 @@ interface ChatGuardContextProps {
   buttonLoading: boolean;
   setTotalUnreadMessageCount: React.Dispatch<React.SetStateAction<number>>;
   totalUnreadMessageCount: number;
-  joinConversation: (convsersationId: string | number) => void;
+  joinConversation: (conversationId: string | number) => void;
+  setSelectedConversationId: React.Dispatch<
+    React.SetStateAction<string | number | null>
+  >;
+  selectedConversationId: string | number | null;
 }
 
 export const ChatGuardContext = createContext<ChatGuardContextProps>({
@@ -34,12 +38,16 @@ export const ChatGuardContext = createContext<ChatGuardContextProps>({
   setTotalUnreadMessageCount: () => {},
   totalUnreadMessageCount: 0,
   joinConversation: () => {},
+  setSelectedConversationId: () => {},
+  selectedConversationId: null,
 });
 export const useChatGuard = () => useContext(ChatGuardContext);
 
 export const ChatGuardProvider = ({ children }: any) => {
   const { dispatchEvent } = useEventBus();
   const { socket } = useSocket();
+  const [selectedConversationId, setSelectedConversationId] =
+    useState<any>(null);
   // const currentUser: Partial<UserProps> = useSelector(getCurrentUser);
   // @todo we need to remove this.
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
@@ -141,10 +149,11 @@ export const ChatGuardProvider = ({ children }: any) => {
     }
   };
 
-  const joinConversation = (convsersationId: string | number) => {
+  const joinConversation = (conversationId: string | number) => {
     if (socket) {
-      socket.emit('JOIN_ROOM', { id: convsersationId });
-      dispatchEvent(JOIN_TO_CHAT_ROOM, convsersationId);
+      socket.emit('JOIN_ROOM', { id: conversationId });
+      dispatchEvent(JOIN_TO_CHAT_ROOM, conversationId);
+      setSelectedConversationId(conversationId);
     }
   };
 
@@ -161,6 +170,8 @@ export const ChatGuardProvider = ({ children }: any) => {
         setTotalUnreadMessageCount,
         totalUnreadMessageCount,
         joinConversation,
+        selectedConversationId,
+        setSelectedConversationId,
       }}
     >
       {children}
