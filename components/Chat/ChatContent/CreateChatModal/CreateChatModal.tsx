@@ -105,9 +105,9 @@ const CreateChatModal = () => {
                     <SelectV2
                       options={
                         myPenpals?.map((penpal: any) => ({
-                          label: penpal.receiver.profile[0].fullname,
-                          image: penpal.receiver.attachment.file_path,
-                          value: penpal?.receiver?.id,
+                          label: penpal.friend.profile[0].fullname,
+                          image: penpal.friend.attachment.file_path,
+                          value: penpal?.friend?.id,
                         })) || []
                       }
                       formatOptionLabel={(option: any) => {

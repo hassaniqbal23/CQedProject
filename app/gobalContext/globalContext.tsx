@@ -70,7 +70,15 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   useQuery(['MyPenPals', userId], () => getMyPenpals(), {
     enabled: userId !== 'undefined' && userId !== null ? true : false,
     onSuccess: (res) => {
-      setMyPenpals(res?.data?.data || []);
+      let list = res?.data?.data || [];
+      setMyPenpals(
+        list.map((c: any) => {
+          return {
+            ...c,
+            friend: c.sender.id == userId ? c.receiver : c.sender,
+          };
+        })
+      );
     },
     onError: (err) => {},
     retry: 100,
