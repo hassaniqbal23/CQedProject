@@ -16,6 +16,10 @@ import {
   getAllUserStories,
   getUserStoriesById,
 } from '@/app/api/users';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import Slider from 'react-slick';
+import { settings } from '@/app/utils/sliderSettings';
 
 export const PenPalCommunity = () => {
   const queryCLient = useQueryClient();
@@ -109,13 +113,7 @@ export const PenPalCommunity = () => {
         <Typography variant={'h3'} weight={'semibold'} className="mb-4">
           Stories
         </Typography>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 min-h-96">
-          <PenpalshipPublishStoryCard
-            title={'Publish your story'}
-            iconOnClick={() => {
-              setOpenStroyModal(!openStoryModal);
-            }}
-          />
+        <div>
           <PublishStoryDialog
             loading={isCreatingStories}
             open={openStoryModal}
@@ -129,20 +127,6 @@ export const PenPalCommunity = () => {
               createUserStories(story);
             }}
           />
-
-          {AllUserStories?.map((item: any, index: number) => (
-            <PenpalshipStoriesCard
-              key={index}
-              imgPath={item?.User?.attachment?.file_path}
-              title={item?.User?.profile[0]?.fullname}
-              link={'Read more'}
-              onClickReadMore={() => {
-                setViewUserStoryId(item?.id);
-                setViewStoryModal(!viewStoryModal);
-              }}
-              description={item.story}
-            />
-          ))}
 
           <PublishStoryViewDialog
             initialValue={getUserStory?.story}
@@ -171,6 +155,41 @@ export const PenPalCommunity = () => {
               imageUrl: getUserStory?.User?.attachment?.file_path,
             }}
           />
+          {AllUserStories?.length === 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 min-h-96">
+              <PenpalshipPublishStoryCard
+                title={'Publish your story'}
+                iconOnClick={() => {
+                  setOpenStroyModal(!openStoryModal);
+                }}
+              />
+            </div>
+          ) : (
+            <Slider {...settings}>
+              <div className="pr-0 md:pr-6">
+                <PenpalshipPublishStoryCard
+                  title={'Publish your story'}
+                  iconOnClick={() => {
+                    setOpenStroyModal(!openStoryModal);
+                  }}
+                />
+              </div>
+              {AllUserStories?.map((item: any, index: number) => (
+                <div key={index} className="px-3">
+                  <PenpalshipStoriesCard
+                    imgPath={item?.User?.attachment?.file_path}
+                    title={item?.User?.profile[0]?.fullname}
+                    link={'Read more'}
+                    onClickReadMore={() => {
+                      setViewUserStoryId(item?.id);
+                      setViewStoryModal(!viewStoryModal);
+                    }}
+                    description={item.story}
+                  />
+                </div>
+              ))}
+            </Slider>
+          )}
         </div>
       </div>
       <div>

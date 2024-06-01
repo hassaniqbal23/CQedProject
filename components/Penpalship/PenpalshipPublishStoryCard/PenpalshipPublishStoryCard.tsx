@@ -14,7 +14,7 @@ const PenpalshipPublishStoryCard: React.FC<PenpalshipPublishStoryCardProps> = ({
   return (
     <div
       onClick={iconOnClick}
-      className="flex flex-col items-center text-center justify-center p-3 border-dashed border-2 border-[#75767e] rounded-2xl shadow-sm"
+      className="flex flex-col items-center text-center justify-center p-3 border-dashed border-2 border-[#75767e] rounded-2xl shadow-sm min-h-96"
     >
       <div>
         <Plus size={50} className="text-primary-500  cursor-pointer" />
