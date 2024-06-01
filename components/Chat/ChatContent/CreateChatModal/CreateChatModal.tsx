@@ -1,3 +1,5 @@
+import { startConversation } from '@/app/api/chat';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 import Modal from '@/components/common/Modal/Modal';
 import { Typography } from '@/components/common/Typography/Typography';
 import {
@@ -15,30 +17,51 @@ import {
   Textarea,
 } from '@/components/ui';
 import { SelectV2 } from '@/components/ui/select-v2/select-v2';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { SquarePen } from 'lucide-react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useMutation, useQueryClient } from 'react-query';
+import * as z from 'zod';
 
 interface CreateChatModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const formSchema = z.object({
+  toId: z
+    .number({
+      message: 'Please select a user to send a message to',
+    })
+    .int(),
+  message: z.string({
+    message: 'Please enter a message',
+  }),
+});
+
 const CreateChatModal = () => {
+  const queryClient = useQueryClient();
+  const { myPenpals, userInformation } = useGlobalState();
   const [open, setOpen] = useState<boolean>(false);
-  const form = useForm({
-    defaultValues: {
-      userId: '',
-      message: '',
-    },
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {},
   });
 
+  const { mutate: sendMessage, isLoading: isSendingMessage } = useMutation(
+    (formValues: { toId: number; message: string }) =>
+      startConversation(formValues.toId, formValues.message),
+    {
+      onSuccess: (res) => {
+        queryClient.refetchQueries('get-all-conversations');
+      },
+      onError: (error: any) => {},
+    }
+  );
+
   const onSubmit = form.handleSubmit((values) => {
-    // const submit = {
-    //   code: token || '',
-    //   ...values,
-    // };
-    // mutate(submit);
+    sendMessage(values);
   });
 
   return (
@@ -67,7 +90,7 @@ const CreateChatModal = () => {
           <form onSubmit={onSubmit} className="space-y-4">
             <FormField
               control={form.control}
-              name="userId"
+              name="toId"
               render={({ field }) => (
                 <FormItem className="mb-7">
                   <FormLabel>To:</FormLabel>
@@ -80,17 +103,19 @@ const CreateChatModal = () => {
                       }}
                     /> */}
                     <SelectV2
-                      options={[
-                        { label: 'Option 1', value: '1' },
-                        { label: 'Option 2', value: '2' },
-                        { label: 'Option 3', value: '3' },
-                      ]}
+                      options={
+                        myPenpals?.map((penpal: any) => ({
+                          label: penpal.receiver.profile[0].fullname,
+                          image: penpal.receiver.attachment.file_path,
+                          value: penpal?.receiver?.id,
+                        })) || []
+                      }
                       formatOptionLabel={(option: any) => {
                         return (
                           <div className="flex items-center gap-[3px] ">
                             <Avatar className="items-center">
                               <AvatarImage
-                                src="/avatar1.svg"
+                                src={option?.image}
                                 className="w-8 h-8"
                               />
                             </Avatar>
@@ -106,9 +131,9 @@ const CreateChatModal = () => {
                       }}
                       className="font-semibold"
                       classNamePrefix={'select'}
-                      value={form.getValues('userId')}
                       onChange={(value: any) => {
-                        form.setValue('userId', value);
+                        form.setValue('toId', value.value);
+                        form.clearErrors('toId');
                       }}
                     />
                   </FormControl>
@@ -141,10 +166,9 @@ const CreateChatModal = () => {
               type="submit"
               variant={'default'}
               className="w-full mt-4"
-              //   loading={isLoading}
-              //   disabled={isLoading}
+              loading={isSendingMessage}
             >
-              Continue
+              Send Message
             </Button>
           </form>
         </Form>

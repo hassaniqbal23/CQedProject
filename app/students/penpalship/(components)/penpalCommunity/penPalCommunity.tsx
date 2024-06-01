@@ -9,7 +9,12 @@ import { Typography } from '@/components/common/Typography/Typography';
 import { PublishStoryDialog } from '@/components/ui/PublishStoryDialog/PublishStoryDialog';
 import Loading from '@/components/ui/button/loading';
 import React, { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from 'react-query';
 import { useRouter } from 'next/navigation';
 import {
   UserCreateStories,
@@ -29,6 +34,7 @@ export const PenPalCommunity = () => {
     useMutation((id: number) => createPenpal({ receiverId: id }), {
       onSuccess: (res) => {
         queryCLient.refetchQueries('penpalSuggestions');
+        queryCLient.refetchQueries('MyPenPals');
         setCreatingPanpalId(null);
         setViewStoryModal(false);
         setViewUserStoryId(null);

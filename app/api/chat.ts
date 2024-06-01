@@ -1,9 +1,13 @@
 import http from '../utils/http';
 // import { Invite } from './invitations';
 
-export const startConversation = (id: string | number = 4) => {
+export const startConversation = (
+  id: string | number = 4,
+  message: string | null = null
+) => {
   return http.post('/messages/chat', {
     toId: id,
+    message: message,
   });
 };
 

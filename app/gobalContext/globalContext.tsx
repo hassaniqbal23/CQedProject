@@ -3,6 +3,7 @@ import { IUserInformation } from './types';
 import { useQuery } from 'react-query';
 import { GetUserInformation, GetUserJoinedCommunities } from '../api/auth';
 import { getUserIdLocalStorage } from '../utils/encryption';
+import { myPenpals as getMyPenpals } from '../api/penpals';
 
 type IGlobalState = {
   isUserGetInfo: boolean;
@@ -10,6 +11,7 @@ type IGlobalState = {
   userInformation: IUserInformation;
   setUserInformation: (value: IUserInformation) => void;
   joinedCommunities: any[];
+  myPenpals: any[];
 };
 
 export const GlobalState = createContext<IGlobalState>({
@@ -18,6 +20,7 @@ export const GlobalState = createContext<IGlobalState>({
   userInformation: {} as IUserInformation,
   setUserInformation: () => {},
   joinedCommunities: [] as any[],
+  myPenpals: [] as any[],
 });
 
 export const GlobalProvider: FC<any> = ({ children }) => {
@@ -25,6 +28,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   const [userInformation, setUserInformation] = useState<IUserInformation>(
     {} as IUserInformation
   );
+  const [myPenpals, setMyPenpals] = useState<any[]>([]);
   const [joinedCommunities, setJoinedCommunities] = useState<any[]>([]);
   const userId = getUserIdLocalStorage();
 
@@ -63,6 +67,16 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     }
   );
 
+  useQuery(['MyPenPals', userId], () => getMyPenpals(), {
+    enabled: userId !== 'undefined' && userId !== null ? true : false,
+    onSuccess: (res) => {
+      setMyPenpals(res?.data?.data || []);
+    },
+    onError: (err) => {},
+    retry: 100,
+    retryDelay: 5000,
+  });
+
   return (
     <GlobalState.Provider
       value={{
@@ -71,6 +85,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         userInformation,
         setUserInformation,
         joinedCommunities,
+        myPenpals,
       }}
     >
       {children}
