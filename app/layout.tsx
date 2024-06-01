@@ -14,6 +14,7 @@ import { Toaster } from '@/components/ui/toaster/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner/sonner';
 import localFont from 'next/font/local';
 import { Montserrat } from 'next/font/google';
+import NextTopLoader from 'nextjs-toploader';
 
 const montserrat = Montserrat({
   weight: ['400', '500', '600', '700'],
@@ -52,6 +53,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <head />
       <body suppressHydrationWarning={false} className={montserrat.className}>
+        <NextTopLoader />
+
         <Toaster />
         <QueryClientProvider client={queryClient}>
           <GlobalProvider>
