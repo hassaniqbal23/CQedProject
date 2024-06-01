@@ -48,7 +48,7 @@ export const ChatHeader: FC<IProps> = ({
             weight="medium"
             className={`text-sm ${isOnline && !isTyping ? 'text-[#70C670]' : 'text-gray-400'}`}
           >
-            {isTyping ? 'Typing...' : isOnline ? 'Online' : 'Offline'}
+            {isTyping ? 'Typing....' : isOnline ? 'Online' : 'Offline'}
           </Typography>
         </div>
       </div>

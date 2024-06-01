@@ -8,47 +8,78 @@ import { useChatGuard } from '../ChatProvider/ChatGuard';
 import { useChatFeatures } from '../ChatProvider/ChatProvider';
 import NoChatFound from './NoChatFound/NoChatFound';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { deleteConversation } from '@/app/api/chat';
+import { useMutation, useQueryClient } from 'react-query';
 
 const ChatContent: FC = () => {
   const { sendMessage } = useChatGuard();
-  const { currentConvsersation, inboxResponse } = useChatFeatures();
+  const { currentConversation, inboxResponse, onConversationDelete } =
+    useChatFeatures();
+  const {
+    setSelectedConversationId,
+    selectedConversationId,
+    realtimeConnectedUsersIds,
+    realtimeTypingUsersIds,
+  } = useChatGuard();
   const { userInformation } = useGlobalState();
+  const queryClient = useQueryClient();
 
   const onSendMessage = (data: any) => {
     const messageData = {
       message: data.message,
-      conversationId: currentConvsersation.id,
+      conversationId: currentConversation.id,
       attachment: data.file,
-      toId: currentConvsersation.user.id,
-      users: currentConvsersation.users,
+      toId: currentConversation.user.id,
+      users: currentConversation.users,
       senderId: userInformation.id,
       created_at: new Date().toISOString(),
     };
     sendMessage(messageData);
   };
-  let NoChatfound =
+  let noChatMessage =
     inboxResponse && inboxResponse.data.data.length > 0
       ? 'No chat selected'
       : 'No Conversation found';
 
+  const {
+    mutate: handleDeleteConversation,
+    isLoading: isDeletingConversation,
+  } = useMutation((id: number | string) => deleteConversation(id), {
+    onSuccess: (res, id) => {
+      onConversationDelete(id);
+      setSelectedConversationId(null);
+      queryClient.refetchQueries('get-all-conversations');
+    },
+    onError: (error: any) => {
+      console.log(error, 'Error =====> log');
+    },
+  });
+
   return (
     <>
-      {currentConvsersation ? (
+      {currentConversation ? (
         <div className="flex flex-col w-full h-[calc(100vh_-_79px)] overflow-hidden bg-white ">
           <div className="sticky top-0 bg-white">
             <ChatHeader
               userImage={
-                currentConvsersation.user.attachment?.file_path ||
+                currentConversation.user.attachment?.file_path ||
                 '/assets/profile/profile.svg'
               }
-              userFullName={currentConvsersation.user.name}
-              isOnline={true}
-              isTyping={false}
-              userId={currentConvsersation.user.id}
+              userFullName={currentConversation.user.name}
+              isOnline={realtimeConnectedUsersIds.includes(
+                currentConversation.user.id
+              )}
+              isTyping={realtimeTypingUsersIds.includes(
+                currentConversation.user.id
+              )}
+              userId={currentConversation.user.id}
+              onDeleteConversations={() => {
+                handleDeleteConversation(currentConversation.id);
+              }}
             />
           </div>
           <div className="flex-grow overflow-y-auto">
-            <ChatMessages user={currentConvsersation.user} />
+            <ChatMessages user={currentConversation.user} />
           </div>
           <div className="sticky bottom-0 bg-white py-3 px-6 border-t">
             <ChatInput onSendMessage={onSendMessage} />
@@ -56,7 +87,7 @@ const ChatContent: FC = () => {
         </div>
       ) : (
         <div className="w-full h-[calc(100vh_-_142px)] bg-white">
-          <NoChatFound text={NoChatfound} />
+          <NoChatFound text={noChatMessage} />
         </div>
       )}
     </>

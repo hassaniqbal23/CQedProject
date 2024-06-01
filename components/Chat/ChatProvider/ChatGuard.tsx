@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useSocket } from '../WithSockets/WithSockets';
 import { useEventBus } from '../EventBus/EventBus';
 import {
@@ -6,6 +13,7 @@ import {
   JOIN_TO_CHAT_ROOM,
   SEND_MESSAGE,
 } from '../EventBus/constants';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 // import { UserProps, getCurrentUser } from '../../store/User.reducer';
 // import { useSelector } from 'react-redux';
 // import { incomingMessageToast } from '@gilgit-app-nx/ui';
@@ -20,11 +28,18 @@ interface ChatGuardContextProps {
   buttonLoading: boolean;
   setTotalUnreadMessageCount: React.Dispatch<React.SetStateAction<number>>;
   totalUnreadMessageCount: number;
-  joinConversation: (convsersationId: string | number) => void;
+  joinConversation: (conversationId: string | number) => void;
+  setSelectedConversationId: React.Dispatch<
+    React.SetStateAction<string | number | null>
+  >;
+  selectedConversationId: string | number | null;
+  userIsTyping: (conversationId: number) => void;
+  setRealtimeConnectedUsersIds: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 export const ChatGuardContext = createContext<ChatGuardContextProps>({
   realtimeConnectedUsersIds: [],
+  setRealtimeConnectedUsersIds: () => {},
   realtimeTypingUsersIds: [],
   sendMessage: () => {},
   onMessageSeen: () => {},
@@ -34,12 +49,18 @@ export const ChatGuardContext = createContext<ChatGuardContextProps>({
   setTotalUnreadMessageCount: () => {},
   totalUnreadMessageCount: 0,
   joinConversation: () => {},
+  setSelectedConversationId: () => {},
+  selectedConversationId: null,
+  userIsTyping: () => {},
 });
 export const useChatGuard = () => useContext(ChatGuardContext);
 
 export const ChatGuardProvider = ({ children }: any) => {
+  const { userInformation } = useGlobalState();
   const { dispatchEvent } = useEventBus();
   const { socket } = useSocket();
+  const [selectedConversationId, setSelectedConversationId] =
+    useState<any>(null);
   // const currentUser: Partial<UserProps> = useSelector(getCurrentUser);
   // @todo we need to remove this.
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
@@ -66,15 +87,36 @@ export const ChatGuardProvider = ({ children }: any) => {
       //     realtimeTypingUsersIds.filter((id) => id !== userId)
       //   );
       // });
-      socket.on('ONLINE_USERS', (userId: number) => {
-        console.log(userId);
-        // setRealtimeConnectedUsersIds(
-        //   realtimeConnectedUsersIds.filter((id) => id !== userId)
-        // );
+      socket.on('SOCKET_USER_IS_ONLINE', ({ user }: { user: number }) => {
+        setRealtimeConnectedUsersIds([...realtimeConnectedUsersIds, user]);
       });
 
+      socket.on('SOCKET_USER_IS_OFFLINE', ({ user }: { user: number }) => {
+        setRealtimeConnectedUsersIds(
+          realtimeConnectedUsersIds.filter((id) => id !== user)
+        );
+      });
+
+      socket.on('SOCKET_USER_IS_TYPING', ({ userId }: { userId: number }) => {
+        if (userId !== userInformation.id) {
+          setRealtimeTypingUsersIds([...realtimeTypingUsersIds, userId]);
+        }
+      });
+
+      socket.on('SOCKET_ONLINE_USERS_LIST', (users: number[]) => {
+        setRealtimeConnectedUsersIds(users);
+      });
+
+      socket.on(
+        'SOCKET_USER_IS_NOT_TYPING',
+        ({ userId }: { userId: number }) => {
+          setRealtimeTypingUsersIds(
+            realtimeTypingUsersIds.filter((id) => id !== userId)
+          );
+        }
+      );
+
       socket.on('MESSAGE', (message: any) => {
-        console.log(message, 'message in chat guard');
         dispatchEvent(
           EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
           message
@@ -141,17 +183,28 @@ export const ChatGuardProvider = ({ children }: any) => {
     }
   };
 
-  const joinConversation = (convsersationId: string | number) => {
+  const joinConversation = (conversationId: string | number) => {
     if (socket) {
-      socket.emit('JOIN_ROOM', { id: convsersationId });
-      dispatchEvent(JOIN_TO_CHAT_ROOM, convsersationId);
+      socket.emit('JOIN_ROOM', { id: conversationId });
+      dispatchEvent(JOIN_TO_CHAT_ROOM, conversationId);
+      setSelectedConversationId(conversationId);
+    }
+  };
+
+  const userIsTyping = (conversationId: number) => {
+    if (socket) {
+      socket.emit('SOCKET_USER_IS_TYPING', {
+        userId: userInformation.id,
+        conversationId: conversationId,
+      });
     }
   };
 
   return (
     <ChatGuardContext.Provider
       value={{
-        realtimeConnectedUsersIds,
+        realtimeConnectedUsersIds: realtimeConnectedUsersIds,
+        setRealtimeConnectedUsersIds,
         realtimeTypingUsersIds,
         sendMessage,
         onMessageSeen,
@@ -161,6 +214,9 @@ export const ChatGuardProvider = ({ children }: any) => {
         setTotalUnreadMessageCount,
         totalUnreadMessageCount,
         joinConversation,
+        selectedConversationId,
+        setSelectedConversationId,
+        userIsTyping,
       }}
     >
       {children}

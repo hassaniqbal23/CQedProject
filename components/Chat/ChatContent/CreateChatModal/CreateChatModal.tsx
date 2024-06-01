@@ -24,9 +24,8 @@ import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import * as z from 'zod';
 
-interface CreateChatModalProps {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface ICreateChatModalProps {
+  onChatCreated?: (conversationId: number) => void;
 }
 
 const formSchema = z.object({
@@ -40,7 +39,7 @@ const formSchema = z.object({
   }),
 });
 
-const CreateChatModal = () => {
+const CreateChatModal = (props: ICreateChatModalProps) => {
   const queryClient = useQueryClient();
   const { myPenpals, userInformation } = useGlobalState();
   const [open, setOpen] = useState<boolean>(false);
@@ -55,6 +54,11 @@ const CreateChatModal = () => {
     {
       onSuccess: (res) => {
         queryClient.refetchQueries('get-all-conversations');
+        if (props.onChatCreated) {
+          props.onChatCreated(res.data.data.id);
+        }
+        form.setValue('message', '');
+        setOpen(false);
       },
       onError: (error: any) => {},
     }
@@ -105,18 +109,18 @@ const CreateChatModal = () => {
                     <SelectV2
                       options={
                         myPenpals?.map((penpal: any) => ({
-                          label: penpal.friend.profile[0].fullname,
-                          image: penpal.friend.attachment.file_path,
+                          label: penpal.friend?.profile[0]?.fullname,
+                          image: penpal.friend?.attachment?.file_path,
                           value: penpal?.friend?.id,
                         })) || []
                       }
                       formatOptionLabel={(option: any) => {
                         return (
-                          <div className="flex items-center gap-[3px] ">
+                          <div className="flex items-center gap-[3px] cursor-pointer">
                             <Avatar className="items-center">
                               <AvatarImage
                                 src={option?.image}
-                                className="w-8 h-8"
+                                className="w-8 h-8 rounded-full"
                               />
                             </Avatar>
                             <Typography
