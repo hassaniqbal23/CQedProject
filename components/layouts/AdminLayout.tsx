@@ -7,12 +7,14 @@ import { useResponsive } from '@/lib/hooks';
 import Sidebar from '../common/sidebar/sidebar';
 import Navbar from '../common/navbar/MainBar';
 import { Bell } from 'lucide-react';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 
 interface IProps {
   children: ReactNode;
 }
 
 export const AdminLayout: FC<IProps> = ({ children }) => {
+  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isTabletMini } = useResponsive();
@@ -68,8 +70,7 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
           />
           <Navbar
             onLogout={() => {
-              removeToken();
-              removeUserId();
+              logout();
               router.push('/login');
             }}
             links={[

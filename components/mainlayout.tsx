@@ -7,11 +7,13 @@ import { useRouter } from 'next/navigation';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
 
 import { useResponsive } from '@/lib/hooks';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 interface IProps {
   children: ReactNode;
 }
 
 export const MainLayout: FC<IProps> = ({ children }) => {
+  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isMobile } = useResponsive();
@@ -55,8 +57,7 @@ export const MainLayout: FC<IProps> = ({ children }) => {
           />
           <Navbar
             onLogout={() => {
-              removeToken();
-              removeUserId();
+              logout();
               router.push('/login');
             }}
             links={[

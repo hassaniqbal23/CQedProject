@@ -2,7 +2,11 @@ import { FC, createContext, useContext, useState } from 'react';
 import { IUserInformation } from './types';
 import { useQuery } from 'react-query';
 import { GetUserInformation, GetUserJoinedCommunities } from '../api/auth';
-import { getUserIdLocalStorage } from '../utils/encryption';
+import {
+  getUserIdLocalStorage,
+  removeToken,
+  removeUserId,
+} from '../utils/encryption';
 import { myPenpals as getMyPenpals } from '../api/penpals';
 
 type IGlobalState = {
@@ -12,6 +16,9 @@ type IGlobalState = {
   setUserInformation: (value: IUserInformation) => void;
   joinedCommunities: any[];
   myPenpals: any[];
+  setIsAuthenticated?: (value: boolean) => void;
+  isAuthenticated?: boolean;
+  logout: () => void;
 };
 
 export const GlobalState = createContext<IGlobalState>({
@@ -21,6 +28,9 @@ export const GlobalState = createContext<IGlobalState>({
   setUserInformation: () => {},
   joinedCommunities: [] as any[],
   myPenpals: [] as any[],
+  setIsAuthenticated: () => {},
+  isAuthenticated: false,
+  logout: () => {},
 });
 
 export const GlobalProvider: FC<any> = ({ children }) => {
@@ -28,9 +38,19 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   const [userInformation, setUserInformation] = useState<IUserInformation>(
     {} as IUserInformation
   );
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [myPenpals, setMyPenpals] = useState<any[]>([]);
   const [joinedCommunities, setJoinedCommunities] = useState<any[]>([]);
   const userId = getUserIdLocalStorage();
+
+  const logout = () => {
+    setUserInformation({} as IUserInformation);
+    setIsAuthenticated(false);
+    setJoinedCommunities([]);
+    setMyPenpals([]);
+    removeToken();
+    removeUserId();
+  };
 
   useQuery(
     ['userInformation', userId],
@@ -42,6 +62,11 @@ export const GlobalProvider: FC<any> = ({ children }) => {
       onSuccess: (res) => {
         setIsUserGetInfo(false);
         setUserInformation(res.data.data);
+        if (res.data?.data) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
       },
       onError: (err) => {
         setIsUserGetInfo(false);
@@ -49,6 +74,8 @@ export const GlobalProvider: FC<any> = ({ children }) => {
       },
     }
   );
+
+  console.log(isAuthenticated, 'isAuthenticated');
 
   useQuery(
     ['UserJoinedCommunities', userId],
@@ -94,6 +121,9 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         setUserInformation,
         joinedCommunities,
         myPenpals,
+        isAuthenticated,
+        setIsAuthenticated,
+        logout,
       }}
     >
       {children}

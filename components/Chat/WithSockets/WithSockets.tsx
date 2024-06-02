@@ -7,28 +7,22 @@ import {
   useRef,
   useState,
 } from 'react';
-import { io } from 'socket.io-client';
-import type { Socket as SocketType } from 'socket.io-client';
 import { toast } from 'sonner';
-import { getAccessToken } from '@/app/utils/encryption';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { socket, connect } from '@/lib/socket';
 
 const SocketContext = createContext<{
-  socket: SocketType | null;
-  setSocket: (socket: SocketType) => void;
   isConnected: boolean;
 }>({
-  socket: null,
-  setSocket: () => {},
   isConnected: false,
 });
 
 export const useSocket = () => useContext(SocketContext);
 
 export const SocketProvider = ({ children }: any) => {
+  const { isAuthenticated } = useGlobalState();
   const [isConnected, setIsConnected] = useState(false);
   const isDisconnectedBefore = useRef(false);
-  const [socketInstance, setSocketInstance] = useState<SocketType | null>(null);
-  const token = getAccessToken();
 
   const onConnect = useCallback(() => {
     setIsConnected(true);
@@ -66,23 +60,8 @@ export const SocketProvider = ({ children }: any) => {
   }, []);
 
   useEffect(() => {
-    const url = process.env.NEXT_PUBLIC_API_HOST || '';
-    const options = {
-      auth: {
-        token: typeof window !== 'undefined' ? token : '',
-      },
-      transport: ['websocket'],
-      upgrade: false,
-      forceNew: true,
-      reconnectionDelay: 3000,
-      reconnection: true,
-      reconnectionAttempts: Infinity,
-      jsonp: false,
-    };
-
-    if (token) {
-      const socket = io(url, options);
-      setSocketInstance(socket);
+    if (isAuthenticated) {
+      connect();
 
       socket.on('connect', onConnect);
       socket.on('disconnect', onDisconnect);
@@ -95,16 +74,14 @@ export const SocketProvider = ({ children }: any) => {
         socket.disconnect();
       };
     } else {
-      setSocketInstance(null);
+      socket.disconnect();
     }
-  }, [token]);
+  }, [isAuthenticated]);
 
   return (
     <SocketContext.Provider
       value={{
         isConnected,
-        socket: socketInstance,
-        setSocket: setSocketInstance,
       }}
     >
       {children}

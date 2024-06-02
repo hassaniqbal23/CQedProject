@@ -120,7 +120,6 @@ export const ChatProvider = ({ children }: any) => {
     setSelectedConversationId,
     joinConversation,
   } = useChatGuard();
-  const { socket } = useSocket();
   const [searchQuery, setSearchQuery] = useState('');
   const { realtimeConnectedUsersIds, setRealtimeConnectedUsersIds }: any =
     useChatGuard();
@@ -189,17 +188,6 @@ export const ChatProvider = ({ children }: any) => {
       refetchConversationMessages();
     }
   }, [selectedConversationId]);
-
-  useEffect(() => {
-    const chatList = allConversationResponse?.data?.data || [];
-    const onlineUsers = chatList.flatMap((c: any) => {
-      return c.onlineUsers;
-    });
-    setRealtimeConnectedUsersIds([
-      ...onlineUsers,
-      ...realtimeConnectedUsersIds,
-    ]);
-  }, [allConversationResponse]);
 
   useEffect(() => {
     const handleSendMessage = (message: any) => {

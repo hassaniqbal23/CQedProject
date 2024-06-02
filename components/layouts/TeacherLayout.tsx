@@ -8,11 +8,13 @@ import { removeToken, removeUserId } from '@/app/utils/encryption';
 
 import { useResponsive } from '@/lib/hooks';
 import { Bell, MessageCircle } from 'lucide-react';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 interface IProps {
   children: ReactNode;
 }
 
 export const TeacherLayout: FC<IProps> = ({ children }) => {
+  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isMobile } = useResponsive();
@@ -82,8 +84,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
           />
           <Navbar
             onLogout={() => {
-              removeToken();
-              removeUserId();
+              logout();
               router.push('/login');
             }}
             links={[

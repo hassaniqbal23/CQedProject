@@ -15,9 +15,12 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
     selectedConversationId,
     realtimeConnectedUsersIds,
   } = useChatGuard();
+  const { currentConversation } = useChatFeatures();
 
-  const handleSelectConversation = (userId: string) => {
-    joinConversation(userId);
+  const handleSelectConversation = (conversationId: string | number) => {
+    if (currentConversation && currentConversation.id === conversationId)
+      return;
+    joinConversation(conversationId);
   };
 
   return (
