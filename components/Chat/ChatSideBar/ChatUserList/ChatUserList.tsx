@@ -10,15 +10,31 @@ interface IProps {
 }
 
 export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
-  const { joinConversation, selectedConversationId } = useChatGuard();
+  const {
+    joinConversation,
+    selectedConversationId,
+    realtimeConnectedUsersIds,
+  } = useChatGuard();
+  const { currentConversation } = useChatFeatures();
 
-  const handleSelectConversation = (userId: string) => {
-    joinConversation(userId);
+  const handleSelectConversation = (conversationId: string | number) => {
+    if (currentConversation && currentConversation.id === conversationId)
+      return;
+    joinConversation(conversationId);
   };
+
+  const sortedConversation = React.useMemo(() => {
+    return conversations.sort((a, b) => {
+      return (
+        new Date(b.messages[0].created_at).getTime() -
+        new Date(a.messages[0].created_at).getTime()
+      );
+    });
+  }, [conversations]);
 
   return (
     <div className="flex flex-col gap-3">
-      {conversations.map((conversation) => (
+      {sortedConversation.map((conversation) => (
         <div
           key={conversation.id}
           onClick={() => handleSelectConversation(conversation.id)}
@@ -28,7 +44,7 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
               ${selectedConversationId === conversation.id ? 'bg-primary-50 text-primary-600' : 'hover:bg-primary-50 hover:text-primary-500 active:bg-primary-50'}
             `}
           >
-            <div>
+            <div className="relative">
               <Avatar className="w-14 h-14 md:w-[48px] md:h-[48px] rounded-full bg-lightgray">
                 <AvatarImage
                   src={
@@ -38,6 +54,9 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
                   alt="Profile Picture"
                 />
               </Avatar>
+              {realtimeConnectedUsersIds.includes(conversation.user.id) && (
+                <div className="w-3 h-3 bg-green-500 rounded-full absolute bottom-[5px] right-0"></div>
+              )}
             </div>
             <div>
               <Typography
@@ -49,8 +68,8 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
               </Typography>
               <ExpandableText
                 className="text-sm font-medium"
-                text={conversation.lastMessageReceived}
-                maxLength={12}
+                text={conversation.messages[0].message}
+                maxLength={20}
               />
             </div>
           </div>

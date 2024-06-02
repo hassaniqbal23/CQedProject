@@ -68,6 +68,7 @@ export const useChatFeatures = () => useContext(ChatContext);
 let timeoutSearchChat: any;
 
 const handleShowProfileAndDate = (messages: any) => {
+  console.log(messages);
   return messages.map((item: any, index: number) => {
     const nextMessage = messages[index + 1];
 
@@ -82,8 +83,8 @@ const handleShowProfileAndDate = (messages: any) => {
       const isLessThan30MinutesFromNext =
         Math.abs(currentTime - nextMessageTime) < 30 * 60 * 1000;
 
-      const itemSenderId = item.receiverId || item.toId;
-      const nextMessageSenderId = nextMessage.receiverId || nextMessage.toId;
+      const itemSenderId = item.receiverId;
+      const nextMessageSenderId = nextMessage.receiverId;
 
       // If current and next message are from the same user and within 30 minutes, hide profile and date for the current message
       if (itemSenderId === nextMessageSenderId && isLessThan30MinutesFromNext) {
@@ -120,7 +121,6 @@ export const ChatProvider = ({ children }: any) => {
     setSelectedConversationId,
     joinConversation,
   } = useChatGuard();
-  const { socket } = useSocket();
   const [searchQuery, setSearchQuery] = useState('');
   const { realtimeConnectedUsersIds, setRealtimeConnectedUsersIds }: any =
     useChatGuard();
@@ -191,17 +191,6 @@ export const ChatProvider = ({ children }: any) => {
   }, [selectedConversationId]);
 
   useEffect(() => {
-    const chatList = allConversationResponse?.data?.data || [];
-    const onlineUsers = chatList.flatMap((c: any) => {
-      return c.onlineUsers;
-    });
-    setRealtimeConnectedUsersIds([
-      ...onlineUsers,
-      ...realtimeConnectedUsersIds,
-    ]);
-  }, [allConversationResponse]);
-
-  useEffect(() => {
     const handleSendMessage = (message: any) => {
       if (message) {
         setInboxResponse((prev: any) => {
@@ -209,6 +198,7 @@ export const ChatProvider = ({ children }: any) => {
             if (item.id === message.conversationId) {
               return {
                 ...item,
+                lastMessageReceived: new Date().toISOString(),
                 messages: [...item.messages, message],
               };
             }
@@ -270,7 +260,7 @@ export const ChatProvider = ({ children }: any) => {
   useEffect(() => {
     const handleAddMessageToInbox = (message: any) => {
       if (message) {
-        if (userInformation.id !== message.toId) {
+        if (userInformation.id !== message.receiverId) {
           setCurrentConversationMessages((prev) => {
             const filteredMessages = prev.filter((msg) => {
               if (msg.id) {

@@ -29,7 +29,7 @@ const ChatContent: FC = () => {
       message: data.message,
       conversationId: currentConversation.id,
       attachment: data.file,
-      toId: currentConversation.user.id,
+      receiverId: currentConversation.user.id,
       users: currentConversation.users,
       senderId: userInformation.id,
       created_at: new Date().toISOString(),
