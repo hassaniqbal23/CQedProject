@@ -31,14 +31,14 @@ export const ChatHeader: FC<IProps> = ({
       <div className="flex gap-3 items-center">
         <ChatSidebarSheetDemo
           trigger={
-            <div className="flex gap-2 items-center cursor-pointer">
+            <div className="flex gap-3 items-center cursor-pointer">
               <Avatar className="w-14 h-14 md:w-[48px] md:h-[48px] rounded-full bg-lightgray">
                 <AvatarImage src={userImage} alt="Profile Picture" />
               </Avatar>
               <Typography
                 variant="body"
                 weight="medium"
-                className="text-[#1E1F21] text-[17px] font-semibold -mt-4"
+                className="text-[#1E1F21] text-[17px] font-semibold -mt-5"
               >
                 {userFullName}
               </Typography>
@@ -50,7 +50,7 @@ export const ChatHeader: FC<IProps> = ({
         <Typography
           variant="body"
           weight="medium"
-          className={`text-sm relative -left-24 top-3 ${isOnline && !isTyping ? 'text-[#70C670]' : 'text-gray-400'} ml-2`}
+          className={`text-sm relative -left-24 top-4 w-[80px] h-[30px] ${isOnline && !isTyping ? 'text-[#70C670]' : 'text-gray-400'} ml-2`}
         >
           {isTyping ? 'Typing....' : isOnline ? 'Online' : 'Offline'}
         </Typography>
