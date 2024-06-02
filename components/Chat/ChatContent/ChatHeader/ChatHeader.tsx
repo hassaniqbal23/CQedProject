@@ -7,7 +7,7 @@ import {
 } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import { EllipsisVertical } from 'lucide-react';
-import { ChatSideBar } from '../ChatSidebar/ChatSidebar';
+import { ConversationUserSheet } from '../ConversationUserSheet/ConversationUserSheet';
 
 interface IProps {
   userImage: string;
@@ -54,7 +54,11 @@ export const ChatHeader: FC<IProps> = ({
             </div>
           }
         >
-          <ChatSideBar userImage={userImage} userFullName={userFullName} />
+          <ConversationUserSheet
+            userImage={userImage}
+            userFullName={userFullName}
+            userId={userId}
+          />
         </ChatSidebarSheetDemo>
       </div>
       <div className="relative">

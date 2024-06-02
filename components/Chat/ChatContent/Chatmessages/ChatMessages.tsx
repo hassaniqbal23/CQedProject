@@ -68,6 +68,7 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
             showProfile={showProfile}
             showDate={true}
             userFullName={user?.name}
+            userId={user?.id}
             userImage={
               isMe
                 ? userInformation.attachment?.file_path
