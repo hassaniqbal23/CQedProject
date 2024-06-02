@@ -1,9 +1,7 @@
 import { getAccessToken } from '@/app/utils/encryption';
 import { io } from 'socket.io-client';
 
-let URL = process.env.NEXT_PUBLIC_API_HOST || '';
-
-console.log({ URL, host: process.env.NEXT_PUBLIC_API_HOST });
+const URL = process.env.NEXT_PUBLIC_API_HOST || '';
 
 const options = {
   autoConnect: false,

@@ -21,6 +21,9 @@ type IGlobalState = {
   isAuthenticated?: boolean;
   logout: () => void;
   setIsFetchingMyPenPals: (value: boolean) => void;
+  setIsAuthenticated?: (value: boolean) => void;
+  isAuthenticated?: boolean;
+  logout: () => void;
 };
 
 export const GlobalState = createContext<IGlobalState>({
@@ -35,6 +38,9 @@ export const GlobalState = createContext<IGlobalState>({
   isAuthenticated: false,
   logout: () => {},
   setIsFetchingMyPenPals: () => {},
+  setIsAuthenticated: () => {},
+  isAuthenticated: false,
+  logout: () => {},
 });
 
 export const GlobalProvider: FC<any> = ({ children }) => {
@@ -48,6 +54,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   const [joinedCommunities, setJoinedCommunities] = useState<ICommunityJoin[]>(
     []
   );
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const userId = getUserIdLocalStorage();
 
   const logout = () => {
@@ -137,6 +144,9 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         setIsUserGetInfo,
         setUserInformation,
         setIsFetchingMyPenPals,
+        isAuthenticated,
+        setIsAuthenticated,
+        logout,
       }}
     >
       {children}
