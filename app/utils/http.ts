@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { getAccessToken, removeToken, removeUserId } from './encryption';
-import { toast } from 'react-toastify';
 import { toast as sonnerToast } from 'sonner';
 
 const createHttpInstance = () => {
@@ -28,7 +27,10 @@ const createHttpInstance = () => {
     (response) => {
       const show_message = response.data.show_message || false;
       if (show_message) {
-        toast.success(response.data.message);
+        sonnerToast.dismiss(response.data.message);
+        sonnerToast.success(response.data.message, {
+          id: response.data.message,
+        });
       }
       return response;
     },
