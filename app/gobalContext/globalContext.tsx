@@ -85,7 +85,6 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     retry: 100,
     retryDelay: 5000,
     onSuccess: (res) => {
-      console.log(res.data.data, 'asdasdas');
       setUsersIBlocked(res.data.data);
     },
     onError: (err) => {
