@@ -125,3 +125,8 @@
 .ql-snow .ql-tooltip {
   z-index: 99;
 }
+
+.quill-container-height .ql-container{
+  height: 163px !important;
+  background-color: #F8F9FB;
+}
