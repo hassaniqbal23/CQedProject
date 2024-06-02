@@ -54,7 +54,6 @@ const ChatContent: FC = () => {
       console.log(error, 'Error =====> log');
     },
   });
-
   return (
     <>
       {currentConversation ? (
