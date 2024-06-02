@@ -1,7 +1,11 @@
 import { getAccessToken } from '@/app/utils/encryption';
 import { io } from 'socket.io-client';
 
-const URL = process.env.NEXT_PUBLIC_API_HOST || '';
+let URL = process.env.NEXT_PUBLIC_API_HOST || '';
+
+if (process.env.NODE_ENV === 'production') {
+  URL = URL + '/api';
+}
 
 const options = {
   autoConnect: false,
