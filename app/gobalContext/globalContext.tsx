@@ -8,6 +8,7 @@ import {
   removeUserId,
 } from '../utils/encryption';
 import { myPenpals as getMyPenpals } from '../api/penpals';
+import { getBlockedUsers } from '../api/users';
 
 type IGlobalState = {
   isUserGetInfo: boolean;
@@ -16,6 +17,7 @@ type IGlobalState = {
   setUserInformation: (value: IUserInformation) => void;
   joinedCommunities: any[];
   myPenpals: any[];
+  usersIBlocked: any[];
   setIsAuthenticated?: (value: boolean) => void;
   isAuthenticated?: boolean;
   logout: () => void;
@@ -28,6 +30,7 @@ export const GlobalState = createContext<IGlobalState>({
   setUserInformation: () => {},
   joinedCommunities: [] as any[],
   myPenpals: [] as any[],
+  usersIBlocked: [] as any[],
   setIsAuthenticated: () => {},
   isAuthenticated: false,
   logout: () => {},
@@ -41,6 +44,8 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [myPenpals, setMyPenpals] = useState<any[]>([]);
   const [joinedCommunities, setJoinedCommunities] = useState<any[]>([]);
+  const [usersIBlocked, setUsersIBlocked] = useState<any[]>([]);
+  console.log(usersIBlocked, 'usersIBlocked');
   const userId = getUserIdLocalStorage();
 
   const logout = () => {
@@ -50,6 +55,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     setMyPenpals([]);
     removeToken();
     removeUserId();
+    setUsersIBlocked([]);
   };
 
   useQuery(
@@ -74,6 +80,19 @@ export const GlobalProvider: FC<any> = ({ children }) => {
       },
     }
   );
+
+  useQuery(['get-users-i-blocked', userId], () => getBlockedUsers(), {
+    enabled: userId !== 'undefined' && userId !== null ? true : false,
+    retry: 100,
+    retryDelay: 5000,
+    onSuccess: (res) => {
+      console.log(res.data.data, 'asdasdas');
+      setUsersIBlocked(res.data.data);
+    },
+    onError: (err) => {
+      console.log(err, '======> ERROR');
+    },
+  });
 
   console.log(isAuthenticated, 'isAuthenticated');
 
@@ -123,6 +142,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         myPenpals,
         isAuthenticated,
         setIsAuthenticated,
+        usersIBlocked,
         logout,
       }}
     >

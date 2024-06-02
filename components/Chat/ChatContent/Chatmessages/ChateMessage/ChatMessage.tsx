@@ -18,7 +18,8 @@ interface Iprops {
   showProfile?: boolean;
   showDate?: boolean;
   hasDeleted?: boolean;
-  userFullName: string;
+  userFullName?: string;
+  userId?: number;
 }
 
 dayjs.extend(relativeTime);
@@ -34,8 +35,10 @@ const ChatMessage: FC<Iprops> = ({
   showProfile,
   hasDeleted,
   userFullName,
+  userId,
 }: Iprops) => {
   if (hasDeleted) return <></>;
+
   return (
     <div
       className={`flex flex-col gap-1 mb-5 ${isCurrentUser ? 'items-end' : 'items-start'}`}
@@ -44,15 +47,25 @@ const ChatMessage: FC<Iprops> = ({
         className={`flex gap-2 items-start group ${isCurrentUser ? 'flex-row-reverse' : ''}`}
       >
         {showProfile ? (
-          <ChatSidebarSheetDemo
-            trigger={
-              <Avatar className="w-14 h-14 rounded-full bg-lightgray cursor-pointer">
-                <AvatarImage src={userImage} alt="Profile Picture" />
-              </Avatar>
-            }
-          >
-            <ChatSideBar userImage={userImage} userFullName={userFullName} />
-          </ChatSidebarSheetDemo>
+          isCurrentUser ? (
+            <Avatar className="w-14 h-14 rounded-full bg-lightgray">
+              <AvatarImage src={userImage} alt="Profile Picture" />
+            </Avatar>
+          ) : (
+            <ChatSidebarSheetDemo
+              trigger={
+                <Avatar className="w-14 h-14 rounded-full bg-lightgray cursor-pointer">
+                  <AvatarImage src={userImage} alt="Profile Picture" />
+                </Avatar>
+              }
+            >
+              <ChatSideBar
+                userImage={userImage}
+                userFullName={userFullName}
+                userId={userId}
+              />
+            </ChatSidebarSheetDemo>
+          )
         ) : (
           <div className="w-14 h-14 rounded-full" />
         )}

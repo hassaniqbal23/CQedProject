@@ -54,7 +54,11 @@ export const ChatHeader: FC<IProps> = ({
             </div>
           }
         >
-          <ChatSideBar userImage={userImage} userFullName={userFullName} />
+          <ChatSideBar
+            userImage={userImage}
+            userFullName={userFullName}
+            userId={userId}
+          />
         </ChatSidebarSheetDemo>
       </div>
       <div className="relative">
