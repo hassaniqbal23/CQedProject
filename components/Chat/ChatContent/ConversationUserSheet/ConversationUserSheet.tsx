@@ -11,7 +11,7 @@ interface IProps {
   userFullName?: string;
   userId?: number | string;
 }
-export const ChatSideBar: FC<IProps> = ({
+export const ConversationUserSheet: FC<IProps> = ({
   userImage,
   userFullName,
   userId,

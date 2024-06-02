@@ -6,7 +6,7 @@ import { Dropdown } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { ChatSideBar } from '../../ChatSidebar/ChatSidebar';
+import { ConversationUserSheet } from '../../ConversationUserSheet/ConversationUserSheet';
 
 interface Iprops {
   date?: string;
@@ -59,7 +59,7 @@ const ChatMessage: FC<Iprops> = ({
                 </Avatar>
               }
             >
-              <ChatSideBar
+              <ConversationUserSheet
                 userImage={userImage}
                 userFullName={userFullName}
                 userId={userId}
