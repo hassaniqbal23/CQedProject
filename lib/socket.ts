@@ -3,9 +3,13 @@ import { io } from 'socket.io-client';
 
 let URL = process.env.NEXT_PUBLIC_API_HOST || '';
 
+console.log({ URL, host: process.env.NEXT_PUBLIC_API_HOST });
+
 if (process.env.NODE_ENV === 'production') {
   URL = URL + '/api';
 }
+
+console.log({ URL, host: process.env.NEXT_PUBLIC_API_HOST });
 
 const options = {
   autoConnect: false,
