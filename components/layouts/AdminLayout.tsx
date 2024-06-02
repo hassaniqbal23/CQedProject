@@ -76,7 +76,6 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
           />
           <Navbar
             horizontalLinks={[
-              { href: '/chat', type: 'icon', icon: <MessageCircle /> },
               {
                 href: '/notification',
                 type: 'icon',
