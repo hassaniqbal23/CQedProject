@@ -156,3 +156,35 @@ export function SheetDemo({
     </Sheet>
   );
 }
+
+interface ChatSheetDemoProps {
+  title?: string;
+  className?: string;
+  buttonTitle?: string;
+  description?: string;
+  children?: React.ReactNode;
+  trigger?: React.ReactNode;
+}
+
+export function ChatSidebarSheetDemo({
+  title,
+  description,
+  buttonTitle,
+  children,
+  trigger,
+}: ChatSheetDemoProps) {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        {trigger ? trigger : <Button variant="outline">{buttonTitle}</Button>}
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>{title}</SheetTitle>
+          <SheetDescription>{description}</SheetDescription>
+        </SheetHeader>
+        {children}
+      </SheetContent>
+    </Sheet>
+  );
+}
