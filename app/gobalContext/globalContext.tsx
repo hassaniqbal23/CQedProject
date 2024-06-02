@@ -45,7 +45,6 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   const [myPenpals, setMyPenpals] = useState<any[]>([]);
   const [joinedCommunities, setJoinedCommunities] = useState<any[]>([]);
   const [usersIBlocked, setUsersIBlocked] = useState<any[]>([]);
-  console.log(usersIBlocked, 'usersIBlocked');
   const userId = getUserIdLocalStorage();
 
   const logout = () => {
@@ -93,8 +92,6 @@ export const GlobalProvider: FC<any> = ({ children }) => {
       console.log(err, '======> ERROR');
     },
   });
-
-  console.log(isAuthenticated, 'isAuthenticated');
 
   useQuery(
     ['UserJoinedCommunities', userId],
