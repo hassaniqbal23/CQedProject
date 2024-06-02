@@ -19,13 +19,9 @@ const ChatContent: FC = () => {
     inboxResponse,
     onConversationDelete,
     setInboxResponse,
-  } = useChatFeatures();
-  const {
     setSelectedConversationId,
-    selectedConversationId,
-    realtimeConnectedUsersIds,
-    realtimeTypingUsersIds,
-  } = useChatGuard();
+  } = useChatFeatures();
+  const { realtimeConnectedUsersIds, realtimeTypingUsersIds } = useChatGuard();
   const { userInformation } = useGlobalState();
   const queryClient = useQueryClient();
 

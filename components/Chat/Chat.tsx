@@ -7,7 +7,7 @@ import { useChatGuard } from './ChatProvider/ChatGuard';
 
 export const Chat: FC = () => {
   const queryClient = useQueryClient();
-  const { selectedConversationId } = useChatGuard();
+  const { selectedConversationId } = useChatFeatures();
 
   useEffect(() => {
     const handleOnline = () => {
