@@ -8,11 +8,13 @@ import { removeToken, removeUserId } from '@/app/utils/encryption';
 
 import { useResponsive } from '@/lib/hooks';
 import { Bell } from 'lucide-react';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 interface IProps {
   children: ReactNode;
 }
 
 export const SchoolLayout: FC<IProps> = ({ children }) => {
+  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isTabletMini } = useResponsive();
@@ -79,8 +81,7 @@ export const SchoolLayout: FC<IProps> = ({ children }) => {
           />
           <Navbar
             onLogout={() => {
-              removeToken();
-              removeUserId();
+              logout();
               router.push('/schools/sign-in');
             }}
             links={[

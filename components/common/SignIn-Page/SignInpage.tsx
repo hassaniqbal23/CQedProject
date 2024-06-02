@@ -20,7 +20,7 @@ import { Separator } from '@/components/ui/separator/separator';
 import { Heading } from '../Heading';
 import { Avatar } from '@/components/ui/avatar/avatar';
 import { LoginCarousel } from '@/components/ui/carousel/carousel';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { IAuthentication } from '@/app/api/types';
 import { LoginAPI } from '@/app/api/auth';
 import { toast } from 'react-toastify';
@@ -66,6 +66,7 @@ interface SignInProps {
 
 export function SignIn(props: SignInProps) {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -90,6 +91,9 @@ export function SignIn(props: SignInProps) {
         storeToken(response?.token);
         storeUserId(response?.user?.id);
         updateToken(response?.token);
+        queryClient.refetchQueries('userInformation');
+        queryClient.refetchQueries('UserJoinedCommunities');
+        queryClient.refetchQueries('MyPenPals');
         reset();
       },
       onError: (error: any) => {

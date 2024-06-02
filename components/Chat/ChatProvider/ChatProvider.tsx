@@ -191,17 +191,6 @@ export const ChatProvider = ({ children }: any) => {
   }, [selectedConversationId]);
 
   useEffect(() => {
-    const chatList = allConversationResponse?.data?.data || [];
-    const onlineUsers = chatList.flatMap((c: any) => {
-      return c.onlineUsers;
-    });
-    setRealtimeConnectedUsersIds([
-      ...onlineUsers,
-      ...realtimeConnectedUsersIds,
-    ]);
-  }, [allConversationResponse]);
-
-  useEffect(() => {
     const handleSendMessage = (message: any) => {
       if (message) {
         setInboxResponse((prev: any) => {
