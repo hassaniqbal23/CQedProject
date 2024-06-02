@@ -6,7 +6,7 @@ export const startConversation = (
   message: string | null = null
 ) => {
   return http.post('/messages/chat', {
-    toId: id,
+    receiverId: id,
     message: message,
   });
 };

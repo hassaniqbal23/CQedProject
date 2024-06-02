@@ -51,6 +51,7 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
   return (
     <div className="p-3">
       {messages.map((message: any, index) => {
+        const isMe = [message.senderId].includes(userInformation.id);
         return (
           <ChatMessage
             key={index}
@@ -59,17 +60,13 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
             showProfile={message.showProfile}
             showDate={message.showDate}
             userImage={
-              (message.toId && message.toId !== userInformation.id) ||
-              message.senderId === userInformation.id
-                ? userInformation.attachment.file_path
-                : user?.attachment?.file_path || '/assets/profile/profile.svg'
+              isMe
+                ? userInformation.attachment?.file_path
+                : user.attachment?.file_path
             }
             content={message.message}
             onDeleteMessage={handleDeleteMessage}
-            isCurrentUser={
-              (message.toId && message.toId !== userInformation.id) ||
-              message.senderId === userInformation.id
-            }
+            isCurrentUser={isMe}
             hasDeleted={deletedMessage.includes(message.id)}
           />
         );

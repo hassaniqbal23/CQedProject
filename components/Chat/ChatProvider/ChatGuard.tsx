@@ -116,7 +116,7 @@ export const ChatGuardProvider = ({ children }: any) => {
 
   const sendMessage = (message: { ['key']: string | number | any } | any) => {
     if (socket) {
-      dispatchEvent(SEND_MESSAGE, message);
+      dispatchEvent(SEND_MESSAGE, JSON.parse(JSON.stringify(message)));
       delete message?.senderId;
       delete message?.created_at;
       socket.emit('MESSAGE', { ...message });

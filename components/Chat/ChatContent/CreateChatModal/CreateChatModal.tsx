@@ -29,7 +29,7 @@ export interface ICreateChatModalProps {
 }
 
 const formSchema = z.object({
-  toId: z
+  receiverId: z
     .number({
       message: 'Please select a user to send a message to',
     })
@@ -49,8 +49,8 @@ const CreateChatModal = (props: ICreateChatModalProps) => {
   });
 
   const { mutate: sendMessage, isLoading: isSendingMessage } = useMutation(
-    (formValues: { toId: number; message: string }) =>
-      startConversation(formValues.toId, formValues.message),
+    (formValues: { receiverId: number; message: string }) =>
+      startConversation(formValues.receiverId, formValues.message),
     {
       onSuccess: (res) => {
         queryClient.refetchQueries('get-all-conversations');
@@ -94,7 +94,7 @@ const CreateChatModal = (props: ICreateChatModalProps) => {
           <form onSubmit={onSubmit} className="space-y-4">
             <FormField
               control={form.control}
-              name="toId"
+              name="receiverId"
               render={({ field }) => (
                 <FormItem className="mb-7">
                   <FormLabel>To:</FormLabel>
@@ -136,8 +136,8 @@ const CreateChatModal = (props: ICreateChatModalProps) => {
                       className="font-semibold"
                       classNamePrefix={'select'}
                       onChange={(value: any) => {
-                        form.setValue('toId', value.value);
-                        form.clearErrors('toId');
+                        form.setValue('receiverId', value.value);
+                        form.clearErrors('receiverId');
                       }}
                     />
                   </FormControl>
