@@ -120,7 +120,6 @@ export const ChatProvider = ({ children }: any) => {
     setSelectedConversationId,
     joinConversation,
   } = useChatGuard();
-  const { socket } = useSocket();
   const [searchQuery, setSearchQuery] = useState('');
   const { realtimeConnectedUsersIds, setRealtimeConnectedUsersIds }: any =
     useChatGuard();
