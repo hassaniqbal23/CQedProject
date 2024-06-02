@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Typography } from '@/components/common/Typography/Typography';
 import { CreatePostModal } from '@/components/common/CreatePostModal/CreatePostModal';
@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import Loading from '@/components/ui/button/loading';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
 import { CommentInput } from '@/components/Comment/CommentInput';
+import { Separator } from '@/components/ui';
 
 interface FeedsProps {
   communityId: string | number;
@@ -32,11 +33,15 @@ export const Feeds = ({ communityId }: FeedsProps) => {
 
   const {
     data: communityPosts,
-    isLoading,
+    isLoading: isFetchingCommunityPosts,
     refetch,
-  } = useQuery('getCommunityPosts', () => getCommunityPosts(communityId), {
-    enabled: communityId ? true : false,
-  });
+  } = useQuery(
+    'getCommunityPosts',
+    () => getCommunityPosts(communityId, 1, 10),
+    {
+      enabled: communityId ? true : false,
+    }
+  );
 
   const { mutate: likePost } = useMutation('likePost', (postId: number) =>
     likeCommunityPost(postId)
@@ -103,81 +108,82 @@ export const Feeds = ({ communityId }: FeedsProps) => {
           />
         </div>
         <div>
-          {isLoading ? (
+          {isFetchingCommunityPosts ? (
             <div className="w-full h-[400px] flex items-center justify-center">
               <Loading />
             </div>
           ) : (
             <>
-              {communityPosts?.data?.map((item: any, index: number) => {
-                const liked = item.likes.find(
-                  (i: any) => i.userId === userInformation?.id
-                )
-                  ? true
-                  : false;
-                return (
-                  <div key={index}>
-                    <Post
-                      key={index}
-                      userFullName={item.User.name}
-                      username={item.User.name}
-                      userImage={item.User?.attachment?.file_path}
-                      created_at={item.created_at}
-                      description={item.content}
-                      attachment={
-                        item.community_post?.file_path
-                          ? item.community_post?.file_path
-                          : ''
-                      }
-                      likes={item._count.likes}
-                      comments={item._count.comments}
-                      hasUserLiked={liked}
-                      handleComment={() => {
-                        setCommentSection({
-                          commentId: !openCommentSection ? item.id : null,
-                          openCommentSection: !openCommentSection,
-                        });
-                      }}
-                      onUnlike={() => unLikePost(item.id)}
-                      onLike={() => likePost(item.id)}
-                    />
-
-                    {commentId === item.id && openCommentSection ? (
-                      <div className="py-3">
-                        <CommentInput
-                          onValueChange={(value) => {
-                            if (value) {
-                              communityPostCommentApi({
-                                id: item.id,
-                                content: value,
-                              });
-                            }
-                          }}
-                        />
-                      </div>
-                    ) : null}
-                    {item.comments && (
-                      <>
-                        {item.comments.map((comment: any, index: number) => {
-                          return (
-                            <div className="mb-3 ml-5 " key={index}>
-                              <Comment
-                                avatarUrl={
-                                  comment.User?.attachment?.file_path ||
-                                  '/assets/profile/teacherprofile.svg'
-                                }
-                                text={comment?.content}
-                                user={comment?.User?.name}
-                                created_at={comment?.created_at}
-                              />
-                            </div>
-                          );
-                        })}
-                      </>
-                    )}
-                  </div>
-                );
-              })}
+              {communityPosts &&
+                communityPosts?.data?.map((item: any, index: number) => {
+                  const liked = item?.likes?.find(
+                    (i: any) => i.userId === userInformation?.id
+                  )
+                    ? true
+                    : false;
+                  return (
+                    <div key={index}>
+                      <Post
+                        key={index}
+                        userFullName={item?.User?.name}
+                        username={item?.User?.name}
+                        userImage={item.User?.attachment?.file_path}
+                        created_at={item?.created_at}
+                        description={item?.content}
+                        attachment={
+                          item.community_post?.file_path
+                            ? item.community_post?.file_path
+                            : ''
+                        }
+                        likes={item?._count?.likes}
+                        comments={item?._count?.comments}
+                        hasUserLiked={liked}
+                        handleComment={() => {
+                          setCommentSection({
+                            commentId: !openCommentSection ? item?.id : null,
+                            openCommentSection: !openCommentSection,
+                          });
+                        }}
+                        onUnlike={() => unLikePost(item.id)}
+                        onLike={() => likePost(item.id)}
+                      />
+                      <Separator className="w-12/12" />
+                      {commentId === item.id && openCommentSection ? (
+                        <div className="py-3">
+                          <CommentInput
+                            onValueChange={(value) => {
+                              if (value) {
+                                communityPostCommentApi({
+                                  id: item.id,
+                                  content: value,
+                                });
+                              }
+                            }}
+                          />
+                        </div>
+                      ) : null}
+                      {item.comments && (
+                        <>
+                          {item.comments.map((comment: any, index: number) => {
+                            return (
+                              <div className="mb-3 ml-5 " key={index}>
+                                <Comment
+                                  avatarUrl={
+                                    comment.User?.attachment?.file_path ||
+                                    '/assets/profile/teacherprofile.svg'
+                                  }
+                                  text={comment?.content}
+                                  user={comment?.User?.name}
+                                  created_at={comment?.created_at}
+                                />
+                              </div>
+                            );
+                          })}
+                        </>
+                      )}
+                    </div>
+                  );
+                })}
             </>
           )}
         </div>

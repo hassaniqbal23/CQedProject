@@ -21,7 +21,7 @@ export const CommunityDetailsCard = ({
   loading,
 }: CommunityDetailsCardProps) => {
   return (
-    <Card className="p-6 w-full bg-white rounded-xl shadow-md space-y-4">
+    <Card className="p-6 min-h-[538px] h-[538px] w-full bg-white rounded-xl shadow-md space-y-4 overflow-hidden scroll-smooth ">
       <div className="flex items-start md:items-center">
         <div className="flex flex-col md:flex-row gap-3">
           {loading ? (

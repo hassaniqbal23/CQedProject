@@ -2,15 +2,20 @@ import http from '../utils/http';
 
 export const getCommunities = (
   search?: string | null,
-  community_type: number | string | null = ''
+  community_type: number | string | null = '',
+  page?: number,
+  limit?: number
 ) => {
   return http
-    .get('/community/all-communities', {
-      params: {
-        search,
-        community_type: community_type,
-      },
-    })
+    .get(
+      `/community/all-communities${page && limit ? `?page=${page}&limit=${limit}` : ``}`,
+      {
+        params: {
+          search,
+          community_type: community_type,
+        },
+      }
+    )
     .then((res) => res.data);
 };
 
@@ -139,3 +144,5 @@ export const likeCommunityPost = (postId: number) => {
 export const unlikeCommunityPost = (id: number) => {
   return http.delete(`/community-post-like/${id}/delete-community-post-like`);
 };
+
+//community/communities-joined  get
