@@ -18,13 +18,13 @@ import DatePicker from '@/components/ui/date-picker/date-picker';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
 import BottomNavbar from '../navbar/bottomNavbar';
 import { useMutation } from 'react-query';
-import { countrySelectOptions, DropdownMenuPropsOptions } from '@/lib/constant';
 import { StudentsCreate } from '@/app/api/students';
 import { IStudentInfo } from '@/app/api/types';
 import {
   SelectCountry,
   SelectLanguage,
 } from '@/components/ui/select-v2/select-v2-components';
+import { Typography } from '../Typography/Typography';
 
 const formSchema = z.object({
   fullname: z.string().refine((value) => value.trim() !== '', {
@@ -48,6 +48,9 @@ const formSchema = z.object({
   language: z.string().refine((value) => value.trim() !== '', {
     message: 'Please Select one language.',
   }),
+  university: z.string().refine((value) => value.trim() !== '', {
+    message: 'Please enter your University.',
+  }),
 });
 
 function StudentsDetailsFrom() {
@@ -60,6 +63,7 @@ function StudentsDetailsFrom() {
       country: '',
       gender: '',
       language: '',
+      university: '',
     },
   });
 
@@ -82,33 +86,41 @@ function StudentsDetailsFrom() {
 
   return (
     <>
-      <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8 h-[calc(100vh_-_30px)] lg:h-[calc(100vh_-_224px)] ">
-        <div className="my-8">
-          <Progressbar heading="Get Started" percentage={20} />
+      <div className="flex flex-col items-center max-w-3xl mx-auto mt-8  h-screen ">
+        <div className="my-8 w-3/5">
+          <Progressbar heading="Get Started" percentage={0} />
         </div>
         <div className="flex flex-col justify-center items-center mb-4">
-          <h1 className="text-primary font-bold text-2xl">
+          <Typography
+            variant={'h3'}
+            weight={'bold'}
+            className="text-primary mb-1"
+          >
             Let’s get started with creating your profile
-          </h1>
-          <h3 className="font-semibold text-[#a3adbc] text-[17px] ">
-            Learn, grow, and thrive on a global scale!
-          </h3>
+          </Typography>
+          <Typography
+            variant={'h4'}
+            weight={'regular'}
+            className="text-[#a3adbc] w-full flex justify-center mb-3"
+          >
+            Learn, grow, and thrive on a global scale!
+          </Typography>
         </div>
-        <div>
+        <div className="w-full">
           <Form {...form}>
-            <form onSubmit={onSubmit} className="space-y-6">
-              <div className=" grid md:grid-cols-2 md:gap-6">
+            <form onSubmit={onSubmit} className="space-y-9 ">
+              <div className="grid md:grid-cols-2 md:gap-9 items-center">
                 <FormField
                   control={form.control}
                   name="fullname"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="">
                       <FormLabel>Full name</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="e.g John, Emma"
                           {...field}
-                          className="w-full"
+                          className=""
                         />
                       </FormControl>
                       <FormMessage />
@@ -122,14 +134,14 @@ function StudentsDetailsFrom() {
                     <FormItem>
                       <FormLabel>Set nickname</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g example@12" {...field} />
+                        <Input placeholder="e.g Moon, Lim" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
-              <div className=" grid md:grid-cols-2 md:gap-6">
+              <div className="grid md:grid-cols-2 md:gap-9 gap-2 items-center">
                 <FormField
                   control={form.control}
                   name="birthday"
@@ -147,32 +159,6 @@ function StudentsDetailsFrom() {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="country"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Country</FormLabel>
-                      <FormControl>
-                        <SelectCountry
-                          menuPosition={'fixed'}
-                          onChange={(e: any) => {
-                            if (!e) {
-                              form.setValue('country', '');
-                              return;
-                            }
-                            form.setValue('country', e.value);
-                            form.setValue('language', '');
-                          }}
-                          label=""
-                        ></SelectCountry>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="grid md:grid-cols-2 md:gap-6">
                 <FormField
                   control={form.control}
                   name="gender"
@@ -208,6 +194,51 @@ function StudentsDetailsFrom() {
                             },
                           ]}
                         />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid md:grid-cols-1 ">
+                <FormField
+                  control={form.control}
+                  name="university"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>University</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Harvard"
+                          {...field}
+                          className="w-full"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid md:grid-cols-2 md:gap-6 items-center">
+                <FormField
+                  control={form.control}
+                  name="country"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Country</FormLabel>
+                      <FormControl>
+                        <SelectCountry
+                          menuPosition={'fixed'}
+                          onChange={(e: any) => {
+                            if (!e) {
+                              form.setValue('country', '');
+                              return;
+                            }
+                            form.setValue('country', e.value);
+                            form.setValue('language', '');
+                          }}
+                          label=""
+                        ></SelectCountry>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

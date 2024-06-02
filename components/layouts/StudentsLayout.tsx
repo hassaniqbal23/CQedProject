@@ -7,8 +7,15 @@ import { useRouter } from 'next/navigation';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
 
 import { useResponsive } from '@/lib/hooks';
-import { Bell, LogOut, MessageCircle } from 'lucide-react';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
+import {
+  Bell,
+  CircleHelp,
+  LogOut,
+  MessageCircle,
+  Settings,
+  UserCheck,
+} from 'lucide-react';
 interface IProps {
   children: ReactNode;
   className?: string;
@@ -94,20 +101,47 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
             sidebarLinks={sidebarLinks}
           />
           <Navbar
-            onLogout={() => {
-              logout();
-              router.push('/students/sign-in');
-            }}
-            links={[
-              { src: 'chat', type: 'icon', icon: <MessageCircle /> },
+            horizontalLinks={[
+              { href: '/chat', type: 'icon', icon: <MessageCircle /> },
               {
-                src: 'notification',
+                href: '/notification',
                 type: 'icon',
                 icon: <Bell />,
               },
               {
-                src: '',
+                href: '',
                 type: 'profile',
+                dropdownOption: [
+                  {
+                    title: 'Profile',
+                    path: '/students/profile',
+                    icon: <Bell size={15} />,
+                  },
+                  {
+                    title: 'Account',
+                    path: '/students/account',
+                    icon: <Settings size={15} />,
+                  },
+                  {
+                    title: 'Your Communities ',
+                    path: '/students/cq-communities',
+                    icon: <UserCheck size={15} />,
+                  },
+                  {
+                    title: 'Help ',
+                    path: '/students/help',
+                    icon: <CircleHelp size={15} />,
+                  },
+                  {
+                    title: 'Logout',
+                    icon: <LogOut size={15} />,
+                    onClick: () => {
+                      removeToken();
+                      removeUserId();
+                      router.push('/students/sign-in');
+                    },
+                  },
+                ],
               },
             ]}
           />
