@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui';
 import { Send, MessageCircle, Heart } from 'lucide-react';
@@ -118,7 +117,6 @@ export const Post: FC<IProps> = ({
           </div>
         </div>
       </div>
-
     </div>
   );
 };
