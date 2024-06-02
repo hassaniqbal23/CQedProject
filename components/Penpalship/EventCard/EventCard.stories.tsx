@@ -17,22 +17,8 @@ export const Dafualt: Story = {
     </div>
   ),
   args: {
-    events: [
-      {
-        title: 'Celebrating Hanukkah, The Jewish Festival Of Lights',
-        image: '/assets/students/event1.svg',
-        link: '#',
-      },
-      {
-        title: 'Christmas Celebrations From Around The World',
-        image: '/assets/students/event1.svg',
-        link: '#',
-      },
-      {
-        title: 'Get Ready To "Fall Back" One Hour This Weekend',
-        image: '/assets/students/event1.svg',
-        link: '#',
-      },
-    ],
+    title: 'Celebrating Hanukkah, The Jewish Festival Of Lights',
+    image: '/assets/students/event1.svg',
+    link: '#',
   },
 };

@@ -15,7 +15,7 @@ interface PaginationProps {
   pageSize: number;
   totalCount: number;
   showSelectPage?: boolean;
-  setPageSize: (pageNumber: number) => void;
+  setPageSize?: (pageNumber: number) => void;
   onPageChange: (pageNumber: number) => void;
 }
 
@@ -65,7 +65,7 @@ function Pagination({
       {showSelectPage && (
         <Select
           defaultValue={String(pageSize)}
-          onValueChange={(value) => setPageSize(Number(value))}
+          onValueChange={(value) => setPageSize && setPageSize(Number(value))}
         >
           <SelectTrigger className="w-[100px] bg-white text-[#3C3C3C]">
             <SelectValue />/ page

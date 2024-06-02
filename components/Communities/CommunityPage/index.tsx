@@ -25,7 +25,7 @@ const Community = () => {
   return (
     <div>
       <div className="flex flex-col md:flex-row gap-3">
-        <div className="w-full md:w-3/4">
+        <div className="w-full md:w-3/4 ">
           <CommunityDetailsCard
             loading={isLoading}
             communityId={data?.data.id}

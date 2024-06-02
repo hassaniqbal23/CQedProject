@@ -9,6 +9,7 @@ interface IProps {
   uploadProfile: (value: FormData) => void;
   attachmentID: number;
   attachmentFilepath: string;
+  title?: string;
 }
 const ImageUpload: FC<IProps> = ({
   loading,
@@ -16,6 +17,7 @@ const ImageUpload: FC<IProps> = ({
   uploadProfile,
   attachmentID,
   attachmentFilepath,
+  title = 'Choose your avatar',
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -72,7 +74,7 @@ const ImageUpload: FC<IProps> = ({
           }}
         />
       </div>
-      <h2 className="mt-2 font-semibold">Choose your avatar</h2>
+      <h2 className="mt-2 font-semibold">{title}</h2>
     </div>
   );
 };

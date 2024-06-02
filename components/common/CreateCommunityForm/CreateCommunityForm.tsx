@@ -3,17 +3,24 @@ import { Separator } from '@radix-ui/react-select';
 import * as z from 'zod';
 import { Typography } from '../Typography/Typography';
 import ImageUpload from '../ImageUpload/ImageUpload';
-import { FormField, FormMessage, Input, Form, Button } from '@/components/ui';
+import {
+  FormField,
+  FormMessage,
+  Input,
+  Form,
+  Button,
+  SelectInput,
+} from '@/components/ui';
 import 'react-quill/dist/quill.snow.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SelectV2 } from '@/components/ui/select-v2/select-v2';
-import MultipleSelector from '../From/MultiSelect';
-import Image from 'next/image';
 import { deleteImage, uploadImage } from '@/app/api/communities';
 import { useMutation } from 'react-query';
 import { toast } from 'sonner';
 import dynamic from 'next/dynamic';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
+import MultipleSelector from '../From/MultiSelect';
+import { ICommunityType } from '@/types/community';
 const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false,
 });
@@ -35,19 +42,22 @@ const formSchema = z.object({
     .min(1, {
       message: 'Please upload an image',
     }),
+  users: z.array(z.number()).nonempty({}),
 });
 
 export interface CreateCommunityFormProps {
-  CommunityTypeOptions: any[];
+  CommunityTypeOptions: ICommunityType[];
   onFormSubmit?: (data: any) => void;
   loading?: boolean;
   students?: any[];
   isLoadingAllStudents?: boolean;
+  isFetchingCommunityType?: boolean;
 }
 
 let QuillChangeTimeout: any = null;
 
 const CreateCommunityForm = (props: CreateCommunityFormProps) => {
+  const { myPenpals, isFetchingMyPenPals } = useGlobalState();
   const [attachment, setAttachment] = useState<any>();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -114,6 +124,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
                   attachmentID={attachment?.id}
                   deleteProfile={deleteCommunityImage}
                   uploadProfile={uploadCommunityImage}
+                  title="Choose your Cover Image"
                 />
               </div>
               <FormMessage className="mt-2" />
@@ -131,7 +142,11 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
           name="name"
           render={({ field }) => (
             <>
-              <Input {...field} placeholder="Enter your community name" />
+              <Input
+                className="text-sm"
+                {...field}
+                placeholder="Enter your community name"
+              />
               <FormMessage className="mt-2" />
             </>
           )}
@@ -148,20 +163,25 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
           name="description"
           render={({ field }) => (
             <>
-              <ReactQuill
-                theme="snow"
-                placeholder="Community Description, You can write guidelines, rules or any other thing."
-                onBlur={() => {
-                  field.onBlur();
-                }}
-                onChange={(value) => {
-                  clearTimeout(QuillChangeTimeout);
-                  QuillChangeTimeout = setTimeout(() => {
-                    field.onChange(value);
-                  }, 500);
-                }}
-              />
-              <FormMessage className="mt-4" />
+              <div>
+                <ReactQuill
+                  theme="snow"
+                  className="quill-container-height"
+                  scrollingContainer={'h-32'}
+                  placeholder="Write description."
+                  onBlur={() => {
+                    field.onBlur();
+                  }}
+                  onChange={(value) => {
+                    clearTimeout(QuillChangeTimeout);
+                    QuillChangeTimeout = setTimeout(() => {
+                      field.onChange(value);
+                    }, 500);
+                  }}
+                />
+              </div>
+
+              <FormMessage className="mt-2" />
             </>
           )}
         />
@@ -170,107 +190,76 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
           variant="h5"
           children="Community Type"
           weight="semibold"
-          className="my-2 mt-16"
+          className="my-2 mt-4"
         />
         <FormField
           control={form.control}
           name="CommunityTypeId"
+          render={({ field }) => {
+            return (
+              <>
+                <SelectInput
+                  loading={props.isFetchingCommunityType}
+                  onSelect={(val) => field.onChange(Number(val))}
+                  defaultValue={`${field.value}`}
+                  options={
+                    props.CommunityTypeOptions.map((c) => {
+                      return {
+                        label: c.name,
+                        value: `${c.id}`,
+                      };
+                    }) as { label: string; value: string }[]
+                  }
+                  placeholder="Community Type"
+                />
+                <FormMessage className="mt-2" />
+              </>
+            );
+          }}
+        />
+        <Typography
+          variant="h5"
+          children="Add Friends"
+          weight="semibold"
+          className="my-2 mt-7"
+        />
+        <FormField
+          control={form.control}
+          name="users"
           render={({ field }) => (
             <>
-              <SelectV2
-                options={
-                  props.CommunityTypeOptions.map((c) => {
-                    return {
-                      label: c.name,
-                      value: c.id,
-                    };
-                  }) as { label: string; value: number }[]
-                }
-                onChange={(newValue) => {
-                  field.onChange((newValue as any).value);
+              <MultipleSelector
+                className="p-4 bg-[#F8F9FB]"
+                onChange={(v) => {
+                  if (v) {
+                    const list = v.map((i) => i.value);
+                    field.onChange(list);
+                  }
                 }}
-                placeholder="Community Type"
+                emptyIndicator={
+                  <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                    no results found.
+                  </p>
+                }
+                options={
+                  myPenpals?.map((penpal: any) => ({
+                    label: penpal?.friend?.profile[0]?.fullname,
+                    value: penpal?.friend?.id,
+                  })) || []
+                }
+                placeholder="Select language"
               />
+
               <FormMessage className="mt-2" />
             </>
           )}
         />
-        {/* <Typography
-          variant="h4"
-          children="Community Type"
-          weight="bold"
-          className="my-3"
-        /> */}
-        {/* <FormField
-          control={form.control}
-          name="students"
-          render={({ field }) => (
-            <MultipleSelector
-              placeholder="Select language"
-              options={[
-                {
-                  label: 'India',
-                  value: 'india',
-                  disable: false,
-                  render: () => {
-                    return (
-                      <div className="flex gap-1 items-center">
-                        <Image
-                          height={30}
-                          width={30}
-                          src={'/countries/india.svg'}
-                          alt="flag"
-                        />
-                        <span className="ml-2">India</span>
-                      </div>
-                    );
-                  },
-                },
-                {
-                  label: 'Pakistan',
-                  value: 'pakistan',
-                  disable: false,
-                  render: () => {
-                    return (
-                      <div className="flex gap-1 items-center">
-                        <Image
-                          height={30}
-                          width={30}
-                          src={'/countries/pakistan.svg'}
-                          alt="flag"
-                        />
-                        <span className="ml-2">Pakistan</span>
-                      </div>
-                    );
-                  },
-                },
-                {
-                  label: 'UK',
-                  value: 'uk',
-                  disable: false,
-                  render: () => {
-                    return (
-                      <div className="flex gap-1 items-center">
-                        <Image
-                          height={30}
-                          width={30}
-                          src={'/countries/uk.svg'}
-                          alt="flag"
-                        />
-                        <span className="ml-2">UK</span>
-                      </div>
-                    );
-                  },
-                },
-              ]}
-            />
-          )}
-        /> */}
 
         <div className="mt-6 flex">
           <Button
+            variant={'outline'}
             type="submit"
-            className="ml-auto"
+            className="ml-auto border-0 bg-primary-50 rounded-full px-10"
             loading={props.loading}
             disabled={props.loading}
           >
