@@ -44,6 +44,8 @@ interface ChatInterface {
   memoizedMessagesList: any[];
   onConversationDelete: (id: number | string) => void;
   setInboxResponse: Dispatch<SetStateAction<any[]>>;
+  selectedConversationId: any;
+  setSelectedConversationId: Dispatch<SetStateAction<any>>;
 }
 
 const ChatContext = createContext<ChatInterface>({
@@ -60,22 +62,27 @@ const ChatContext = createContext<ChatInterface>({
   memoizedMessagesList: [],
   onConversationDelete: (id) => {},
   setInboxResponse: () => {},
+  selectedConversationId: null,
+  setSelectedConversationId: () => {},
 });
 
 export const useChatFeatures = () => useContext(ChatContext);
 
 export const ChatProvider = ({ children }: any) => {
-  const {
-    selectedConversationId,
-    setSelectedConversationId,
-    joinConversation,
-  } = useChatGuard();
+  const { joinConversation } = useChatGuard();
   const [searchQuery, setSearchQuery] = useState('');
   const { subscribeEvent, unsubscribeEvent } = useEventBus();
   const [inboxResponse, setInboxResponse] = useState<any[]>([]);
   const queryClient = useQueryClient();
   const { userInformation } = useGlobalState();
-  const [currentConversation, setCurrentConversation] = useState<any>();
+
+  const [selectedConversationId, setSelectedConversationId] =
+    useState<any>(null);
+
+  const currentConversation = useMemo(() => {
+    return inboxResponse.find((item) => item.id === selectedConversationId);
+  }, [selectedConversationId, inboxResponse]);
+
   const { isLoading: messagesLoading, refetch: refetchConversationMessages } =
     useQuery(
       ['get-current-chat', selectedConversationId],
@@ -98,9 +105,6 @@ export const ChatProvider = ({ children }: any) => {
         setTimeout(() => {
           if (selectedConversationId) {
             joinConversation(selectedConversationId);
-            setCurrentConversation(
-              res?.data?.data?.find((c: any) => c.id === selectedConversationId)
-            );
           }
         }, 10);
       },
@@ -139,7 +143,6 @@ export const ChatProvider = ({ children }: any) => {
         const current = inboxResponse.find((item: any) => {
           return item.id === id;
         });
-        setCurrentConversation(current);
       }
     };
 
@@ -158,6 +161,10 @@ export const ChatProvider = ({ children }: any) => {
 
   useEffect(() => {
     const handleAddMessageToInbox = (message: any) => {
+      if (message.isNewMessage) {
+        setInboxResponse([message.conversation, ...inboxResponse]);
+        return;
+      }
       setInboxResponse(
         inboxResponse.map((conversation) => {
           if (conversation.id === currentConversation.id) {
@@ -191,11 +198,6 @@ export const ChatProvider = ({ children }: any) => {
 
         return;
       }
-      if (message.isNewMessage) {
-        setInboxResponse([message.conversation, ...inboxResponse]);
-        setCurrentConversation(message.conversation);
-        return;
-      }
     };
 
     subscribeEvent(
@@ -209,7 +211,13 @@ export const ChatProvider = ({ children }: any) => {
         handleAddMessageToInbox
       );
     };
-  }, [subscribeEvent, unsubscribeEvent, userInformation, currentConversation]);
+  }, [
+    subscribeEvent,
+    unsubscribeEvent,
+    userInformation,
+    currentConversation,
+    inboxResponse,
+  ]);
 
   const onConversationDelete = (id: number | string) => {
     setSelectedConversationId(null);
@@ -225,6 +233,8 @@ export const ChatProvider = ({ children }: any) => {
         memoizedMessagesList,
         onConversationDelete,
         setInboxResponse,
+        selectedConversationId,
+        setSelectedConversationId,
       }}
     >
       {children}

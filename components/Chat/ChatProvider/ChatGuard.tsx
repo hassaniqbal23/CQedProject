@@ -29,10 +29,6 @@ interface ChatGuardContextProps {
   setTotalUnreadMessageCount: React.Dispatch<React.SetStateAction<number>>;
   totalUnreadMessageCount: number;
   joinConversation: (conversationId: string | number) => void;
-  setSelectedConversationId: React.Dispatch<
-    React.SetStateAction<string | number | null>
-  >;
-  selectedConversationId: string | number | null;
   userIsTyping: (conversationId: number, userIds: number[]) => void;
   setRealtimeConnectedUsersIds: React.Dispatch<React.SetStateAction<number[]>>;
 }
@@ -49,8 +45,6 @@ export const ChatGuardContext = createContext<ChatGuardContextProps>({
   setTotalUnreadMessageCount: () => {},
   totalUnreadMessageCount: 0,
   joinConversation: () => {},
-  setSelectedConversationId: () => {},
-  selectedConversationId: null,
   userIsTyping: () => {},
 });
 export const useChatGuard = () => useContext(ChatGuardContext);
@@ -58,8 +52,6 @@ export const useChatGuard = () => useContext(ChatGuardContext);
 export const ChatGuardProvider = ({ children }: any) => {
   const { userInformation, isAuthenticated } = useGlobalState();
   const { dispatchEvent } = useEventBus();
-  const [selectedConversationId, setSelectedConversationId] =
-    useState<any>(null);
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
   const [realtimeTypingUsersIds, setRealtimeTypingUsersIds] = useState<
     number[]
@@ -140,7 +132,6 @@ export const ChatGuardProvider = ({ children }: any) => {
     if (socket) {
       socket.emit('JOIN_ROOM', { id: conversationId });
       dispatchEvent(JOIN_TO_CHAT_ROOM, conversationId);
-      setSelectedConversationId(conversationId);
     }
   };
 
@@ -168,8 +159,6 @@ export const ChatGuardProvider = ({ children }: any) => {
         setTotalUnreadMessageCount,
         totalUnreadMessageCount,
         joinConversation,
-        selectedConversationId,
-        setSelectedConversationId,
         userIsTyping,
       }}
     >

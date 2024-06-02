@@ -42,7 +42,6 @@ const ChatContent: FC = () => {
     };
     setInboxResponse(
       inboxResponse.map((conversation: any) => {
-        console.log(conversation.id, currentConversation.id);
         if (conversation.id === currentConversation.id) {
           return {
             ...conversation,

@@ -112,8 +112,6 @@ function ChatInput({ onSendMessage }: any) {
 
                         if (!currentConversation) return;
 
-                        console.log(currentConversation);
-
                         clearTimeout(TypingTimeout);
                         TypingTimeout = setTimeout(() => {
                           userIsTyping(

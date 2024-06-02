@@ -14,15 +14,20 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
   const { userInformation } = useGlobalState();
   const {
     joinConversation,
-    selectedConversationId,
     realtimeConnectedUsersIds,
     realtimeTypingUsersIds,
   } = useChatGuard();
-  const { currentConversation } = useChatFeatures();
+  const {
+    currentConversation,
+    selectedConversationId,
+    setSelectedConversationId,
+  } = useChatFeatures();
 
   const handleSelectConversation = (conversationId: string | number) => {
-    if (currentConversation && currentConversation.id === conversationId)
+    if (currentConversation && currentConversation.id === conversationId) {
+      setSelectedConversationId(currentConversation);
       return;
+    }
     joinConversation(conversationId);
   };
 
