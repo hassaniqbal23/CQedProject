@@ -82,8 +82,6 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     }
   );
 
-  console.log(isAuthenticated, 'isAuthenticated');
-
   useQuery(
     ['UserJoinedCommunities', userId],
     () => GetUserJoinedCommunities(userId as string),
