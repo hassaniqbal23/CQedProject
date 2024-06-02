@@ -26,7 +26,6 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
   const { currentConversationMessages, memoizedMessagesList } =
     useChatFeatures();
   const messages = [...currentConversationMessages];
-
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -47,7 +46,6 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
     const numericId = typeof id === 'string' ? parseInt(id) : id;
     removeThread(numericId);
   };
-
   return (
     <div className="p-3">
       {messages.map((message: any, index) => {
@@ -58,6 +56,7 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
             date={message.created_at}
             showProfile={message.showProfile}
             showDate={message.showDate}
+            userFullName={user?.name}
             userImage={
               (message.toId && message.toId !== userInformation.id) ||
               message.senderId === userInformation.id
