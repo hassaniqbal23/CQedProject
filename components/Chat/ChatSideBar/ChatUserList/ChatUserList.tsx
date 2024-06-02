@@ -10,7 +10,11 @@ interface IProps {
 }
 
 export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
-  const { joinConversation, selectedConversationId } = useChatGuard();
+  const {
+    joinConversation,
+    selectedConversationId,
+    realtimeConnectedUsersIds,
+  } = useChatGuard();
 
   const handleSelectConversation = (userId: string) => {
     joinConversation(userId);
@@ -28,7 +32,7 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
               ${selectedConversationId === conversation.id ? 'bg-primary-50 text-primary-600' : 'hover:bg-primary-50 hover:text-primary-500 active:bg-primary-50'}
             `}
           >
-            <div>
+            <div className="relative">
               <Avatar className="w-14 h-14 md:w-[48px] md:h-[48px] rounded-full bg-lightgray">
                 <AvatarImage
                   src={
@@ -38,6 +42,9 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
                   alt="Profile Picture"
                 />
               </Avatar>
+              {realtimeConnectedUsersIds.includes(conversation.user.id) && (
+                <div className="w-3 h-3 bg-green-500 rounded-full absolute bottom-[5px] right-0"></div>
+              )}
             </div>
             <div>
               <Typography

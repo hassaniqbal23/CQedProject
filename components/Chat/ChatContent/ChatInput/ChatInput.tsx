@@ -97,6 +97,11 @@ function ChatInput({ onSendMessage }: any) {
                       minHeight={height}
                       disabled={!isConnected}
                       onKeyDown={(e) => {
+                        if (
+                          (e.target as HTMLTextAreaElement).value.length === 0
+                        )
+                          return;
+
                         if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault();
                           form.handleSubmit(onSubmit)();

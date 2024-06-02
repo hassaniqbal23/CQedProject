@@ -29,7 +29,7 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [currentConversationMessages]);
 
   const { mutate: removeThread, isLoading: isDeletingThread } = useMutation(
     (id: number) => deleteMessage(id),

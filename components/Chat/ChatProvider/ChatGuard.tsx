@@ -87,17 +87,18 @@ export const ChatGuardProvider = ({ children }: any) => {
       //     realtimeTypingUsersIds.filter((id) => id !== userId)
       //   );
       // });
-      socket.on('SOCKET_USER_IS_ONLINE', ({ user }: { user: number }) => {
-        setRealtimeConnectedUsersIds([...realtimeConnectedUsersIds, user]);
-      });
+      // socket.on('SOCKET_USER_IS_ONLINE', ({ user }: { user: number }) => {
+      //   setRealtimeConnectedUsersIds([...realtimeConnectedUsersIds, user]);
+      // });
 
-      socket.on('SOCKET_USER_IS_OFFLINE', ({ user }: { user: number }) => {
-        setRealtimeConnectedUsersIds(
-          realtimeConnectedUsersIds.filter((id) => id !== user)
-        );
-      });
+      // socket.on('SOCKET_USER_IS_OFFLINE', ({ user }: { user: number }) => {
+      //   setRealtimeConnectedUsersIds(
+      //     realtimeConnectedUsersIds.filter((id) => id !== user)
+      //   );
+      // });
 
       socket.on('SOCKET_USER_IS_TYPING', ({ userId }: { userId: number }) => {
+        console.log(userId, 'is typing', 'my user is', userInformation.id);
         if (userId !== userInformation.id) {
           setRealtimeTypingUsersIds([...realtimeTypingUsersIds, userId]);
         }
