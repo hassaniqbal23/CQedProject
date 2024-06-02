@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ChatHeader } from './ChatHeader/ChatHeader';
 import iconMenu from '@/public/IconsMenu.svg';
+import { v4 as uuidv4 } from 'uuid';
 
 import { ChatInput } from './ChatInput/ChatInput';
 import ChatMessages from './Chatmessages/ChatMessages';
@@ -13,8 +14,12 @@ import { useMutation, useQueryClient } from 'react-query';
 
 const ChatContent: FC = () => {
   const { sendMessage } = useChatGuard();
-  const { currentConversation, inboxResponse, onConversationDelete } =
-    useChatFeatures();
+  const {
+    currentConversation,
+    inboxResponse,
+    onConversationDelete,
+    setInboxResponse,
+  } = useChatFeatures();
   const {
     setSelectedConversationId,
     selectedConversationId,
@@ -26,6 +31,7 @@ const ChatContent: FC = () => {
 
   const onSendMessage = (data: any) => {
     const messageData = {
+      clientID: uuidv4(),
       message: data.message,
       conversationId: currentConversation.id,
       attachment: data.file,
@@ -34,10 +40,26 @@ const ChatContent: FC = () => {
       senderId: userInformation.id,
       created_at: new Date().toISOString(),
     };
+    setInboxResponse(
+      inboxResponse.map((conversation: any) => {
+        console.log(conversation.id, currentConversation.id);
+        if (conversation.id === currentConversation.id) {
+          return {
+            ...conversation,
+            messages: [
+              ...conversation.messages,
+              JSON.parse(JSON.stringify(messageData)),
+            ],
+            lastMessageReceived: messageData.created_at,
+          };
+        }
+        return conversation;
+      })
+    );
     sendMessage(messageData);
   };
   let noChatMessage =
-    inboxResponse && inboxResponse.data.data.length > 0
+    inboxResponse && inboxResponse.length > 0
       ? 'No chat selected'
       : 'No Conversation found';
 

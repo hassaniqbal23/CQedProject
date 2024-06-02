@@ -23,12 +23,11 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { userInformation } = useGlobalState();
   const [deletedMessage, setDeletedMessage] = React.useState<Number[]>([]);
-  const { currentConversationMessages, memoizedMessagesList } =
-    useChatFeatures();
-  const messages = [...currentConversationMessages];
+  const { memoizedMessagesList } = useChatFeatures();
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [currentConversationMessages]);
+  }, [memoizedMessagesList]);
 
   const { mutate: removeThread, isLoading: isDeletingThread } = useMutation(
     (id: number) => deleteMessage(id),
@@ -48,15 +47,26 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
   };
   return (
     <div className="p-3">
-      {messages.map((message: any, index) => {
+      {memoizedMessagesList.map((message: any, index) => {
+        let showProfile = false;
         const isMe = [message.senderId].includes(userInformation.id);
+        const sender = message.senderId;
+        const nextMessage = memoizedMessagesList[index + 1];
+        const isNextMessageBySameSender = nextMessage?.senderId === sender;
+
+        if (sender && isNextMessageBySameSender) {
+          showProfile = false;
+        } else {
+          showProfile = true;
+        }
+
         return (
           <ChatMessage
             key={index}
             id={message.id}
             date={message.created_at}
-            showProfile={message.showProfile}
-            showDate={message.showDate}
+            showProfile={showProfile}
+            showDate={true}
             userFullName={user?.name}
             userImage={
               isMe
