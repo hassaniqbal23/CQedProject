@@ -73,7 +73,7 @@ function ChatInput({ onSendMessage }: any) {
   };
 
   const onSubmit: SubmitHandler<any> = async (data: any) => {
-    if (!data.message && data.files.length === 0) return;
+    if (!data.message && data.files.trim().length === 0) return;
     onSendMessage(data);
     form.reset();
   };
@@ -98,7 +98,8 @@ function ChatInput({ onSendMessage }: any) {
                       disabled={!isConnected}
                       onKeyDown={(e) => {
                         if (
-                          (e.target as HTMLTextAreaElement).value.length === 0
+                          (e.target as HTMLTextAreaElement).value.trim()
+                            .length === 0
                         )
                           return;
 

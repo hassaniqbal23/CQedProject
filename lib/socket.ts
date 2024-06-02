@@ -1,7 +1,7 @@
 import { getAccessToken } from '@/app/utils/encryption';
 import { io } from 'socket.io-client';
 
-const URL = process.env.NEXT_PUBLIC_API_HOST || '';
+let URL = process.env.NEXT_PUBLIC_API_HOST || '';
 
 console.log({ URL, host: process.env.NEXT_PUBLIC_API_HOST });
 
@@ -19,6 +19,7 @@ const options = {
   jsonp: false,
 };
 
+console.log('Connecting to socket server', URL);
 export const socket = io(URL, options);
 
 export function connect() {

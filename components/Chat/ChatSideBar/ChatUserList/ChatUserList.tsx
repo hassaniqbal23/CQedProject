@@ -23,9 +23,18 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
     joinConversation(conversationId);
   };
 
+  const sortedConversation = React.useMemo(() => {
+    return conversations.sort((a, b) => {
+      return (
+        new Date(b.messages[0].created_at).getTime() -
+        new Date(a.messages[0].created_at).getTime()
+      );
+    });
+  }, [conversations]);
+
   return (
     <div className="flex flex-col gap-3">
-      {conversations.map((conversation) => (
+      {sortedConversation.map((conversation) => (
         <div
           key={conversation.id}
           onClick={() => handleSelectConversation(conversation.id)}
@@ -59,8 +68,8 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
               </Typography>
               <ExpandableText
                 className="text-sm font-medium"
-                text={conversation.lastMessageReceived}
-                maxLength={12}
+                text={conversation.messages[0].message}
+                maxLength={20}
               />
             </div>
           </div>
