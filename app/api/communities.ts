@@ -144,5 +144,3 @@ export const likeCommunityPost = (postId: number) => {
 export const unlikeCommunityPost = (id: number) => {
   return http.delete(`/community-post-like/${id}/delete-community-post-like`);
 };
-
-//community/communities-joined  get
