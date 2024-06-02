@@ -9,6 +9,19 @@ interface IProps {
 }
 
 export const ChatSideBar: FC<IProps> = ({ userImage, userFullName }) => {
+  const ChatSidebarActions = [
+    {
+      icon: <CircleAlert size={18} />,
+      label: 'Report',
+      command: function () {},
+    },
+    { icon: <PhoneOff size={18} />, label: 'Block', command: function () {} },
+    {
+      icon: <Trash2 size={18} color="red" />,
+      label: 'Delete',
+      command: function () {},
+    },
+  ];
   return (
     <div className="p-6 h-full overflow-y-auto">
       <div className="flex flex-col items-center">
@@ -56,12 +69,14 @@ export const ChatSideBar: FC<IProps> = ({ userImage, userFullName }) => {
       </div>
       <div className="border-[0.9px] my-2" />
       <div className="w-full">
-        {[
-          { icon: <CircleAlert size={18} />, label: 'Report' },
-          { icon: <PhoneOff size={18} />, label: 'Block' },
-          { icon: <Trash2 size={18} color="red" />, label: 'Delete' },
-        ].map(({ icon, label }) => (
-          <button key={label} className="flex items-center w-full py-3">
+        {ChatSidebarActions.map(({ icon, label, command }, index) => (
+          <button
+            className="flex items-center w-full py-3"
+            key={index}
+            onClick={() => {
+              command();
+            }}
+          >
             <span className="text-sm">{icon}</span>
             <Typography
               variant="p"

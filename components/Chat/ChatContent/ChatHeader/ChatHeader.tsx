@@ -35,25 +35,27 @@ export const ChatHeader: FC<IProps> = ({
               <Avatar className="w-14 h-14 md:w-[48px] md:h-[48px] rounded-full bg-lightgray">
                 <AvatarImage src={userImage} alt="Profile Picture" />
               </Avatar>
-              <Typography
-                variant="body"
-                weight="medium"
-                className="text-[#1E1F21] text-[17px] font-semibold -mt-5"
-              >
-                {userFullName}
-              </Typography>
+              <div>
+                <Typography
+                  variant="body"
+                  weight="medium"
+                  className="text-[#1E1F21] text-[17px] font-semibold"
+                >
+                  {userFullName}
+                </Typography>
+                <Typography
+                  variant="body"
+                  weight="medium"
+                  className={`text-sm  ${isOnline && !isTyping ? 'text-[#70C670]' : 'text-gray-400'}`}
+                >
+                  {isTyping ? 'Typing....' : isOnline ? 'Online' : 'Offline'}
+                </Typography>
+              </div>
             </div>
           }
         >
           <ChatSideBar userImage={userImage} userFullName={userFullName} />
         </ChatSidebarSheetDemo>
-        <Typography
-          variant="body"
-          weight="medium"
-          className={`text-sm relative -left-24 top-4 w-[80px] h-[30px] ${isOnline && !isTyping ? 'text-[#70C670]' : 'text-gray-400'} ml-2`}
-        >
-          {isTyping ? 'Typing....' : isOnline ? 'Online' : 'Offline'}
-        </Typography>
       </div>
       <div className="relative">
         <Dropdown
