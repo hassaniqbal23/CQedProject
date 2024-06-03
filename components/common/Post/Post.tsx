@@ -96,7 +96,7 @@ export const Post: FC<IProps> = ({
             <div className="flex items-center text-gray-600 mr-4">
               <div className="flex items-center mr-4" onClick={handleLike}>
                 <Heart
-                  className={`h-5 w-5 mr-1 cursor-pointer ${liked ? 'text-red-500 ' : ''}`}
+                  className={`h-5 w-5 mr-1 cursor-pointer ${liked ? 'text-red-500 fill-red-500' : ''}`}
                 />
                 <span>{likeCount}</span>
               </div>

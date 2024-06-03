@@ -134,9 +134,20 @@ export const CreatePostModal = ({
       onOpenChange={() => setIsVisible(!isVisible)}
       header={
         <>
-          <Typography variant="h3" weight="semibold">
-            {title}
-          </Typography>
+          <div className="flex flex-col mb-0 ">
+            <Typography variant="h3" weight="semibold">
+              {title}
+            </Typography>
+            {showUpload && (
+              <Button
+                onClick={() => setShowUpload(false)}
+                variant={'outline'}
+                className="w-14 h-8 mt-2 "
+              >
+                Back
+              </Button>
+            )}
+          </div>
         </>
       }
       footer={false}
@@ -145,9 +156,7 @@ export const CreatePostModal = ({
         {(uploadedImage || !showUpload) && (
           <Textarea
             placeholder="What would you like to share?"
-            className={`w-full ${
-              uploadedImage ? 'h-[100px]' : 'h-[300px]'
-            } bg-[#F8F9FB]`}
+            className={`w-full ${uploadedImage ? 'h-[100px]' : 'h-[300px]'} bg-[#F8F9FB]`}
             value={textAreaValue}
             onChange={(e) => setTextAreaValue(e.target.value)}
           />
@@ -225,9 +234,7 @@ export const CreatePostModal = ({
               className={`${showUpload || uploadedImage ? 'text-primary-500' : ''}`}
             />
             <span
-              className={`font-semibold ml-1 ${
-                showUpload || uploadedImage ? 'text-primary-500' : ''
-              }`}
+              className={`font-semibold ml-1 ${showUpload || uploadedImage ? 'text-primary-500' : ''}`}
             >
               Photo/Video
             </span>
@@ -245,9 +252,7 @@ export const CreatePostModal = ({
           >
             <Smile className={`${showEmojiPicker ? 'text-primary-500' : ''}`} />
             <span
-              className={`font-semibold ml-1 ${
-                showEmojiPicker ? 'text-primary-500' : ''
-              }`}
+              className={`font-semibold ml-1 ${showEmojiPicker ? 'text-primary-500' : ''}`}
             >
               Feeling
             </span>
