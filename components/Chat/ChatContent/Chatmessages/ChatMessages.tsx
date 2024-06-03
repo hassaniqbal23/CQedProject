@@ -4,7 +4,7 @@ import { useGlobalState } from '@/app/gobalContext/globalContext';
 import { useChatFeatures } from '../../ChatProvider/ChatProvider';
 import { useMutation } from 'react-query';
 import { deleteMessage } from '@/app/api/chat';
-import { toast } from 'react-toastify';
+import dayjs from 'dayjs';
 
 interface Message {
   id: string | number;
@@ -66,7 +66,12 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
             id={message.id}
             date={message.created_at}
             showProfile={showProfile}
-            showDate={true}
+            showDate={
+              // differenceInMinutesWithPrevious > 5 ||
+              // differenceInMinutesWithNext > 5 ||
+              // memoizedMessagesList.length - 1 === index
+              true
+            }
             userFullName={user?.name}
             userId={user?.id}
             userImage={
@@ -78,6 +83,7 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
             onDeleteMessage={handleDeleteMessage}
             isCurrentUser={isMe}
             hasDeleted={deletedMessage.includes(message.id)}
+            attachments={message.attachments || []}
           />
         );
       })}
