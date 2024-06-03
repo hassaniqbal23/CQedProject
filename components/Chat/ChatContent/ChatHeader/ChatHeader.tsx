@@ -58,6 +58,9 @@ export const ChatHeader: FC<IProps> = ({
             userImage={userImage}
             userFullName={userFullName}
             userId={userId}
+            onChatDelete={() => {
+              onDeleteConversations && onDeleteConversations(userId);
+            }}
           />
         </ChatSidebarSheetDemo>
       </div>
