@@ -60,6 +60,11 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
       path: '/teachers/students',
     },
     {
+      icon: '/assets/sidebaricons/penpalship.svg',
+      title: 'Penpalship',
+      path: '/teachers/penpalship',
+    },
+    {
       icon: '/assets/sidebaricons/CQCommunities.svg',
       title: 'CQ Communities',
       path: '/teachers/cq-communities',
