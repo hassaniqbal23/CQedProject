@@ -95,12 +95,12 @@ export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
                     </Button>
                   }
                   loading={isFetchingCommunityJoined}
-                  description={item.description}
-                  title={item.name}
+                  description={item?.description}
+                  title={item?.name}
                   id={item.id}
-                  members={item._count.CommunityUsers}
+                  members={item?._count?.CommunityUsers}
                   key={index}
-                  image={item?.profile_picture.file_path}
+                  image={item?.profile_picture?.file_path}
                   module={module ? module : 'students'}
                 />
               );

@@ -19,18 +19,18 @@ export const CommunityCard = ({
   title,
   image,
   members,
-  description,
+  description = '',
   id,
   module = 'students',
   loading,
   button,
 }: CommunityCardProps) => {
-  const words = description.split(' ');
-
-  const shortenedDescription =
-    description.length > 18
-      ? words.slice(0, 18).join(' ') + ' ...'
-      : description;
+  const shortenedDescription = React.useMemo(() => {
+    let div = document.createElement('div');
+    div.innerHTML = description;
+    let text = div.textContent || '';
+    return text.length > 100 ? text.slice(0, 100) + ' ...' : text;
+  }, [description]);
 
   return (
     <>
@@ -73,10 +73,7 @@ export const CommunityCard = ({
                 weight="regular"
                 className="text-gray-700 pt-2"
               >
-                <div
-                  className="flex"
-                  dangerouslySetInnerHTML={{ __html: shortenedDescription }}
-                ></div>
+                {shortenedDescription}
               </Typography>
             )}
           </div>
