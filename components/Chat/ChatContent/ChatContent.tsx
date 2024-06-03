@@ -26,14 +26,10 @@ const ChatContent: FC = () => {
   } = useChatFeatures();
   const { realtimeConnectedUsersIds, realtimeTypingUsersIds } = useChatGuard();
   const { userInformation } = useGlobalState();
+
   const queryClient = useQueryClient();
 
   const onSendMessage = (data: any) => {
-    console.log(
-      data.attachments.map((file: any) => {
-        return { file_path: file.file_path, id: file.id };
-      })
-    );
     const messageData = {
       clientID: uuidv4(),
       message: data.message,
