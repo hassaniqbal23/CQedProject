@@ -286,7 +286,7 @@ function SchoolStudents() {
               ),
             },
           ]}
-          onValueChange={() => { }}
+          onValueChange={() => {}}
         ></Tabs>
       </div>
 
