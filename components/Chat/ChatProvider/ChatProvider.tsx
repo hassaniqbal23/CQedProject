@@ -116,11 +116,17 @@ export const ChatProvider = ({ children }: any) => {
   );
 
   const memoizedMessagesList = useMemo(() => {
-    return inboxResponse.flatMap((conversation) => {
+    let list = inboxResponse.flatMap((conversation) => {
       if (conversation.id === selectedConversationId) {
         return conversation.messages;
       }
       return [];
+    });
+
+    return list.sort((a, b) => {
+      return (
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      );
     });
   }, [
     currentConversation,
@@ -161,6 +167,9 @@ export const ChatProvider = ({ children }: any) => {
 
   useEffect(() => {
     const handleAddMessageToInbox = (message: any) => {
+      console.log('new message');
+      console.log(message);
+
       if (message.isNewMessage) {
         setInboxResponse([message.conversation, ...inboxResponse]);
         return;
