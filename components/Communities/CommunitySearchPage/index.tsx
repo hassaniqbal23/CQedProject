@@ -100,8 +100,6 @@ const CommunitySearchPage: React.FC<CommunitySearchPageProps> = (props) => {
   const communities = communitiesList?.data || [];
   const community_types = community_types_data?.data || [];
 
-  console.log(community_types_data?.data);
-
   return (
     <Suspense>
       <SearchFilter
