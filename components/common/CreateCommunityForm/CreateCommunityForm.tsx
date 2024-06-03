@@ -117,7 +117,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
           name="attachmentId"
           render={({ field }) => (
             <>
-              <div className="mt-8 flex  items-center w-1/5">
+              <div className="mt-8 flex items-center w-1/5">
                 <ImageUpload
                   loading={isUploadingCommunity || isDeletingCommunity || false}
                   attachmentFilepath={attachment?.file_path}

@@ -4,7 +4,7 @@ import { Notification } from './Notification';
 import { Button } from '../ui';
 
 const meta: Meta<typeof Notification> = {
-  title: 'Notification',
+  title: 'Dashboard/Notification',
   component: Notification,
 };
 

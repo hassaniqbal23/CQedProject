@@ -2,6 +2,7 @@ import { Typography } from '@/components/common/Typography/Typography';
 import { Avatar, AvatarImage, Button, Card, Skeleton } from '@/components/ui';
 import React from 'react';
 import { CommunityJoinLeaveActionButton } from '../CommunityJoinLeaveActionButton/CommunityJoinLeaveActionButton';
+import { getUserIdLocalStorage } from '@/app/utils/encryption';
 
 interface CommunityDetailsCardProps {
   title: string;
@@ -10,6 +11,7 @@ interface CommunityDetailsCardProps {
   description: string;
   communityId: number;
   loading?: boolean;
+  createdBy?: number;
 }
 
 export const CommunityDetailsCard = ({
@@ -19,7 +21,9 @@ export const CommunityDetailsCard = ({
   description,
   communityId,
   loading,
+  createdBy,
 }: CommunityDetailsCardProps) => {
+  const userId = getUserIdLocalStorage();
   return (
     <Card className="p-6 min-h-[538px] h-[538px] w-full bg-white rounded-xl shadow-md space-y-4 overflow-hidden scroll-smooth ">
       <div className="flex items-start md:items-center">
@@ -35,7 +39,7 @@ export const CommunityDetailsCard = ({
             {loading ? (
               <Skeleton className="h-8 w-32 mb-2" />
             ) : (
-              <Typography variant="h2" weight="bold">
+              <Typography variant="h3" weight="semibold">
                 {title}
               </Typography>
             )}
@@ -51,7 +55,13 @@ export const CommunityDetailsCard = ({
         {loading ? (
           <Skeleton className="w-32 h-10 ml-auto" />
         ) : (
-          <CommunityJoinLeaveActionButton communityId={communityId} />
+          <>
+            {createdBy === Number(userId) ? (
+              ' '
+            ) : (
+              <CommunityJoinLeaveActionButton communityId={communityId} />
+            )}
+          </>
         )}
       </div>
       <div>

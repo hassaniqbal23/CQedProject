@@ -11,7 +11,6 @@ import {
 import { Plus } from 'lucide-react';
 import { CommunityCard } from '../CommunityCard2/CommunityCard2';
 import { useRouter } from 'next/navigation';
-// import { getCommunityJoined } from '@/app/api/communities';
 import { useQuery } from 'react-query';
 import { getCommunities } from '@/app/api/communities';
 import { ICommunity } from '@/types/community';

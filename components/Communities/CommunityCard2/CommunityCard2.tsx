@@ -25,6 +25,13 @@ export const CommunityCard = ({
   loading,
   button,
 }: CommunityCardProps) => {
+  const words = description.split(' ');
+
+  const shortenedDescription =
+    description.length > 18
+      ? words.slice(0, 18).join(' ') + ' ...'
+      : description;
+
   return (
     <>
       <div className="flex items-center p-4 rounded-md ">
@@ -66,7 +73,10 @@ export const CommunityCard = ({
                 weight="regular"
                 className="text-gray-700 pt-2"
               >
-                {description}
+                <div
+                  className="flex"
+                  dangerouslySetInnerHTML={{ __html: shortenedDescription }}
+                ></div>
               </Typography>
             )}
           </div>

@@ -5,6 +5,11 @@ enum FileType {
   SVG = 'SVG',
   PDF = 'PDF',
 }
+
+export enum IUSER_ROLE {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+}
 export interface IAttachments {
   id: number;
   type?: FileType;
