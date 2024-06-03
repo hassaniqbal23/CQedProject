@@ -3,6 +3,7 @@ import { Avatar, AvatarImage, Button, Card, Skeleton } from '@/components/ui';
 import React from 'react';
 import { CommunityJoinLeaveActionButton } from '../CommunityJoinLeaveActionButton/CommunityJoinLeaveActionButton';
 import { getUserIdLocalStorage } from '@/app/utils/encryption';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 
 interface CommunityDetailsCardProps {
   title: string;
@@ -23,7 +24,7 @@ export const CommunityDetailsCard = ({
   loading,
   createdBy,
 }: CommunityDetailsCardProps) => {
-  const userId = getUserIdLocalStorage();
+  const { userInformation } = useGlobalState();
   return (
     <Card className="p-6 min-h-[538px] h-[538px] w-full bg-white rounded-xl shadow-md space-y-4 overflow-auto scroll-smooth ">
       <div className="flex items-start md:items-center">
@@ -56,7 +57,7 @@ export const CommunityDetailsCard = ({
           <Skeleton className="w-32 h-10 ml-auto" />
         ) : (
           <>
-            {createdBy === Number(userId) ? (
+            {createdBy === userInformation?.id ? (
               ' '
             ) : (
               <CommunityJoinLeaveActionButton communityId={communityId} />
