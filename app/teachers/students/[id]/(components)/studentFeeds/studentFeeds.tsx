@@ -31,6 +31,39 @@ export const StudentFeeds = () => {
           userImage="/assets/profile/profile.svg"
           username="alexander john"
         />
+        <Post
+          attachment={'/assets/images/img.png'}
+          comments={0}
+          created_at="2021-10-10T00:00:00.000Z"
+          description="You can’t buy happiness, but you can get happiness on the beach! This is labuan bajo, Indonesiaa"
+          likes={0}
+          handleComment={() => {}}
+          userFullName="Alexander John"
+          userImage="/assets/profile/profile.svg"
+          username="alexander john"
+        />
+        <Post
+          attachment={'/assets/images/img.png'}
+          comments={0}
+          created_at="2021-10-10T00:00:00.000Z"
+          description="You can’t buy happiness, but you can get happiness on the beach! This is labuan bajo, Indonesiaa"
+          likes={0}
+          handleComment={() => {}}
+          userFullName="Alexander John"
+          userImage="/assets/profile/profile.svg"
+          username="alexander john"
+        />
+        <Post
+          attachment={'/assets/images/img.png'}
+          comments={0}
+          created_at="2021-10-10T00:00:00.000Z"
+          description="You can’t buy happiness, but you can get happiness on the beach! This is labuan bajo, Indonesiaa"
+          likes={0}
+          handleComment={() => {}}
+          userFullName="Alexander John"
+          userImage="/assets/profile/profile.svg"
+          username="alexander john"
+        />
       </div>
     </>
   );

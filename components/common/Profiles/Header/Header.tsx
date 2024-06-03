@@ -58,7 +58,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
       </div>
       {buttonProps?.isVisbile && (
         <div className="flex items-center ">
-          <Button
+          {/* <Button
             onClick={buttonProps?.onClick}
             icon={<MessageSquareText className="mr-1" height={16} width={16} />}
             iconPosition="left"
@@ -68,7 +68,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
             size={'sm'}
           >
             {buttonProps.buttonText}
-          </Button>
+          </Button> */}
         </div>
       )}
     </div>
