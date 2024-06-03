@@ -1,4 +1,3 @@
-import { report } from 'process';
 import http from '../utils/http';
 
 export const UserCreateStories = (payload: { story: string }) =>
