@@ -76,9 +76,13 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
           showProfile = true;
           showDate = true;
         }
-
-        const showNewDate =
+        let showNewDate =
           previousMessageDate && !isSameDay(messageDate, previousMessageDate);
+
+        if (index == 0) {
+          showProfile = true;
+          showNewDate = true;
+        }
 
         return (
           <>
