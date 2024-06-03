@@ -21,6 +21,8 @@ export const SelectLanguageSingle: Story = {
     );
   },
   args: {
+    defaultValue: 'apple',
+    loading: false,
     options: [
       { label: 'Apple', value: 'apple' },
       { label: 'Mango', value: 'mango' },

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
 
 import { useResponsive } from '@/lib/hooks';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 import {
   Bell,
   CircleHelp,
@@ -20,6 +21,7 @@ interface IProps {
 }
 
 export const TeacherLayout: FC<IProps> = ({ children }) => {
+  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isMobile } = useResponsive();

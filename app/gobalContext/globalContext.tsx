@@ -1,36 +1,63 @@
 import { FC, createContext, useContext, useState } from 'react';
-import { IUserInformation } from './types';
+import { IUserInformation, IPenpal, ICommunityJoin } from './types';
 import { useQuery } from 'react-query';
 import { GetUserInformation, GetUserJoinedCommunities } from '../api/auth';
-import { getUserIdLocalStorage } from '../utils/encryption';
+import {
+  getUserIdLocalStorage,
+  removeToken,
+  removeUserId,
+} from '../utils/encryption';
 import { myPenpals as getMyPenpals } from '../api/penpals';
 
 type IGlobalState = {
   isUserGetInfo: boolean;
-  setIsUserGetInfo: (value: boolean) => void;
+  isFetchingMyPenPals: boolean;
   userInformation: IUserInformation;
+  joinedCommunities: ICommunityJoin[];
+  myPenpals: IPenpal[];
+  setIsUserGetInfo: (value: boolean) => void;
   setUserInformation: (value: IUserInformation) => void;
-  joinedCommunities: any[];
-  myPenpals: any[];
+  setIsAuthenticated?: (value: boolean) => void;
+  isAuthenticated?: boolean;
+  logout: () => void;
+  setIsFetchingMyPenPals: (value: boolean) => void;
 };
 
 export const GlobalState = createContext<IGlobalState>({
   isUserGetInfo: false as boolean,
-  setIsUserGetInfo: () => {},
+  isFetchingMyPenPals: false as boolean,
   userInformation: {} as IUserInformation,
+  joinedCommunities: [] as ICommunityJoin[],
+  myPenpals: [] as IPenpal[],
+  setIsUserGetInfo: () => {},
   setUserInformation: () => {},
-  joinedCommunities: [] as any[],
-  myPenpals: [] as any[],
+  setIsAuthenticated: () => {},
+  isAuthenticated: false,
+  logout: () => {},
+  setIsFetchingMyPenPals: () => {},
 });
 
 export const GlobalProvider: FC<any> = ({ children }) => {
   const [isUserGetInfo, setIsUserGetInfo] = useState<boolean>(true);
+  const [isFetchingMyPenPals, setIsFetchingMyPenPals] = useState<boolean>(true);
   const [userInformation, setUserInformation] = useState<IUserInformation>(
     {} as IUserInformation
   );
-  const [myPenpals, setMyPenpals] = useState<any[]>([]);
-  const [joinedCommunities, setJoinedCommunities] = useState<any[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [myPenpals, setMyPenpals] = useState<IPenpal[]>([]);
+  const [joinedCommunities, setJoinedCommunities] = useState<ICommunityJoin[]>(
+    []
+  );
   const userId = getUserIdLocalStorage();
+
+  const logout = () => {
+    setUserInformation({} as IUserInformation);
+    setIsAuthenticated(false);
+    setJoinedCommunities([]);
+    setMyPenpals([]);
+    removeToken();
+    removeUserId();
+  };
 
   useQuery(
     ['userInformation', userId],
@@ -42,6 +69,11 @@ export const GlobalProvider: FC<any> = ({ children }) => {
       onSuccess: (res) => {
         setIsUserGetInfo(false);
         setUserInformation(res.data.data);
+        if (res.data?.data) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
       },
       onError: (err) => {
         setIsUserGetInfo(false);
@@ -49,6 +81,8 @@ export const GlobalProvider: FC<any> = ({ children }) => {
       },
     }
   );
+
+  console.log(isAuthenticated, 'isAuthenticated');
 
   useQuery(
     ['UserJoinedCommunities', userId],
@@ -72,15 +106,19 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     onSuccess: (res) => {
       let list = res?.data?.data || [];
       setMyPenpals(
-        list.map((c: any) => {
+        list.map((c: IPenpal) => {
           return {
             ...c,
-            friend: c.sender.id == userId ? c.receiver : c.sender,
+            friend: c.sender.id === Number(userId) ? c.receiver : c.sender,
           };
         })
       );
+      setIsFetchingMyPenPals(false);
     },
-    onError: (err) => {},
+
+    onError: (err) => {
+      setIsFetchingMyPenPals(false);
+    },
     retry: 100,
     retryDelay: 5000,
   });
@@ -89,11 +127,16 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     <GlobalState.Provider
       value={{
         isUserGetInfo,
-        setIsUserGetInfo,
+        isFetchingMyPenPals,
         userInformation,
-        setUserInformation,
         joinedCommunities,
         myPenpals,
+        isAuthenticated,
+        setIsAuthenticated,
+        logout,
+        setIsUserGetInfo,
+        setUserInformation,
+        setIsFetchingMyPenPals,
       }}
     >
       {children}

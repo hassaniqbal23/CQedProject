@@ -55,6 +55,7 @@ const CommunityJoinLeaveActionButton: React.FC<
 
   return (
     <Button
+      loading={isLeavingCommunity || isJoiningCommunity}
       onClick={
         isMember
           ? () => leaveCommunityAsMember()

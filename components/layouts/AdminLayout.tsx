@@ -6,6 +6,7 @@ import { removeToken, removeUserId } from '@/app/utils/encryption';
 import { useResponsive } from '@/lib/hooks';
 import Sidebar from '../common/sidebar/sidebar';
 import Navbar from '../common/navbar/MainBar';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 import {
   Bell,
   CircleHelp,
@@ -19,6 +20,7 @@ interface IProps {
 }
 
 export const AdminLayout: FC<IProps> = ({ children }) => {
+  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isTabletMini } = useResponsive();
@@ -74,7 +76,6 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
           />
           <Navbar
             horizontalLinks={[
-              { href: '/chat', type: 'icon', icon: <MessageCircle /> },
               {
                 href: '/notification',
                 type: 'icon',

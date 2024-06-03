@@ -24,13 +24,12 @@ import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import * as z from 'zod';
 
-interface CreateChatModalProps {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface ICreateChatModalProps {
+  onChatCreated?: (conversationId: number) => void;
 }
 
 const formSchema = z.object({
-  toId: z
+  receiverId: z
     .number({
       message: 'Please select a user to send a message to',
     })
@@ -40,7 +39,7 @@ const formSchema = z.object({
   }),
 });
 
-const CreateChatModal = () => {
+const CreateChatModal = (props: ICreateChatModalProps) => {
   const queryClient = useQueryClient();
   const { myPenpals, userInformation } = useGlobalState();
   const [open, setOpen] = useState<boolean>(false);
@@ -50,11 +49,16 @@ const CreateChatModal = () => {
   });
 
   const { mutate: sendMessage, isLoading: isSendingMessage } = useMutation(
-    (formValues: { toId: number; message: string }) =>
-      startConversation(formValues.toId, formValues.message),
+    (formValues: { receiverId: number; message: string }) =>
+      startConversation(formValues.receiverId, formValues.message),
     {
       onSuccess: (res) => {
         queryClient.refetchQueries('get-all-conversations');
+        if (props.onChatCreated) {
+          props.onChatCreated(res.data.data.id);
+        }
+        form.setValue('message', '');
+        setOpen(false);
       },
       onError: (error: any) => {},
     }
@@ -90,7 +94,7 @@ const CreateChatModal = () => {
           <form onSubmit={onSubmit} className="space-y-4">
             <FormField
               control={form.control}
-              name="toId"
+              name="receiverId"
               render={({ field }) => (
                 <FormItem className="mb-7">
                   <FormLabel>To:</FormLabel>
@@ -105,18 +109,18 @@ const CreateChatModal = () => {
                     <SelectV2
                       options={
                         myPenpals?.map((penpal: any) => ({
-                          label: penpal.friend.profile[0].fullname,
-                          image: penpal.friend.attachment.file_path,
+                          label: penpal.friend?.profile[0]?.fullname,
+                          image: penpal.friend?.attachment?.file_path,
                           value: penpal?.friend?.id,
                         })) || []
                       }
                       formatOptionLabel={(option: any) => {
                         return (
-                          <div className="flex items-center gap-[3px] ">
+                          <div className="flex items-center gap-[3px] cursor-pointer">
                             <Avatar className="items-center">
                               <AvatarImage
                                 src={option?.image}
-                                className="w-8 h-8"
+                                className="w-8 h-8 rounded-full"
                               />
                             </Avatar>
                             <Typography
@@ -132,8 +136,8 @@ const CreateChatModal = () => {
                       className="font-semibold"
                       classNamePrefix={'select'}
                       onChange={(value: any) => {
-                        form.setValue('toId', value.value);
-                        form.clearErrors('toId');
+                        form.setValue('receiverId', value.value);
+                        form.clearErrors('receiverId');
                       }}
                     />
                   </FormControl>

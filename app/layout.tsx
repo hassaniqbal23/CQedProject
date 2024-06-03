@@ -61,8 +61,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Toaster />
         <QueryClientProvider client={queryClient}>
           <EventBusProvider>
-            <SocketProvider>
-              <GlobalProvider>
+            <GlobalProvider>
+              <SocketProvider>
                 <ChatGuardProvider>
                   <FormProvider {...methods}>
                     {/* <ThemeProvider
@@ -75,8 +75,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                     <ToastContainer autoClose={1000} />
                   </FormProvider>
                 </ChatGuardProvider>
-              </GlobalProvider>
-            </SocketProvider>
+              </SocketProvider>
+            </GlobalProvider>
           </EventBusProvider>
         </QueryClientProvider>
         <Sonner richColors />

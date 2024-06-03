@@ -66,26 +66,24 @@ const ProfileLink = ({
         <>
           {dropdownOption.map((item: IDropDownOption, index: number) => {
             return (
-              <>
-                <div>
-                  <div
-                    className="px-5 py-2 pb-2 mt-1 flex items-center hover:bg-slate-50"
-                    onClick={item.onClick}
-                    key={index}
+              <div key={index}>
+                <div
+                  className="px-5 py-2 pb-2 mt-1 flex items-center hover:bg-slate-50"
+                  onClick={item.onClick}
+                  key={index}
+                >
+                  {item.icon as React.ReactNode}
+                  <Link
+                    href={item.path || ''}
+                    className="text-sm w-min p-0 m-0 ml-2 capitalize whitespace-nowrap h-min font-semibold "
                   >
-                    {item.icon as React.ReactNode}
-                    <Link
-                      href={item.path || ''}
-                      className="text-sm w-min p-0 m-0 ml-2 capitalize whitespace-nowrap h-min font-semibold "
-                    >
-                      {item.title}
-                    </Link>
-                  </div>
-                  <div className="w-full flex justify-center">
-                    <Separator className="w-4/5" />
-                  </div>
+                    {item.title}
+                  </Link>
                 </div>
-              </>
+                <div className="w-full flex justify-center">
+                  <Separator className="w-4/5" />
+                </div>
+              </div>
             );
           })}
         </>
