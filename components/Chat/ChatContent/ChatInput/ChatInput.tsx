@@ -73,7 +73,7 @@ function ChatInput({ onSendMessage }: any) {
 
   const hasCurrentConversationUserBlockedMe = React.useMemo(() => {
     return (
-      userInformation.BlockedFrom.findIndex(
+      userInformation.BlockedFrom?.findIndex(
         (user) => user.userId === currentConversation?.user.id
       ) > -1
     );
