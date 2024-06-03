@@ -50,8 +50,7 @@ const CommunitySearchPage: React.FC<CommunitySearchPageProps> = (props) => {
       },
       cacheTime: 0,
       staleTime: 0,
-      // enabled: false,
-      // keepPreviousData: true,
+      keepPreviousData: true,
     }
   );
 
