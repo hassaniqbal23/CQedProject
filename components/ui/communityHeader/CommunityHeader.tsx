@@ -76,7 +76,7 @@ const CommunityHeader: React.FC<CommunityHeaderProps> = ({
           description="Global Citizenship Communities are groups of individuals from diverse backgrounds who come together to foster a sense of shared responsibility and interconnectedness. These communities aim to promote understanding, collaboration, and action on global issues, such as sustainability, social justice, and human rights. By engaging in dialogue, educational activities, and collective initiatives, members of Global Citizenship Communities work towards creating a more inclusive, equitable, and sustainable world."
           title="What are GC Communities?"
           onClose={() => setOpenPopup(false)}
-          ButtonCancel="Cancel"
+          ButtonCancel="Close"
         />
       </div>
     </div>
