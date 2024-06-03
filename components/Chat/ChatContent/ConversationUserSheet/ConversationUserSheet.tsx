@@ -20,7 +20,7 @@ export const ConversationUserSheet: FC<IProps> = ({
   userImage,
   userFullName,
   userId,
-  onChatDelete
+  onChatDelete,
 }) => {
   const { usersIBlocked } = useGlobalState();
   const queryClient = useQueryClient();
@@ -104,7 +104,7 @@ export const ConversationUserSheet: FC<IProps> = ({
       label: 'Delete',
       command: function () {
         if (onChatDelete) {
-          onChatDelete()
+          onChatDelete();
         }
       },
     },
