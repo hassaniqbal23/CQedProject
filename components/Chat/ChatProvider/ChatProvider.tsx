@@ -68,7 +68,6 @@ export const useChatFeatures = () => useContext(ChatContext);
 let timeoutSearchChat: any;
 
 const handleShowProfileAndDate = (messages: any) => {
-  console.log(messages);
   return messages.map((item: any, index: number) => {
     const nextMessage = messages[index + 1];
 
@@ -192,6 +191,7 @@ export const ChatProvider = ({ children }: any) => {
 
   useEffect(() => {
     const handleSendMessage = (message: any) => {
+      console.log(message);
       if (message) {
         setInboxResponse((prev: any) => {
           const inbox = prev.data.data.map((item: any) => {
@@ -260,6 +260,7 @@ export const ChatProvider = ({ children }: any) => {
   useEffect(() => {
     const handleAddMessageToInbox = (message: any) => {
       if (message) {
+        console.log(message, 'message received');
         if (userInformation.id !== message.receiverId) {
           setCurrentConversationMessages((prev) => {
             const filteredMessages = prev.filter((msg) => {

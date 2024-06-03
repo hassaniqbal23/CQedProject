@@ -101,7 +101,7 @@ export const AutosizeTextarea = React.forwardRef<
           style={{
             minHeight: `${minHeight}px`,
             height: `${minHeight}px`,
-            maxHeight: `150px`,
+            maxHeight: `${maxHeight}px`,
           }}
           className={cn(
             'flex w-full rounded-lg !mb-0 border border-input pr-16 bg-background pl-3 py-4 text-sm placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',

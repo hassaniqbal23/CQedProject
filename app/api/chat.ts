@@ -26,3 +26,10 @@ export const deleteMessage = (id: string | number) => {
 export const deleteConversation = (id: string | number) => {
   return http.delete(`/messages/${id}/delete-conversation`);
 };
+
+export const uploadFile = async (file: Blob) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  return await http.post('/uploads/upload', formData).then((res) => res.data.data);
+};

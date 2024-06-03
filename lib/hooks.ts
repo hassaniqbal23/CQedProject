@@ -1,3 +1,5 @@
+import { uploadFile } from '@/app/api/chat';
+import { useMutation } from 'react-query';
 import { useMediaQuery } from 'react-responsive';
 
 export const useResponsive: () => {
@@ -40,4 +42,9 @@ export const useResponsive: () => {
     isPortrait,
     isRetina,
   };
+};
+
+
+export const useUploadFile = () => {
+  return useMutation((file:Blob) => uploadFile(file));
 };

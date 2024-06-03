@@ -68,6 +68,7 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
             onDeleteMessage={handleDeleteMessage}
             isCurrentUser={isMe}
             hasDeleted={deletedMessage.includes(message.id)}
+            attachments={message.attachments || []}
           />
         );
       })}

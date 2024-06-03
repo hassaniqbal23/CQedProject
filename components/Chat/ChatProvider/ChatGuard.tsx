@@ -85,7 +85,6 @@ export const ChatGuardProvider = ({ children }: any) => {
     };
 
     const onOnlineUsersList = (users: number[]) => {
-      console.log(users);
       setRealtimeConnectedUsersIds(users);
     };
 
@@ -156,8 +155,6 @@ export const ChatGuardProvider = ({ children }: any) => {
       });
     }
   };
-
-  console.log(realtimeConnectedUsersIds, 'realtimeConnectedUsersIds');
 
   return (
     <ChatGuardContext.Provider

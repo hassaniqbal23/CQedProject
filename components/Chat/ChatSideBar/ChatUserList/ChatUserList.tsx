@@ -27,7 +27,7 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
     return conversations.sort((a, b) => {
       return (
         new Date(b.messages[0].created_at).getTime() -
-        new Date(a.messages[0].created_at).getTime()
+        new Date(a.messages[0]?.created_at).getTime()
       );
     });
   }, [conversations]);
@@ -68,7 +68,7 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
               </Typography>
               <ExpandableText
                 className="text-sm font-medium"
-                text={conversation.messages[0].message}
+                text={conversation.messages[0]?.message || ''}
                 maxLength={20}
               />
             </div>
