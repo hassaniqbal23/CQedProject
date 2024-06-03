@@ -11,8 +11,11 @@ import NoChatFound from './NoChatFound/NoChatFound';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
 import { deleteConversation } from '@/app/api/chat';
 import { useMutation, useQueryClient } from 'react-query';
+import { useEventBus } from '../EventBus/EventBus';
+import { DELETE_CONVERSATION } from '../EventBus/constants';
 
 const ChatContent: FC = () => {
+  const { subscribeEvent, unsubscribeEvent } = useEventBus();
   const { sendMessage } = useChatGuard();
   const {
     currentConversation,
@@ -26,11 +29,18 @@ const ChatContent: FC = () => {
   const queryClient = useQueryClient();
 
   const onSendMessage = (data: any) => {
+    console.log(
+      data.attachments.map((file: any) => {
+        return { file_path: file.file_path, id: file.id };
+      })
+    );
     const messageData = {
       clientID: uuidv4(),
       message: data.message,
       conversationId: currentConversation.id,
-      attachment: data.file,
+      attachments: data.attachments.map((file: any) => {
+        return { file_path: file.file_path, id: file.id };
+      }),
       receiverId: currentConversation.user.id,
       users: currentConversation.users,
       senderId: userInformation.id,
@@ -71,6 +81,18 @@ const ChatContent: FC = () => {
       console.log(error, 'Error =====> log');
     },
   });
+
+  useEffect(() => {
+    const deleteConversationHandler = (id: number) => {
+      handleDeleteConversation(id);
+    };
+    subscribeEvent(DELETE_CONVERSATION, deleteConversationHandler);
+
+    return () => {
+      unsubscribeEvent(DELETE_CONVERSATION, deleteConversationHandler);
+    };
+  }, [currentConversation]);
+
   return (
     <>
       {currentConversation ? (
