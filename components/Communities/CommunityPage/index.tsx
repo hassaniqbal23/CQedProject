@@ -30,7 +30,7 @@ const Community = () => {
             loading={isLoading}
             communityId={communities?.data?.id}
             title={communities?.data?.name}
-            image={communities?.data.profile_picture?.file_path}
+            image={communities?.data?.profile_picture?.file_path}
             members={communities?.data?._count?.CommunityUsers}
             description={communities?.data?.description}
             createdBy={communities?.data?.created_by}
@@ -40,7 +40,7 @@ const Community = () => {
           <CommunityMembersCard
             loading={isLoading}
             members={communities?.data?.CommunityUsers}
-            totalMembers={communities?.data._count?.CommunityUsers}
+            totalMembers={communities?.data?._count?.CommunityUsers}
           />
         </div>
       </div>

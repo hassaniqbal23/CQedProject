@@ -3,6 +3,7 @@ import { Avatar, AvatarImage, Button, Card, Skeleton } from '@/components/ui';
 import React from 'react';
 import { CommunityJoinLeaveActionButton } from '../CommunityJoinLeaveActionButton/CommunityJoinLeaveActionButton';
 import { getUserIdLocalStorage } from '@/app/utils/encryption';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 
 interface CommunityDetailsCardProps {
   title: string;
@@ -23,9 +24,9 @@ export const CommunityDetailsCard = ({
   loading,
   createdBy,
 }: CommunityDetailsCardProps) => {
-  const userId = getUserIdLocalStorage();
+  const { userInformation } = useGlobalState();
   return (
-    <Card className="p-6 min-h-[538px] h-[538px] w-full bg-white rounded-xl shadow-md space-y-4 overflow-hidden scroll-smooth ">
+    <Card className="p-6 min-h-[538px] h-[538px] w-full bg-white rounded-xl shadow-md space-y-4 overflow-auto scroll-smooth ">
       <div className="flex items-start md:items-center">
         <div className="flex flex-col md:flex-row gap-3">
           {loading ? (
@@ -56,7 +57,7 @@ export const CommunityDetailsCard = ({
           <Skeleton className="w-32 h-10 ml-auto" />
         ) : (
           <>
-            {createdBy === Number(userId) ? (
+            {createdBy === userInformation?.id ? (
               ' '
             ) : (
               <CommunityJoinLeaveActionButton communityId={communityId} />
@@ -68,9 +69,10 @@ export const CommunityDetailsCard = ({
         {loading ? (
           <Skeleton className="h-24 w-full" />
         ) : (
-          <Typography variant="p" weight="medium" className="">
-            <div dangerouslySetInnerHTML={{ __html: description }}></div>
-          </Typography>
+          <div
+            className="prose overflow-y-auto h-[400px] w-full max-w-none"
+            dangerouslySetInnerHTML={{ __html: description }}
+          ></div>
         )}
       </div>
     </Card>
