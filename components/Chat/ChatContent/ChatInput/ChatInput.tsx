@@ -21,6 +21,7 @@ import { uploadFile } from '@/app/api/chat';
 import { useMutation } from 'react-query';
 import { useUploadFile } from '@/lib/hooks';
 import Loading from '@/components/ui/button/loading';
+import { toast as sonnerToast } from 'sonner';
 
 let TypingTimeout: any;
 
@@ -30,7 +31,7 @@ function ChatInput({ onSendMessage }: any) {
   const { isConnected } = useSocket();
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState<number>(41);
+  const [height, setHeight] = useState<number>(54);
   const [uploadLoading, setUploadLoading] = useState(false);
   const form = useForm<any>({
     defaultValues: {
@@ -73,7 +74,7 @@ function ChatInput({ onSendMessage }: any) {
     if (files?.length > 0) {
       setHeight(150);
     } else {
-      setHeight(41);
+      setHeight(54);
     }
   }, [form.watch('attachments')]);
 
@@ -97,7 +98,14 @@ function ChatInput({ onSendMessage }: any) {
   };
 
   const onSubmit: SubmitHandler<any> = async (data: any) => {
-    if (!data.message || data.attachments.length === 0) return;
+    if (uploadLoading) {
+      sonnerToast.info('Please wait for the file to upload', {
+        position: 'bottom-left',
+        closeButton: true,
+      });
+      return;
+    }
+    if (!data.message && data.attachments.length === 0) return;
     onSendMessage(data);
     form.reset();
   };
@@ -130,7 +138,7 @@ function ChatInput({ onSendMessage }: any) {
                         if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault();
                           form.handleSubmit(onSubmit)();
-                          setHeight(41);
+                          setHeight(54);
                         }
 
                         if (!currentConversation) return;

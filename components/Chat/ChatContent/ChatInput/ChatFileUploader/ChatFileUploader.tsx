@@ -14,7 +14,7 @@ interface IChatFileUplaoderProps {
 function ChatFileUploader({ files, onFileSelect }: IChatFileUplaoderProps) {
   const dropzone = {
     multiple: true,
-    maxFiles: 5,
+    maxFiles: 1,
     maxSize: 4 * 1024 * 1024,
     accept: {
       'image/*': ['.jpg', '.jpeg', '.png', '.gif', '.bmp'],
