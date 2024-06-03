@@ -17,6 +17,7 @@ import Image from 'next/image';
 import { useSocket } from '../../WithSockets/WithSockets';
 import { useChatFeatures } from '../../ChatProvider/ChatProvider';
 import { useChatGuard } from '../../ChatProvider/ChatGuard';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 import { uploadFile } from '@/app/api/chat';
 import { useMutation } from 'react-query';
 import { useUploadFile } from '@/lib/hooks';
@@ -27,6 +28,7 @@ let TypingTimeout: any;
 
 function ChatInput({ onSendMessage }: any) {
   const { currentConversation } = useChatFeatures();
+  const { userInformation } = useGlobalState();
   const { userIsTyping } = useChatGuard();
   const { isConnected } = useSocket();
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
@@ -68,6 +70,14 @@ function ChatInput({ onSendMessage }: any) {
       setShowEmoji(false);
     }
   };
+
+  const hasCurrentConversationUserBlockedMe = React.useMemo(() => {
+    return (
+      userInformation.BlockedFrom.findIndex(
+        (user) => user.userId === currentConversation?.user.id
+      ) > -1
+    );
+  }, [userInformation, currentConversation]);
 
   useEffect(() => {
     const files = form.watch('attachments');
@@ -124,10 +134,16 @@ function ChatInput({ onSendMessage }: any) {
                 <FormControl className="">
                   <div className="relative">
                     <AutosizeTextarea
-                      placeholder="Enter your message"
+                      placeholder={
+                        hasCurrentConversationUserBlockedMe
+                          ? 'You cannot send a message'
+                          : 'Enter your message'
+                      }
                       {...field}
                       minHeight={height}
-                      disabled={!isConnected}
+                      disabled={
+                        !isConnected || hasCurrentConversationUserBlockedMe
+                      }
                       onKeyDown={(e) => {
                         if (
                           (e.target as HTMLTextAreaElement).value.trim()
@@ -156,37 +172,45 @@ function ChatInput({ onSendMessage }: any) {
                       }
                       className={`${form.watch('attachments').length > 0 ? 'pb-20' : 'pb-auto'} resize-none`}
                       icon={
-                        <div className="flex gap-2" ref={emojiPickerRef}>
-                          <ChatFileUploader
-                            files={form.getValues('attachments')}
-                            onFileSelect={(data) => {
-                              handleFileSelect(data);
-                              form.setValue('attachments', [
-                                ...form.getValues('attachments'),
-                                ...data,
-                              ]);
-                            }}
-                          />
-                          <ChatEmojiPicker
-                            onPickEmoji={(emoji) => {
-                              const currentMessage =
-                                form.getValues('message') || '';
-                              form.setValue(
-                                'message',
-                                currentMessage + emoji.emoji
-                              );
-                            }}
-                            open={showEmoji}
-                            button={
-                              <div
-                                onClick={() => setShowEmoji(!showEmoji)}
-                                className="cursor-pointer"
-                              >
-                                <Smile width={18} height={18} color="#4E5D78" />
-                              </div>
-                            }
-                          />
-                        </div>
+                        !hasCurrentConversationUserBlockedMe ? (
+                          <div className="flex gap-2" ref={emojiPickerRef}>
+                            <ChatFileUploader
+                              files={form.getValues('attachments')}
+                              onFileSelect={(data) => {
+                                handleFileSelect(data);
+                                form.setValue('attachments', [
+                                  ...form.getValues('attachments'),
+                                  ...data,
+                                ]);
+                              }}
+                            />
+                            <ChatEmojiPicker
+                              onPickEmoji={(emoji) => {
+                                const currentMessage =
+                                  form.getValues('message') || '';
+                                form.setValue(
+                                  'message',
+                                  currentMessage + emoji.emoji
+                                );
+                              }}
+                              open={showEmoji}
+                              button={
+                                <div
+                                  onClick={() => setShowEmoji(!showEmoji)}
+                                  className="cursor-pointer"
+                                >
+                                  <Smile
+                                    width={18}
+                                    height={18}
+                                    color="#4E5D78"
+                                  />
+                                </div>
+                              }
+                            />
+                          </div>
+                        ) : (
+                          <></>
+                        )
                       }
                     />
                     {form.watch('attachments').length > 0 && (
@@ -238,7 +262,7 @@ function ChatInput({ onSendMessage }: any) {
           <Button
             className="w-full bg-blue-100 h-[54px] w-[54px]"
             type="submit"
-            disabled={!isConnected}
+            disabled={!isConnected || hasCurrentConversationUserBlockedMe}
           >
             <SendHorizontal className="text-primary " />
           </Button>
