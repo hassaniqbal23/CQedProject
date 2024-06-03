@@ -44,7 +44,6 @@ export const useResponsive: () => {
   };
 };
 
-
 export const useUploadFile = () => {
-  return useMutation((file:Blob) => uploadFile(file));
+  return useMutation((file: Blob) => uploadFile(file));
 };

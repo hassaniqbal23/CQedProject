@@ -31,5 +31,7 @@ export const uploadFile = async (file: Blob) => {
   const formData = new FormData();
   formData.append('file', file);
 
-  return await http.post('/uploads/upload', formData).then((res) => res.data.data);
+  return await http
+    .post('/uploads/upload', formData)
+    .then((res) => res.data.data);
 };
