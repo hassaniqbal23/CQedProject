@@ -69,8 +69,11 @@ const ProfileLink = ({
                 <div key={index}>
                   <div
                     className="px-5 py-2 pb-2 mt-1 flex items-center hover:bg-slate-50"
-                    onClick={() => {
-                      item.onClick;
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (item.onClick) {
+                        item.onClick();
+                      }
                       setOpenDropDown(false);
                     }}
                   >
