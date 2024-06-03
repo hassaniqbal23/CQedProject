@@ -25,7 +25,7 @@ export const CommunityDetailsCard = ({
 }: CommunityDetailsCardProps) => {
   const userId = getUserIdLocalStorage();
   return (
-    <Card className="p-6 min-h-[538px] h-[538px] w-full bg-white rounded-xl shadow-md space-y-4 overflow-hidden scroll-smooth ">
+    <Card className="p-6 min-h-[538px] h-[538px] w-full bg-white rounded-xl shadow-md space-y-4 overflow-auto scroll-smooth ">
       <div className="flex items-start md:items-center">
         <div className="flex flex-col md:flex-row gap-3">
           {loading ? (
@@ -68,9 +68,10 @@ export const CommunityDetailsCard = ({
         {loading ? (
           <Skeleton className="h-24 w-full" />
         ) : (
-          <Typography variant="p" weight="medium" className="">
-            <div dangerouslySetInnerHTML={{ __html: description }}></div>
-          </Typography>
+          <div
+            className="prose overflow-y-auto h-[400px] w-full max-w-none"
+            dangerouslySetInnerHTML={{ __html: description }}
+          ></div>
         )}
       </div>
     </Card>
