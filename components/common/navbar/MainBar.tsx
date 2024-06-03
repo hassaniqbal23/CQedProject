@@ -1,27 +1,33 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import {
-  Button,
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Separator,
 } from '@/components/ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
-import { MdLogout } from 'react-icons/md';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
 import { IUserInformation } from '@/app/gobalContext/types';
 
-interface Link {
-  src: string;
+interface IDropDownOption {
+  title: string;
+  path?: string;
+  icon?: React.ComponentType | React.ReactNode;
+  onClick?: () => void;
+}
+interface IHorizontalLinks {
+  href: string;
   type: 'icon' | 'profile';
   icon?: React.ComponentType | React.ReactNode;
+  dropdownOption?: IDropDownOption[];
 }
 
-const IconLink = ({ icon: Icon, src }: { icon: any; src: string }) => (
-  <Link href={src} className="my-2 cursor-pointer">
+const HorizontalLinks = ({ icon: Icon, href }: { icon: any; href: string }) => (
+  <Link href={href} className="my-2 cursor-pointer">
     <div className="flex gap-4 items-center p-2 bg-[#F0F0F0] rounded-full">
       {Icon}
     </div>
@@ -29,50 +35,70 @@ const IconLink = ({ icon: Icon, src }: { icon: any; src: string }) => (
 );
 
 const ProfileLink = ({
-  onClick,
   userInformation,
+  dropdownOption,
 }: {
-  onClick: () => void;
   userInformation: IUserInformation;
-}) => (
-  <Popover>
-    <PopoverTrigger>
-      <div className="flex gap-2 items-center justify-center">
-        <Avatar className="h-10 w-h-10">
-          <AvatarImage
-            src={userInformation?.attachment?.file_path}
-            alt="Profile Picture"
-          />
-          <AvatarFallback>CQED</AvatarFallback>
-        </Avatar>
-        <div className="block text-left pr-10">
-          <h1 className="font-semibold text-base  text-black">
-            {userInformation?.name || ''}
-          </h1>
-          <p className="text-xs font-medium">{userInformation.name}</p>
+  dropdownOption: IDropDownOption[] | undefined;
+}) => {
+  const [openDropDown, setOpenDropDown] = useState(false);
+  return (
+    <Popover open={openDropDown}>
+      <PopoverTrigger onClick={() => setOpenDropDown(!openDropDown)}>
+        <div className="flex gap-2 items-center justify-center">
+          <Avatar className="h-10 w-h-10">
+            <AvatarImage
+              src={userInformation?.attachment?.file_path}
+              alt="Profile Picture"
+            />
+            <AvatarFallback>CQED</AvatarFallback>
+          </Avatar>
+          <div className="block text-left pr-10">
+            <h1 className="font-semibold text-base  text-black">
+              {userInformation?.name || ''}
+            </h1>
+            <p className="text-xs font-medium">{userInformation.name}</p>
+          </div>
         </div>
-      </div>
-    </PopoverTrigger>
-    <PopoverContent className="mt-1 w-[13.1rem] relative right-10 p-0">
-      <div className="px-5 py-4 flex">
-        <MdLogout className="text-base  text-primary mr-3" />
-        <Button
-          variant="ghost"
-          onClick={onClick}
-          className="text-sm w-min p-0 m-0 capitalize whitespace-nowrap h-min font-normal hover:bg-transparent"
-        >
-          log out
-        </Button>
-      </div>
-    </PopoverContent>
-  </Popover>
-);
+      </PopoverTrigger>
+      <PopoverContent className=" w-[13.1rem] relative right-10 p-0 ">
+        {dropdownOption?.length && (
+          <>
+            {dropdownOption.map((item: IDropDownOption, index: number) => {
+              return (
+                <div key={index}>
+                  <div
+                    className="px-5 py-2 pb-2 mt-1 flex items-center hover:bg-slate-50"
+                    onClick={() => {
+                      item.onClick;
+                      setOpenDropDown(false);
+                    }}
+                  >
+                    {item.icon as React.ReactNode}
+                    <Link
+                      href={item.path || ''}
+                      className="text-sm w-min p-0 m-0 ml-2 capitalize whitespace-nowrap h-min font-semibold "
+                    >
+                      {item.title}
+                    </Link>
+                  </div>
+                  <div className="w-full flex justify-center">
+                    <Separator className="w-4/5" />
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        )}
+      </PopoverContent>
+    </Popover>
+  );
+};
 
 interface IProps {
-  onLogout: () => void;
-  links?: Link[];
+  horizontalLinks?: IHorizontalLinks[];
 }
-export const Navbar: FC<IProps> = ({ onLogout, links }) => {
+export const Navbar: FC<IProps> = ({ horizontalLinks }) => {
   const { userInformation } = useGlobalState();
   return (
     <nav className="w-full fixed top-0 flex items-center justify-between bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 z-10">
@@ -84,17 +110,23 @@ export const Navbar: FC<IProps> = ({ onLogout, links }) => {
       />
       <div className="flex items-center justify-end">
         <div className="flex justify-around sm:justify-between gap-2 items-center py-2 pr-4">
-          {links && links?.length > 0 ? (
-            links.map((link: Link, index: number) => {
+          {horizontalLinks && horizontalLinks?.length > 0 ? (
+            horizontalLinks.map((link: IHorizontalLinks, index: number) => {
               if (link.type === 'icon' && link.icon) {
-                return <IconLink src={link.src} key={index} icon={link.icon} />;
+                return (
+                  <HorizontalLinks
+                    href={link.href}
+                    key={index}
+                    icon={link.icon}
+                  />
+                );
               }
               if (link.type === 'profile') {
                 return (
                   <ProfileLink
                     key={index}
-                    onClick={onLogout}
                     userInformation={userInformation}
+                    dropdownOption={link.dropdownOption}
                   />
                 );
               }

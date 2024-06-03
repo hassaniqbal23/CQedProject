@@ -1,23 +1,25 @@
 import Image from 'next/image';
 import React, { FC } from 'react';
-import { Avatar, AvatarImage } from '@/components/ui';
+import { Avatar, AvatarImage, ChatSidebarSheetDemo } from '@/components/ui';
 import { Ellipsis } from 'lucide-react';
 import { Dropdown } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { ConversationUserSheet } from '../../ConversationUserSheet/ConversationUserSheet';
 
 interface Iprops {
   date?: string;
   userImage: string;
   content?: string;
-  translateImage?: string;
   isCurrentUser?: boolean;
   onDeleteMessage?: (id: string | number) => void;
   id: string | number;
   showProfile?: boolean;
   showDate?: boolean;
   hasDeleted?: boolean;
+  userFullName?: string;
+  userId?: number;
 }
 
 dayjs.extend(relativeTime);
@@ -32,6 +34,8 @@ const ChatMessage: FC<Iprops> = ({
   showDate,
   showProfile,
   hasDeleted,
+  userFullName,
+  userId,
 }: Iprops) => {
   if (hasDeleted) return <></>;
 
@@ -43,9 +47,25 @@ const ChatMessage: FC<Iprops> = ({
         className={`flex gap-2 items-start group ${isCurrentUser ? 'flex-row-reverse' : ''}`}
       >
         {showProfile ? (
-          <Avatar className="w-14 h-14 rounded-full bg-lightgray">
-            <AvatarImage src={userImage} alt="Profile Picture" />
-          </Avatar>
+          isCurrentUser ? (
+            <Avatar className="w-14 h-14 rounded-full bg-lightgray">
+              <AvatarImage src={userImage} alt="Profile Picture" />
+            </Avatar>
+          ) : (
+            <ChatSidebarSheetDemo
+              trigger={
+                <Avatar className="w-14 h-14 rounded-full bg-lightgray cursor-pointer">
+                  <AvatarImage src={userImage} alt="Profile Picture" />
+                </Avatar>
+              }
+            >
+              <ConversationUserSheet
+                userImage={userImage}
+                userFullName={userFullName}
+                userId={userId}
+              />
+            </ChatSidebarSheetDemo>
+          )
         ) : (
           <div className="w-14 h-14 rounded-full" />
         )}
@@ -86,7 +106,7 @@ const ChatMessage: FC<Iprops> = ({
       <Typography
         variant="p"
         weight="medium"
-        className={isCurrentUser ? 'mr-14' : 'ml-14'}
+        className={isCurrentUser ? 'mr-16' : 'ml-16'}
       >
         {showDate && dayjs(date).fromNow()}
       </Typography>

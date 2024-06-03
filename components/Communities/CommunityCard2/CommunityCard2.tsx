@@ -12,6 +12,7 @@ interface CommunityCardProps {
   id: number;
   module?: 'students' | 'teachers';
   loading?: boolean;
+  button?: React.ReactNode;
 }
 
 export const CommunityCard = ({
@@ -22,10 +23,11 @@ export const CommunityCard = ({
   id,
   module = 'students',
   loading,
+  button,
 }: CommunityCardProps) => {
   return (
     <>
-      <div className="flex items-center p-4 rounded-md">
+      <div className="flex items-center p-4 rounded-md ">
         <Link
           href={`/${module}/cq-communities/${id}`}
           className="flex items-center"
@@ -72,7 +74,13 @@ export const CommunityCard = ({
         {loading ? (
           <Skeleton className="w-32 h-10 ml-auto" />
         ) : (
-          <CommunityJoinLeaveActionButton communityId={id} />
+          <>
+            {button ? (
+              <div className="flex justify-end ml-auto w-4/12 ">{button}</div>
+            ) : (
+              <CommunityJoinLeaveActionButton communityId={id} />
+            )}
+          </>
         )}
       </div>
       <Separator />

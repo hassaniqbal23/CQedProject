@@ -18,8 +18,8 @@ function Progressbar({ percentage, heading }: IProgressbarprops) {
   }, [percentage]);
 
   return (
-    <div className="w-full rounded-full">
-      <div className="w-full bg-primary-50 rounded-full">
+    <div className="w-full rounded-full ">
+      <div className="w-full bg-primary-50 rounded-full ">
         <div className="relative w-full rounded-full">
           <div
             className="absolute bg-secondary z-20 rounded-full transition-all duration-75 h-full"

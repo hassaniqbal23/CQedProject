@@ -6,13 +6,21 @@ import { removeToken, removeUserId } from '@/app/utils/encryption';
 import { useResponsive } from '@/lib/hooks';
 import Sidebar from '../common/sidebar/sidebar';
 import Navbar from '../common/navbar/MainBar';
-import { Bell } from 'lucide-react';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
+import {
+  Bell,
+  CircleHelp,
+  LogOut,
+  MessageCircle,
+  Settings,
+} from 'lucide-react';
 
 interface IProps {
   children: ReactNode;
 }
 
 export const AdminLayout: FC<IProps> = ({ children }) => {
+  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isTabletMini } = useResponsive();
@@ -67,20 +75,42 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
             sidebarLinks={sidebarLinks}
           />
           <Navbar
-            onLogout={() => {
-              removeToken();
-              removeUserId();
-              router.push('/login');
-            }}
-            links={[
+            horizontalLinks={[
               {
-                src: '',
+                href: '/notification',
                 type: 'icon',
-                icon: <Bell fill="#000000" />,
+                icon: <Bell />,
               },
               {
-                src: '',
+                href: '',
                 type: 'profile',
+                dropdownOption: [
+                  {
+                    title: 'Profile',
+                    path: '/admin/profile',
+                    icon: <Bell size={15} />,
+                  },
+                  {
+                    title: 'Account',
+                    path: '/admin/account',
+                    icon: <Settings size={15} />,
+                  },
+
+                  {
+                    title: 'Help ',
+                    path: '/admin/help',
+                    icon: <CircleHelp size={15} />,
+                  },
+                  {
+                    title: 'Logout',
+                    icon: <LogOut size={15} />,
+                    onClick: () => {
+                      removeToken();
+                      removeUserId();
+                      router.push('/login');
+                    },
+                  },
+                ],
               },
             ]}
           />

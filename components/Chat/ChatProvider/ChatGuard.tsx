@@ -11,9 +11,9 @@ import { useEventBus } from '../EventBus/EventBus';
 import {
   EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
   JOIN_TO_CHAT_ROOM,
-  SEND_MESSAGE,
 } from '../EventBus/constants';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { socket } from '@/lib/socket';
 // import { UserProps, getCurrentUser } from '../../store/User.reducer';
 // import { useSelector } from 'react-redux';
 // import { incomingMessageToast } from '@gilgit-app-nx/ui';
@@ -29,11 +29,7 @@ interface ChatGuardContextProps {
   setTotalUnreadMessageCount: React.Dispatch<React.SetStateAction<number>>;
   totalUnreadMessageCount: number;
   joinConversation: (conversationId: string | number) => void;
-  setSelectedConversationId: React.Dispatch<
-    React.SetStateAction<string | number | null>
-  >;
-  selectedConversationId: string | number | null;
-  userIsTyping: (conversationId: number) => void;
+  userIsTyping: (conversationId: number, userIds: number[]) => void;
   setRealtimeConnectedUsersIds: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
@@ -49,20 +45,13 @@ export const ChatGuardContext = createContext<ChatGuardContextProps>({
   setTotalUnreadMessageCount: () => {},
   totalUnreadMessageCount: 0,
   joinConversation: () => {},
-  setSelectedConversationId: () => {},
-  selectedConversationId: null,
   userIsTyping: () => {},
 });
 export const useChatGuard = () => useContext(ChatGuardContext);
 
 export const ChatGuardProvider = ({ children }: any) => {
-  const { userInformation } = useGlobalState();
+  const { userInformation, isAuthenticated } = useGlobalState();
   const { dispatchEvent } = useEventBus();
-  const { socket } = useSocket();
-  const [selectedConversationId, setSelectedConversationId] =
-    useState<any>(null);
-  // const currentUser: Partial<UserProps> = useSelector(getCurrentUser);
-  // @todo we need to remove this.
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
   const [realtimeTypingUsersIds, setRealtimeTypingUsersIds] = useState<
     number[]
@@ -74,92 +63,48 @@ export const ChatGuardProvider = ({ children }: any) => {
     useState<number>(0);
 
   useEffect(() => {
-    if (socket) {
-      // typing
-      // socket.on('typing', (userId: number) => {
-      //   if (!realtimeTypingUsersIds.includes(userId)) {
-      //     setRealtimeTypingUsersIds([...realtimeTypingUsersIds, userId]);
-      //   }
-      // });
-      // typingStop
-      // socket.on('typingStop', (userId: number) => {
-      //   setRealtimeTypingUsersIds(
-      //     realtimeTypingUsersIds.filter((id) => id !== userId)
-      //   );
-      // });
-      socket.on('SOCKET_USER_IS_ONLINE', ({ user }: { user: number }) => {
-        setRealtimeConnectedUsersIds([...realtimeConnectedUsersIds, user]);
-      });
-
-      socket.on('SOCKET_USER_IS_OFFLINE', ({ user }: { user: number }) => {
-        setRealtimeConnectedUsersIds(
-          realtimeConnectedUsersIds.filter((id) => id !== user)
-        );
-      });
-
-      socket.on('SOCKET_USER_IS_TYPING', ({ userId }: { userId: number }) => {
-        if (userId !== userInformation.id) {
-          setRealtimeTypingUsersIds([...realtimeTypingUsersIds, userId]);
-        }
-      });
-
-      socket.on('SOCKET_ONLINE_USERS_LIST', (users: number[]) => {
-        setRealtimeConnectedUsersIds(users);
-      });
-
-      socket.on(
-        'SOCKET_USER_IS_NOT_TYPING',
-        ({ userId }: { userId: number }) => {
-          setRealtimeTypingUsersIds(
-            realtimeTypingUsersIds.filter((id) => id !== userId)
-          );
-        }
+    const onMessage = (message: any) => {
+      dispatchEvent(
+        EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
+        message
       );
+    };
+    const onUserIsTyping = ({ userId }: { userId: number }) => {
+      if (userId !== userInformation.id) {
+        setRealtimeTypingUsersIds([...realtimeTypingUsersIds, userId]);
+      }
+    };
 
-      socket.on('MESSAGE', (message: any) => {
-        dispatchEvent(
-          EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
-          message
-        );
-        // console.log({ message }, 'message')
-        // if (!window.location.pathname.includes('/chat')) {
-        //     if (
-        //         true
-        //     ) {
-        //         // const audio = new Audio('/sounds/assets_audio_notification.mp3');
-        //         // audio.play();
-        //         setTotalUnreadMessageCount((prev) => prev + 1);
-        //         if (message.isNewThread) {
-        //             // const messagingWith = message?.data?.user?.find(
-        //             //     (item: { ['key']: string | number }) => item.id !== currentUser?.id,
-        //             // );
-        //             //   incomingMessageToast(
-        //             //     message?.data?.messages[0].messages,
-        //             //     'bottom-right',
-        //             //     messagingWith?.profile?.full_name || 'Unknown',
-        //             //   );
-        //         } else {
-        //             console.log('here')
-        //             //   incomingMessageToast(
-        //             //     message?.data?.messages,
-        //             //     'bottom-right',
-        //             //     message ? message.data.user.profile.full_name : 'Unknown',
-        //             //   );
-        //         }
-        //     }
-        // } else {
-        //     dispatchEvent(
-        //         EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
-        //         message,
-        //     );
-        // }
+    const onOnlineUsersList = (users: number[]) => {
+      setRealtimeConnectedUsersIds(users);
+    };
+
+    const onUserIsNotTyping = ({ userId }: { userId: number }) => {
+      setRealtimeTypingUsersIds(
+        realtimeTypingUsersIds.filter((id) => id !== userId)
+      );
+    };
+
+    if (socket) {
+      socket.on('SOCKET_USER_IS_TYPING', onUserIsTyping);
+      socket.on('SOCKET_ONLINE_USERS_LIST', onOnlineUsersList);
+      socket.on('SOCKET_USER_IS_NOT_TYPING', onUserIsNotTyping);
+      socket.on('MESSAGE', onMessage);
+      socket.on('disconnect', () => {
+        setRealtimeConnectedUsersIds([]);
       });
+
+      return () => {
+        socket.off('SOCKET_USER_IS_TYPING', onUserIsTyping);
+        socket.off('SOCKET_ONLINE_USERS_LIST', onOnlineUsersList);
+        socket.off('SOCKET_USER_IS_NOT_TYPING', onUserIsNotTyping);
+        socket.off('MESSAGE', onMessage);
+      };
     }
-  }, [socket]);
+  }, [isAuthenticated]);
 
   const sendMessage = (message: { ['key']: string | number | any } | any) => {
     if (socket) {
-      dispatchEvent(SEND_MESSAGE, message);
       delete message?.senderId;
       delete message?.created_at;
       socket.emit('MESSAGE', { ...message });
@@ -187,15 +132,15 @@ export const ChatGuardProvider = ({ children }: any) => {
     if (socket) {
       socket.emit('JOIN_ROOM', { id: conversationId });
       dispatchEvent(JOIN_TO_CHAT_ROOM, conversationId);
-      setSelectedConversationId(conversationId);
     }
   };
 
-  const userIsTyping = (conversationId: number) => {
+  const userIsTyping = (conversationId: number, users: number[]) => {
     if (socket) {
       socket.emit('SOCKET_USER_IS_TYPING', {
         userId: userInformation.id,
         conversationId: conversationId,
+        users: users,
       });
     }
   };
@@ -214,8 +159,6 @@ export const ChatGuardProvider = ({ children }: any) => {
         setTotalUnreadMessageCount,
         totalUnreadMessageCount,
         joinConversation,
-        selectedConversationId,
-        setSelectedConversationId,
         userIsTyping,
       }}
     >

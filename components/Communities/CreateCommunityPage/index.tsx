@@ -3,6 +3,7 @@ import { createCommunity, getCommunityTypes } from '@/app/api/communities';
 import { CreateCommunityForm } from '@/components/common/CreateCommunityForm/CreateCommunityForm';
 import { useMutation, useQuery } from 'react-query';
 import { useRouter } from 'next/navigation';
+import { Card } from '@/components/ui';
 
 interface CreateCommunityPageProps {
   module?: 'students' | 'teachers';
@@ -31,8 +32,9 @@ const CreateCommunityPage: React.FC<CreateCommunityPageProps> = ({
 
   const { data: community_types_data, isLoading: community_types_isLoading } =
     useQuery(['search_community_types'], () => getCommunityTypes());
+
   return (
-    <div className="bg-white">
+    <Card className="bg-white rounded-xl">
       <CreateCommunityForm
         CommunityTypeOptions={
           community_types_data ? community_types_data?.data || [] : []
@@ -40,13 +42,14 @@ const CreateCommunityPage: React.FC<CreateCommunityPageProps> = ({
         onFormSubmit={(values) => {
           handleCreateCommunity(values);
         }}
-        loading={isCreatingCommunity || community_types_isLoading}
+        isFetchingCommunityType={community_types_isLoading}
+        loading={isCreatingCommunity}
         // students={
         //   data?.data.data.filter((item:any) => item.id !== userInformation.id) || []
         // }
         // isLoadingAllStudents={isLoadingAllStudents}
       />
-    </div>
+    </Card>
   );
 };
 

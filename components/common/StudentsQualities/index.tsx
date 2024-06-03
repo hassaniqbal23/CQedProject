@@ -5,31 +5,45 @@ import Progressbar from '../Progressbar/Progressbar';
 import BottomNavbar from '../navbar/bottomNavbar';
 import ChipSelector from '../../ui/ChipSelect/ChipSelector';
 import { useRouter } from 'next/navigation';
+import { Typography } from '../Typography/Typography';
 
 function StudentsQualities() {
   const router = useRouter();
   return (
     <>
-      <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8 h-[calc(100vh_-_30px)] lg:h-[calc(100vh_-_224px)] ">
-        <div className="my-8">
+      <div className="flex flex-col max-w-3xl mx-auto mt-8  h-screen items-center">
+        <div className="mb-6 flex w-3/5 ">
           <Progressbar heading="You are almost there." percentage={75} />
         </div>
         <div className="flex flex-col justify-center items-center mb-4">
-          <h1 className="text-primary font-bold text-2xl text-center ">
+          <Typography
+            variant={'h1'}
+            weight={'bold'}
+            className="text-primary text-center mb-3 text-balance"
+          >
             What are your hobbies? What are you interested in?
-          </h1>
-          <h3 className="font-semibold text-[#a3adbc] text-[17px] text-center ">
+          </Typography>
+
+          <Typography
+            variant={'h4'}
+            weight={'regular'}
+            className="text-[#a3adbc] text-balance mb-6"
+          >
             We match you with peers based on common interests.
-          </h3>
+          </Typography>
+
+          <h3 className="font-semibold text-[#a3adbc] text-[17px] text-center "></h3>
         </div>
         <div className="flex items-center w-2/3 mx-auto">
           <ChipSelector
             rounded
             multiSelect
+            size="md"
             options={[
               {
                 label: 'Gardening',
                 value: 'Gardening',
+
                 render: (data: any) => <div className="p-1">{data.label}</div>,
               },
               {
@@ -90,6 +104,11 @@ function StudentsQualities() {
               {
                 label: 'Culture',
                 value: 'Culture',
+                render: (data: any) => <div className="p-1">{data.label}</div>,
+              },
+              {
+                label: 'Animals',
+                value: 'Animals',
                 render: (data: any) => <div className="p-1">{data.label}</div>,
               },
               {

@@ -97,6 +97,12 @@ function ChatInput({ onSendMessage }: any) {
                       minHeight={height}
                       disabled={!isConnected}
                       onKeyDown={(e) => {
+                        if (
+                          (e.target as HTMLTextAreaElement).value.trim()
+                            .length === 0
+                        )
+                          return;
+
                         if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault();
                           form.handleSubmit(onSubmit)();
@@ -108,7 +114,10 @@ function ChatInput({ onSendMessage }: any) {
 
                         clearTimeout(TypingTimeout);
                         TypingTimeout = setTimeout(() => {
-                          userIsTyping(currentConversation.id);
+                          userIsTyping(
+                            currentConversation.id,
+                            currentConversation.users
+                          );
                         }, 100);
                       }}
                       maxHeight={
