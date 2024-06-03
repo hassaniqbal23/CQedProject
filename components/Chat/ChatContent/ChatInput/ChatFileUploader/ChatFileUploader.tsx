@@ -16,6 +16,20 @@ function ChatFileUploader({ files, onFileSelect }: IChatFileUplaoderProps) {
     multiple: true,
     maxFiles: 5,
     maxSize: 4 * 1024 * 1024,
+    accept: {
+      'image/*': ['.jpg', '.jpeg', '.png', '.gif', '.bmp'],
+      'video/*': ['.mp4', '.mov', '.avi', '.wmv', '.flv'],
+      'audio/*': ['.mp3', '.wav', '.ogg'],
+      'application/pdf': ['.pdf'],
+      'application/vnd.ms-excel': ['.xls'],
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': [
+        '.xlsx',
+      ],
+      'text/csv': ['.csv'],
+      'application/*': ['.doc', '.docx', '.ppt', '.pptx', '.txt'],
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+        ['.docx'],
+    },
   } satisfies DropzoneOptions;
 
   return (

@@ -97,7 +97,7 @@ function ChatInput({ onSendMessage }: any) {
   };
 
   const onSubmit: SubmitHandler<any> = async (data: any) => {
-    if (!data.message && data.files.length === 0) return;
+    if (!data.message || data.attachments.length === 0) return;
     onSendMessage(data);
     form.reset();
   };

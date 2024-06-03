@@ -90,7 +90,7 @@ const ChatMessage: FC<Iprops> = ({
           >
             {Array.isArray(attachments) && attachments.length > 0 && (
               <div
-                className={`grid ${attachments.length < 3 ? `grid-cols-${attachments.length}` : 'grid-cols-3'}`}
+                className={`grid mb-6 ${attachments.length < 3 ? `grid-cols-${attachments.length}` : 'grid-cols-3'}`}
               >
                 {attachments.map((item: IAttachment, index: number) => (
                   <Image
@@ -99,7 +99,10 @@ const ChatMessage: FC<Iprops> = ({
                     width={100}
                     height={100}
                     className="w-28 h-28 object-cover rounded-md cursor-pointer "
-                    onClick={() => setIsOpen(true)}
+                    onClick={() => {
+                      setPhotoIndex(index);
+                      setIsOpen(true);
+                    }}
                   />
                 ))}
                 {isOpen && (
