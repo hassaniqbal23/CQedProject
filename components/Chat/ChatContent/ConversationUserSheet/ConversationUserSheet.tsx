@@ -1,16 +1,18 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Avatar, AvatarImage, Button } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import { CircleAlert, PhoneOff, Trash2 } from 'lucide-react';
 import { useMutation, useQueryClient } from 'react-query';
-import { blockUser, unblockUser } from '@/app/api/users';
+import { blockUser, unblockUser, reportUser } from '@/app/api/users';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { ReportClassDialog } from '@/components/common/DeleteClassModal/ReportClassModal';
 
 interface IProps {
   userImage?: string;
   userFullName?: string;
   userId?: number | string;
 }
+
 export const ConversationUserSheet: FC<IProps> = ({
   userImage,
   userFullName,
@@ -19,11 +21,12 @@ export const ConversationUserSheet: FC<IProps> = ({
   const { usersIBlocked } = useGlobalState();
   const queryClient = useQueryClient();
 
+  const [report, setReport] = useState(false);
+
   const { mutate: blockUserMutation, isLoading: isBlockingUser } = useMutation(
     (userId: number) => blockUser(userId),
     {
       onSuccess: (data) => {
-        console.log('User blocked successfully', data);
         queryClient.refetchQueries('get-users-i-blocked');
       },
       onError: (error) => {
@@ -41,6 +44,20 @@ export const ConversationUserSheet: FC<IProps> = ({
         console.log('Error unblocking user', error);
       },
     });
+
+  const { mutate: reportUserMutation, isLoading: isReportingUser } =
+    useMutation(
+      ({ userId, reportText }: { userId: number; reportText: string }) =>
+        reportUser(userId, reportText),
+      {
+        onSuccess: () => {
+          queryClient.refetchQueries('get-users-i-blocked');
+        },
+        onError: (error) => {
+          console.log('Error reporting user', error);
+        },
+      }
+    );
 
   const isUserBlocked = (userId: number | string) => {
     return usersIBlocked.some(
@@ -69,7 +86,7 @@ export const ConversationUserSheet: FC<IProps> = ({
       icon: <CircleAlert size={18} />,
       label: 'Report',
       command: function () {
-        console.log('Report');
+        setReport(true);
       },
     },
     {
@@ -85,6 +102,13 @@ export const ConversationUserSheet: FC<IProps> = ({
       },
     },
   ];
+
+  const handleReport = (reportText?: string) => {
+    if (reportText) {
+      reportUserMutation({ userId: Number(userId), reportText });
+    }
+    setReport(false);
+  };
 
   return (
     <div className="p-6 h-full overflow-y-auto">
@@ -154,6 +178,15 @@ export const ConversationUserSheet: FC<IProps> = ({
         ))}
       </div>
       <div className="border-[0.9px] my-2" />
+      <ReportClassDialog
+        title="Report User"
+        description="Are you sure you want to report this user?"
+        ButtonAction="Report"
+        ButtonCancel="Cancel"
+        open={report}
+        onClose={() => setReport(false)}
+        onClickOk={handleReport}
+      />
     </div>
   );
 };
