@@ -9,6 +9,8 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import { ConversationUserSheet } from '../../ConversationUserSheet/ConversationUserSheet';
+import { DELETE_CONVERSATION } from '@/components/Chat/EventBus/constants';
+import { useEventBus } from '@/components/Chat/EventBus/EventBus';
 
 interface Iprops {
   date?: string;
@@ -46,6 +48,7 @@ const ChatMessage: FC<Iprops> = ({
   userFullName,
   userId,
 }: Iprops) => {
+  const { dispatchEvent } = useEventBus();
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
   if (hasDeleted) return null;
@@ -74,6 +77,9 @@ const ChatMessage: FC<Iprops> = ({
                 userImage={userImage}
                 userFullName={userFullName}
                 userId={userId}
+                onChatDelete={() => {
+                  dispatchEvent(DELETE_CONVERSATION, null);
+                }}
               />
             </ChatSidebarSheetDemo>
           )

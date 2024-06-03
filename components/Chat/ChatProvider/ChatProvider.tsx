@@ -46,6 +46,8 @@ interface ChatInterface {
   setInboxResponse: Dispatch<SetStateAction<any[]>>;
   selectedConversationId: any;
   setSelectedConversationId: Dispatch<SetStateAction<any>>;
+  currentConversationAttachments: any[];
+  setCurrentConversationAttachments: Dispatch<SetStateAction<any[]>>;
 }
 
 const ChatContext = createContext<ChatInterface>({
@@ -64,6 +66,8 @@ const ChatContext = createContext<ChatInterface>({
   setInboxResponse: () => {},
   selectedConversationId: null,
   setSelectedConversationId: () => {},
+  currentConversationAttachments: [],
+  setCurrentConversationAttachments: () => {},
 });
 
 export const useChatFeatures = () => useContext(ChatContext);
@@ -75,7 +79,8 @@ export const ChatProvider = ({ children }: any) => {
   const [inboxResponse, setInboxResponse] = useState<any[]>([]);
   const queryClient = useQueryClient();
   const { userInformation } = useGlobalState();
-
+  const [currentConversationAttachments, setCurrentConversationAttachments] =
+    useState<any[]>([]);
   const [selectedConversationId, setSelectedConversationId] =
     useState<any>(null);
 
@@ -89,7 +94,10 @@ export const ChatProvider = ({ children }: any) => {
       () => getConversationMessages(selectedConversationId),
       {
         enabled: false,
-        onSuccess(data) {},
+        onSuccess(res) {
+          const attachments = res?.data?.attachments || [];
+          setCurrentConversationAttachments(attachments);
+        },
         retry: false,
         cacheTime: 0,
         staleTime: 0,
@@ -244,6 +252,8 @@ export const ChatProvider = ({ children }: any) => {
         setInboxResponse,
         selectedConversationId,
         setSelectedConversationId,
+        currentConversationAttachments,
+        setCurrentConversationAttachments,
       }}
     >
       {children}

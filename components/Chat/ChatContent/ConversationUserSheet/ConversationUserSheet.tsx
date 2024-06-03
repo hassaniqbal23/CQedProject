@@ -6,20 +6,25 @@ import { useMutation, useQueryClient } from 'react-query';
 import { blockUser, unblockUser, reportUser } from '@/app/api/users';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
 import { ReportClassDialog } from '@/components/common/DeleteClassModal/ReportClassModal';
+import { useChatFeatures } from '../../ChatProvider/ChatProvider';
+import Image from 'next/image';
 
 interface IProps {
   userImage?: string;
   userFullName?: string;
   userId?: number | string;
+  onChatDelete?: () => void;
 }
 
 export const ConversationUserSheet: FC<IProps> = ({
   userImage,
   userFullName,
   userId,
+  onChatDelete,
 }) => {
   const { usersIBlocked } = useGlobalState();
   const queryClient = useQueryClient();
+  const { currentConversationAttachments } = useChatFeatures();
 
   const [report, setReport] = useState(false);
 
@@ -98,7 +103,9 @@ export const ConversationUserSheet: FC<IProps> = ({
       icon: <Trash2 size={18} color="red" />,
       label: 'Delete',
       command: function () {
-        console.log('Delete');
+        if (onChatDelete) {
+          onChatDelete();
+        }
       },
     },
   ];
@@ -135,24 +142,32 @@ export const ConversationUserSheet: FC<IProps> = ({
         >
           Media
         </Typography>
-        <div className="py-1">
-          <img
-            src="/assets/girlmedia.png"
-            alt="media"
-            className="object-cover w-full"
-          />
-        </div>
-        <div className="py-1 grid grid-cols-2 gap-2">
-          <img
-            src="/assets/girlmedia2.png"
-            alt="media"
-            className="object-cover w-full"
-          />
-          <img
-            src="/assets/girlmedia2.png"
-            className="object-cover w-full"
-            alt="media"
-          />
+        {currentConversationAttachments[0] && (
+          <div>
+            <Image
+              alt="logo"
+              width={280}
+              height={50}
+              className="rounded-md cursor-pointer hover:shadow-sm"
+              src={currentConversationAttachments[0].file_path}
+            />
+          </div>
+        )}
+        <div className="py-1 grid grid-cols-4 gap-2 max-h-[200px] overflow-y-auto">
+          {currentConversationAttachments.map(
+            (attachment: { file_path: string }, index) => {
+              if (index === 0 || index > 8) return null;
+              return (
+                <Image
+                  alt="logo"
+                  width={60}
+                  height={50}
+                  className="rounded-md cursor-pointer hover:shadow-sm"
+                  src={attachment.file_path}
+                />
+              );
+            }
+          )}
         </div>
       </div>
       <div className="border-[0.9px] my-2" />

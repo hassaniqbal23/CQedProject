@@ -144,3 +144,14 @@ export const likeCommunityPost = (postId: number) => {
 export const unlikeCommunityPost = (id: number) => {
   return http.delete(`/community-post-like/${id}/delete-community-post-like`);
 };
+
+export const getCommunityJoined = (page: number = 1, limit: number = 10) => {
+  return http
+    .get(`/community/communities-joined?page=${page}&limit=${limit}`)
+    .then((res) => res.data);
+};
+export const getMyCommunity = (page: number = 1, limit: number = 10) => {
+  return http
+    .get(`/community/my-communities?page=${page}&limit=${limit}`)
+    .then((res) => res.data);
+};

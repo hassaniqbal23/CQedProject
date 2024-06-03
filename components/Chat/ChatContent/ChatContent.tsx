@@ -11,8 +11,11 @@ import NoChatFound from './NoChatFound/NoChatFound';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
 import { deleteConversation } from '@/app/api/chat';
 import { useMutation, useQueryClient } from 'react-query';
+import { useEventBus } from '../EventBus/EventBus';
+import { DELETE_CONVERSATION } from '../EventBus/constants';
 
 const ChatContent: FC = () => {
+  const { subscribeEvent, unsubscribeEvent } = useEventBus();
   const { sendMessage } = useChatGuard();
   const {
     currentConversation,
@@ -74,6 +77,18 @@ const ChatContent: FC = () => {
       console.log(error, 'Error =====> log');
     },
   });
+
+  useEffect(() => {
+    const deleteConversationHandler = (id: number) => {
+      handleDeleteConversation(id);
+    };
+    subscribeEvent(DELETE_CONVERSATION, deleteConversationHandler);
+
+    return () => {
+      unsubscribeEvent(DELETE_CONVERSATION, deleteConversationHandler);
+    };
+  }, [currentConversation]);
+
   return (
     <>
       {currentConversation ? (
