@@ -26,10 +26,13 @@ export const CommunityCard = ({
   button,
 }: CommunityCardProps) => {
   const shortenedDescription = React.useMemo(() => {
-    let div = document.createElement('div');
-    div.innerHTML = description;
-    let text = div.textContent || '';
-    return text.length > 100 ? text.slice(0, 100) + ' ...' : text;
+    if (typeof window !== 'undefined') {
+      let div = document.createElement('div');
+      div.innerHTML = description;
+      let text = div.textContent || '';
+      return text.length > 100 ? text.slice(0, 100) + ' ...' : text;
+    }
+    return '';
   }, [description]);
 
   return (
