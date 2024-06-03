@@ -25,6 +25,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import { settings } from '@/app/utils/sliderSettings';
+import Pagination from '@/components/common/pagination/pagination';
 
 export const PenPalCommunity = () => {
   const queryCLient = useQueryClient();
@@ -33,6 +34,16 @@ export const PenPalCommunity = () => {
   const [creatingPanpalId, setCreatingPanpalId] = useState<number | null>(null);
   const [openStoryModal, setOpenStroyModal] = useState<boolean>(false);
   const [viewStoryModal, setViewStoryModal] = useState<boolean>(false);
+  const [totalCount, setTotalCount] = useState<number>(1);
+  const [paginationPenpals, setPaginationPenpals] = useState<{
+    page: number;
+    limit: number;
+  }>({
+    page: 1,
+    limit: 10,
+  });
+
+  const { page, limit } = paginationPenpals;
 
   const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
     useMutation((id: number) => createPenpal({ receiverId: id }), {
@@ -90,11 +101,13 @@ export const PenPalCommunity = () => {
   );
 
   const { data: suggestionsResponse, isLoading } = useQuery(
-    ['penpalSuggestions'],
-    () => getSuggestions(),
+    ['penpalSuggestions', page, limit],
+    () => getSuggestions(page, limit),
     {
       enabled: true,
-      onSuccess: (res) => {},
+      onSuccess: (res) => {
+        setTotalCount(res?.data?.total_count);
+      },
       onError(err) {
         console.log(err);
       },
@@ -222,7 +235,22 @@ export const PenPalCommunity = () => {
             />
           ))}
         </div>
-        {suggestions.length === 0 && isLoading === false ? (
+        <div className="flex justify-center py-5">
+          <Pagination
+            currentPage={page}
+            totalPages={Math.ceil(totalCount / limit)}
+            pageSize={limit}
+            onPageChange={(value: number) => {
+              setPaginationPenpals((prev) => ({
+                ...prev,
+                page: value,
+              }));
+            }}
+            totalCount={totalCount}
+            setPageSize={(pageSize) => console.log(pageSize, 'pagesize')}
+          />
+        </div>
+        {suggestions?.length === 0 && isLoading === false ? (
           <div> No suggestions found, Please come back later </div>
         ) : (
           <></>
