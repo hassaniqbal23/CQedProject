@@ -61,14 +61,16 @@ export const DeleteClassDialog = ({
             </DialogDescription>
           </DialogHeader>
           <div>
-            <Button
-              variant={'destructive'}
-              loading={okLoading}
-              onClick={() => onClickOk && onClickOk()}
-              className="w-full rounded-lg"
-            >
-              {ButtonAction}
-            </Button>
+            {ButtonAction && (
+              <Button
+                variant={'destructive'}
+                loading={okLoading}
+                onClick={() => onClickOk && onClickOk()}
+                className="w-full rounded-lg"
+              >
+                {ButtonAction}
+              </Button>
+            )}
             <Button
               onClick={() => onClose && onClose()}
               className="w-full text-primary-500 bg-white "
