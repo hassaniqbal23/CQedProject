@@ -76,7 +76,6 @@ function ChatInput({ onSendMessage }: any) {
       userInformation &&
       userInformation.BlockedFrom &&
       userInformation.BlockedFrom.findIndex(
-
         (user) => user.userId === currentConversation?.user.id
       ) > -1
     );
