@@ -20,9 +20,15 @@ export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
   const [search, setSearch] = React.useState('');
 
   const filtered = React.useMemo(() => {
-    if (!search) return inboxResponse?.data?.data || [];
+    if (!search)
+      return inboxResponse.sort((a: any, b: any) => {
+        return (
+          new Date(b.lastMessageReceived).getTime() -
+          new Date(a.lastMessageReceived).getTime()
+        );
+      });
     return (
-      inboxResponse?.data?.data.filter((user: any) =>
+      inboxResponse.filter((user: any) =>
         user.user.name.toLowerCase().includes(search.toLowerCase())
       ) || []
     );

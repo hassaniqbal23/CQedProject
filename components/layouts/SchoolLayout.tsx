@@ -7,8 +7,15 @@ import { useRouter } from 'next/navigation';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
 
 import { useResponsive } from '@/lib/hooks';
-import { Bell } from 'lucide-react';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
+import {
+  Bell,
+  CircleHelp,
+  LogOut,
+  MessageCircle,
+  Settings,
+  UserCheck,
+} from 'lucide-react';
 interface IProps {
   children: ReactNode;
 }
@@ -80,19 +87,42 @@ export const SchoolLayout: FC<IProps> = ({ children }) => {
             sidebarLinks={sidebarLinks}
           />
           <Navbar
-            onLogout={() => {
-              logout();
-              router.push('/schools/sign-in');
-            }}
-            links={[
+            horizontalLinks={[
+              { href: '/chat', type: 'icon', icon: <MessageCircle /> },
               {
-                src: 'notification',
+                href: '/notification',
                 type: 'icon',
                 icon: <Bell />,
               },
               {
-                src: '',
+                href: '',
                 type: 'profile',
+                dropdownOption: [
+                  {
+                    title: 'Profile',
+                    path: '/schools/profile',
+                    icon: <Bell size={15} />,
+                  },
+                  {
+                    title: 'Account',
+                    path: '/schools/account',
+                    icon: <Settings size={15} />,
+                  },
+                  {
+                    title: 'Help ',
+                    path: '/schools/help',
+                    icon: <CircleHelp size={15} />,
+                  },
+                  {
+                    title: 'Logout',
+                    icon: <LogOut size={15} />,
+                    onClick: () => {
+                      removeToken();
+                      removeUserId();
+                      router.push('/schools/sign-in');
+                    },
+                  },
+                ],
               },
             ]}
           />

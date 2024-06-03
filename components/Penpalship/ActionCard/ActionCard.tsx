@@ -19,7 +19,7 @@ export const ActionCard: FC<IActionCard> = ({
   onButtonClick,
 }) => {
   return (
-    <div className="max-full bg-[#ECEDF8] rounded overflow-hidden shadow-lg m-4 p-6 text-center border border-gray-200">
+    <div className="max-full bg-[#ECEDF8] rounded-xl overflow-hidden shadow-lg  p-6 py-8 text-center border border-gray-200">
       <Image
         className="w-12 h-12 mx-auto mb-4"
         src={icon}
@@ -27,7 +27,7 @@ export const ActionCard: FC<IActionCard> = ({
         width={82}
         height={82}
       />
-      <Typography weight="semibold" variant="h4" className=" mb-2">
+      <Typography weight="semibold" variant="h4" className="m-1">
         {title}
       </Typography>
       <Typography weight="medium" variant="p" className="text-gray-700  mb-4">
@@ -35,7 +35,7 @@ export const ActionCard: FC<IActionCard> = ({
       </Typography>
       <Button
         onClick={onButtonClick}
-        className="bg-white  text-[#000000] font-bold py-2 px-4 rounded-full"
+        className="bg-white  text-[#000000] font-medium py-2 px-6 rounded-full"
       >
         {buttonText}
       </Button>

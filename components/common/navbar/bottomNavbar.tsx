@@ -19,7 +19,7 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({
 }) => {
   return (
     <div
-      className={`bg-primary-500 shadow-top md:shadow-none shadow-opacity-10 px-10 flex ${isBackButton ? ' justify-between ' : 'justify-end'} items-center h-20`}
+      className={`bg-primary-500 shadow-top md:shadow-none shadow-opacity-10 px-10 flex z-40 ${isBackButton ? ' justify-between ' : 'justify-end'} items-center h-20`}
     >
       {isBackButton && (
         <Button

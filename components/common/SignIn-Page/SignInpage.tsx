@@ -94,6 +94,7 @@ export function SignIn(props: SignInProps) {
         queryClient.refetchQueries('userInformation');
         queryClient.refetchQueries('UserJoinedCommunities');
         queryClient.refetchQueries('MyPenPals');
+        queryClient.refetchQueries('get-users-i-blocked');
         reset();
       },
       onError: (error: any) => {

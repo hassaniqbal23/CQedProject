@@ -7,6 +7,7 @@ import {
 import { useQuery } from 'react-query';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
+import Pagination from '@/components/common/pagination/pagination';
 
 interface CommunitySearchPageProps {
   module: 'students' | 'teachers';
@@ -15,6 +16,16 @@ interface CommunitySearchPageProps {
 const CommunitySearchPage: React.FC<CommunitySearchPageProps> = (props) => {
   const router = useRouter();
   const pathname = usePathname();
+  const [paginationsCommunities, setPaginationsCommunities] = useState<{
+    page: number;
+    limit: number;
+  }>({
+    page: 1,
+    limit: 10,
+  });
+  const { page, limit } = paginationsCommunities;
+  const [totalCount, setTotalCount] = useState<number>(1);
+
   const [filters, setFilters] = useState<{
     q: string | null;
     community_type: string | null;
@@ -24,13 +35,17 @@ const CommunitySearchPage: React.FC<CommunitySearchPageProps> = (props) => {
   });
 
   const {
-    data,
+    data: communitiesList,
     isLoading,
     refetch: search,
   } = useQuery(
-    ['search_communities', filters.q],
-    () => getCommunities(filters.q, filters.community_type),
+    ['search_communities', filters.q, filters.community_type, page, limit],
+    () => getCommunities(filters.q, filters.community_type, page, limit),
+
     {
+      onSuccess: (res) => {
+        setTotalCount(res?.totalCount);
+      },
       enabled: false,
     }
   );
@@ -72,13 +87,13 @@ const CommunitySearchPage: React.FC<CommunitySearchPageProps> = (props) => {
     }
   }, [filters.community_type]);
 
-  const communities = data?.data || [];
+  const communities = communitiesList?.data || [];
   const community_types = community_types_data?.data || [];
 
   return (
     <Suspense>
       <SearchFilter
-        title="Search results for communities"
+        title={`Search results for ${filters.q || 'communities'}`}
         buttonText="Back"
         onInputChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           setFilters({ ...filters, q: e.target.value });
@@ -86,7 +101,7 @@ const CommunitySearchPage: React.FC<CommunitySearchPageProps> = (props) => {
         onSearchClick={(e: React.KeyboardEvent<HTMLInputElement>) => {}}
         results={communities}
         resultTypes={community_types}
-        totalCount={data?.totalCount || 0}
+        totalCount={communitiesList?.totalCount || 0}
         onRequestBack={() => {
           router.push(`/${props.module}/cq-communities`);
         }}
@@ -101,6 +116,20 @@ const CommunitySearchPage: React.FC<CommunitySearchPageProps> = (props) => {
           setFilters(filters);
         }}
       />
+      <div className="flex justify-end py-5">
+        <Pagination
+          currentPage={page}
+          totalPages={Math.ceil(totalCount / limit)}
+          pageSize={limit}
+          onPageChange={(value: number) => {
+            setPaginationsCommunities((prev) => ({
+              ...prev,
+              page: value,
+            }));
+          }}
+          totalCount={totalCount}
+        />
+      </div>
     </Suspense>
   );
 };

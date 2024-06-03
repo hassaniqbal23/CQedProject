@@ -1,11 +1,10 @@
-import type { NextPage } from 'next';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
+import { useState } from 'react';
+import { Avatar, AvatarImage } from '@/components/ui';
 import { Send, MessageCircle, Heart } from 'lucide-react';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { FC, useEffect } from 'react';
-import { useState } from 'react';
 
 dayjs.extend(relativeTime);
 

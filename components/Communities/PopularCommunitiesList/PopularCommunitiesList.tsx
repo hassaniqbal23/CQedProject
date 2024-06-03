@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useQuery } from 'react-query';
 import { getCommunities } from '@/app/api/communities';
@@ -6,6 +6,7 @@ import { CommunityCard } from '../CommunityCard2/CommunityCard2';
 import { Typography } from '@/components/common/Typography/Typography';
 import Loading from '@/components/ui/button/loading';
 import { Separator } from '@/components/ui';
+import Pagination from '@/components/common/pagination/pagination';
 
 interface PopularCommunitiesList {
   module?: 'students' | 'teachers';
@@ -14,7 +15,26 @@ interface PopularCommunitiesList {
 export const PopularCommunitiesList: React.FC<PopularCommunitiesList> = ({
   module = 'students',
 }) => {
-  const { data, isLoading } = useQuery('communities', () => getCommunities());
+  const [paginationsCommunities, setPaginationsCommunities] = useState<{
+    page: number;
+    limit: number;
+  }>({
+    page: 1,
+    limit: 10,
+  });
+  const [totalCount, setTotalCount] = useState<number>(1);
+
+  const { page, limit } = paginationsCommunities;
+
+  const { data: communities, isLoading } = useQuery(
+    ['communities', page, limit],
+    () => getCommunities('', '', page, limit),
+    {
+      onSuccess: (res) => {
+        setTotalCount(res?.totalCount);
+      },
+    }
+  );
 
   return (
     <div>
@@ -36,14 +56,27 @@ export const PopularCommunitiesList: React.FC<PopularCommunitiesList> = ({
 
       <div className="mt-2">
         {isLoading ? (
-          <div className="w-full h-[500px] flex items-center justify-center">
-            <Loading />
-          </div>
+          <>
+            {[1, 2, 3, 4, 5].map((item, index) => {
+              return (
+                <CommunityCard
+                  loading={isLoading}
+                  description={''}
+                  title={''}
+                  id={0}
+                  members={0}
+                  key={index}
+                  image={''}
+                  module={module}
+                />
+              );
+            })}
+          </>
         ) : (
           <>
             {!isLoading &&
-              data?.data &&
-              data?.data?.map((item: any, index: number) => (
+              communities?.data &&
+              communities?.data.map((item: any, index: number) => (
                 <CommunityCard
                   loading={isLoading}
                   description={item.description}
@@ -55,6 +88,21 @@ export const PopularCommunitiesList: React.FC<PopularCommunitiesList> = ({
                   module={module}
                 />
               ))}
+            <div className="flex justify-end py-5">
+              <Pagination
+                currentPage={page}
+                totalPages={Math.ceil(totalCount / limit)}
+                pageSize={limit}
+                onPageChange={(value: number) => {
+                  setPaginationsCommunities((prev) => ({
+                    ...prev,
+                    page: value,
+                  }));
+                }}
+                totalCount={totalCount}
+                setPageSize={(pageSize) => console.log(pageSize, 'pagesize')}
+              />
+            </div>
           </>
         )}
       </div>

@@ -4,6 +4,7 @@ import { FC, forwardRef } from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { Check, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Skeleton } from '../skeleton/skeleton';
 
 const Select = SelectPrimitive.Root;
 
@@ -18,7 +19,7 @@ const SelectTrigger = forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      'flex h-10 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+      'flex h-10 w-full items-center justify-between rounded-md border border-input px-3 py-3 text-sm ring-offset-background focus-within:ring-1 focus-within:ring-black focus-within:ring-offset-1 placeholder:text-muted-foreground focus:outline-none focus:ring-1  focus:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50',
       className
     )}
     {...props}
@@ -124,6 +125,7 @@ interface ISelect {
   placeholder?: string | 'Please select';
   SelectTriggerClass?: string;
   defaultValue?: string;
+  loading?: boolean;
 }
 
 const SelectInput: FC<ISelect> = ({
@@ -132,21 +134,40 @@ const SelectInput: FC<ISelect> = ({
   placeholder,
   SelectTriggerClass,
   defaultValue,
+  loading,
 }) => {
   return (
     <Select defaultValue={defaultValue} onValueChange={onSelect}>
-      <SelectTrigger className={`${SelectTriggerClass} p-6`}>
-        <SelectValue placeholder={placeholder} />
+      <SelectTrigger className={`${SelectTriggerClass} p-7 bg-[#F8F9FB]`}>
+        {Number(defaultValue) > 0 ? (
+          <SelectValue>
+            {options
+              ? options.find((item) => item.value === defaultValue)?.label
+              : 'Loading...'}
+          </SelectValue>
+        ) : (
+          <option value="" disabled>
+            {placeholder}
+          </option>
+        )}
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup>
-          {options.map((item, index) => {
-            return (
-              <SelectItem key={index} value={item.value}>
-                {item.label}
-              </SelectItem>
-            );
-          })}
+        <SelectGroup className="overflow-y-auto max-h-[10rem]">
+          {loading ? (
+            [1, 2, 3, 4].map((i) => {
+              return <Skeleton key={i} className="h-7 p-6 w-full mb-2" />;
+            })
+          ) : (
+            <>
+              {options.map((item, index) => {
+                return (
+                  <SelectItem key={index} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                );
+              })}
+            </>
+          )}
         </SelectGroup>
       </SelectContent>
     </Select>

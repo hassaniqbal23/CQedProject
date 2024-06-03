@@ -97,9 +97,7 @@ function ChatInput({ onSendMessage }: any) {
   };
 
   const onSubmit: SubmitHandler<any> = async (data: any) => {
-    console.clear();
-    console.log(data, 'data');
-    if (!data.message || data.attachments.length === 0) return;
+    if (!data.message && data.files.length === 0) return;
     onSendMessage(data);
     form.reset();
   };
@@ -139,7 +137,10 @@ function ChatInput({ onSendMessage }: any) {
 
                         clearTimeout(TypingTimeout);
                         TypingTimeout = setTimeout(() => {
-                          userIsTyping(currentConversation.id);
+                          userIsTyping(
+                            currentConversation.id,
+                            currentConversation.users
+                          );
                         }, 100);
                       }}
                       maxHeight={

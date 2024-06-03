@@ -24,6 +24,7 @@ import { Camera, CircleUser, ImagePlus } from 'lucide-react';
 import ImageUpload from '../ImageUpload/ImageUpload';
 import { deleteProfileImage, uploadProfileImage } from '@/app/api/admin';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { Typography } from '../Typography/Typography';
 
 const formSchema = z.object({
   bio: z.string().refine((value) => value.trim() !== '', {
@@ -98,21 +99,31 @@ function AboutStudentsForm() {
   // });
   return (
     <>
-      <div className="flex flex-col max-w-3xl mx-auto mt-8 mb-8">
-        <div className="my-8">
+      <div className="flex flex-col max-w-4xl mx-auto mt-8 mb-8 items-center">
+        <div className="flex my-8 w-3/6 ">
           <Progressbar heading="Doing great!" percentage={40} />
         </div>
         <div className="flex flex-col justify-center items-center mb-4">
-          <h1 className="text-primary font-bold text-2xl">About You</h1>
-          <h3 className="font-semibold text-[#a3adbc] text-[17px] ">
+          <Typography
+            variant={'h3'}
+            weight={'bold'}
+            className="text-primary mb-1"
+          >
+            About You
+          </Typography>
+          <Typography
+            variant={'body'}
+            weight={'regular'}
+            className="text-[#a3adbc] mb-3"
+          >
             Tell us about yourself.
-          </h3>
+          </Typography>
         </div>
         <div>
           <Form {...form}>
             <form
               onSubmit={() => console.log('submit')}
-              className="flex flex-col gap-10"
+              className="flex flex-col gap-12"
             >
               <FormField
                 control={form.control}
@@ -143,7 +154,10 @@ function AboutStudentsForm() {
                 name="bio"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Write about yourself</FormLabel>
+                    <Typography variant={'body'} weight={'semibold'}>
+                      Write about yourself
+                    </Typography>
+
                     <FormControl>
                       <Textarea
                         placeholder="Tell us about you. What makes you smile! What is unique about you?"
@@ -159,12 +173,17 @@ function AboutStudentsForm() {
                 name="culture"
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-1">
-                    <FormLabel>
+                    <Typography
+                      variant={'body'}
+                      weight={'semibold'}
+                      className="mb-2"
+                    >
                       Tell us about your culture and customs. What is most
                       significant for you? Remember, what seems normal to you
                       may be new for somebody else across the world. Share so
                       they may learn.
-                    </FormLabel>
+                    </Typography>
+
                     <FormControl>
                       <Textarea
                         placeholder="Share the richness of your culture. What would you like people to know? What is special about where you live?"
@@ -180,17 +199,22 @@ function AboutStudentsForm() {
                 name="culture"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
+                    <Typography
+                      variant={'body'}
+                      weight={'semibold'}
+                      className="mb-3"
+                    >
                       Upload pictures of what you wish to share - your culture,
                       your pets, your favourite dish, your hobby...
-                    </FormLabel>
+                    </Typography>
+
                     <FormControl>
                       <div className="grid grid-cols-4 gap-4 mt-2">
                         {[1, 2, 3, 4].map((item) => {
                           return (
                             <div
                               key={item}
-                              className="p-3 w-full h-36 cursor-pointer border-2 border-dashed rounded flex items-center justify-center "
+                              className="p-3 w-full h-36 cursor-pointer border-2 border-solid rounded flex items-center justify-center mb-3"
                             >
                               <ImagePlus />
                             </div>
