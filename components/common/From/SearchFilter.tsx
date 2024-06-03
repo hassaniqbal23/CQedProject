@@ -92,8 +92,6 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
     }
   }, [params]);
 
-  console.log(results, 'results');
-
   return (
     <div className="w-full flex flex-col gap-4">
       <Button
