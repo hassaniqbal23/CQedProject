@@ -26,11 +26,18 @@ const ChatContent: FC = () => {
   const queryClient = useQueryClient();
 
   const onSendMessage = (data: any) => {
+    console.log(
+      data.attachments.map((file: any) => {
+        return { file_path: file.file_path, id: file.id };
+      })
+    );
     const messageData = {
       clientID: uuidv4(),
       message: data.message,
       conversationId: currentConversation.id,
-      attachment: data.file,
+      attachments: data.attachments.map((file: any) => {
+        return { file_path: file.file_path, id: file.id };
+      }),
       receiverId: currentConversation.user.id,
       users: currentConversation.users,
       senderId: userInformation.id,
