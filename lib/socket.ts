@@ -3,12 +3,6 @@ import { io } from 'socket.io-client';
 
 let URL = process.env.NEXT_PUBLIC_API_HOST || '';
 
-console.log({ URL, host: process.env.NEXT_PUBLIC_API_HOST });
-
-if (process.env.NODE_ENV === 'production') {
-  URL = URL + '/api';
-}
-
 const options = {
   autoConnect: false,
   auth: {
@@ -21,6 +15,7 @@ const options = {
   reconnection: true,
   reconnectionAttempts: Infinity,
   jsonp: false,
+  path: process.env.NODE_ENV === 'production' ? '/api/socket.io' : '/socket.io',
 };
 
 console.log('Connecting to socket server', URL);
