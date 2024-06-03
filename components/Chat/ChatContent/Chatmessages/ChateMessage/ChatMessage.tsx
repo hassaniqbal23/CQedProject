@@ -78,7 +78,7 @@ const ChatMessage: FC<Iprops> = ({
                 userFullName={userFullName}
                 userId={userId}
                 onChatDelete={() => {
-                  dispatchEvent(DELETE_CONVERSATION);
+                  dispatchEvent(DELETE_CONVERSATION, null);
                 }}
               />
             </ChatSidebarSheetDemo>
