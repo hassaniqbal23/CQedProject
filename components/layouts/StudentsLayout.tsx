@@ -100,9 +100,13 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
           />
           <Navbar
             horizontalLinks={[
-              { href: '/chat', type: 'icon', icon: <MessageCircle /> },
               {
-                href: '/notification',
+                href: '/students/chats',
+                type: 'icon',
+                icon: <MessageCircle />,
+              },
+              {
+                href: '/students/notifications',
                 type: 'icon',
                 icon: <Bell />,
               },
@@ -117,7 +121,7 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
                   },
                   {
                     title: 'Account',
-                    path: '/students/account',
+                    path: '/students/account-settings',
                     icon: <Settings size={15} />,
                   },
                   {
@@ -125,11 +129,11 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
                     path: '/students/cq-communities/your-communities',
                     icon: <UserCheck size={15} />,
                   },
-                  {
-                    title: 'Help ',
-                    path: '/students/help',
-                    icon: <CircleHelp size={15} />,
-                  },
+                  // {
+                  //   title: 'Help ',
+                  //   path: '/students/help',
+                  //   icon: <CircleHelp size={15} />,
+                  // },
                   {
                     title: 'Logout',
                     icon: <LogOut size={15} />,

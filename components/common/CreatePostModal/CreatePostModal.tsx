@@ -265,8 +265,9 @@ export const CreatePostModal = ({
           type="submit"
           className="rounded-full w-full sm:w-auto"
           size="md"
+          disabled={textAreaValue || uploadedImage ? false : true}
           loading={buttonActionLoading}
-          onClick={handleOkClick}
+          onClick={textAreaValue || uploadedImage ? handleOkClick : () => {}}
         >
           {buttonAction}
         </Button>
