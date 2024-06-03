@@ -18,7 +18,7 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
 }) => {
   return (
     <div className="">
-      <div className="px-4 flex items-center justify-between mb-4">
+      <div className="px-4 flex flex-wrap items-center justify-between mb-4">
         <div>
           <Typography variant="h2" weight="bold">
             {title}
@@ -31,7 +31,7 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
           <Button
             size={'md'}
             variant={'outline'}
-            className=" text-primary-900 bg-[#ECEDF8]  "
+            className=" text-primary-900 bg-[#ECEDF8] "
             onClick={buttonOnClick}
           >
             {buttonText}
@@ -70,20 +70,20 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
             </>
           }
           actions={() => (
-            <>
+            <div className="flex items-center flex-wrap">
               <Button
                 size={'md'}
-                className="bg-primary-500 text-white rounded-full "
+                className="bg-primary-500 text-white rounded-full px-24 mb-3 md:mb-0"
               >
                 Join
               </Button>
               <Button
                 size={'md'}
-                className="border border-solid border-primary-500 text-primary-500 rounded-full ml-4 bg-transparent"
+                className="border border-solid border-primary-500 text-primary-500  px-24 rounded-full ml-4 bg-transparent"
               >
                 Reject
               </Button>
-            </>
+            </div>
           )}
         />
         <Notification
