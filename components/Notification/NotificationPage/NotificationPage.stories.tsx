@@ -2,8 +2,9 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { NotificationPage } from './NotificationPage';
 const meta: Meta<typeof NotificationPage> = {
-  title: 'NotificationPage',
+  title: 'Pages/NotificationPage',
   component: NotificationPage,
+  tags: ['autodocs'],
 };
 export default meta;
 
