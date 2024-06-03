@@ -42,3 +42,11 @@ export interface ICommunityUsers {
   User: ICommunityUser;
   role?: IUSER_ROLE;
 }
+
+export interface ICommunityJoined extends ICommunity {
+  created_at: string;
+  id: number;
+  schoolId: number;
+  status: number;
+  updated_at: string;
+}

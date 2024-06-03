@@ -272,9 +272,8 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
                     value: penpal?.friend?.id,
                   })) || []
                 }
-                placeholder="Select language"
+                placeholder="Select friends "
               />
-
               <FormMessage className="mt-2" />
             </>
           )}

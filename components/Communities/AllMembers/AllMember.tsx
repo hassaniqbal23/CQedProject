@@ -23,7 +23,7 @@ export const AllMember = () => {
 
   const admin = useMemo(
     () =>
-      communityUser?.CommunityUsers.filter(
+      communityUser?.CommunityUsers?.filter(
         (item: ICommunityUsers) => item.role === IUSER_ROLE.ADMIN
       ),
     [communityUser]
@@ -31,7 +31,7 @@ export const AllMember = () => {
 
   const users = useMemo(
     () =>
-      communityUser?.CommunityUsers.filter(
+      communityUser?.CommunityUsers?.filter(
         (item: ICommunityUsers) => item.role === IUSER_ROLE.USER
       ),
     [communityUser]
