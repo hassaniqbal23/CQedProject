@@ -24,8 +24,6 @@ const ChatContent: FC = () => {
   const { realtimeConnectedUsersIds, realtimeTypingUsersIds } = useChatGuard();
   const { userInformation } = useGlobalState();
 
-  console.log(userInformation, 'userInformation');
-
   const queryClient = useQueryClient();
 
   const onSendMessage = (data: any) => {
