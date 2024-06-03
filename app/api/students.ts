@@ -10,3 +10,13 @@ export const getAllStudents: any = (
 ) => {
   return http.get(`/students/all-students?page=${page}&limit=${pageSize}`);
 };
+
+export const getStudentBySearch = (
+  page: string | number = 1,
+  pageSize: number | string = 10,
+  search: string
+) => {
+  return http.get(
+    `/students/search?page=${page}&limit=${pageSize}&name=${search}`
+  );
+};

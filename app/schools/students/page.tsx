@@ -14,7 +14,7 @@ import { Plus } from 'lucide-react';
 import Pagination from '@/components/common/pagination/pagination';
 import DataTable from '@/components/ui/table/table';
 import { InvitationType, getInvites } from '@/app/api/admin';
-import { getAllStudents } from '@/app/api/students';
+import { getAllStudents, getStudentBySearch } from '@/app/api/students';
 import StudentsTable from '@/components/common/StudentsTable';
 import { Typography } from '@/components/common/Typography/Typography';
 import { IoEllipsisVertical } from 'react-icons/io5';
@@ -25,6 +25,8 @@ function SchoolStudents() {
   const [totalCountInviteStudent, setTotalCountInviteStudent] =
     useState<number>(1);
 
+  const [searchStudent, setSearchStudent] = useState('');
+  console.log(searchStudent, 'searchStudent');
   const [paginationStudent, setPaginationStudent] = useState<{
     studentPage: number;
     studentLimit: number;
@@ -93,6 +95,36 @@ function SchoolStudents() {
     studentInvite({ emails, type: 'SCHOOL_STUDENT' });
   };
 
+  const { data: searchUsers, isLoading: isLoadingAutoComplete } = useQuery(
+    ['search-user-by-name', searchStudent, studentPage, studentLimit],
+    () => getStudentBySearch(studentPage, studentLimit, searchStudent),
+    {
+      enabled: !!searchStudent.trim(),
+      refetchOnWindowFocus: false,
+    }
+  );
+  let timeout: NodeJS.Timeout;
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+
+    // Clear previous timeout (if any)
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      setSearchStudent(inputValue);
+      setPaginationStudent((prev) => ({ ...prev, page: 1 }));
+    }, 2000);
+  };
+
+  const handlePageChange = (pageNumber: number) => {
+    setPaginationStudent((prev) => ({ ...prev, page: pageNumber }));
+  };
+
+  const combinedData = searchStudent.trim()
+    ? searchUsers?.data?.data || []
+    : data?.data?.data || [];
+
   return (
     <>
       <div>
@@ -139,12 +171,13 @@ function SchoolStudents() {
                     <Input
                       placeholder="Search student here..."
                       type="search"
-                      className=" max-w-sm  text-black rounded-full text"
+                      className="max-w-sm text-black rounded-full text"
+                      onChange={handleInputChange}
                     />
                   </div>
                   <StudentsTable
-                    data={data?.data?.data || []}
-                    loading={isLoadingAllStudents}
+                    data={combinedData}
+                    loading={isLoadingAllStudents || isLoadingAutoComplete}
                   />
                   <div className={'flex justify-end w-full mt-4'}>
                     <Pagination
@@ -239,12 +272,7 @@ function SchoolStudents() {
                         totalCountInviteStudent / studentInviteLimit
                       )}
                       pageSize={studentInviteLimit}
-                      onPageChange={(value: number) => {
-                        setPaginationInviteStudent((prev) => ({
-                          ...prev,
-                          studentInvitePage: value,
-                        }));
-                      }}
+                      onPageChange={handlePageChange}
                       totalCount={totalCountInviteStudent}
                       setPageSize={(pageSize) =>
                         setPaginationInviteStudent((prev) => ({
@@ -258,7 +286,7 @@ function SchoolStudents() {
               ),
             },
           ]}
-          onValueChange={() => {}}
+          onValueChange={() => { }}
         ></Tabs>
       </div>
 
