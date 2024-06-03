@@ -48,36 +48,3 @@ export const Seen: Story = {
     },
   },
 };
-
-// export const Unseen: Story = {
-//   render: (args) => <Notification {...args} />,
-//   args: {
-//     avatar: '/avatar2.svg',
-//     message: 'Your Invitation has been accepted',
-//     name: 'stmaryhighschool@',
-//     time: '30 Minutes ago',
-//     seen: false,
-//   },
-// };
-
-// export const JoinInvite: Story = {
-//   render: (args) => <Notification {...args} />,
-//   args: {
-//     avatar: '/avatar2.svg',
-//     message: 'Invite you to join their group',
-//   },
-// };
-
-// export const rejectInvite: Story = {
-//   render: (args) => <Notification {...args} />,
-//   args: {
-//     avatar: '/avatar2.svg',
-//     message: 'Invite you to join their group',
-//     boldName: 'ASArtist',
-//     name: 'stmaryhighschool@',
-//     time: '08:20 pm',
-//     seen: true,
-//     onClickJoin: () => {},
-//     onClickReject: () => {},
-//   },
-// };
