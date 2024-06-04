@@ -1,15 +1,10 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useQuery } from 'react-query';
-import axios from 'axios';
 import {
   ProfileBio,
-  ProfileCertificates,
   ProfileContactDetails,
-  ProfileEducation,
   ProfileHeader,
   ProfileSkills,
-  ProfileWorkHistory,
-  UniversityLink,
 } from '@/components/common/Profiles';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { useParams } from 'next/navigation';

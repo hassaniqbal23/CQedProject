@@ -1,6 +1,9 @@
 import http from '../utils/http';
 
-export const getSuggestions = () => http.get('/penpal/get-suggestions');
+export const getSuggestions = (page?: number, limit?: number) =>
+  http.get(
+    `/penpal/get-suggestions${page && limit ? `?page=${page}&limit=${limit}` : ``}`
+  );
 
 export const myPenpals = () => http.get('/penpal/my-penpals');
 
