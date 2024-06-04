@@ -84,6 +84,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                 className=""
                 width={38}
                 height={38}
+                unoptimized={true}
               />
               <Typography variant="h6" weight="medium" className="ml-2 text-sm">
                 {countryName}
