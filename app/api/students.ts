@@ -14,3 +14,13 @@ export const getAllStudents: any = (
 export const getStudentProfile = (id: number | string) =>{
   return http.get(`/students/${id}/get-student`)
 }
+
+export const getStudentBySearch = (
+  page: string | number = 1,
+  pageSize: number | string = 10,
+  search: string
+) => {
+  return http.get(
+    `/students/search?page=${page}&limit=${pageSize}&name=${search}`
+  );
+};

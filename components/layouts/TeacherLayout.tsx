@@ -60,6 +60,11 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
       path: '/teachers/students',
     },
     {
+      icon: '/assets/sidebaricons/penpalship.svg',
+      title: 'Penpalship',
+      path: '/teachers/penpalship',
+    },
+    {
       icon: '/assets/sidebaricons/CQCommunities.svg',
       title: 'CQ Communities',
       path: '/teachers/cq-communities',
@@ -70,6 +75,19 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
       path: '/teachers/cq-courses',
     },
   ];
+
+  const isChatPage = useMemo(() => {
+    const routes = [
+      '/students/chats',
+      '/teachers/chats',
+      '/students/chat',
+      '/teachers/chat',
+      '/schools/chat',
+      '/schools/chats',
+    ];
+    if (!pathname) return false;
+    return !!routes.find((route) => pathname.startsWith(route));
+  }, [pathname]);
 
   if (showLayout) {
     return (
@@ -137,7 +155,9 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
         </div>
       </div>
       <div className="block md:w-full pl-0 md:pl-8 pt-[60px] overflow-hidden bg-[#FDFDFD]">
-        <div className="mx-[10px] my-[30px] md:m-[40px]">
+        <div
+          className={`${isChatPage ? 'mt-[11px]' : 'mx-[10px] my-[30px] md:m-[40px]'} `}
+        >
           <div className="teacher-layout">{children}</div>
         </div>
       </div>

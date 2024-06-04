@@ -172,7 +172,15 @@ export const CreatePostModal = ({
         )}
       </div>
       {showUpload && !uploadedImage && (
-        <div className="mt-4 flex flex-col items-center justify-center h-[300px] bg-[#F8F9FB] border-2 border-[#d3d3d3]">
+        <div className="mt-4 flex flex-col items-center justify-center h-[300px] bg-[#F8F9FB] border-2 border-[#d3d3d3] relative">
+          <a
+            onClick={() => {
+              setShowUpload(false);
+            }}
+            className="absolute -top-2 -right-2  cursor-pointer bg-slate-200 w-8 h-8 rounded-full text-center block items-center text-[23px] leading-[1.3]"
+          >
+            &times;
+          </a>
           <div>
             <Image
               src={icon}
@@ -265,8 +273,9 @@ export const CreatePostModal = ({
           type="submit"
           className="rounded-full w-full sm:w-auto"
           size="md"
+          disabled={textAreaValue || uploadedImage ? false : true}
           loading={buttonActionLoading}
-          onClick={handleOkClick}
+          onClick={textAreaValue || uploadedImage ? handleOkClick : () => {}}
         >
           {buttonAction}
         </Button>

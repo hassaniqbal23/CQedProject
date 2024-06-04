@@ -1,3 +1,5 @@
+import { IUSER_ROLE } from './global';
+
 export interface ICommunityType {
   id: number;
   name: string;
@@ -29,4 +31,22 @@ export interface ICommunitiesData {
   status: boolean;
   data: ICommunity[];
   totalCount: number;
+}
+
+export interface ICommunityUser {
+  id: number;
+  name: string;
+  attachment: IProfilePicture;
+}
+export interface ICommunityUsers {
+  User: ICommunityUser;
+  role?: IUSER_ROLE;
+}
+
+export interface ICommunityJoined extends ICommunity {
+  created_at: string;
+  id: number;
+  schoolId: number;
+  status: number;
+  updated_at: string;
 }
