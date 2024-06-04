@@ -146,7 +146,7 @@ export const AiMatch = ({ module }: AiMatchProps) => {
     };
     setQueryParams(formattedValues as any);
     setUserInterests(formattedValues.interests);
-    form.reset();
+    // form.reset();
   };
 
   useEffect(() => {
