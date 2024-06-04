@@ -123,11 +123,11 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
                 href: '',
                 type: 'profile',
                 dropdownOption: [
-                  {
-                    title: 'Profile',
-                    path: '/teachers/profile',
-                    icon: <Bell size={15} />,
-                  },
+                  // {
+                  //   title: 'Profile',
+                  //   path: '/teachers/profile',
+                  //   icon: <Bell size={15} />,
+                  // },
                   {
                     title: 'Account',
                     path: '/teachers/account-settings',
