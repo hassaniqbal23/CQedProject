@@ -23,3 +23,61 @@ export interface IAttachments {
   updated_at: Date;
   upload_type?: string;
 }
+
+export interface IUser {
+  id: number;
+  name: string;
+  schoolId: number;
+  email: string;
+  status: number;
+  attachment?: IAttachments;
+}
+
+export interface IComment {
+  id: number;
+  communityPostId: number;
+  userId: number;
+  content: string;
+  status: number;
+  created_at: string;
+  updated_at: string;
+  User: {
+    id?: number;
+    name?: string;
+    attachment: IAttachments;
+  };
+}
+
+export interface ILike {
+  id: number;
+  communityPostId: number;
+  userId: number;
+  status: number;
+  created_at: string;
+  updated_at: string;
+  User: IUser;
+}
+
+export interface ICount {
+  comments: number;
+  likes: number;
+}
+
+export interface ICommunityPost {
+  id: number;
+  communityId: number;
+  userId: number;
+  content: string;
+  status: number;
+  created_at: string;
+  updated_at: string;
+  community_post?: {
+    id: number;
+    file_path?: string;
+    owner_id?: number;
+  };
+  _count: ICount;
+  User: IUser;
+  comments: IComment[];
+  likes: ILike[];
+}

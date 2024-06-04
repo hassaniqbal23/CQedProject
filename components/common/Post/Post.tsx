@@ -21,6 +21,8 @@ interface IProps {
   onLike?: () => void;
   onUnlike?: () => void;
   hasUserLiked?: boolean;
+  showLikeButton?: boolean;
+  showCommentButton?: boolean;
 }
 
 export const Post: FC<IProps> = ({
@@ -36,6 +38,8 @@ export const Post: FC<IProps> = ({
   handleComment,
   onLike,
   onUnlike,
+  showLikeButton = true,
+  showCommentButton = true,
 }: IProps) => {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikedCount] = useState(likes);
@@ -89,31 +93,36 @@ export const Post: FC<IProps> = ({
                 src={attachment}
                 width={1053}
                 height={342}
+                unoptimized={true}
               />
             </div>
           ) : null}
           <div className="flex justify-between mt-4 md:mt-6 items-center w-full">
             <div className="flex items-center text-gray-600 mr-4">
-              <div className="flex items-center mr-4" onClick={handleLike}>
-                <Heart
-                  className={`h-5 w-5 mr-1 cursor-pointer ${liked ? 'text-red-500 ' : ''}`}
-                />
-                <span>{likeCount}</span>
-              </div>
-              <div className="flex items-center mr-4" onClick={handleComment}>
-                <MessageCircle
-                  className={`h-5 w-5 mr-1 cursor-pointer ${comments ? 'text-blue-500' : ''}`}
-                />
-                <span>{comments}</span>
-              </div>
+              {showLikeButton && (
+                <div className="flex items-center mr-4" onClick={handleLike}>
+                  <Heart
+                    className={`h-5 w-5 mr-1 cursor-pointer ${liked ? 'text-red-500 ' : ''}`}
+                  />
+                  <span>{likeCount}</span>
+                </div>
+              )}
+              {showCommentButton && (
+                <div className="flex items-center mr-4" onClick={handleComment}>
+                  <MessageCircle
+                    className={`h-5 w-5 mr-1 cursor-pointer ${comments ? 'text-blue-500' : ''}`}
+                  />
+                  <span>{comments}</span>
+                </div>
+              )}
             </div>
-            <div
+            {/* <div
               className="flex justify-end items-center text-gray-600 cursor-pointer "
               onClick={handleShare}
             >
               <Send className="h-5 w-5 mr-1" />
               <span>Share</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

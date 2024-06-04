@@ -44,6 +44,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
             className="rounded-xl"
             width={70}
             height={70}
+            unoptimized={true}
           />
           <Button
             onClick={buttonOnClick}
@@ -83,6 +84,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                 className=""
                 width={38}
                 height={38}
+                unoptimized={true}
               />
               <Typography variant="h6" weight="medium" className="ml-2 text-sm">
                 {countryName}

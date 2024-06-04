@@ -9,6 +9,7 @@ import {
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { getProfiledata } from '@/app/api/teachers';
+import { TabsComponent } from '@/components/ui/tabs/tabs';
 
 export const TeacherProfileView = () => {
   const params = useParams();
@@ -64,7 +65,27 @@ export const TeacherProfileView = () => {
         location={data?.data.data.user.profile[0].state}
         profileIcon={data?.data.data.user.attachment.file_path}
       />
-
+      <div>
+        <TabsComponent
+          defaultValue="profile"
+          isSeparator={true}
+          tabs={[
+            {
+              label: 'Profile',
+              value: 'profile',
+            },
+            {
+              label: 'Feeds',
+              value: 'Feeds',
+            },
+            {
+              label: 'Photos',
+              value: 'Photos',
+            },
+          ]}
+          tabContent={[]}
+        />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
         <div className="sm:col-span-3 h-full">
           <ProfileBio title="About The Teacher" bio={bio} />

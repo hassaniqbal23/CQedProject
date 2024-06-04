@@ -29,6 +29,7 @@ export const Member: FC<IProps> = ({ fullName, username, imgUrl, loading }) => {
             className="mr-2 rounded-lg"
             height={75}
             width={75}
+            unoptimized={true}
           />
           <div>
             <Typography

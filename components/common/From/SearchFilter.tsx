@@ -164,7 +164,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
               id={community.id}
               members={community?._count?.CommunityUsers}
               key={index}
-              image="/avatar2.svg"
+              image={community?.profile_picture?.file_path || ''}
             />
           ))}
       </div>

@@ -90,12 +90,6 @@ export const StudentFeeds = ({ userName }: IStudentsFeed) => {
             {`${userName}’s`} Posting
           </Typography>
         </div>
-        <div className="col-span-1">
-          <SelectInput
-            defaultValue="today"
-            options={[{ label: 'Today', value: 'today' }]}
-          />
-        </div>
       </div>
       <div className="px-4 py-1">
         {data?.pages.flatMap((page, pageIndex) =>
@@ -111,6 +105,8 @@ export const StudentFeeds = ({ userName }: IStudentsFeed) => {
                     created_at={post.created_at}
                     description={post.content}
                     likes={post.likes}
+                    showLikeButton={false}
+                    showCommentButton={false}
                     userFullName={post.User.name}
                     userImage={post.User.attachment.file_path}
                     username={post.username}

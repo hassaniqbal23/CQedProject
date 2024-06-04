@@ -150,6 +150,7 @@ export const ConversationUserSheet: FC<IProps> = ({
               height={50}
               className="rounded-md cursor-pointer hover:shadow-sm"
               src={currentConversationAttachments[0].file_path}
+              unoptimized={true}
             />
           </div>
         )}
@@ -164,6 +165,7 @@ export const ConversationUserSheet: FC<IProps> = ({
                   height={50}
                   className="rounded-md cursor-pointer hover:shadow-sm"
                   src={attachment.file_path}
+                  unoptimized={true}
                 />
               );
             }

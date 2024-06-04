@@ -37,6 +37,7 @@ export const GroupCard: React.FC<IGroupCardProps> = ({
           height={190}
           width={298}
           className="w-full h-56"
+          unoptimized={true}
         />
         <h2 className="text-black text-lg font-semibold mt-4">{title}</h2>
         <h3 className="text-[#08090A] text-[12px] font-semibold mt-1">

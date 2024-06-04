@@ -151,7 +151,7 @@ export const getStudentsFeeds = (
   limit = 10,
   pageParam = number
 ) => {
-  return http.get(`/community/2/feeds?page=${1}&limit=10`);
+  return http.get(`/community/${id}/feeds?page=${1}&limit=10`);
 };
 
 export const getStudentCommunities = (id: number) => {
