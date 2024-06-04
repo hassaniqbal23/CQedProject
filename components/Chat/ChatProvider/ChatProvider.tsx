@@ -105,7 +105,7 @@ export const ChatProvider = ({ children }: any) => {
     );
 
   const { isLoading: inboxLoading, data: allConversationResponse } = useQuery(
-    ['get-all-conversations'],
+    ['get-all-conversations', selectedConversationId],
     () => getAllConversations(),
     {
       onSuccess(res) {
@@ -175,9 +175,6 @@ export const ChatProvider = ({ children }: any) => {
 
   useEffect(() => {
     const handleAddMessageToInbox = (message: any) => {
-      console.log('new message');
-      console.log(message);
-
       if (message.isNewMessage) {
         setInboxResponse([message.conversation, ...inboxResponse]);
         return;

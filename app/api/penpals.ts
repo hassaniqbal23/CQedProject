@@ -5,10 +5,23 @@ export const getSuggestions = (page?: number, limit?: number) =>
     `/penpal/get-suggestions${page && limit ? `?page=${page}&limit=${limit}` : ``}`
   );
 
-export const myPenpals = () => http.get('/penpal/my-penpals');
+export const myPenpals = (page?: number, limit?: number) =>
+  http.get(
+    `/penpal/my-penpals${page && limit ? `?page=${page}&limit=${limit}` : ``}`
+  );
 
 export const createPenpal = (payload: any) =>
   http.post('/penpal/create-penpal', payload);
 
 export const deletePenpal = (id: number) =>
   http.delete(`/penpal/${id}/delete-penpal`);
+
+export const searchNewPenpal = (id?: number, userName?: string) =>
+  http.get(
+    `/penpal/pal-search?username=${userName ? userName : ''}&id=${id ? id : ''}`
+  );
+
+export const searchPenpal = (name: string, page?: number, limit?: number) =>
+  http.get(
+    `/penpal/search?name=${name}&${page && limit ? `?page=${page}&limit=${limit}` : ``}`
+  );
