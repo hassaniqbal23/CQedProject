@@ -94,10 +94,10 @@ const ChatContent: FC = () => {
               }}
             />
           </div>
-          <div className="flex-grow overflow-y-auto">
+          <div className="flex-grow ">
             <ChatMessages user={currentConversation.user} />
           </div>
-          <div className="sticky bottom-0 bg-white py-3 px-6 border-t">
+          <div className="bottom-0 bg-white py-3 px-6 border-t">
             <ChatInput onSendMessage={onSendMessage} />
           </div>
         </div>

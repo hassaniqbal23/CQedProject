@@ -4,7 +4,11 @@ import React from 'react';
 import { TabsComponent } from '@/components/ui';
 import ProfileStudent from '@/components/common/StudentProfile/StudentProfile';
 import { ProfileHeader } from '@/components/common/Profiles';
-import { StudentFeeds, StudentGroups, DailyReport } from './(components)';
+import {
+  StudentFeeds,
+  StudentGroups,
+  DailyReport,
+} from '../../app/teachers/students/[id]/(components)';
 import { useParams, useRouter } from 'next/navigation';
 import { useMutation, useQuery } from 'react-query';
 import { startConversation } from '@/app/api/chat';

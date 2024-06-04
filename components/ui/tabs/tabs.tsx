@@ -75,6 +75,7 @@ interface TabsComponentProps {
   isSeparator?: boolean;
   variant?: 'primary' | 'secondary' | 'linked';
   onValueChange?: (value: string) => void;
+  className?: string;
 }
 
 const TabsComponent = ({
@@ -84,6 +85,7 @@ const TabsComponent = ({
   variant = 'primary',
   onValueChange,
   isSeparator,
+  className,
 }: TabsComponentProps) => {
   const isSecondary = variant === 'secondary';
   const secondaryClass = isSecondary ? 'px-4 py-2' : '';
@@ -95,7 +97,10 @@ const TabsComponent = ({
     >
       <TabsList
         variant={variant}
-        className={`flex w-full gap-2 overflow-x-auto whitespace-nowrap ${secondaryClass} items-start ${variant !== 'secondary' ? 'p-2' : ''}`}
+        className={cn(
+          `flex w-full gap-2 overflow-x-auto whitespace-nowrap ${secondaryClass} items-start ${variant !== 'secondary' ? 'p-2' : ''}`,
+          className
+        )}
       >
         {tabs.map((item: TabsProps, index) => (
           <TabsTrigger value={item.value} key={index} variant={variant}>

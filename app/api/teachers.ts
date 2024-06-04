@@ -19,3 +19,4 @@ export const updateProfile = (meta: { bio: string }) => {
 
 export const deleteTeacher = (id: number) =>
   http.delete(`/teachers/${id}/delete-teacher`);
+

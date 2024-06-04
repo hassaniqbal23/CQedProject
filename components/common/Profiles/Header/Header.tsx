@@ -2,14 +2,16 @@ import { Button } from '@/components/ui';
 import { MapPin, MessageSquareText } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
-
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
 interface HeaderProps {
   name?: string;
   role?: string;
+  isVisible?: boolean;
   location?: string;
   profileIcon?: string;
   subrole?: string;
   titleClass?: string;
+
   buttonProps?: {
     isVisbile?: boolean;
     onClick?: () => void;
@@ -34,13 +36,9 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   return (
     <div className="flex items-center  flex-wrap justify-between w-full bg-primary-500 rounded-2xl text-white p-3 md:p-6 shadow-md text-left md:text-left">
       <div className="flex items-center">
-        <Image
-          className="pb-2 md:pb-0"
-          src={profileIcon || ''}
-          alt="profile-image"
-          width={imageSize?.width || 135}
-          height={imageSize?.height || 135}
-        />
+        <Avatar className="h-14 w-18">
+          <AvatarImage src={profileIcon} alt="Profile Picture" />
+        </Avatar>
         <div className="ml-6">
           {name && <h1 className={`font-bold mb-2 ${titleClass}`}>{name}</h1>}
           {role && (
