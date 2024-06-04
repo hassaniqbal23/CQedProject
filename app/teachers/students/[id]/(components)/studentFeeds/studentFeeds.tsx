@@ -105,6 +105,8 @@ export const StudentFeeds = ({ userName }: IStudentsFeed) => {
                     created_at={post.created_at}
                     description={post.content}
                     likes={post.likes}
+                    showLikeButton={false}
+                    showCommentButton={false}
                     userFullName={post.User.name}
                     userImage={post.User.attachment.file_path}
                     username={post.username}
