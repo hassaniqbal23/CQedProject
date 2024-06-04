@@ -41,7 +41,7 @@ const formSchema = z.object({
 });
 
 export interface IPublishStoryViewDialogProps {
-  isFriend: boolean;
+  isFriend?: boolean;
   loading?: boolean;
   children?: React.ReactNode;
   open: boolean;
