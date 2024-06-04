@@ -21,7 +21,6 @@ interface IProps {
 }
 
 export const SchoolLayout: FC<IProps> = ({ children }) => {
-  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isTabletMini } = useResponsive();

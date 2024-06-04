@@ -145,9 +145,7 @@ export const CreatePostModal = ({
         {(uploadedImage || !showUpload) && (
           <Textarea
             placeholder="What would you like to share?"
-            className={`w-full ${
-              uploadedImage ? 'h-[100px]' : 'h-[300px]'
-            } bg-[#F8F9FB]`}
+            className={`w-full ${uploadedImage ? 'h-[100px]' : 'h-[300px]'} bg-[#F8F9FB]`}
             value={textAreaValue}
             onChange={(e) => setTextAreaValue(e.target.value)}
           />
@@ -160,6 +158,7 @@ export const CreatePostModal = ({
               width={100}
               height={100}
               className="w-full h-auto max-h-[300px] object-cover rounded-2xl"
+              unoptimized={true}
             />
             <X
               className="absolute top-2 right-2 bg-white/70 rounded-full p-1 cursor-pointer"
@@ -172,7 +171,15 @@ export const CreatePostModal = ({
         )}
       </div>
       {showUpload && !uploadedImage && (
-        <div className="mt-4 flex flex-col items-center justify-center h-[300px] bg-[#F8F9FB] border-2 border-[#d3d3d3]">
+        <div className="mt-4 flex flex-col items-center justify-center h-[300px] bg-[#F8F9FB] border-2 border-[#d3d3d3] relative">
+          <a
+            onClick={() => {
+              setShowUpload(false);
+            }}
+            className="absolute -top-2 -right-2  cursor-pointer bg-slate-200 w-8 h-8 rounded-full text-center block items-center text-[23px] leading-[1.3]"
+          >
+            &times;
+          </a>
           <div>
             <Image
               src={icon}
@@ -180,6 +187,7 @@ export const CreatePostModal = ({
               width={70}
               height={70}
               className="text-primary-500"
+              unoptimized={true}
             />
           </div>
           <Typography variant="h4" weight="semibold" className="mt-4">
@@ -225,9 +233,7 @@ export const CreatePostModal = ({
               className={`${showUpload || uploadedImage ? 'text-primary-500' : ''}`}
             />
             <span
-              className={`font-semibold ml-1 ${
-                showUpload || uploadedImage ? 'text-primary-500' : ''
-              }`}
+              className={`font-semibold ml-1 ${showUpload || uploadedImage ? 'text-primary-500' : ''}`}
             >
               Photo/Video
             </span>
@@ -245,9 +251,7 @@ export const CreatePostModal = ({
           >
             <Smile className={`${showEmojiPicker ? 'text-primary-500' : ''}`} />
             <span
-              className={`font-semibold ml-1 ${
-                showEmojiPicker ? 'text-primary-500' : ''
-              }`}
+              className={`font-semibold ml-1 ${showEmojiPicker ? 'text-primary-500' : ''}`}
             >
               Feeling
             </span>

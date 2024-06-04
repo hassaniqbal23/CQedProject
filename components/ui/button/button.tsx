@@ -44,6 +44,7 @@ const buttonVariants = cva(
         sm: 'p-[10px] rounded-[4px]  font-[500]',
         lg: 'rounded-md py-[14px] px-[10px] font-[600] text-[20px]',
         md: 'rounded-md py-3.5 px-[42px] font-semibold text-base',
+        xs: 'rounded-md py-2 px-3 font-semibold text-xs',
         icon: 'h-10 w-10',
       },
     },

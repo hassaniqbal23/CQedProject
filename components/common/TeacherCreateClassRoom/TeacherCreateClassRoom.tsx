@@ -20,6 +20,7 @@ const CreateClassRoom: FC<CreateClassRoomProps> = ({ title }) => {
             width={40}
             height={40}
             className="mb-3"
+            unoptimized={true}
           />
         </div>
         <div className="mb-2">

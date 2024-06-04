@@ -20,16 +20,17 @@ const PenpalshipStoriesCard: React.FC<PenpalshipStoriesCardProps> = ({
   onClickReadMore,
 }) => {
   const truncatedDescription =
-    (description && truncateText(description, 20)) || '';
+    (description && truncateText(description, 12)) || '';
   return (
-    <div className="flex flex-col p-3 bg-[#F7F7F7] rounded-lg shadow-sm min-h-96 max-h-96">
-      <div className="relative w-full h-56">
+    <div className="flex flex-col p-3 bg-[#F7F7F7] rounded-lg shadow-sm min-h-[400px] max-h-[400px]">
+      <div className="relative w-full h-52 min-h-52">
         <Image
           src={imgPath}
           alt={title ?? 'avatar'}
           layout="fill"
           objectFit="fill"
           className="rounded-xl object-contain"
+          unoptimized={true}
         />
       </div>
       <div className="flex flex-col flex-grow p-3 pb-1">

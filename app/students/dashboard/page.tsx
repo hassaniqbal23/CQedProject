@@ -87,7 +87,7 @@ export default function StudentDashboard() {
                   src: '/friends.svg',
                   width: 112,
                 }}
-                title="Penpalship"
+                title="Global Friends"
               />
             </div>
             <div className="col-span-1">

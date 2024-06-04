@@ -25,7 +25,7 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
 
   const handleSelectConversation = (conversationId: string | number) => {
     if (currentConversation && currentConversation.id === conversationId) {
-      setSelectedConversationId(currentConversation);
+      setSelectedConversationId(currentConversation.id);
       return;
     }
     joinConversation(conversationId);

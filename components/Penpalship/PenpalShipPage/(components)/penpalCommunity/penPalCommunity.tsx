@@ -1,3 +1,4 @@
+import React, { useState, useMemo } from 'react';
 import { createPenpal, getSuggestions } from '@/app/api/penpals';
 import {
   PenpalshipCard,
@@ -7,14 +8,7 @@ import {
 import { PublishStoryViewDialog } from '@/components/common/PublishStoryViewDialog/PublishStoryViewDialog';
 import { Typography } from '@/components/common/Typography/Typography';
 import { PublishStoryDialog } from '@/components/ui/PublishStoryDialog/PublishStoryDialog';
-import Loading from '@/components/ui/button/loading';
-import React, { useState } from 'react';
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useRouter } from 'next/navigation';
 import {
   UserCreateStories,
@@ -25,14 +19,28 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import { settings } from '@/app/utils/sliderSettings';
+import Pagination from '@/components/common/pagination/pagination';
+import SkeletonCard from '@/components/common/SkeletonCard/SkeletonCard';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 
 export const PenPalCommunity = () => {
   const queryCLient = useQueryClient();
+  const { myPenpals, userInformation } = useGlobalState();
   const route = useRouter();
   const [viewUserStoryId, setViewUserStoryId] = useState<number | null>(null);
   const [creatingPanpalId, setCreatingPanpalId] = useState<number | null>(null);
   const [openStoryModal, setOpenStroyModal] = useState<boolean>(false);
   const [viewStoryModal, setViewStoryModal] = useState<boolean>(false);
+  const [totalCount, setTotalCount] = useState<number>(1);
+  const [paginationPenpals, setPaginationPenpals] = useState<{
+    page: number;
+    limit: number;
+  }>({
+    page: 1,
+    limit: 10,
+  });
+
+  const { page, limit } = paginationPenpals;
 
   const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
     useMutation((id: number) => createPenpal({ receiverId: id }), {
@@ -40,8 +48,6 @@ export const PenPalCommunity = () => {
         queryCLient.refetchQueries('penpalSuggestions');
         queryCLient.refetchQueries('MyPenPals');
         setCreatingPanpalId(null);
-        setViewStoryModal(false);
-        setViewUserStoryId(null);
       },
       onError: (error) => {
         console.error(error, 'Error =====> log');
@@ -74,6 +80,23 @@ export const PenPalCommunity = () => {
     }
   );
 
+  const IsgetUserStoryUserMyFriend = useMemo(() => {
+    const getUserStoryUserId = getUserStory?.userId;
+    const MyId = userInformation.id;
+
+    if (getUserStoryUserId && MyId) {
+      const getPenpal = myPenpals.find((c) => {
+        return (
+          (c.senderId == MyId && c.receiverId == getUserStoryUserId) ||
+          (c.senderId == getUserStoryUserId && c.receiverId == MyId)
+        );
+      });
+
+      if (getPenpal) return true;
+    }
+    return false;
+  }, [getUserStory, myPenpals]);
+
   const { data: AllUserStories, isLoading: isGetingUserStories } = useQuery(
     ['getAllUserStories'],
     () =>
@@ -90,18 +113,20 @@ export const PenPalCommunity = () => {
   );
 
   const { data: suggestionsResponse, isLoading } = useQuery(
-    ['penpalSuggestions'],
-    () => getSuggestions(),
+    ['penpalSuggestions', page, limit],
+    () => getSuggestions(page, limit),
     {
       enabled: true,
-      onSuccess: (res) => {},
+      onSuccess: (res) => {
+        setTotalCount(res?.data?.total_count);
+      },
       onError(err) {
         console.log(err);
       },
     }
   );
 
-  const suggestions = React.useMemo(() => {
+  const suggestions = useMemo(() => {
     if (suggestionsResponse) {
       return suggestionsResponse?.data?.data?.map((c: any) => {
         return {
@@ -136,6 +161,7 @@ export const PenPalCommunity = () => {
 
           <PublishStoryViewDialog
             initialValue={getUserStory?.story}
+            isFriend={IsgetUserStoryUserMyFriend}
             open={viewStoryModal}
             loading={isCreatingPanpal}
             onClose={() => {
@@ -147,21 +173,21 @@ export const PenPalCommunity = () => {
               route.push('/students/chats');
             }}
             onAddFriend={() => {
-              if (typeof viewUserStoryId === 'number') {
-                sendPanpalRequest(viewUserStoryId);
+              if (getUserStory && typeof getUserStory?.userId === 'number') {
+                sendPanpalRequest(getUserStory?.userId);
               }
             }}
             userInfo={{
               username: getUserStory?.User?.name,
               userId: getUserStory?.userId,
               location: {
-                name: 'Pakistan',
-                flag: '/assets/flags/pakistanFlagLogo.svg',
+                name: getUserStory?.User?.profile?.[0]?.country,
+                flag: getUserStory?.User?.profile?.[0]?.country,
               },
               imageUrl: getUserStory?.User?.attachment?.file_path,
             }}
           />
-          {AllUserStories?.length === 0 ? (
+          {AllUserStories?.length === 0 && !isGetingUserStories ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 min-h-96">
               <PenpalshipPublishStoryCard
                 title={'Publish your story'}
@@ -169,6 +195,20 @@ export const PenPalCommunity = () => {
                   setOpenStroyModal(!openStoryModal);
                 }}
               />
+            </div>
+          ) : isGetingUserStories ? (
+            <div className="flex min-h-96">
+              <div className="w-96">
+                <PenpalshipPublishStoryCard
+                  title={'Publish your story'}
+                  iconOnClick={() => {
+                    setOpenStroyModal(!openStoryModal);
+                  }}
+                />
+              </div>
+              <div className="hidden lg:block ml-6 w-full">
+                <SkeletonCard noOfCards={3} />
+              </div>
             </div>
           ) : (
             <Slider {...settings}>
@@ -216,18 +256,35 @@ export const PenPalCommunity = () => {
               buttonLoading={creatingPanpalId === item.id && isCreatingPanpal}
               buttonText="Connect"
               description={JSON.parse(item?.profile?.meta || '{}').bio}
-              countryFlag={'/country-flags/svg/pk.svg'}
-              countryName={'Pakistan'}
-              studentAge={'8 years old'}
+              countryFlag={`/country-flags/svg/${item?.profile?.country.toLowerCase()}.svg`}
+              countryName={item?.profile?.country.toUpperCase()}
+              studentAge={item?.profile?.age}
             />
           ))}
         </div>
-        {suggestions.length === 0 && isLoading === false ? (
+        {suggestions?.length > 0 && !isLoading && (
+          <div className="flex justify-end py-5">
+            <Pagination
+              currentPage={page}
+              totalPages={Math.ceil(totalCount / limit)}
+              pageSize={limit}
+              onPageChange={(value: number) => {
+                setPaginationPenpals((prev) => ({
+                  ...prev,
+                  page: value,
+                }));
+              }}
+              totalCount={totalCount}
+              setPageSize={(pageSize) => console.log(pageSize, 'pagesize')}
+            />
+          </div>
+        )}
+        {suggestions?.length === 0 && isLoading === false ? (
           <div> No suggestions found, Please come back later </div>
         ) : (
           <></>
         )}
-        {isLoading ? <Loading></Loading> : <></>}
+        {isLoading ? <SkeletonCard /> : <></>}
       </div>
     </>
   );

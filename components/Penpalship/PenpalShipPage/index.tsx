@@ -20,7 +20,7 @@ const PenpalshipPage = ({ module }: PenpalshipPageProps) => {
     <div>
       <div className="flex flex-row items-center mb-4">
         <Typography variant={'h1'} weight={'bold'}>
-          Penpalship
+          Global Friends
         </Typography>
         <Info className="ml-2 text-[#5D5E68] stroke-slate-500" size={26} />
       </div>
