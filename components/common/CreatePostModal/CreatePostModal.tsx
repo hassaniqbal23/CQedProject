@@ -134,20 +134,9 @@ export const CreatePostModal = ({
       onOpenChange={() => setIsVisible(!isVisible)}
       header={
         <>
-          <div className="flex flex-col mb-0 ">
-            <Typography variant="h3" weight="semibold">
-              {title}
-            </Typography>
-            {showUpload && (
-              <Button
-                onClick={() => setShowUpload(false)}
-                variant={'outline'}
-                className="w-14 h-8 mt-2 "
-              >
-                Back
-              </Button>
-            )}
-          </div>
+          <Typography variant="h3" weight="semibold">
+            {title}
+          </Typography>
         </>
       }
       footer={false}
