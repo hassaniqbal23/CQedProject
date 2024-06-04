@@ -1,3 +1,4 @@
+import { IAttachment } from '@/app/gobalContext/types';
 import { IUSER_ROLE } from './global';
 
 export interface ICommunityType {
@@ -41,6 +42,13 @@ export interface ICommunityUser {
 export interface ICommunityUsers {
   User: ICommunityUser;
   role?: IUSER_ROLE;
+}
+export interface ICommunityMembers {
+  communityRole?: IUSER_ROLE;
+  email: string;
+  id: number;
+  name: string;
+  attachment: IAttachment;
 }
 
 export interface ICommunityJoined extends ICommunity {
