@@ -33,3 +33,11 @@ export interface IResetPassword {
   newPassword: string;
   code?: string;
 }
+
+export interface PenpalsSearchParams {
+  ageRange?: number[];
+  country?: string;
+  interests?: string[];
+  gender?: string;
+  languages?: string[];
+}

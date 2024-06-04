@@ -1,8 +1,12 @@
 import React, { FC } from 'react';
 import Image from 'next/image';
 import { Avatar, AvatarImage, Button } from '@/components/ui';
-import { MessageCircle } from 'lucide-react';
 import { Typography } from '@/components/common/Typography/Typography';
+import countriesData from '@/public/countries/countries.json';
+import { useChatGuard } from '@/components/Chat/ChatProvider/ChatGuard';
+interface Countries {
+  [key: string]: string;
+}
 
 interface Iprops {
   userImage: string;
@@ -14,8 +18,13 @@ interface Iprops {
   matches: string;
   caption?: string;
   userBio?: string;
+  connect?: string;
+  buttonOnClick?: () => void;
   screen?: 'mobile' | 'tablet' | 'desktop';
+  onViewProfile?: () => void;
 }
+
+const countries: Countries = countriesData;
 
 export const ProfileNotification: FC<Iprops> = ({
   userImage,
@@ -27,7 +36,10 @@ export const ProfileNotification: FC<Iprops> = ({
   matches,
   caption,
   userBio,
+  buttonOnClick,
+  connect,
   screen = 'desktop',
+  onViewProfile,
 }: Iprops) => {
   return (
     <>
@@ -93,7 +105,8 @@ export const ProfileNotification: FC<Iprops> = ({
                       height={15}
                       className="object-contain"
                     />
-                    <h1>{country}</h1>
+                    {}
+                    <h1>{countries[country] || 'Unknown Country'}</h1>
                   </div>
                   <div>
                     <Typography
@@ -109,12 +122,17 @@ export const ProfileNotification: FC<Iprops> = ({
             </div>
           </div>
           <div className="flex justify-center gap-4 mt-4 mb-1">
-            <Button size={'sm'} className="bg-primary-500 text-white">
-              <MessageCircle /> Say Hello
+            <Button
+              size={'md'}
+              className="bg-primary-500"
+              onClick={buttonOnClick}
+            >
+              {connect}
             </Button>
             <Button
               size={'sm'}
-              className="text-primary-500 bg-white border border-primary-500"
+              className="text-primary-500 bg-white border hover:bg-primary-50 border-primary-500"
+              onClick={onViewProfile}
             >
               View Profile
             </Button>
@@ -133,8 +151,12 @@ export const ProfileNotification: FC<Iprops> = ({
               </Typography>
             </div>
             <div className="">
-              <Button size={'sm'} className="bg-primary-500">
-                <MessageCircle /> Say Hello
+              <Button
+                size={'md'}
+                className="bg-primary-500"
+                onClick={buttonOnClick}
+              >
+                {connect}
               </Button>
             </div>
           </div>
@@ -182,7 +204,7 @@ export const ProfileNotification: FC<Iprops> = ({
                       height={15}
                       className="object-contain"
                     />
-                    <h1>{country}</h1>
+                    <h1>{countries[country] || 'Unknown Country'}</h1>
                   </div>
                   <div>
                     <Typography
@@ -200,7 +222,8 @@ export const ProfileNotification: FC<Iprops> = ({
           <div className="flex justify-end mt-4">
             <Button
               size={'sm'}
-              className="text-primary-500 bg-white border border-primary-500 md:mb-3 sm:mb-3"
+              className="text-primary-500 bg-white border border-primary-500 hover:bg-primary-50 md:mb-3 sm:mb-3"
+              onClick={onViewProfile}
             >
               View Profile
             </Button>
@@ -279,7 +302,7 @@ export const ProfileNotification: FC<Iprops> = ({
                     className="object-contain"
                   />
                   <Typography variant={'h5'} weight={'regular'}>
-                    {country}
+                    {countries[country] || 'Unknown Country'}
                   </Typography>
                 </div>
                 <div>
@@ -295,12 +318,17 @@ export const ProfileNotification: FC<Iprops> = ({
             </div>
           </div>
           <div className="lg:flex lg:flex-row lg:gap-4 lg:mt-8 sm:flex sm:flex-col sm:justify-between sm:gap-32 flex justify-center items-center  gap-4 ">
-            <Button size={'md'} className="bg-primary-500">
-              <MessageCircle /> Say Hello
+            <Button
+              size={'md'}
+              className="bg-primary-500"
+              onClick={buttonOnClick}
+            >
+              {connect}
             </Button>
             <Button
               size={'md'}
-              className="text-primary-500 bg-white border border-primary-500"
+              className="text-primary-500 bg-white border border-primary-500 hover:bg-primary-50"
+              onClick={onViewProfile}
             >
               View Profile
             </Button>

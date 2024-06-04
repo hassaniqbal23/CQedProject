@@ -8,7 +8,7 @@ interface IProps {
 }
 export const CircleIcon: FC<IProps> = ({ userImage }: IProps) => {
   return (
-    <div className=" flex items-center justify-center ">
+    <div className="bg-primary-50 p-4 pb-3 rounded-xl mt-3 flex items-center justify-center ">
       <div className="relative">
         <Image
           src="/circle.svg"

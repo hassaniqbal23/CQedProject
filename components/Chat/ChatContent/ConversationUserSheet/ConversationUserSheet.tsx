@@ -4,6 +4,7 @@ import { Typography } from '@/components/common/Typography/Typography';
 import { CircleAlert, PhoneOff, Trash2 } from 'lucide-react';
 import { useMutation, useQueryClient } from 'react-query';
 import { blockUser, unblockUser, reportUser } from '@/app/api/users';
+import { DeleteClassDialog } from '@/components/common/DeleteClassModal/DeleteClassModal';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
 import { ReportClassDialog } from '@/components/common/DeleteClassModal/ReportClassModal';
 import { useChatFeatures } from '../../ChatProvider/ChatProvider';

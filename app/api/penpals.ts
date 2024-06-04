@@ -16,6 +16,9 @@ export const createPenpal = (payload: any) =>
 export const deletePenpal = (id: number) =>
   http.delete(`/penpal/${id}/delete-penpal`);
 
+export const penpalsFilters = (payload: string) => {
+  return http.post(`/penpal/search`, payload);
+};
 export const searchNewPenpal = (id?: number, userName?: string) =>
   http.get(
     `/penpal/pal-search?username=${userName ? userName : ''}&id=${id ? id : ''}`
