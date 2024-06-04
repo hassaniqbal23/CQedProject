@@ -43,7 +43,6 @@ const SidebarItem: FC<IProps> = ({ item, pathname, isVerticalIcon }) => {
           >
             <Image
               src={item.icon}
-              unoptimized={true}
               width={30}
               height={30}
               alt={`displayed ${item.title}`}
