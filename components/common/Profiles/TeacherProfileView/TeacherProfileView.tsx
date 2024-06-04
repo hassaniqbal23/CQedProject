@@ -1,27 +1,69 @@
 import React from 'react';
-
+import { useQuery } from 'react-query';
 import {
   ProfileBio,
-  ProfileCertificates,
   ProfileContactDetails,
-  ProfileEducation,
   ProfileHeader,
   ProfileSkills,
-  ProfileWorkHistory,
-  UniversityLink,
 } from '@/components/common/Profiles';
 import { Mail, MapPin, Phone } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { getProfiledata } from '@/app/api/teachers';
 import { TabsComponent } from '@/components/ui/tabs/tabs';
 
 export const TeacherProfileView = () => {
+  const params = useParams();
+  const { data, error, isLoading } = useQuery(['profileData', params?.id], () =>
+    getProfiledata(params?.id as any)
+  );
+  console.log(data);
+
+  if (isLoading) return <div>Loading...</div>;
+
+  const bio = JSON.parse(data?.data.data.user.profile[0].meta).bio;
+
+  const interestsArray = data?.data.data.user.interests.split(',');
+  // console.log(interestsArray);
+
+  const contactDetails = () => {
+    const detailsData = data?.data.data.user.profile[0];
+    const details: any = [
+      {
+        title: 'Email',
+        content: data?.data.data.user.email,
+        icon: Mail,
+      },
+      {
+        title: 'Phone',
+        content: detailsData.phone_number,
+        icon: Phone,
+      },
+      {
+        title: 'Address',
+        content: `${detailsData.address}, ${detailsData.state}, ${detailsData.zip_code}`,
+        icon: MapPin,
+      },
+    ];
+
+    if (detailsData.skypeId) {
+      details.push({
+        title: 'Skype',
+        content: '@leonardcamp',
+        icon: MapPin,
+      });
+    }
+
+    return details;
+  };
+
   return (
     <div className="space-y-4">
       <ProfileHeader
-        name="Minerva McGonagall"
-        role="10th Grade Geometry at "
-        subrole=" Oak Ridge H.S."
-        location="Glenwood, CA"
-        profileIcon="/assets/profile/teacherprofile.svg"
+        name={data?.data.data.fullname}
+        role={'N/A'}
+        subrole={'N/A'}
+        location={data?.data.data.user.profile[0].state}
+        profileIcon={data?.data.data.user.attachment.file_path}
       />
       <div>
         <TabsComponent
@@ -45,56 +87,23 @@ export const TeacherProfileView = () => {
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
-        <div className="sm:col-span-3  h-full">
-          <ProfileBio
-            title="About The Teacher"
-            bio="Meet Aliyan, a spirited 12-year-old with a contagious enthusiasm for life. His bright blue eyes sparkle with curiosity, and his perpetually messy hair reflects the adventures he embarks on each day. Jake's world is filled with a kaleidoscope of interests, from building intricate LEGO masterpieces to exploring the fascinating realms of video games. With a backpack full of dreams and a heart full of laughter, Jake navigates the maze of adolescence with "
-          />
+        <div className="sm:col-span-3 h-full">
+          <ProfileBio title="About The Teacher" bio={bio} />
         </div>
         <div className="sm:col-span-2">
           <ProfileContactDetails
             title="Contact Details"
-            details={[
-              {
-                title: 'Email',
-                content: 'leonardcampbell@gmail.com',
-                icon: Mail,
-              },
-              {
-                title: 'Phone',
-                content: '03000000000',
-                icon: Phone,
-              },
-              {
-                title: 'Skype',
-                content: '@leonardcamp',
-                icon: MapPin,
-              },
-              {
-                title: 'Address',
-                content: '225 cherry street #24, New york,NY',
-                icon: MapPin,
-              },
-            ]}
+            details={contactDetails()}
           />
         </div>
       </div>
       <ProfileSkills
         title="Skills"
-        skills={[
-          'Communication',
-          'Adaptability',
-          'Classroom Management',
-          'Subject Matter Expertise',
-          'Adaptability',
-          'Classroom Management',
-          'Subject Matter Expertise',
-          'Adaptability',
-          'Classroom Management',
-          'Subject Matter Expertise',
-        ]}
+        skills={interestsArray.map((skill: string) => {
+          return skill;
+        })}
       />
-      <div className="sm:grid gap-4 grid-cols-5">
+      {/* <div className="sm:grid gap-4 grid-cols-5">
         <div className="w-full space-y-4 col-span-2">
           <UniversityLink />
           <ProfileCertificates
@@ -154,9 +163,9 @@ export const TeacherProfileView = () => {
             />
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
 
-TeacherProfileView.display = 'TeacherProfileView';
+export default TeacherProfileView;
