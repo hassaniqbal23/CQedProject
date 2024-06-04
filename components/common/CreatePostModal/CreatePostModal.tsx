@@ -145,9 +145,7 @@ export const CreatePostModal = ({
         {(uploadedImage || !showUpload) && (
           <Textarea
             placeholder="What would you like to share?"
-            className={`w-full ${
-              uploadedImage ? 'h-[100px]' : 'h-[300px]'
-            } bg-[#F8F9FB]`}
+            className={`w-full ${uploadedImage ? 'h-[100px]' : 'h-[300px]'} bg-[#F8F9FB]`}
             value={textAreaValue}
             onChange={(e) => setTextAreaValue(e.target.value)}
           />
@@ -235,9 +233,7 @@ export const CreatePostModal = ({
               className={`${showUpload || uploadedImage ? 'text-primary-500' : ''}`}
             />
             <span
-              className={`font-semibold ml-1 ${
-                showUpload || uploadedImage ? 'text-primary-500' : ''
-              }`}
+              className={`font-semibold ml-1 ${showUpload || uploadedImage ? 'text-primary-500' : ''}`}
             >
               Photo/Video
             </span>
@@ -255,9 +251,7 @@ export const CreatePostModal = ({
           >
             <Smile className={`${showEmojiPicker ? 'text-primary-500' : ''}`} />
             <span
-              className={`font-semibold ml-1 ${
-                showEmojiPicker ? 'text-primary-500' : ''
-              }`}
+              className={`font-semibold ml-1 ${showEmojiPicker ? 'text-primary-500' : ''}`}
             >
               Feeling
             </span>
