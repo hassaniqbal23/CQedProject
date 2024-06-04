@@ -1,7 +1,5 @@
 'use client';
-import { AutosizeTextarea } from '@/components/common/AutosizeTextarea';
 import {
-  Avatar,
   Button,
   Form,
   FormControl,
@@ -12,7 +10,7 @@ import {
 import React, { useState, useEffect, useRef, FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
-import { AvatarImage } from '@radix-ui/react-avatar';
+import Image from 'next/image';
 
 interface IProps {
   onValueChange?: (value: string) => void;
@@ -64,16 +62,17 @@ const CommentInput: FC<IProps> = ({ onValueChange, loading }) => {
         onSubmit={handleSubmit(onSubmit)}
         className="flex items-center w-full gap-1"
       >
-        <Avatar className="w-9 h-9 md:w-54 md:h-54 rounded-full bg-lightgray ">
-          <AvatarImage
-            className="m-0 w-full"
-            src={
-              userInformation?.attachment.file_path ||
-              '/assets/profile/profile.svg'
-            }
-            alt="Profile Picture"
-          />
-        </Avatar>
+        <Image
+          src={
+            userInformation?.attachment.file_path ||
+            '/assets/profile/profile.svg'
+          }
+          alt="Profile Picture"
+          className="w-9 h-9 md:w-54 md:h-54 rounded-full bg-lightgray"
+          height={54}
+          width={54}
+          unoptimized={true}
+        />
         <FormField
           name="content"
           render={({ field }) => {
