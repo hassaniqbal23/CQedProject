@@ -9,3 +9,7 @@ export const createPenpal = (payload: any) =>
 
 export const deletePenpal = (id: number) =>
   http.delete(`/penpal/${id}/delete-penpal`);
+
+export const searchPenpals = (payload: string) => {
+  return http.post(`/penpal/search`, payload);
+};

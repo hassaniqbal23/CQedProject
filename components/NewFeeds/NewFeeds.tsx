@@ -24,6 +24,7 @@ export const NewFeeds: React.FC<NewFeedsProps> = ({
             width={40}
             height={40}
             className="rounded-full h-10 w-10"
+            unoptimized={true}
           />
           <div className="w-7/12 md:w-full ">
             <Input
