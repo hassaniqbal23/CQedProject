@@ -14,7 +14,7 @@ import { Typography } from '@/components/common/Typography/Typography';
 import { useResponsive } from '@/lib/hooks';
 import { CircleIcon } from '@/components/AiMatches/Circle/Circle';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { createPenpal, deletePenpal, searchPenpals } from '@/app/api/penpals';
+import { createPenpal, deletePenpal, penpalsFilters } from '@/app/api/penpals';
 import { useRouter } from 'next/navigation';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
 
@@ -57,7 +57,7 @@ export const AiMatch = ({ module }: AiMatchProps) => {
 
   const { data, isLoading, isError } = useQuery(
     ['search-penpals'],
-    () => (queryParams ? searchPenpals(queryParams) : Promise.resolve(null)),
+    () => (queryParams ? penpalsFilters(queryParams) : Promise.resolve(null)),
     {
       enabled: !!queryParams,
       onSuccess: (res) => {
@@ -129,7 +129,6 @@ export const AiMatch = ({ module }: AiMatchProps) => {
     },
   });
 
-  console.log(isUserPanpals(data?.data.data.user.id), 'isUserPanpals');
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (values) => {
     const formattedValues = {
