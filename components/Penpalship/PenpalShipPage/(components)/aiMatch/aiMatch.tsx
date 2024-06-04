@@ -56,20 +56,35 @@ export const AiMatch = ({ module }: AiMatchProps) => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { data, isLoading, isError } = useQuery(
-    ['search-penpals'],
-    () => (queryParams ? penpalsFilters(queryParams) : Promise.resolve(null)),
-    {
-      enabled: !!queryParams,
-      onSuccess: (res) => {
-        queryClient.refetchQueries('penpalSuggestions');
-        queryClient.refetchQueries('MyPenPals');
-      },
-      onError: (err) => {
-        console.log(err);
-      },
-    }
-  );
+  // const { data, isLoading, isError } = useQuery(
+  //   ['search-penpals'],
+  //   () => (queryParams ? penpalsFilters(queryParams) : Promise.resolve(null)),
+  //   {
+  //     enabled: !!queryParams,
+  //     onSuccess: (res) => {
+  //       queryClient.refetchQueries('penpalSuggestions');
+  //       queryClient.refetchQueries('MyPenPals');
+  //       setQueryParams('');
+  //     },
+  //     onError: (err) => {
+  //       console.log(err);
+  //     },
+  //   }
+  // );
+
+  const {
+    mutate: SearchPenpal,
+    data,
+    isLoading,
+  } = useMutation(['search-penpals'], (data: any) => penpalsFilters(data), {
+    onSuccess(data) {
+      queryClient.refetchQueries('penpalSuggestions');
+      queryClient.refetchQueries('MyPenPals');
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   useEffect(() => {
     if (data?.data?.data?.user?.interests && userInterests.length > 0) {
@@ -144,7 +159,8 @@ export const AiMatch = ({ module }: AiMatchProps) => {
       interests: values.interests.map((interest) => interest.value),
       languages: values.language.map((language) => language.value),
     };
-    setQueryParams(formattedValues as any);
+    SearchPenpal(formattedValues);
+    // setQueryParams(formattedValues as any);
     setUserInterests(formattedValues.interests);
     // form.reset();
   };
