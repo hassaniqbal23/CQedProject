@@ -26,7 +26,6 @@ const SidebarItem: FC<IProps> = ({ item, pathname, isVerticalIcon }) => {
                 width={30}
                 height={30}
                 alt={`displayed ${item.title}`}
-                unoptimized={true}
               />
             </div>
             <div className="py-[6px]">
