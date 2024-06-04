@@ -18,12 +18,14 @@ interface CommunityMembersCardProps {
   members: IMembers[];
   totalMembers: number;
   loading?: boolean;
+  routeLink?: string;
 }
 
 export const CommunityMembersCard = ({
   totalMembers,
   members,
   loading,
+  routeLink,
 }: CommunityMembersCardProps) => {
   const params = useParams();
   return (
@@ -69,7 +71,7 @@ export const CommunityMembersCard = ({
       </div>
       {totalMembers > 20 && !loading && (
         <Link
-          href={`/students/cq-communities/${params?.id}/all-members`}
+          href={`/${routeLink}/cq-communities/${params?.id}/all-members`}
           className="flex items-end justify-start text-primary-500 font-semibold mt-4"
         >
           See All {totalMembers} Members

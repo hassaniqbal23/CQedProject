@@ -5,7 +5,7 @@ import Community from '@/components/Communities/CommunityPage';
 const CQCommunity = () => {
   return (
     <div>
-      <Community />
+      <Community module="students" />
     </div>
   );
 };

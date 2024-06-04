@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useQuery, useQueryClient } from 'react-query';
 import { getCommunity } from '@/app/api/communities';
@@ -6,7 +6,10 @@ import { CommunityDetailsCard } from '../CommunityDetailsCard/CommnunityDetailsC
 import { CommunityMembersCard } from '../CommunityMembersCard/CommunityMembersCard';
 import { Feeds } from '../Feeds/Feeds';
 
-const Community = () => {
+interface IProps {
+  module: 'teachers' | 'students';
+}
+const Community: FC<IProps> = ({ module }) => {
   const queryClient = useQueryClient();
   const params = useParams();
 
@@ -41,6 +44,7 @@ const Community = () => {
             loading={isLoading}
             members={communities?.data?.CommunityUsers}
             totalMembers={communities?.data?._count?.CommunityUsers}
+            routeLink={module}
           />
         </div>
       </div>

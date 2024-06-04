@@ -109,9 +109,13 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
           />
           <Navbar
             horizontalLinks={[
-              { href: '/chat', type: 'icon', icon: <MessageCircle /> },
               {
-                href: '/notification',
+                href: '/teachers/chats',
+                type: 'icon',
+                icon: <MessageCircle />,
+              },
+              {
+                href: '/teachers/notifications',
                 type: 'icon',
                 icon: <Bell />,
               },
@@ -126,7 +130,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
                   },
                   {
                     title: 'Account',
-                    path: '/teachers/account',
+                    path: '/teachers/account-settings',
                     icon: <Settings size={15} />,
                   },
                   {
