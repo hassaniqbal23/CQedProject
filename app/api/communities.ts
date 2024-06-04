@@ -146,13 +146,17 @@ export const unlikeCommunityPost = (id: number) => {
   return http.delete(`/community-post-like/${id}/delete-community-post-like`);
 };
 
-export const getStudentsFeeds = (id: number , limit = 10, pageParam = number) =>{
-  return http.get(`/community/2/feeds?page=${1}&limit=10`)
-}
+export const getStudentsFeeds = (
+  id: number,
+  limit = 10,
+  pageParam = number
+) => {
+  return http.get(`/community/2/feeds?page=${1}&limit=10`);
+};
 
-export const getStudentCommunities = (id: number) =>{
-  return http.get(`/teachers/${id}/communities`)
-}
+export const getStudentCommunities = (id: number) => {
+  return http.get(`/users/${id}/communities`);
+};
 
 export const getCommunityJoined = (page: number = 1, limit: number = 10) => {
   return http
@@ -164,4 +168,3 @@ export const getMyCommunity = (page: number = 1, limit: number = 10) => {
     .get(`/community/my-communities?page=${page}&limit=${limit}`)
     .then((res) => res.data);
 };
-

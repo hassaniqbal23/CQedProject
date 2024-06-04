@@ -11,9 +11,9 @@ export const getAllStudents: any = (
   return http.get(`/students/all-students?page=${page}&limit=${pageSize}`);
 };
 
-export const getStudentProfile = (id: number | string) =>{
-  return http.get(`/students/${id}/get-student`)
-}
+export const getStudentProfile = (id: number | string) => {
+  return http.get(`/students/${id}/get-student`);
+};
 
 export const getStudentBySearch = (
   page: string | number = 1,

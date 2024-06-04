@@ -5,6 +5,7 @@ import { Typography } from '@/components/common/Typography/Typography';
 import { SelectInput } from '@/components/ui';
 import { useParams } from 'next/navigation';
 import { getStudentsFeeds } from '@/app/api/communities';
+import Loading from '@/components/ui/button/loading';
 
 // Define the types based on your API response structure
 interface User {
@@ -31,7 +32,11 @@ interface ApiResponse {
   };
 }
 
-export const StudentFeeds = () => {
+interface IStudentsFeed {
+  userName: string;
+}
+
+export const StudentFeeds = ({ userName }: IStudentsFeed) => {
   const params = useParams();
 
   const {
@@ -65,8 +70,12 @@ export const StudentFeeds = () => {
     [isLoading, isFetchingNextPage, fetchNextPage, hasNextPage]
   );
 
-  if (isLoading && !data) {
-    return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[500px] w-full">
+        <Loading />
+      </div>
+    );
   }
 
   if (error) {
@@ -78,7 +87,7 @@ export const StudentFeeds = () => {
       <div className="grid grid-cols-9 px-8 py-3">
         <div className="col-span-8">
           <Typography variant="h3" weight="semibold">
-            Moin’s Posting
+            {`${userName}’s`} Posting
           </Typography>
         </div>
         <div className="col-span-1">

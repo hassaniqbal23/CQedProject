@@ -13,12 +13,13 @@ import { useParams, useRouter } from 'next/navigation';
 import { useMutation, useQuery } from 'react-query';
 import { startConversation } from '@/app/api/chat';
 import { getStudentProfile } from '@/app/api/students';
+import Loading from '../ui/button/loading';
+import { format, parseISO, differenceInYears } from 'date-fns';
 
-const Profile = () => {
+const StudentProfilePage = () => {
   const params = useParams();
   const router = useRouter();
 
-  // Fetch student profile data
   const {
     data: studentProfile,
     isLoading,
@@ -27,7 +28,7 @@ const Profile = () => {
     getStudentProfile(params?.id as any)
   );
 
-  console.log(studentProfile, 'studentProfile');
+  console.log(studentProfile);
 
   const { mutate } = useMutation(
     ['startConversation'],
@@ -40,7 +41,11 @@ const Profile = () => {
   );
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-[500px] w-full">
+        <Loading />
+      </div>
+    );
   }
 
   if (error) {
@@ -56,14 +61,22 @@ const Profile = () => {
             cardtitle="PERSONAL INFO"
             name={studentProfile?.data.data.fullname}
             email={studentProfile?.data.data.user.email}
-            age={studentProfile?.data.data.age}
-            birthDate={studentProfile?.data.data.birthDate}
+            age={differenceInYears(
+              new Date(),
+              parseISO(studentProfile?.data.data.dob)
+            )}
+            birthDate={format(
+              parseISO(studentProfile?.data.data.dob),
+              'dd/MM/yyyy'
+            )}
             gender={studentProfile?.data.data.gender}
             country={studentProfile?.data.data.country}
             address={studentProfile?.data.data.user.profile[0].address}
-            status={studentProfile?.data.data.status}
+            status={
+              studentProfile?.data.data.status === 1 ? 'Active' : 'Inactive'
+            }
             Schedule="View all schedules"
-            studentId={studentProfile?.data.data.schoolId}
+            studentId={`#${studentProfile?.data.data.id}`}
           />
         </div>
       ),
@@ -72,7 +85,9 @@ const Profile = () => {
       value: 'Feeds',
       content: (
         <div className="mt-3">
-          <StudentFeeds />
+          <StudentFeeds
+            userName={studentProfile?.data.data.user.profile[0].first_name}
+          />
         </div>
       ),
     },
@@ -80,17 +95,15 @@ const Profile = () => {
       value: 'Groups',
       content: (
         <div className="mt-3">
-          <StudentGroups />
+          <StudentGroups
+            userName={studentProfile?.data.data.user.profile[0].first_name}
+          />
         </div>
       ),
     },
     {
       value: 'DailyReport',
-      content: (
-        <div className="mt-3">
-          <DailyReport />
-        </div>
-      ),
+      content: <div className="mt-3">Coming Soon</div>,
     },
     {
       value: 'DailyCommunication',
@@ -115,11 +128,11 @@ const Profile = () => {
           onClick: () => {
             mutate({ id: params?.id as any });
           },
-          buttonText: 'Messages',
+          buttonText: 'Message',
         }}
         profileIcon={studentProfile?.data.data.user.attachment.file_path}
       />
-      <div className="">
+      <div className="mt-4">
         <TabsComponent
           className=" "
           defaultValue="profile"
@@ -153,4 +166,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default StudentProfilePage;

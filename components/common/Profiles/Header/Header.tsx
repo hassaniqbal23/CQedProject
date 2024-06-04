@@ -36,7 +36,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   return (
     <div className="flex items-center  flex-wrap justify-between w-full bg-primary-500 rounded-2xl text-white p-3 md:p-6 shadow-md text-left md:text-left">
       <div className="flex items-center">
-        <Avatar className="h-14 w-18">
+        <Avatar className="h-32 w-32">
           <AvatarImage src={profileIcon} alt="Profile Picture" />
         </Avatar>
         <div className="ml-6">
