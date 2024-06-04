@@ -62,7 +62,7 @@ function StudentsTable(props: StudentsTableProps) {
                 <div className="flex items-center gap-2 w-full">
                   <Link
                     className="hover:text-primary-500"
-                    href={`/schools/students/${data['id']}`}
+                    href={`/schools/students/${data.userId}`}
                   >
                     <div className="flex items-center gap-2 w-full">
                       <Image
@@ -73,6 +73,7 @@ function StudentsTable(props: StudentsTableProps) {
                         alt={data.user.attachment.file_path}
                         width={30}
                         height={30}
+                        className="rounded-full w-[30px] h-[30px] object-cover"
                       />
                       <h2>{data['fullname']}</h2>
                     </div>
