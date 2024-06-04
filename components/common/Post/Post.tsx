@@ -108,13 +108,13 @@ export const Post: FC<IProps> = ({
                 <span>{comments}</span>
               </div>
             </div>
-            <div
+            {/* <div
               className="flex justify-end items-center text-gray-600 cursor-pointer "
               onClick={handleShare}
             >
               <Send className="h-5 w-5 mr-1" />
               <span>Share</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
