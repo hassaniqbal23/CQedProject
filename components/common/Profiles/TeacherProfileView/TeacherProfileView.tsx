@@ -11,6 +11,7 @@ import {
   UniversityLink,
 } from '@/components/common/Profiles';
 import { Mail, MapPin, Phone } from 'lucide-react';
+import { TabsComponent } from '@/components/ui/tabs/tabs';
 
 export const TeacherProfileView = () => {
   return (
@@ -22,7 +23,27 @@ export const TeacherProfileView = () => {
         location="Glenwood, CA"
         profileIcon="/assets/profile/teacherprofile.svg"
       />
-
+      <div>
+        <TabsComponent
+          defaultValue="profile"
+          isSeparator={true}
+          tabs={[
+            {
+              label: 'Profile',
+              value: 'profile',
+            },
+            {
+              label: 'Feeds',
+              value: 'Feeds',
+            },
+            {
+              label: 'Photos',
+              value: 'Photos',
+            },
+          ]}
+          tabContent={[]}
+        />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
         <div className="sm:col-span-3  h-full">
           <ProfileBio
