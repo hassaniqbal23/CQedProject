@@ -168,3 +168,15 @@ export const getMyCommunity = (page: number = 1, limit: number = 10) => {
     .get(`/community/my-communities?page=${page}&limit=${limit}`)
     .then((res) => res.data);
 };
+export const getMyCommunityMembers = (
+  id: number,
+  page: number = 1,
+  limit: number = 10,
+  search: string = ''
+) => {
+  return http
+    .get(
+      `/community/${id}/community-members?page=${page}&limit=${limit}&search=${search}`
+    )
+    .then((res) => res.data);
+};
