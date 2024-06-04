@@ -167,7 +167,7 @@ export function SignIn(props: SignInProps) {
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="School Email"
+                        placeholder="Enter your Email"
                         {...field}
                         className="w-96"
                       />

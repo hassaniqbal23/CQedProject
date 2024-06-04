@@ -44,7 +44,7 @@ const Community = () => {
           />
         </div>
       </div>
-      <Feeds communityId={communities?.data.id} />
+      <Feeds communityId={communities?.data?.id} />
     </div>
   );
 };
