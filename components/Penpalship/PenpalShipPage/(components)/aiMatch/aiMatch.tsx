@@ -51,6 +51,7 @@ export const AiMatch = ({ module }: AiMatchProps) => {
   const [interestsScore, setInterestsScore] = useState<number | null>(null);
   const { myPenpals } = useGlobalState();
   const [userInterests, setUserInterests] = useState<string[]>([]);
+  const [showUserProfile, setShowUserProfile] = useState<boolean>(false);
   const [queryParams, setQueryParams] = useState<string>('');
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -102,17 +103,22 @@ export const AiMatch = ({ module }: AiMatchProps) => {
       },
     });
 
-  const isUserPanpals = (id: number | string): boolean => {
-    return myPenpals.some(
+  const isUserPanpals = (id: number | string): any => {
+    return myPenpals.find(
       (panpal: { receiverId: string | number; id: number | string }) =>
         panpal.receiverId === id
     );
   };
 
   const handleRemovePaypals = (id: number | string) => {
-    const isPanpal = isUserPanpals(id);
-    if (isPanpal) {
-      // removePanpalRequest && removePanpalRequest(Number(id));
+    const myPenpal = isUserPanpals(id);
+    if (myPenpal) {
+      removePanpalRequest && removePanpalRequest(Number(myPenpal.id));
+      setTimeout(() => {
+        // queryClient.removeQueries('search-penpals');
+        setShowUserProfile(false);
+        form.reset();
+      }, 1000);
     } else {
       sendPanpalRequest && sendPanpalRequest(Number(id));
     }
@@ -129,7 +135,6 @@ export const AiMatch = ({ module }: AiMatchProps) => {
     },
   });
 
-
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (values) => {
     const formattedValues = {
       country: values.country.value,
@@ -143,6 +148,12 @@ export const AiMatch = ({ module }: AiMatchProps) => {
     setUserInterests(formattedValues.interests);
     form.reset();
   };
+
+  useEffect(() => {
+    if (data?.data) {
+      setShowUserProfile(true);
+    }
+  }, [data?.data]);
 
   const interestsMatch =
     interestsScore !== null
@@ -259,7 +270,7 @@ export const AiMatch = ({ module }: AiMatchProps) => {
                         {...field}
                         variant="outlined"
                         size={'sm'}
-                        defaultValue={['genders']}
+                        defaultValue={[form.getValues('gender')]}
                         options={[
                           { label: 'Male', value: 'Male' },
                           { label: 'Female', value: 'Female' },
@@ -306,7 +317,7 @@ export const AiMatch = ({ module }: AiMatchProps) => {
             </form>
           </Form>
         </div>
-        {data?.data ? (
+        {showUserProfile ? (
           <div className={`order-1`}>
             <ProfileNotification
               heading="We have a match for you"
