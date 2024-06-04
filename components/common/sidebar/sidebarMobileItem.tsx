@@ -24,6 +24,7 @@ const SidebarMobileItem: FC<IProps> = ({ sidebarLinks, pathname }) => {
             width={40}
             height={40}
             alt={`displayed ${sidebarLinks.title}`}
+            unoptimized={true}
           />
         </div>
       </Link>

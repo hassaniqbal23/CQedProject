@@ -40,6 +40,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
           alt="profile-image"
           width={imageSize?.width || 135}
           height={imageSize?.height || 135}
+          unoptimized={true}
         />
         <div className="ml-6">
           {name && <h1 className={`font-bold mb-2 ${titleClass}`}>{name}</h1>}

@@ -105,6 +105,7 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
                           height={30}
                           width={30}
                           alt="view-Story"
+                          unoptimized={true}
                         />
                       )}
                       <Typography variant="h5" weight="regular">

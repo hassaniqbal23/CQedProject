@@ -89,6 +89,7 @@ export const Post: FC<IProps> = ({
                 src={attachment}
                 width={1053}
                 height={342}
+                unoptimized={true}
               />
             </div>
           ) : null}

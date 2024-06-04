@@ -26,6 +26,7 @@ const SidebarItem: FC<IProps> = ({ item, pathname, isVerticalIcon }) => {
                 width={30}
                 height={30}
                 alt={`displayed ${item.title}`}
+                unoptimized={true}
               />
             </div>
             <div className="py-[6px]">
@@ -43,6 +44,7 @@ const SidebarItem: FC<IProps> = ({ item, pathname, isVerticalIcon }) => {
           >
             <Image
               src={item.icon}
+              unoptimized={true}
               width={30}
               height={30}
               alt={`displayed ${item.title}`}

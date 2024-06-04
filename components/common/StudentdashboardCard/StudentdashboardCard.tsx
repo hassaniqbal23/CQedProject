@@ -48,6 +48,7 @@ export const StudentDashboardCard: React.FC<DashboardCardProps> = ({
           alt={`student-${title}`}
           height={icon.height}
           width={icon.width}
+          unoptimized={true}
         />
       </div>
     </div>

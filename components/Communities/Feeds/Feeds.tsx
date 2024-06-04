@@ -93,6 +93,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
           className="w-8 h-8 mr-2"
           width={32}
           height={32}
+          unoptimized={true}
         />
         Feed
       </Typography>

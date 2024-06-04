@@ -38,6 +38,7 @@ const ClassRoomHeader: FC<ClassRoomHeaderProps> = ({
             height={148}
             width={160}
             alt="header image"
+            unoptimized={true}
           ></Image>
         </div>
       )}

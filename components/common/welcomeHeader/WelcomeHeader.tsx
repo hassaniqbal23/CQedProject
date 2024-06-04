@@ -22,6 +22,7 @@ const WelcomeHeader: FC<WelcomeHeaderProps> = ({ title, description }) => {
             width={120}
             height={120}
             className="scale-x-[-1] z-[1]"
+            unoptimized={true}
           />
         </div>
       </div>
