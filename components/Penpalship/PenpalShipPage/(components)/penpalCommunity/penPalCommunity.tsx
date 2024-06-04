@@ -25,6 +25,9 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import { settings } from '@/app/utils/sliderSettings';
+import Pagination from '@/components/common/pagination/pagination';
+import { Skeleton } from '@/components/ui';
+import SkeletonCard from '@/components/common/SkeletonCard/SkeletonCard';
 
 export const PenPalCommunity = () => {
   const queryCLient = useQueryClient();
@@ -33,6 +36,16 @@ export const PenPalCommunity = () => {
   const [creatingPanpalId, setCreatingPanpalId] = useState<number | null>(null);
   const [openStoryModal, setOpenStroyModal] = useState<boolean>(false);
   const [viewStoryModal, setViewStoryModal] = useState<boolean>(false);
+  const [totalCount, setTotalCount] = useState<number>(1);
+  const [paginationPenpals, setPaginationPenpals] = useState<{
+    page: number;
+    limit: number;
+  }>({
+    page: 1,
+    limit: 10,
+  });
+
+  const { page, limit } = paginationPenpals;
 
   const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
     useMutation((id: number) => createPenpal({ receiverId: id }), {
@@ -90,11 +103,13 @@ export const PenPalCommunity = () => {
   );
 
   const { data: suggestionsResponse, isLoading } = useQuery(
-    ['penpalSuggestions'],
-    () => getSuggestions(),
+    ['penpalSuggestions', page, limit],
+    () => getSuggestions(page, limit),
     {
       enabled: true,
-      onSuccess: (res) => {},
+      onSuccess: (res) => {
+        setTotalCount(res?.data?.total_count);
+      },
       onError(err) {
         console.log(err);
       },
@@ -161,7 +176,7 @@ export const PenPalCommunity = () => {
               imageUrl: getUserStory?.User?.attachment?.file_path,
             }}
           />
-          {AllUserStories?.length === 0 ? (
+          {AllUserStories?.length === 0 && !isGetingUserStories ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 min-h-96">
               <PenpalshipPublishStoryCard
                 title={'Publish your story'}
@@ -169,6 +184,20 @@ export const PenPalCommunity = () => {
                   setOpenStroyModal(!openStoryModal);
                 }}
               />
+            </div>
+          ) : isGetingUserStories ? (
+            <div className="flex min-h-96">
+              <div className="w-96">
+                <PenpalshipPublishStoryCard
+                  title={'Publish your story'}
+                  iconOnClick={() => {
+                    setOpenStroyModal(!openStoryModal);
+                  }}
+                />
+              </div>
+              <div className="hidden lg:block ml-6 w-full">
+                <SkeletonCard noOfCards={3} />
+              </div>
             </div>
           ) : (
             <Slider {...settings}>
@@ -222,12 +251,29 @@ export const PenPalCommunity = () => {
             />
           ))}
         </div>
-        {suggestions.length === 0 && isLoading === false ? (
+        {suggestions?.length > 0 && !isLoading && (
+          <div className="flex justify-end py-5">
+            <Pagination
+              currentPage={page}
+              totalPages={Math.ceil(totalCount / limit)}
+              pageSize={limit}
+              onPageChange={(value: number) => {
+                setPaginationPenpals((prev) => ({
+                  ...prev,
+                  page: value,
+                }));
+              }}
+              totalCount={totalCount}
+              setPageSize={(pageSize) => console.log(pageSize, 'pagesize')}
+            />
+          </div>
+        )}
+        {suggestions?.length === 0 && isLoading === false ? (
           <div> No suggestions found, Please come back later </div>
         ) : (
           <></>
         )}
-        {isLoading ? <Loading></Loading> : <></>}
+        {isLoading ? <SkeletonCard /> : <></>}
       </div>
     </>
   );

@@ -1,16 +1,28 @@
+import React, { useState } from 'react';
 import { myPenpals } from '@/app/api/penpals';
 import { GlobalState, useGlobalState } from '@/app/gobalContext/globalContext';
 import { PenpalshipCard } from '@/components/Penpalship';
 import SearchBar from '@/components/common/SearchBar';
 import { Typography } from '@/components/common/Typography/Typography';
+import Pagination from '@/components/common/pagination/pagination';
 import Loading from '@/components/ui/button/loading';
-import React from 'react';
 import { useQuery } from 'react-query';
+import SkeletonCard from '@/components/common/SkeletonCard/SkeletonCard';
 
 export interface MyPenpalsProps {}
 
 export const MyPenpals: React.FC<MyPenpalsProps> = () => {
   const { userInformation } = useGlobalState();
+  const [totalCount, setTotalCount] = useState<number>(1);
+  const [paginationPenpals, setPaginationPenpals] = useState<{
+    page: number;
+    limit: number;
+  }>({
+    page: 1,
+    limit: 10,
+  });
+
+  const { page, limit } = paginationPenpals;
 
   const { data, isLoading, isError } = useQuery(
     ['getMyPenpals'],
@@ -69,18 +81,29 @@ export const MyPenpals: React.FC<MyPenpalsProps> = () => {
           />
         ))}
       </div>
+      {penpals?.length > 0 && !isLoading && (
+        <div className="flex justify-end py-5">
+          <Pagination
+            currentPage={page}
+            totalPages={Math.ceil(totalCount / limit)}
+            pageSize={limit}
+            onPageChange={(value: number) => {
+              setPaginationPenpals((prev) => ({
+                ...prev,
+                page: value,
+              }));
+            }}
+            totalCount={totalCount}
+            setPageSize={(pageSize) => console.log(pageSize, 'pagesize')}
+          />
+        </div>
+      )}
       {penpals.length === 0 && isLoading === false ? (
         <div> No suggestions found, Please come back later </div>
       ) : (
         <></>
       )}
-      {isLoading ? (
-        <div className="flex justify-center items-center py-10">
-          <Loading></Loading>
-        </div>
-      ) : (
-        <></>
-      )}
+      {isLoading ? <SkeletonCard /> : <></>}
     </div>
   );
 };
