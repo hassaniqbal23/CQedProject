@@ -66,8 +66,11 @@ function StudentsTable(props: StudentsTableProps) {
                   >
                     <div className="flex items-center gap-2 w-full">
                       <Image
-                        src={data.ImagePath || '/assets/profile/profile.svg'}
-                        alt={data.ImagePath}
+                        src={
+                          data.user.attachment.file_path ||
+                          '/assets/profile/profile.svg'
+                        }
+                        alt={data.user.attachment.file_path}
                         width={30}
                         height={30}
                       />

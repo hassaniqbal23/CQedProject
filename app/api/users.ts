@@ -17,3 +17,9 @@ export const getBlockedUsers = () => http.get(`/block/get-my-blocks`);
 
 export const unblockUser = (userId: number) =>
   http.delete(`/block/${userId}/delete-block`);
+
+export const reportUser = (userId: number, report: string) =>
+  http.post(`/report/report-user`, {
+    reporterId: userId,
+    report,
+  });

@@ -7,7 +7,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog/dialog';
-import React from 'react';
+import { on } from 'events';
+import React, { useState } from 'react';
 
 interface DeleteDialogProps {
   title?: string;
@@ -18,11 +19,12 @@ interface DeleteDialogProps {
   open?: boolean;
   onClose?: () => void;
   onOpen?: () => void;
-  onClickOk?: () => void;
+  onClickOk?: (reportText?: string) => void;
   okLoading?: boolean;
+  showTextarea?: boolean;
 }
 
-export const DeleteClassDialog = ({
+export const ReportClassDialog = ({
   title,
   description,
   ButtonTrigger,
@@ -34,6 +36,13 @@ export const DeleteClassDialog = ({
   onClose,
   okLoading,
 }: DeleteDialogProps) => {
+  const [reportText, setReportText] = useState('');
+
+  const handleClickOk = () => {
+    onClickOk && onClickOk(reportText);
+    setReportText('');
+  };
+
   return (
     <>
       <Dialog
@@ -60,17 +69,22 @@ export const DeleteClassDialog = ({
               </div>
             </DialogDescription>
           </DialogHeader>
+          <textarea
+            value={reportText}
+            onChange={(e) => setReportText(e.target.value)}
+            className="w-full p-2 mb-4 border rounded-md"
+            rows={4}
+            placeholder="Please provide details for reporting"
+          />
           <div>
-            {ButtonAction && (
-              <Button
-                variant={'destructive'}
-                loading={okLoading}
-                onClick={() => onClickOk && onClickOk()}
-                className="w-full rounded-lg"
-              >
-                {ButtonAction}
-              </Button>
-            )}
+            <Button
+              variant={'primary400'}
+              loading={okLoading}
+              onClick={handleClickOk}
+              className="w-full rounded-lg"
+            >
+              {ButtonAction}
+            </Button>
             <Button
               onClick={() => onClose && onClose()}
               className="w-full text-primary-500 bg-white "

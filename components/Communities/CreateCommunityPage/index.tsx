@@ -19,7 +19,7 @@ const CreateCommunityPage: React.FC<CreateCommunityPageProps> = ({
         name: string;
         description: string;
         community_type: number;
-      }) => createCommunity({ ...communityData, users: [] }),
+      }) => createCommunity(communityData),
       {
         onSuccess: (res) => {
           router.push(`/${module}/cq-communities/${res.data.data.id}`);

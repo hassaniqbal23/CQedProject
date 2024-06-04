@@ -19,12 +19,22 @@ export const CommunityCard = ({
   title,
   image,
   members,
-  description,
+  description = '',
   id,
   module = 'students',
   loading,
   button,
 }: CommunityCardProps) => {
+  const shortenedDescription = React.useMemo(() => {
+    if (typeof window !== 'undefined') {
+      let div = document.createElement('div');
+      div.innerHTML = description;
+      let text = div.textContent || '';
+      return text.length > 100 ? text.slice(0, 100) + ' ...' : text;
+    }
+    return '';
+  }, [description]);
+
   return (
     <>
       <div className="flex items-center p-4 rounded-md ">
@@ -66,7 +76,7 @@ export const CommunityCard = ({
                 weight="regular"
                 className="text-gray-700 pt-2"
               >
-                {description}
+                {shortenedDescription}
               </Typography>
             )}
           </div>

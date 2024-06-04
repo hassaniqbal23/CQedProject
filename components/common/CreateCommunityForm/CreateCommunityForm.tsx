@@ -25,6 +25,18 @@ const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false,
 });
 
+const tempalte = `<h3>About</h3>
+<p>Write about your community</p>
+<h3>Guidelines</h3>
+<ul>
+  <li>Start writing your guidelines</li>
+</ul>
+<h3>Rules</h3>
+<ul>
+  <li>Start writing your rules</li>
+</ul>
+`;
+
 const formSchema = z.object({
   name: z.string().min(3, {
     message: 'Name should be at least 3 characters',
@@ -59,12 +71,12 @@ let QuillChangeTimeout: any = null;
 const CreateCommunityForm = (props: CreateCommunityFormProps) => {
   const { myPenpals, isFetchingMyPenPals } = useGlobalState();
   const [attachment, setAttachment] = useState<any>();
-
+  const instance = React.useRef<any>();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
-      description: '',
+      description: ``,
       CommunityTypeId: 0,
     },
   });
@@ -117,7 +129,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
           name="attachmentId"
           render={({ field }) => (
             <>
-              <div className="mt-8 flex  items-center w-1/5">
+              <div className="mt-8 flex items-center w-1/5">
                 <ImageUpload
                   loading={isUploadingCommunity || isDeletingCommunity || false}
                   attachmentFilepath={attachment?.file_path}
@@ -152,26 +164,39 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
           )}
         />
 
-        <Typography
-          variant="h5"
-          children="Description"
-          weight="semibold"
-          className="mt-6 mb-2"
-        />
+        <div className="flex items-center py-3 mt-2">
+          <Typography
+            variant="h5"
+            children="Description"
+            weight="semibold"
+            className=""
+          />
+          <div className="ml-auto">
+            <Button
+              size="xs"
+              type="button"
+              onClick={() => {
+                form.setValue('description', tempalte);
+              }}
+            >
+              Load Template
+            </Button>
+          </div>
+        </div>
         <FormField
           control={form.control}
           name="description"
           render={({ field }) => (
             <>
-              <div>
+              <div className="">
                 <ReactQuill
                   theme="snow"
                   className="quill-container-height"
-                  scrollingContainer={'h-32'}
-                  placeholder="Write description."
+                  placeholder="Write your description, guidelines, and rules here... or you can load template"
                   onBlur={() => {
                     field.onBlur();
                   }}
+                  value={form.watch('description')}
                   onChange={(value) => {
                     clearTimeout(QuillChangeTimeout);
                     QuillChangeTimeout = setTimeout(() => {
@@ -221,7 +246,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
           variant="h5"
           children="Add Friends"
           weight="semibold"
-          className="my-2 mt-7"
+          className="my-2 mt-4"
         />
         <FormField
           control={form.control}
@@ -247,9 +272,8 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
                     value: penpal?.friend?.id,
                   })) || []
                 }
-                placeholder="Select language"
+                placeholder="Select friends "
               />
-
               <FormMessage className="mt-2" />
             </>
           )}

@@ -4,7 +4,6 @@ import { useQuery } from 'react-query';
 import { getCommunities } from '@/app/api/communities';
 import { CommunityCard } from '../CommunityCard2/CommunityCard2';
 import { Typography } from '@/components/common/Typography/Typography';
-import Loading from '@/components/ui/button/loading';
 import { Separator } from '@/components/ui';
 import Pagination from '@/components/common/pagination/pagination';
 
@@ -55,7 +54,7 @@ export const PopularCommunitiesList: React.FC<PopularCommunitiesList> = ({
       <Separator className="mt-5"></Separator>
 
       <div className="mt-2">
-        {isLoading ? (
+        {isLoading && (
           <>
             {[1, 2, 3, 4, 5].map((item, index) => {
               return (
@@ -72,39 +71,35 @@ export const PopularCommunitiesList: React.FC<PopularCommunitiesList> = ({
               );
             })}
           </>
-        ) : (
-          <>
-            {!isLoading &&
-              communities?.data &&
-              communities?.data.map((item: any, index: number) => (
-                <CommunityCard
-                  loading={isLoading}
-                  description={item.description}
-                  title={item.name}
-                  id={item.id}
-                  members={item._count.CommunityUsers}
-                  key={index}
-                  image={item?.profile_picture.file_path}
-                  module={module}
-                />
-              ))}
-            <div className="flex justify-end py-5">
-              <Pagination
-                currentPage={page}
-                totalPages={Math.ceil(totalCount / limit)}
-                pageSize={limit}
-                onPageChange={(value: number) => {
-                  setPaginationsCommunities((prev) => ({
-                    ...prev,
-                    page: value,
-                  }));
-                }}
-                totalCount={totalCount}
-                setPageSize={(pageSize) => console.log(pageSize, 'pagesize')}
-              />
-            </div>
-          </>
         )}
+        {!isLoading &&
+          communities?.data &&
+          communities?.data.map((item: any, index: number) => (
+            <CommunityCard
+              loading={isLoading}
+              description={item.description}
+              title={item.name}
+              id={item.id}
+              members={item._count.CommunityUsers}
+              key={index}
+              image={item?.profile_picture.file_path}
+              module={module}
+            />
+          ))}
+        <div className="flex justify-end py-5">
+          <Pagination
+            currentPage={page}
+            totalPages={Math.ceil(totalCount / limit)}
+            pageSize={limit}
+            onPageChange={(value: number) => {
+              setPaginationsCommunities((prev) => ({
+                ...prev,
+                page: value,
+              }));
+            }}
+            totalCount={totalCount}
+          />
+        </div>
       </div>
     </div>
   );

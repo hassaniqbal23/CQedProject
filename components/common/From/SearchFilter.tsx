@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Dropdown, Input, SelectInput } from '@/components/ui';
 import { SelectLanguage } from '@/components/ui/select-v2/select-v2-components';
 import GroupHorizontal from '@/components/ui/GroupHorizontal/GroupHorizontal';
@@ -10,6 +10,7 @@ import { Typography } from '../Typography/Typography';
 import { CommunityCard } from '@/components/Communities/CommunityCard2/CommunityCard2';
 import { Scrollbar } from 'react-scrollbars-custom';
 import { useParams, useSearchParams } from 'next/navigation';
+import { ICommunity } from '@/types/community';
 
 export interface SearchFilterProps {
   buttonText: string;
@@ -51,6 +52,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
   const [selectedCategory, setSelectedCategory] = React.useState<
     number | null
   >();
+  const [languageSelect, setLanguageSelect] = useState(0);
   const handleButtonClick = () => {
     if (onRequestBack) {
       onRequestBack();
@@ -120,17 +122,16 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
         </div>
         <div className="w-40">
           <SelectInput
+            defaultValue={`${languageSelect}`}
             options={[
-              { label: 'English', value: 'english' },
-              { label: 'Urdu', value: 'Urdu' },
-              { label: 'Portuges', value: 'portuges' },
-              { label: 'Hindi', value: 'hindi' },
+              { label: 'English', value: '1' },
+              { label: 'Urdu', value: '2' },
+              { label: 'Portuges', value: '3' },
+              { label: 'Hindi', value: '4' },
             ]}
-            SelectTriggerClass={
-              'bg-white border border-gray-400 rounded-full text-gray-500'
-            }
+            SelectTriggerClass={'bg-white rounded-md text-gray-500'}
             onSelect={(value) => {
-              console.log(value, 'checking');
+              setLanguageSelect(Number(value));
             }}
             placeholder="Language"
           />
@@ -156,12 +157,12 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
       </Typography>
       <div className="flex flex-col">
         {results &&
-          results.map((community, index) => (
+          results.map((community: ICommunity, index: number) => (
             <CommunityCard
               description={community.description}
               title={community.name}
               id={community.id}
-              members={1000}
+              members={community?._count?.CommunityUsers}
               key={index}
               image="/avatar2.svg"
             />

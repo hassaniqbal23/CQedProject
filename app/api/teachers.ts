@@ -22,4 +22,14 @@ export const deleteTeacher = (id: number) =>
 
 export const getProfiledata = async (id: number | string) => {
   return http.get(`teachers/${id}/get-teacher`);
+}
+
+export const getTeachersBySearch = (
+  page: string | number = 1,
+  pageSize: number | string = 10,
+  search: string
+) => {
+  return http.get(
+    `/teachers/search?page=${page}&limit=${pageSize}&name=${search}`
+  );
 };

@@ -7,7 +7,7 @@ import { Invite } from '@/app/api/invitations';
 import { SendEmail } from '@/components/index';
 import React, { useState } from 'react';
 import TeachersTable from '@/components/common/TeachersTable/TeachersTable';
-import { getInvitedTeachers } from '@/app/api/teachers';
+import { getInvitedTeachers, getTeachersBySearch } from '@/app/api/teachers';
 import { Typography } from '@/components/common/Typography/Typography';
 import Pagination from '@/components/common/pagination/pagination';
 
@@ -21,6 +21,8 @@ export default function SchoolTeachers() {
     teacherInvitePage: 1,
     teacherInviteLimit: 10,
   });
+  const [searchTeacher, setSearchTeacher] = useState('');
+
   const { teacherInviteLimit, teacherInvitePage } = paginationTeacherInvite;
 
   const { mutate: teacherInvite, isLoading } = useMutation(
@@ -45,10 +47,42 @@ export default function SchoolTeachers() {
         },
       }
     );
+  const { data: searchTeachers, isLoading: isLoadingSearchTeachers } = useQuery(
+    [
+      'search-teacher-by-name',
+      searchTeacher,
+      teacherInvitePage,
+      teacherInviteLimit,
+    ],
+    () =>
+      getTeachersBySearch(teacherInvitePage, teacherInviteLimit, searchTeacher),
+    {
+      enabled: !!searchTeacher.trim(),
+      refetchOnWindowFocus: false,
+    }
+  );
 
   const onSubmit = ({ emails }: { emails: string }) => {
     teacherInvite({ emails, type: 'SCHOOL_TEACHER' });
   };
+
+  let timeout: NodeJS.Timeout;
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+
+    // Clear previous timeout (if any)
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      setSearchTeacher(inputValue);
+      setPaginationTeacherInvite((prev) => ({ ...prev, teacherInvitePage: 1 }));
+    }, 2000);
+  };
+
+  const combinedTeachersData = searchTeacher.trim()
+    ? searchTeachers?.data?.data || []
+    : invitedTeachers?.data?.data || [];
 
   return (
     <>
@@ -66,6 +100,7 @@ export default function SchoolTeachers() {
             rounded={true}
             placeholder={'Search teachers here...'}
             type={'search'}
+            onChange={handleInputChange}
           />
           <div>
             <Button
@@ -82,9 +117,9 @@ export default function SchoolTeachers() {
       </div>
       <div className={'mt-6'}>
         <TeachersTable
-          data={invitedTeachers?.data?.data || []}
+          data={combinedTeachersData}
           noDataMessage={'No Teachers'}
-          loading={isFetchingInvitedSchools}
+          loading={isFetchingInvitedSchools || isLoadingSearchTeachers}
         />
         <div className={'flex justify-end w-full mt-4'}>
           <Pagination
