@@ -11,48 +11,40 @@ import 'react-image-lightbox/style.css';
 import { ConversationUserSheet } from '../../ConversationUserSheet/ConversationUserSheet';
 import { DELETE_CONVERSATION } from '@/components/Chat/EventBus/constants';
 import { useEventBus } from '@/components/Chat/EventBus/EventBus';
+import { ChatUser, IAttachment, IMessage } from '@/app/gobalContext/types';
 
 interface Iprops {
-  date?: string;
   userImage: string;
-  content?: string;
   isCurrentUser?: boolean;
   onDeleteMessage?: (id: string | number) => void;
-  id: string | number;
   showProfile?: boolean;
   showDate?: boolean;
   hasDeleted?: boolean;
-  userFullName?: string;
-  userId?: number;
-  attachments?: IAttachment[];
-}
-
-interface IAttachment {
-  id: number;
-  file_path: string;
+  user?: ChatUser;
+  messages?: IMessage;
 }
 
 dayjs.extend(relativeTime);
 
 const ChatMessage: FC<Iprops> = ({
-  date,
   userImage,
-  content,
   isCurrentUser,
-  id,
   onDeleteMessage,
   showDate,
   showProfile,
   hasDeleted,
-  attachments = [],
-  userFullName,
-  userId,
+  user,
+  messages,
 }: Iprops) => {
   const { dispatchEvent } = useEventBus();
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
-  if (hasDeleted) return null;
 
+  const attachments = messages?.attachments ?? [];
+  const messageContent = messages?.message ?? '';
+  const createdAt = messages?.created_at ?? '';
+
+  if (hasDeleted) return null;
   return (
     <div
       className={`flex flex-col gap-1 mb-5 ${isCurrentUser ? 'items-end' : 'items-start'}`}
@@ -74,9 +66,7 @@ const ChatMessage: FC<Iprops> = ({
               }
             >
               <ConversationUserSheet
-                userImage={userImage}
-                userFullName={userFullName}
-                userId={userId}
+                user={user}
                 onChatDelete={() => {
                   dispatchEvent(DELETE_CONVERSATION, null);
                 }}
@@ -90,9 +80,9 @@ const ChatMessage: FC<Iprops> = ({
           className={`flex items-center ${isCurrentUser ? 'flex-row-reverse' : 'flex-row'}`}
         >
           <Typography
-            variant="h4"
+            variant="p"
             weight="medium"
-            className={`font-medium font-montserrat max-w-lg rounded-sm text-14 leading-26 p-3 ${isCurrentUser ? 'text-[#4E5D78] bg-gray-50' : 'text-white bg-[#377DFF]'}`}
+            className={`font-medium font-montserrat max-w-lg rounded-sm text-14 leading-26 p-3 ${isCurrentUser ? 'text-[#4E5D78] bg-gray-100' : 'text-white bg-primary-500'}`}
           >
             {Array.isArray(attachments) && attachments.length > 0 && (
               <div
@@ -100,11 +90,12 @@ const ChatMessage: FC<Iprops> = ({
               >
                 {attachments.map((item: IAttachment, index: number) => (
                   <Image
+                    key={index}
                     src={item.file_path}
                     alt={item.file_path}
                     width={100}
                     height={100}
-                    className="w-28 h-28 object-cover rounded-md cursor-pointer "
+                    className="w-28 h-28 object-cover rounded-md cursor-pointer"
                     onClick={() => {
                       setPhotoIndex(index);
                       setIsOpen(true);
@@ -122,14 +113,14 @@ const ChatMessage: FC<Iprops> = ({
                     prevSrc={
                       attachments[
                         (photoIndex + attachments.length - 1) %
-                          attachments.length
+                        attachments.length
                       ].file_path
                     }
                     onCloseRequest={() => setIsOpen(false)}
                     onMovePrevRequest={() =>
                       setPhotoIndex(
                         (photoIndex + attachments.length - 1) %
-                          attachments.length
+                        attachments.length
                       )
                     }
                     onMoveNextRequest={() =>
@@ -139,21 +130,23 @@ const ChatMessage: FC<Iprops> = ({
                 )}
               </div>
             )}
-            <span>{content}</span>
+            <span>{messageContent}</span>
           </Typography>
           {isCurrentUser && (
             <div className="relative">
               <Dropdown
                 trigger={
-                  <div>
-                    <Ellipsis />
+                  <div className="mr-2 cursor-pointer">
+                    <Ellipsis size={16} />
                   </div>
                 }
                 options={[
                   {
                     content: (
                       <div
-                        onClick={() => onDeleteMessage && onDeleteMessage(id)}
+                        onClick={() =>
+                          onDeleteMessage && onDeleteMessage(messages?.id ?? '')
+                        }
                       >
                         Delete Message
                       </div>
@@ -170,7 +163,7 @@ const ChatMessage: FC<Iprops> = ({
         weight="medium"
         className={isCurrentUser ? 'mr-16' : 'ml-16'}
       >
-        {showDate && dayjs(date).fromNow()}
+        {showDate && dayjs(createdAt).fromNow()}
       </Typography>
     </div>
   );

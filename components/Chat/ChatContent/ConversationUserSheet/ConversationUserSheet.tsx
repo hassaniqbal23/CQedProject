@@ -9,20 +9,14 @@ import { useGlobalState } from '@/app/gobalContext/globalContext';
 import { ReportClassDialog } from '@/components/common/DeleteClassModal/ReportClassModal';
 import { useChatFeatures } from '../../ChatProvider/ChatProvider';
 import Image from 'next/image';
+import { ChatUser } from '@/app/gobalContext/types';
 
 interface IProps {
-  userImage?: string;
-  userFullName?: string;
-  userId?: number | string;
+  user: ChatUser | undefined;
   onChatDelete?: () => void;
 }
 
-export const ConversationUserSheet: FC<IProps> = ({
-  userImage,
-  userFullName,
-  userId,
-  onChatDelete,
-}) => {
+export const ConversationUserSheet: FC<IProps> = ({ user, onChatDelete }) => {
   const { usersIBlocked } = useGlobalState();
   const queryClient = useQueryClient();
   const { currentConversationAttachments } = useChatFeatures();
@@ -79,11 +73,13 @@ export const ConversationUserSheet: FC<IProps> = ({
   };
 
   const handleBlockUnblock = () => {
-    const blockedUserId = getBlockedUserId(Number(userId));
-    if (blockedUserId) {
-      unblockUserMutation(blockedUserId);
-    } else {
-      blockUserMutation(Number(userId));
+    if (user) {
+      const blockedUserId = getBlockedUserId(Number(user.user.id));
+      if (blockedUserId) {
+        unblockUserMutation(blockedUserId);
+      } else {
+        blockUserMutation(Number(user.user.id));
+      }
     }
   };
 
@@ -97,7 +93,7 @@ export const ConversationUserSheet: FC<IProps> = ({
     },
     {
       icon: <PhoneOff size={18} />,
-      label: isUserBlocked(Number(userId)) ? 'Unblock' : 'Block',
+      label: isUserBlocked(Number(user?.user?.id)) ? 'Unblock' : 'Block',
       command: handleBlockUnblock,
     },
     {
@@ -113,7 +109,7 @@ export const ConversationUserSheet: FC<IProps> = ({
 
   const handleReport = (reportText?: string) => {
     if (reportText) {
-      reportUserMutation({ userId: Number(userId), reportText });
+      reportUserMutation({ userId: Number(user?.user?.id), reportText });
     }
     setReport(false);
   };
@@ -122,14 +118,19 @@ export const ConversationUserSheet: FC<IProps> = ({
     <div className="p-6 h-full overflow-y-auto">
       <div className="flex flex-col items-center">
         <Avatar className="w-[150px] h-[150px] rounded-full bg-lightgray">
-          <AvatarImage src={userImage} alt="Profile Picture" />
+          <AvatarImage
+            src={
+              user?.user?.attachment?.file_path || '/assets/profile/profile.svg'
+            }
+            alt="Profile Picture"
+          />
         </Avatar>
         <Typography
           variant="p"
           weight="medium"
           className="text-[#131517] text-[20px] font-semibold text-center mt-4"
         >
-          {userFullName}
+          {user?.user?.name}
         </Typography>
         <Button className="rounded-full bg-[#2183C4] text-[#F5FBFF] text-sm w-32 h-10 mt-3">
           View Profile

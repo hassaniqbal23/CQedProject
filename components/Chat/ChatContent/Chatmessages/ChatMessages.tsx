@@ -6,18 +6,10 @@ import { useMutation } from 'react-query';
 import { deleteMessage } from '@/app/api/chat';
 import dayjs from 'dayjs';
 import { format, isSameDay, parseISO, differenceInMinutes } from 'date-fns';
-
-interface Message {
-  id: string | number;
-  conversationId: string | number;
-  attachment: any;
-  message: string;
-  receiverId: number | string;
-  senderId: number | string;
-}
+import { ChatUser } from '@/app/gobalContext/types';
 
 interface IChatMessages {
-  user: any;
+  user: ChatUser;
 }
 
 const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
@@ -83,7 +75,6 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
           showProfile = true;
           showNewDate = true;
         }
-
         return (
           <>
             {showNewDate && (
@@ -93,22 +84,18 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
             )}
             <ChatMessage
               key={index}
-              id={message.id}
-              date={message.created_at}
+              messages={message}
               showProfile={showProfile}
               showDate={showDate}
-              userFullName={user?.name}
-              userId={user?.id}
+              user={user}
               userImage={
                 isMe
                   ? userInformation.attachment?.file_path
-                  : user.attachment?.file_path
+                  : user.user.attachment?.file_path
               }
-              content={message.message}
               onDeleteMessage={handleDeleteMessage}
               isCurrentUser={isMe}
               hasDeleted={deletedMessage.includes(message.id)}
-              attachments={message.attachments || []}
             />
           </>
         );

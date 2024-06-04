@@ -95,25 +95,20 @@ const ChatContent: FC = () => {
         <div className="flex flex-col w-full h-[calc(100vh_-_79px)] overflow-hidden bg-white ">
           <div className="sticky top-0 bg-white">
             <ChatHeader
-              userImage={
-                currentConversation.user.attachment?.file_path ||
-                '/assets/profile/profile.svg'
-              }
-              userFullName={currentConversation.user.name}
+              user={currentConversation}
               isOnline={realtimeConnectedUsersIds.includes(
                 currentConversation.user.id
               )}
               isTyping={realtimeTypingUsersIds.includes(
                 currentConversation.user.id
               )}
-              userId={currentConversation.user.id}
               onDeleteConversations={() => {
                 handleDeleteConversation(currentConversation.id);
               }}
             />
           </div>
           <div className="flex-grow ">
-            <ChatMessages user={currentConversation.user} />
+            <ChatMessages user={currentConversation} />
           </div>
           <div className="bottom-0 bg-white py-3 px-6 border-t">
             <ChatInput onSendMessage={onSendMessage} />

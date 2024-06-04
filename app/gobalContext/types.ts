@@ -67,3 +67,28 @@ export interface ICommunityJoin {
   created_at: string;
   updated_at: string;
 }
+
+export interface ChatUser {
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    attachment: {
+      file_path: string;
+      id: number;
+    };
+  };
+  id: number;
+}
+
+export interface IMessage {
+  id: string | number;
+  message: string;
+  created_at: string;
+  attachments?: IAttachment[];
+}
+
+export interface IAttachment {
+  id: number;
+  file_path: string;
+}
