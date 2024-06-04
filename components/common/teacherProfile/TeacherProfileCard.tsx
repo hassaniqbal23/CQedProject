@@ -29,6 +29,7 @@ const TeacherProfileCard: React.FC<TeacherProfileCardProps> = ({
             width={100}
             alt="profile"
             className="w-full rounded-md"
+            unoptimized={true}
           />
         </div>
         <div>

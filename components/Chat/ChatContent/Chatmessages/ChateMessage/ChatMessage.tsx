@@ -109,6 +109,7 @@ const ChatMessage: FC<Iprops> = ({
                       setPhotoIndex(index);
                       setIsOpen(true);
                     }}
+                    unoptimized={true}
                   />
                 ))}
                 {isOpen && (

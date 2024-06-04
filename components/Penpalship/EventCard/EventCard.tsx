@@ -18,6 +18,7 @@ export const EventCard: FC<IEventCardProps> = ({ title, image, link }) => {
         alt={title}
         width={136}
         height={103}
+        unoptimized={true}
       />
       <div className="px-6 ">
         <Typography variant={'h6'} weight={'semibold'} className="mb-2 pr-20">

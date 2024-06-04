@@ -38,6 +38,7 @@ export const CommunityMembersCard = ({
             className="w-8 h-8 mr-2"
             width={56}
             height={56}
+            unoptimized={true}
           />
         )}
         {loading ? (

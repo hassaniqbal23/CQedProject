@@ -160,6 +160,7 @@ export const CreatePostModal = ({
               width={100}
               height={100}
               className="w-full h-auto max-h-[300px] object-cover rounded-2xl"
+              unoptimized={true}
             />
             <X
               className="absolute top-2 right-2 bg-white/70 rounded-full p-1 cursor-pointer"
@@ -188,6 +189,7 @@ export const CreatePostModal = ({
               width={70}
               height={70}
               className="text-primary-500"
+              unoptimized={true}
             />
           </div>
           <Typography variant="h4" weight="semibold" className="mt-4">
