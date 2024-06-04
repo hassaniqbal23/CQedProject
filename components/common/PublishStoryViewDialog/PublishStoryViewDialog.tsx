@@ -22,6 +22,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
 import { Typography } from '../Typography/Typography';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
+import countriesData from '@/public/countries/countries.json';
+
+interface Countries {
+  [key: string]: string;
+}
+
+const countries: Countries = countriesData;
 
 const formSchema = z.object({
   story: z
@@ -34,6 +41,7 @@ const formSchema = z.object({
 });
 
 export interface IPublishStoryViewDialogProps {
+  isFriend: boolean;
   loading?: boolean;
   children?: React.ReactNode;
   open: boolean;
@@ -60,6 +68,7 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
   onReply,
   initialValue,
   userInfo,
+  isFriend,
 }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -75,6 +84,7 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
   }, [initialValue]);
 
   const { userInformation } = useGlobalState();
+  const countryCode = userInfo?.location?.name?.toUpperCase() || '';
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -101,14 +111,17 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
                       {userInfo?.location?.flag && (
                         <Image
                           className="mr-2"
-                          src={userInfo?.location?.flag || ''}
+                          src={
+                            `/country-flags/svg/${userInfo?.location?.flag?.toLowerCase()}.svg` ||
+                            ''
+                          }
                           height={30}
                           width={30}
                           alt="view-Story"
                         />
                       )}
                       <Typography variant="h5" weight="regular">
-                        {userInfo?.location?.name}
+                        {countries[countryCode]}
                       </Typography>
                     </div>
                   </div>
@@ -138,8 +151,8 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
             />
             <AlertDialogFooter className="gap-4 px-5 py-6">
               <div className="flex items-center">
-                {userInformation?.id !== userInfo?.userId && (
-                  <>
+                <>
+                  {userInformation?.id !== userInfo?.userId && !isFriend && (
                     <Button
                       className="rounded-full h-12"
                       size={'md'}
@@ -150,6 +163,8 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
                     >
                       Add Friend
                     </Button>
+                  )}
+                  {isFriend && (
                     <Button
                       className="ml-5 rounded-full h-12"
                       size={'md'}
@@ -159,8 +174,8 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
                     >
                       Reply
                     </Button>
-                  </>
-                )}
+                  )}
+                </>
               </div>
             </AlertDialogFooter>
           </form>

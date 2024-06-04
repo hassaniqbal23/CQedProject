@@ -1,3 +1,4 @@
+import React, { useState, useMemo } from 'react';
 import { createPenpal, getSuggestions } from '@/app/api/penpals';
 import {
   PenpalshipCard,
@@ -7,14 +8,7 @@ import {
 import { PublishStoryViewDialog } from '@/components/common/PublishStoryViewDialog/PublishStoryViewDialog';
 import { Typography } from '@/components/common/Typography/Typography';
 import { PublishStoryDialog } from '@/components/ui/PublishStoryDialog/PublishStoryDialog';
-import Loading from '@/components/ui/button/loading';
-import React, { useState } from 'react';
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useRouter } from 'next/navigation';
 import {
   UserCreateStories,
@@ -26,11 +20,12 @@ import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import { settings } from '@/app/utils/sliderSettings';
 import Pagination from '@/components/common/pagination/pagination';
-import { Skeleton } from '@/components/ui';
 import SkeletonCard from '@/components/common/SkeletonCard/SkeletonCard';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
 
 export const PenPalCommunity = () => {
   const queryCLient = useQueryClient();
+  const { myPenpals, userInformation } = useGlobalState();
   const route = useRouter();
   const [viewUserStoryId, setViewUserStoryId] = useState<number | null>(null);
   const [creatingPanpalId, setCreatingPanpalId] = useState<number | null>(null);
@@ -87,6 +82,23 @@ export const PenPalCommunity = () => {
     }
   );
 
+  const IsgetUserStoryUserMyFriend = useMemo(() => {
+    const getUserStoryUserId = getUserStory?.userId;
+    const MyId = userInformation.id;
+
+    if (getUserStoryUserId && MyId) {
+      const getPenpal = myPenpals.find((c) => {
+        return (
+          (c.senderId == MyId && c.receiverId == getUserStoryUserId) ||
+          (c.senderId == getUserStoryUserId && c.receiverId == MyId)
+        );
+      });
+
+      if (getPenpal) return true;
+    }
+    return false;
+  }, [getUserStory, myPenpals]);
+
   const { data: AllUserStories, isLoading: isGetingUserStories } = useQuery(
     ['getAllUserStories'],
     () =>
@@ -116,7 +128,7 @@ export const PenPalCommunity = () => {
     }
   );
 
-  const suggestions = React.useMemo(() => {
+  const suggestions = useMemo(() => {
     if (suggestionsResponse) {
       return suggestionsResponse?.data?.data?.map((c: any) => {
         return {
@@ -151,6 +163,7 @@ export const PenPalCommunity = () => {
 
           <PublishStoryViewDialog
             initialValue={getUserStory?.story}
+            isFriend={IsgetUserStoryUserMyFriend}
             open={viewStoryModal}
             loading={isCreatingPanpal}
             onClose={() => {
@@ -162,16 +175,16 @@ export const PenPalCommunity = () => {
               route.push('/students/chats');
             }}
             onAddFriend={() => {
-              if (typeof viewUserStoryId === 'number') {
-                sendPanpalRequest(viewUserStoryId);
+              if (getUserStory && typeof getUserStory?.userId === 'number') {
+                sendPanpalRequest(getUserStory?.userId);
               }
             }}
             userInfo={{
               username: getUserStory?.User?.name,
               userId: getUserStory?.userId,
               location: {
-                name: 'Pakistan',
-                flag: '/assets/flags/pakistanFlagLogo.svg',
+                name: getUserStory?.User?.profile?.[0]?.country,
+                flag: getUserStory?.User?.profile?.[0]?.country,
               },
               imageUrl: getUserStory?.User?.attachment?.file_path,
             }}
@@ -245,9 +258,9 @@ export const PenPalCommunity = () => {
               buttonLoading={creatingPanpalId === item.id && isCreatingPanpal}
               buttonText="Connect"
               description={JSON.parse(item?.profile?.meta || '{}').bio}
-              countryFlag={'/country-flags/svg/pk.svg'}
-              countryName={'Pakistan'}
-              studentAge={'8 years old'}
+              countryFlag={`/country-flags/svg/${item?.profile?.country.toLowerCase()}.svg`}
+              countryName={item?.profile?.country.toUpperCase()}
+              studentAge={item?.profile?.age}
             />
           ))}
         </div>

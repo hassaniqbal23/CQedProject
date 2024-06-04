@@ -5,6 +5,13 @@ import { Button } from '@/components/ui';
 import { Card } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import { truncateText } from '@/app/utils/helpers';
+import countriesData from '@/public/countries/countries.json';
+
+interface Countries {
+  [key: string]: string;
+}
+
+const countries: Countries = countriesData;
 
 interface PenpalshipCardProps {
   title?: string;
@@ -47,7 +54,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
           />
           <Button
             onClick={buttonOnClick}
-            className="rounded-full bg-[#ECEDF8] text-primary-500 w-32 h-10"
+            className={`rounded-full ${buttonText?.toLocaleLowerCase() === 'remove' ? 'bg-red-100 text-red-600' : 'bg-[#ECEDF8] text-primary-500'} w-32 h-10`}
             loading={buttonLoading}
           >
             {buttonText}
@@ -76,7 +83,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
         </div>
         <div className="mt-auto">
           <div className="block sm:flex justify-between p-2 items-center">
-            <div className="flex">
+            <div className="flex items-center">
               <Image
                 src={countryFlag}
                 alt="flag"
@@ -85,7 +92,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                 height={38}
               />
               <Typography variant="h6" weight="medium" className="ml-2 text-sm">
-                {countryName}
+                {countries[countryName] || 'Unknown Country'}
               </Typography>
             </div>
             <div>
@@ -94,7 +101,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                 weight="medium"
                 className="flex text-sm mt-2 sm:mt-0"
               >
-                {studentAge}
+                {studentAge} years old
               </Typography>
             </div>
           </div>
