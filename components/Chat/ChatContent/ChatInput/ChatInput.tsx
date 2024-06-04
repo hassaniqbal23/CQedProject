@@ -17,22 +17,49 @@ import Image from 'next/image';
 import { useSocket } from '../../WithSockets/WithSockets';
 import { useChatFeatures } from '../../ChatProvider/ChatProvider';
 import { useChatGuard } from '../../ChatProvider/ChatGuard';
+import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { uploadFile } from '@/app/api/chat';
+import { useMutation } from 'react-query';
+import { useUploadFile } from '@/lib/hooks';
+import Loading from '@/components/ui/button/loading';
+import { toast as sonnerToast } from 'sonner';
 
 let TypingTimeout: any;
 
 function ChatInput({ onSendMessage }: any) {
   const { currentConversation } = useChatFeatures();
+  const { userInformation } = useGlobalState();
   const { userIsTyping } = useChatGuard();
   const { isConnected } = useSocket();
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState<number>(41);
+  const [height, setHeight] = useState<number>(54);
+  const [uploadLoading, setUploadLoading] = useState(false);
   const form = useForm<any>({
     defaultValues: {
       message: '',
-      files: [],
+      attachments: [],
     },
   });
+
+  const uploadFileMutation = useUploadFile();
+
+  const handleFileSelect = async (files: Blob[]) => {
+    setUploadLoading(true);
+    const uploadPromises = Array.from(files).map((file: Blob) =>
+      uploadFileMutation.mutateAsync(file)
+    );
+
+    try {
+      const results = await Promise.all(uploadPromises);
+      form.setValue('attachments', [...results]);
+      console.log('All files uploaded successfully:', results);
+    } catch (error) {
+      console.error('Error uploading files:', error);
+    } finally {
+      setUploadLoading(false);
+    }
+  };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -44,14 +71,24 @@ function ChatInput({ onSendMessage }: any) {
     }
   };
 
+  const hasCurrentConversationUserBlockedMe = React.useMemo(() => {
+    return (
+      userInformation &&
+      userInformation.BlockedFrom &&
+      userInformation.BlockedFrom.findIndex(
+        (user) => user.userId === currentConversation?.user.id
+      ) > -1
+    );
+  }, [userInformation, currentConversation]);
+
   useEffect(() => {
-    const files = form.watch('files');
+    const files = form.watch('attachments');
     if (files?.length > 0) {
       setHeight(150);
     } else {
-      setHeight(41);
+      setHeight(54);
     }
-  }, [form.watch('files')]);
+  }, [form.watch('attachments')]);
 
   useEffect(() => {
     if (showEmoji) {
@@ -67,13 +104,20 @@ function ChatInput({ onSendMessage }: any) {
 
   const handleRemoveFile = (index: number) => {
     const files = form
-      .watch('files')
+      .watch('attachments')
       .filter((_: any, i: number) => i !== index);
-    form.setValue('files', [...files]);
+    form.setValue('attachments', [...files]);
   };
 
   const onSubmit: SubmitHandler<any> = async (data: any) => {
-    if (!data.message && data.files.length === 0) return;
+    if (uploadLoading) {
+      sonnerToast.info('Please wait for the file to upload', {
+        position: 'bottom-left',
+        closeButton: true,
+      });
+      return;
+    }
+    if (!data.message && data.attachments.length === 0) return;
     onSendMessage(data);
     form.reset();
   };
@@ -92,10 +136,16 @@ function ChatInput({ onSendMessage }: any) {
                 <FormControl className="">
                   <div className="relative">
                     <AutosizeTextarea
-                      placeholder="Enter your message"
+                      placeholder={
+                        hasCurrentConversationUserBlockedMe
+                          ? 'You cannot send a message'
+                          : 'Enter your message'
+                      }
                       {...field}
                       minHeight={height}
-                      disabled={!isConnected}
+                      disabled={
+                        !isConnected || hasCurrentConversationUserBlockedMe
+                      }
                       onKeyDown={(e) => {
                         if (
                           (e.target as HTMLTextAreaElement).value.trim()
@@ -106,8 +156,7 @@ function ChatInput({ onSendMessage }: any) {
                         if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault();
                           form.handleSubmit(onSubmit)();
-                          setHeight(41);
-                          form.setValue('message', '');
+                          setHeight(54);
                         }
 
                         if (!currentConversation) return;
@@ -121,68 +170,89 @@ function ChatInput({ onSendMessage }: any) {
                         }, 100);
                       }}
                       maxHeight={
-                        form.watch('files').length > 0 ? height / 2 : 120
+                        form.watch('attachments').length > 0 ? height / 2 : 120
                       }
-                      className={`${form.watch('files').length > 0 ? 'pb-20' : 'pb-auto'} resize-none`}
+                      className={`${form.watch('attachments').length > 0 ? 'pb-20' : 'pb-auto'} resize-none`}
                       icon={
-                        <div className="flex gap-2" ref={emojiPickerRef}>
-                          <ChatFileUploader
-                            files={form.getValues('files')}
-                            onFileSelect={(data) => {
-                              form.setValue('files', [
-                                ...form.getValues('files'),
-                                ...data,
-                              ]);
-                            }}
-                          />
-                          <ChatEmojiPicker
-                            onPickEmoji={(emoji) => {
-                              const currentMessage =
-                                form.getValues('message') || '';
-                              form.setValue(
-                                'message',
-                                currentMessage + emoji.emoji
-                              );
-                            }}
-                            open={showEmoji}
-                            button={
-                              <div
-                                onClick={() => setShowEmoji(!showEmoji)}
-                                className="cursor-pointer"
-                              >
-                                <Smile width={18} height={18} color="#4E5D78" />
-                              </div>
-                            }
-                          />
-                        </div>
+                        !hasCurrentConversationUserBlockedMe ? (
+                          <div className="flex gap-2" ref={emojiPickerRef}>
+                            <ChatFileUploader
+                              files={form.getValues('attachments')}
+                              onFileSelect={(data) => {
+                                handleFileSelect(data);
+                                form.setValue('attachments', [
+                                  ...form.getValues('attachments'),
+                                  ...data,
+                                ]);
+                              }}
+                            />
+                            <ChatEmojiPicker
+                              onPickEmoji={(emoji) => {
+                                const currentMessage =
+                                  form.getValues('message') || '';
+                                form.setValue(
+                                  'message',
+                                  currentMessage + emoji.emoji
+                                );
+                              }}
+                              open={showEmoji}
+                              button={
+                                <div
+                                  onClick={() => setShowEmoji(!showEmoji)}
+                                  className="cursor-pointer"
+                                >
+                                  <Smile
+                                    width={18}
+                                    height={18}
+                                    color="#4E5D78"
+                                  />
+                                </div>
+                              }
+                            />
+                          </div>
+                        ) : (
+                          <></>
+                        )
                       }
                     />
-                    {form.watch('files').length > 0 && (
+                    {form.watch('attachments').length > 0 && (
                       <div className="absolute bottom-4 left-3 grid grid-cols-5 gap-3">
-                        {form.watch('files').map((file: any, index: number) => (
-                          <div
-                            key={index}
-                            aria-roledescription={`file ${index + 1} containing ${
-                              file.name
-                            }`}
-                            className="p-0 size-20 group "
-                          >
-                            <AspectRatio className="size-full relative">
-                              <Image
-                                src={URL.createObjectURL(file)}
-                                alt={file.name}
-                                className="object-cover rounded-md"
-                                fill
-                              />
-                              <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 group-hover:flex hidden w-full h-full bg-slate-300-opacity-50 rounded items-center justify-center ">
-                                <CircleX
-                                  className="cursor-pointer"
-                                  onClick={() => handleRemoveFile(index)}
+                        {form
+                          .watch('attachments')
+                          .map((file: any, index: number) => (
+                            <div
+                              key={index}
+                              aria-roledescription={`file ${index + 1} containing ${
+                                file.name
+                              }`}
+                              className="p-0 size-20 group "
+                            >
+                              <AspectRatio className="size-full relative">
+                                <Image
+                                  src={
+                                    file.file_path || URL.createObjectURL(file)
+                                  }
+                                  alt={file.file_path || file.name}
+                                  className="object-cover rounded-md"
+                                  fill
+                                  unoptimized={true}
                                 />
-                              </div>
-                            </AspectRatio>
-                          </div>
-                        ))}
+                                {uploadLoading && (
+                                  <div className=" flex absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 w-full h-full bg-slate-300-opacity-50 rounded items-center justify-center ">
+                                    <Loading />
+                                  </div>
+                                )}
+                                {!uploadLoading && (
+                                  <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 group-hover:flex hidden w-full h-full bg-slate-300-opacity-50 rounded items-center justify-center ">
+                                    <CircleX
+                                      className="cursor-pointer"
+                                      onClick={() => handleRemoveFile(index)}
+                                    />
+                                  </div>
+                                )}
+                              </AspectRatio>
+                            </div>
+                          ))}
                       </div>
                     )}
                   </div>
@@ -195,7 +265,7 @@ function ChatInput({ onSendMessage }: any) {
           <Button
             className="w-full bg-blue-100 h-[54px] w-[54px]"
             type="submit"
-            disabled={!isConnected}
+            disabled={!isConnected || hasCurrentConversationUserBlockedMe}
           >
             <SendHorizontal className="text-primary " />
           </Button>

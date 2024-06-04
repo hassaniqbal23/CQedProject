@@ -4,7 +4,8 @@ import { useGlobalState } from '@/app/gobalContext/globalContext';
 import { useChatFeatures } from '../../ChatProvider/ChatProvider';
 import { useMutation } from 'react-query';
 import { deleteMessage } from '@/app/api/chat';
-import { toast } from 'react-toastify';
+import dayjs from 'dayjs';
+import { format, isSameDay, parseISO, differenceInMinutes } from 'date-fns';
 
 interface Message {
   id: string | number;
@@ -47,40 +48,72 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
   };
   return (
     <div className="p-3">
-      {memoizedMessagesList.map((message: any, index) => {
-        let showProfile = false;
+      {memoizedMessagesList.map((message, index) => {
         const isMe = [message.senderId].includes(userInformation.id);
         const sender = message.senderId;
         const nextMessage = memoizedMessagesList[index + 1];
-        const isNextMessageBySameSender = nextMessage?.senderId === sender;
+        const previousMessage = memoizedMessagesList[index - 1];
 
-        if (sender && isNextMessageBySameSender) {
-          showProfile = false;
-        } else {
+        const messageDate = parseISO(message.created_at);
+        const nextMessageDate = nextMessage
+          ? parseISO(nextMessage.created_at)
+          : null;
+        const previousMessageDate = previousMessage
+          ? parseISO(previousMessage.created_at)
+          : null;
+
+        const isLessThan30MinutesFromNext = nextMessageDate
+          ? differenceInMinutes(nextMessageDate, messageDate) < 30
+          : false;
+
+        let showProfile = false;
+        let showDate = false;
+
+        if (nextMessage && message.senderId !== nextMessage.senderId) {
           showProfile = true;
+          showDate = true;
+        } else if (!isLessThan30MinutesFromNext) {
+          showProfile = true;
+          showDate = true;
+        }
+        let showNewDate =
+          previousMessageDate && !isSameDay(messageDate, previousMessageDate);
+
+        if (index == 0) {
+          showProfile = true;
+          showNewDate = true;
         }
 
         return (
-          <ChatMessage
-            key={index}
-            id={message.id}
-            date={message.created_at}
-            showProfile={showProfile}
-            showDate={true}
-            userFullName={user?.name}
-            userId={user?.id}
-            userImage={
-              isMe
-                ? userInformation.attachment?.file_path
-                : user.attachment?.file_path
-            }
-            content={message.message}
-            onDeleteMessage={handleDeleteMessage}
-            isCurrentUser={isMe}
-            hasDeleted={deletedMessage.includes(message.id)}
-          />
+          <>
+            {showNewDate && (
+              <div className="flex justify-center">
+                {format(messageDate, 'dd MMMM yyyy')}
+              </div>
+            )}
+            <ChatMessage
+              key={index}
+              id={message.id}
+              date={message.created_at}
+              showProfile={showProfile}
+              showDate={showDate}
+              userFullName={user?.name}
+              userId={user?.id}
+              userImage={
+                isMe
+                  ? userInformation.attachment?.file_path
+                  : user.attachment?.file_path
+              }
+              content={message.message}
+              onDeleteMessage={handleDeleteMessage}
+              isCurrentUser={isMe}
+              hasDeleted={deletedMessage.includes(message.id)}
+              attachments={message.attachments || []}
+            />
+          </>
         );
       })}
+
       <div ref={messagesEndRef}></div>
     </div>
   );

@@ -23,7 +23,7 @@ export const AllMember = () => {
 
   const admin = useMemo(
     () =>
-      communityUser?.CommunityUsers.filter(
+      communityUser?.CommunityUsers?.filter(
         (item: ICommunityUsers) => item.role === IUSER_ROLE.ADMIN
       ),
     [communityUser]
@@ -31,7 +31,7 @@ export const AllMember = () => {
 
   const users = useMemo(
     () =>
-      communityUser?.CommunityUsers.filter(
+      communityUser?.CommunityUsers?.filter(
         (item: ICommunityUsers) => item.role === IUSER_ROLE.USER
       ),
     [communityUser]
@@ -51,7 +51,7 @@ export const AllMember = () => {
           type="search"
           iconPosition="left"
           iconColor="black"
-          className="rounded-full w-4/12"
+          className="rounded-full w-8/12 md:w-4/12 "
           placeholder="Search for Members"
         />
 

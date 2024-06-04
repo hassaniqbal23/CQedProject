@@ -108,7 +108,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               {iconPosition === 'left' ? (
                 <button
                   type="button"
-                  className="absolute inset-y-0 left-2 flex items-center focus:outline-none"
+                  className="absolute inset-y-0 left-2 flex items-center focus:outline-none "
                   onClick={() => {}}
                 >
                   <Search color={iconColor} size={25} />
@@ -116,7 +116,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               ) : (
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-5 flex items-center focus:outline-none"
+                  className="absolute inset-y-0 right-2 flex items-center focus:outline-none"
                   onClick={() => {}}
                 >
                   <Search color={iconColor} size={25} />

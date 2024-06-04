@@ -41,10 +41,10 @@ export default function TeacherStudents() {
               />
             </div>
             <div>
-              <MultipleSelector
+              {/* <MultipleSelector
                 className="max-w-36 text-sm font-medium text-[#464343] rounded-full"
                 placeholder="Sort by"
-              />
+              /> */}
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import {
   Popover,
   PopoverContent,
@@ -42,6 +42,20 @@ const ProfileLink = ({
   dropdownOption: IDropDownOption[] | undefined;
 }) => {
   const [openDropDown, setOpenDropDown] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const handleClickOutside = (event: MouseEvent) => {
+    if (ref.current && !ref.current.contains(event.target as Node)) {
+      setOpenDropDown(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <Popover open={openDropDown}>
       <PopoverTrigger onClick={() => setOpenDropDown(!openDropDown)}>
@@ -61,7 +75,7 @@ const ProfileLink = ({
           </div>
         </div>
       </PopoverTrigger>
-      <PopoverContent className=" w-[13.1rem] relative right-10 p-0 ">
+      <PopoverContent ref={ref} className=" w-[13.1rem] relative right-10 p-0 ">
         {dropdownOption?.length && (
           <>
             {dropdownOption.map((item: IDropDownOption, index: number) => {

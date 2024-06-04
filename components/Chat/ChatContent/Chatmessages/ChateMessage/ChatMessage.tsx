@@ -1,12 +1,16 @@
 import Image from 'next/image';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Avatar, AvatarImage, ChatSidebarSheetDemo } from '@/components/ui';
 import { Ellipsis } from 'lucide-react';
 import { Dropdown } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 import { ConversationUserSheet } from '../../ConversationUserSheet/ConversationUserSheet';
+import { DELETE_CONVERSATION } from '@/components/Chat/EventBus/constants';
+import { useEventBus } from '@/components/Chat/EventBus/EventBus';
 
 interface Iprops {
   date?: string;
@@ -20,6 +24,12 @@ interface Iprops {
   hasDeleted?: boolean;
   userFullName?: string;
   userId?: number;
+  attachments?: IAttachment[];
+}
+
+interface IAttachment {
+  id: number;
+  file_path: string;
 }
 
 dayjs.extend(relativeTime);
@@ -34,10 +44,14 @@ const ChatMessage: FC<Iprops> = ({
   showDate,
   showProfile,
   hasDeleted,
+  attachments = [],
   userFullName,
   userId,
 }: Iprops) => {
-  if (hasDeleted) return <></>;
+  const { dispatchEvent } = useEventBus();
+  const [isOpen, setIsOpen] = useState(false);
+  const [photoIndex, setPhotoIndex] = useState(0);
+  if (hasDeleted) return null;
 
   return (
     <div
@@ -63,6 +77,9 @@ const ChatMessage: FC<Iprops> = ({
                 userImage={userImage}
                 userFullName={userFullName}
                 userId={userId}
+                onChatDelete={() => {
+                  dispatchEvent(DELETE_CONVERSATION, null);
+                }}
               />
             </ChatSidebarSheetDemo>
           )
@@ -77,7 +94,52 @@ const ChatMessage: FC<Iprops> = ({
             weight="medium"
             className={`font-medium font-montserrat max-w-lg rounded-sm text-14 leading-26 p-3 ${isCurrentUser ? 'text-[#4E5D78] bg-gray-50' : 'text-white bg-[#377DFF]'}`}
           >
-            {content}
+            {Array.isArray(attachments) && attachments.length > 0 && (
+              <div
+                className={`grid mb-6 ${attachments.length < 3 ? `grid-cols-${attachments.length}` : 'grid-cols-3'}`}
+              >
+                {attachments.map((item: IAttachment, index: number) => (
+                  <Image
+                    src={item.file_path}
+                    alt={item.file_path}
+                    width={100}
+                    height={100}
+                    className="w-28 h-28 object-cover rounded-md cursor-pointer "
+                    onClick={() => {
+                      setPhotoIndex(index);
+                      setIsOpen(true);
+                    }}
+                    unoptimized={true}
+                  />
+                ))}
+                {isOpen && (
+                  <Lightbox
+                    mainSrc={attachments[photoIndex].file_path}
+                    nextSrc={
+                      attachments[(photoIndex + 1) % attachments.length]
+                        .file_path
+                    }
+                    prevSrc={
+                      attachments[
+                        (photoIndex + attachments.length - 1) %
+                          attachments.length
+                      ].file_path
+                    }
+                    onCloseRequest={() => setIsOpen(false)}
+                    onMovePrevRequest={() =>
+                      setPhotoIndex(
+                        (photoIndex + attachments.length - 1) %
+                          attachments.length
+                      )
+                    }
+                    onMoveNextRequest={() =>
+                      setPhotoIndex((photoIndex + 1) % attachments.length)
+                    }
+                  />
+                )}
+              </div>
+            )}
+            <span>{content}</span>
           </Typography>
           {isCurrentUser && (
             <div className="relative">

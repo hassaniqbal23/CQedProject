@@ -30,6 +30,7 @@ const PenpalshipStoriesCard: React.FC<PenpalshipStoriesCardProps> = ({
           layout="fill"
           objectFit="fill"
           className="rounded-xl object-contain"
+          unoptimized={true}
         />
       </div>
       <div className="flex flex-col flex-grow p-3 pb-1">

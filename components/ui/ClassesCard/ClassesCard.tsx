@@ -25,7 +25,13 @@ export const ClassesCard: React.FC<ClassesCardProps> = ({
     >
       <div className="flex items-center gap-4 md:gap-7 lg:gap-16">
         <div className="flex flex-col gap-2">
-          <Image src={imageUrl} alt="teacher-icon" width={65} height={65} />
+          <Image
+            src={imageUrl}
+            alt="teacher-icon"
+            width={65}
+            height={65}
+            unoptimized={true}
+          />
           <Typography
             variant="p"
             weight="bold"
