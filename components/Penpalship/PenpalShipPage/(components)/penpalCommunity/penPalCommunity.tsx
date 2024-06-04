@@ -48,8 +48,6 @@ export const PenPalCommunity = () => {
         queryCLient.refetchQueries('penpalSuggestions');
         queryCLient.refetchQueries('MyPenPals');
         setCreatingPanpalId(null);
-        setViewStoryModal(false);
-        setViewUserStoryId(null);
       },
       onError: (error) => {
         console.error(error, 'Error =====> log');

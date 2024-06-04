@@ -23,6 +23,10 @@ import { X } from 'lucide-react';
 import { Typography } from '../Typography/Typography';
 import { useGlobalState } from '@/app/gobalContext/globalContext';
 import countriesData from '@/public/countries/countries.json';
+import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal';
+import { useRouter, usePathname } from 'next/navigation';
+import { useChatGuard } from '@/components/Chat/ChatProvider/ChatGuard';
+import { useChatFeatures } from '@/components/Chat/ChatProvider/ChatProvider';
 
 interface Countries {
   [key: string]: string;
@@ -41,7 +45,7 @@ const formSchema = z.object({
 });
 
 export interface IPublishStoryViewDialogProps {
-  isFriend: boolean;
+  isFriend?: boolean;
   loading?: boolean;
   children?: React.ReactNode;
   open: boolean;
@@ -85,6 +89,9 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
 
   const { userInformation } = useGlobalState();
   const countryCode = userInfo?.location?.name?.toUpperCase() || '';
+  const router = useRouter();
+  const pathname = usePathname();
+  const { setSelectedConversationId } = useChatFeatures();
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -166,15 +173,27 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
                     </Button>
                   )}
                   {isFriend && (
-                    <Button
-                      className="ml-5 rounded-full h-12"
-                      size={'md'}
-                      variant={'outline'}
-                      type="button"
-                      onClick={onReply}
-                    >
-                      Reply
-                    </Button>
+                    <CreateChatModal
+                      defaultReceiverId={userInfo?.userId}
+                      onChatCreated={(id) => {
+                        setSelectedConversationId(id);
+                        if (pathname?.startsWith('/student')) {
+                          router.push(`/students/chats`);
+                        } else if (pathname?.startsWith('/teacher')) {
+                          router.push(`/teachers/chats`);
+                        }
+                      }}
+                      trigger={
+                        <Button
+                          className="ml-5 rounded-full h-12"
+                          size={'md'}
+                          variant={'outline'}
+                          type="button"
+                        >
+                          Reply
+                        </Button>
+                      }
+                    />
                   )}
                 </>
               </div>

@@ -30,6 +30,7 @@ export const MyPenpals: React.FC<MyPenpalsProps> = () => {
     useMutation((id: number) => deletePenpal(id), {
       onSuccess: () => {
         queryClient.refetchQueries('getMyPenpals');
+        queryClient.refetchQueries('MyPenPals');
         queryClient.refetchQueries('searchMyPenpal');
       },
       onError: (error: any) => {
