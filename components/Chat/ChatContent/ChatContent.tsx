@@ -8,7 +8,7 @@ import ChatMessages from './Chatmessages/ChatMessages';
 import { useChatGuard } from '../ChatProvider/ChatGuard';
 import { useChatFeatures } from '../ChatProvider/ChatProvider';
 import NoChatFound from './NoChatFound/NoChatFound';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import { deleteConversation } from '@/app/api/chat';
 import { useMutation, useQueryClient } from 'react-query';
 import { useEventBus } from '../EventBus/EventBus';

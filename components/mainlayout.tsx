@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
 
 import { useResponsive } from '@/lib/hooks';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import { Bell, CircleHelp, LogOut, Settings } from 'lucide-react';
 interface IProps {
   children: ReactNode;

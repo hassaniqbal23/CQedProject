@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 import { toast } from 'sonner';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import { socket, connect } from '@/lib/socket';
 
 const SocketContext = createContext<{

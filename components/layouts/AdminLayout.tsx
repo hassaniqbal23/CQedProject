@@ -6,7 +6,7 @@ import { removeToken, removeUserId } from '@/app/utils/encryption';
 import { useResponsive } from '@/lib/hooks';
 import Sidebar from '../common/sidebar/sidebar';
 import Navbar from '../common/navbar/MainBar';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import {
   Bell,
   CircleHelp,

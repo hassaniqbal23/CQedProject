@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import ChatMessage from './ChateMessage/ChatMessage';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import { useChatFeatures } from '../../ChatProvider/ChatProvider';
 import { useMutation } from 'react-query';
 import { deleteMessage } from '@/app/api/chat';

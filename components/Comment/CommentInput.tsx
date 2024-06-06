@@ -9,7 +9,7 @@ import {
 } from '@/components/ui';
 import React, { useState, useEffect, useRef, FC } from 'react';
 import { useForm } from 'react-hook-form';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import Image from 'next/image';
 
 interface IProps {

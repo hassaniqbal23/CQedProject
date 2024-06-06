@@ -26,7 +26,7 @@ import {
   deleteMessage,
 } from '@/app/api/chat';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import { toast } from 'react-toastify';
 
 interface ChatInterface {

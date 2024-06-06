@@ -17,7 +17,7 @@ import Image from 'next/image';
 import { useSocket } from '../../WithSockets/WithSockets';
 import { useChatFeatures } from '../../ChatProvider/ChatProvider';
 import { useChatGuard } from '../../ChatProvider/ChatGuard';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import { uploadFile } from '@/app/api/chat';
 import { useMutation } from 'react-query';
 import { useUploadFile } from '@/lib/hooks';

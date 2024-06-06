@@ -1,4 +1,4 @@
-import { IAttachment } from '@/app/gobalContext/types';
+import { IAttachment } from '@/app/globalContext/types';
 import { IUSER_ROLE } from './global';
 
 export interface ICommunityType {
