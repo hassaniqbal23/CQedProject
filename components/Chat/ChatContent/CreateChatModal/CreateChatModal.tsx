@@ -1,5 +1,5 @@
 import { startConversation } from '@/app/api/chat';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import Modal from '@/components/common/Modal/Modal';
 import { Typography } from '@/components/common/Typography/Typography';
 import {

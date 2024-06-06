@@ -18,7 +18,7 @@ import { deleteImage, uploadImage } from '@/app/api/communities';
 import { useMutation } from 'react-query';
 import { toast } from 'sonner';
 import dynamic from 'next/dynamic';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import MultipleSelector from '../From/MultiSelect';
 import { ICommunityType } from '@/types/community';
 const ReactQuill = dynamic(() => import('react-quill'), {

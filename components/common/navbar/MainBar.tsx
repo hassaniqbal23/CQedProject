@@ -10,8 +10,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
-import { IUserInformation } from '@/app/gobalContext/types';
+import { useGlobalState } from '@/app/globalContext/globalContext';
+import { IUserInformation } from '@/app/globalContext/types';
 
 interface IDropDownOption {
   title: string;

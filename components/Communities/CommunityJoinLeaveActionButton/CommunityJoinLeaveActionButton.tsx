@@ -1,5 +1,5 @@
 import { joinCommunity, leaveCommunity } from '@/app/api/communities';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import { Button } from '@/components/ui';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
