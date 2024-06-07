@@ -37,7 +37,7 @@ export const PenPalCommunity = () => {
     limit: number;
   }>({
     page: 1,
-    limit: 10,
+    limit: 12,
   });
 
   const { page, limit } = paginationPenpals;
@@ -80,7 +80,7 @@ export const PenPalCommunity = () => {
     }
   );
 
-  const IsgetUserStoryUserMyFriend = useMemo(() => {
+  const IsStoryUserMyFriend = useMemo(() => {
     const getUserStoryUserId = getUserStory?.userId;
     const MyId = userInformation.id;
 
@@ -161,9 +161,9 @@ export const PenPalCommunity = () => {
 
           <PublishStoryViewDialog
             initialValue={getUserStory?.story}
-            isFriend={IsgetUserStoryUserMyFriend}
+            isFriend={IsStoryUserMyFriend}
             open={viewStoryModal}
-            loading={isCreatingPanpal}
+            loading={isCreatingPanpal || isGetingUserStory}
             onClose={() => {
               setViewUserStoryId(null);
               setViewStoryModal(false);

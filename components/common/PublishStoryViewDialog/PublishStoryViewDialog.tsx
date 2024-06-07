@@ -92,6 +92,7 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
   const router = useRouter();
   const pathname = usePathname();
   const { setSelectedConversationId } = useChatFeatures();
+  const { joinConversation } = useChatGuard();
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -159,43 +160,46 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
             />
             <AlertDialogFooter className="gap-4 px-5 py-6">
               <div className="flex items-center">
-                <>
-                  {userInformation?.id !== userInfo?.userId && !isFriend && (
-                    <Button
-                      className="rounded-full h-12"
-                      size={'md'}
-                      variant={'info'}
-                      loading={loading}
-                      onClick={onAddFriend}
-                      type="button"
-                    >
-                      Add Friend
-                    </Button>
-                  )}
-                  {isFriend && (
-                    <CreateChatModal
-                      defaultReceiverId={userInfo?.userId}
-                      onChatCreated={(id) => {
-                        setSelectedConversationId(id);
-                        if (pathname?.startsWith('/student')) {
-                          router.push(`/students/chats`);
-                        } else if (pathname?.startsWith('/teacher')) {
-                          router.push(`/teachers/chats`);
+                {initialValue && (
+                  <>
+                    {userInformation?.id !== userInfo?.userId && !isFriend && (
+                      <Button
+                        className="rounded-full h-12"
+                        size={'md'}
+                        variant={'info'}
+                        loading={loading}
+                        onClick={onAddFriend}
+                        type="button"
+                      >
+                        Add Friend
+                      </Button>
+                    )}
+                    {isFriend && (
+                      <CreateChatModal
+                        defaultReceiverId={userInfo?.userId}
+                        onChatCreated={(id) => {
+                          joinConversation(id);
+                          setSelectedConversationId(id);
+                          if (pathname?.startsWith('/student')) {
+                            router.push(`/students/chats`);
+                          } else if (pathname?.startsWith('/teacher')) {
+                            router.push(`/teachers/chats`);
+                          }
+                        }}
+                        trigger={
+                          <Button
+                            className="ml-5 rounded-full h-12"
+                            size={'md'}
+                            variant={'outline'}
+                            type="button"
+                          >
+                            Reply
+                          </Button>
                         }
-                      }}
-                      trigger={
-                        <Button
-                          className="ml-5 rounded-full h-12"
-                          size={'md'}
-                          variant={'outline'}
-                          type="button"
-                        >
-                          Reply
-                        </Button>
-                      }
-                    />
-                  )}
-                </>
+                      />
+                    )}
+                  </>
+                )}
               </div>
             </AlertDialogFooter>
           </form>

@@ -7,9 +7,12 @@ import { useChatGuard } from './ChatProvider/ChatGuard';
 
 export const Chat: FC = () => {
   const queryClient = useQueryClient();
-  const { selectedConversationId } = useChatFeatures();
+  const { selectedConversationId, setSelectedConversationId } =
+    useChatFeatures();
+  const { currentChatId } = useChatGuard();
 
   useEffect(() => {
+    currentChatId && setSelectedConversationId(currentChatId);
     const handleOnline = () => {
       queryClient.refetchQueries('get-all-conversations');
       if (selectedConversationId) {
