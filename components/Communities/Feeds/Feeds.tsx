@@ -14,7 +14,7 @@ import {
 } from '@/app/api/communities';
 import { toast } from 'sonner';
 import Loading from '@/components/ui/button/loading';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import { CommentInput } from '@/components/Comment/CommentInput';
 import { Separator } from '@/components/ui';
 import { IComment, ICommunityPost, ILike } from '@/types/global';

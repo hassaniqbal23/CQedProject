@@ -21,7 +21,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
 import { Typography } from '../Typography/Typography';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import countriesData from '@/public/countries/countries.json';
 import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal';
 import { useRouter, usePathname } from 'next/navigation';

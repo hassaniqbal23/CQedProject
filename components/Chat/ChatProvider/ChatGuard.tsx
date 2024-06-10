@@ -12,7 +12,7 @@ import {
   EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
   JOIN_TO_CHAT_ROOM,
 } from '../EventBus/constants';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import { socket } from '@/lib/socket';
 // import { UserProps, getCurrentUser } from '../../store/User.reducer';
 // import { useSelector } from 'react-redux';

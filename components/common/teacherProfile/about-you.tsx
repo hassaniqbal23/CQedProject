@@ -22,7 +22,7 @@ import { toast } from 'react-toastify';
 import { updateProfile } from '@/app/api/teachers';
 import { deleteProfileImage, uploadProfileImage } from '@/app/api/admin';
 import ImageUpload from '../ImageUpload/ImageUpload';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
 interface IAboutYouProps {
   avatar: string;

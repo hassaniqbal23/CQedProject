@@ -21,7 +21,7 @@ import Slider from 'react-slick';
 import { settings } from '@/app/utils/sliderSettings';
 import Pagination from '@/components/common/pagination/pagination';
 import SkeletonCard from '@/components/common/SkeletonCard/SkeletonCard';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
 export const PenPalCommunity = () => {
   const queryCLient = useQueryClient();

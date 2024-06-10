@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import { useMutation, useQueryClient } from 'react-query';
 import { deleteProfileImage, uploadProfileImage } from '@/app/api/admin';
 import { toast } from 'sonner';

@@ -12,7 +12,7 @@ import Modal from '@/components/common/Modal/Modal';
 import { useMutation } from 'react-query';
 import { uploadImage } from '@/app/api/communities';
 import { NewFeeds } from '@/components/NewFeeds/NewFeeds';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
 const Picker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
@@ -31,7 +31,6 @@ export const CreatePostModal = ({
   title,
   textarea,
   buttonAction,
-  buttonTrigger,
   onPublish,
   buttonActionLoading,
 }: CreatePostModalProps) => {

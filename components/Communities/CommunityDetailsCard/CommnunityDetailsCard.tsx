@@ -3,7 +3,7 @@ import { Avatar, AvatarImage, Button, Card, Skeleton } from '@/components/ui';
 import React from 'react';
 import { CommunityJoinLeaveActionButton } from '../CommunityJoinLeaveActionButton/CommunityJoinLeaveActionButton';
 import { getUserIdLocalStorage } from '@/app/utils/encryption';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
 interface CommunityDetailsCardProps {
   title: string;
