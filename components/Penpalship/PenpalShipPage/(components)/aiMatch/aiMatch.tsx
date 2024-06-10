@@ -156,7 +156,6 @@ export const AiMatch = ({ module }: AiMatchProps) => {
     interestsScore !== null
       ? `${interestsScore}/${userInterests.length} interests matched`
       : '';
-
   return (
     <>
       <div className="mt-4">
@@ -318,14 +317,14 @@ export const AiMatch = ({ module }: AiMatchProps) => {
           <div className={`order-1`}>
             <UserProfileMatch
               user={data?.data?.data?.user}
-              buttonOnClick={() =>
+              onButtonClick={() =>
                 handleRemovePaypals(data?.data?.data?.user?.id)
               }
-              connect={
-                isUserPanpals(data?.data?.data?.user?.id) ? 'Remove' : 'Connect'
+              buttonText={isUserPanpals(data?.data?.data?.user?.id)}
+              screenType={
+                isMobile ? 'mobile' : isTabletMini ? 'tablet' : 'desktop'
               }
-              screen={isMobile ? 'mobile' : isTabletMini ? 'tablet' : 'desktop'}
-              matches={interestsMatch}
+              interestsMatched={interestsMatch}
               onViewProfile={() => {
                 if (module === 'teacher') {
                   router.push(

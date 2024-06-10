@@ -16,10 +16,10 @@ interface Iprops {
     countryFlag: string;
     state: string;
   };
-  connect?: string | null;
-  matches?: string;
-  screen?: string;
-  buttonOnClick?: () => void;
+  buttonText?: string;
+  interestsMatched?: string;
+  screenType?: string;
+  onButtonClick?: () => void;
   onViewProfile?: () => void;
 }
 
@@ -27,11 +27,11 @@ const countries: Countries = countriesData;
 
 export const UserProfileMatch: FC<Iprops> = ({
   user,
-  buttonOnClick,
+  onButtonClick,
   onViewProfile,
-  connect,
-  matches,
-  screen,
+  buttonText,
+  interestsMatched,
+  screenType,
 }: Iprops) => {
   const { fullname, country } = user;
   const countryFlag = `/country-flags/svg/${user.country.toLowerCase()}.svg`;
@@ -41,9 +41,10 @@ export const UserProfileMatch: FC<Iprops> = ({
   const userBio = `Hi, I am ${user.fullname}, a 24-year-old from ${user.state} with a love for drawing and a passion for adventure`;
   const caption = `Did you know ${user.fullname} has read 20 books last year 📖 🙂`;
 
+  console.log(buttonText, 'buttonTextbuttonTextbuttonText');
   return (
     <>
-      {screen === 'mobile' && (
+      {screenType === 'mobile' && (
         <div className="bg-primary-50  p-4 pb-3 rounded-xl mt-3">
           <div className="flex justify-between">
             <div className="">
@@ -51,7 +52,7 @@ export const UserProfileMatch: FC<Iprops> = ({
                 {heading}
               </Typography>
               <Typography className="py-1" variant={'h6'} weight={'medium'}>
-                {matches}
+                {interestsMatched}
               </Typography>
             </div>
           </div>
@@ -105,7 +106,6 @@ export const UserProfileMatch: FC<Iprops> = ({
                       height={15}
                       className="object-contain"
                     />
-                    {}
                     <h1>{countries[country] || 'Unknown Country'}</h1>
                   </div>
                   <div>
@@ -124,10 +124,12 @@ export const UserProfileMatch: FC<Iprops> = ({
           <div className="flex justify-center gap-4 mt-4 mb-1">
             <Button
               size={'md'}
-              className={connect ? 'bg-red-100 text-red-600' : 'bg-primary-500'}
-              onClick={buttonOnClick}
+              className={
+                buttonText ? 'bg-red-100 text-red-600' : 'bg-primary-500'
+              }
+              onClick={onButtonClick}
             >
-              {connect ? 'Remove' : 'Connect'}
+              {buttonText ? 'Remove' : 'Connect'}
             </Button>
             <Button
               size={'sm'}
@@ -139,7 +141,7 @@ export const UserProfileMatch: FC<Iprops> = ({
           </div>
         </div>
       )}
-      {screen === 'tablet' && (
+      {screenType === 'tablet' && (
         <div className="bg-primary-50 py-6 p-4 pb-3 rounded-xl mt-4">
           <div className="flex justify-between">
             <div className="">
@@ -147,18 +149,18 @@ export const UserProfileMatch: FC<Iprops> = ({
                 {heading}
               </Typography>
               <Typography className="py-2" variant={'h6'} weight={'medium'}>
-                {matches}
+                {interestsMatched}
               </Typography>
             </div>
             <div className="">
               <Button
                 size={'md'}
                 className={
-                  connect ? 'bg-red-100 text-red-600' : 'bg-primary-500'
+                  buttonText ? 'bg-red-100 text-red-600' : 'bg-primary-500'
                 }
-                onClick={buttonOnClick}
+                onClick={onButtonClick}
               >
-                {connect ? 'Remove' : 'Connect'}
+                {buttonText ? 'Remove' : 'Connect'}
               </Button>
             </div>
           </div>
@@ -232,7 +234,7 @@ export const UserProfileMatch: FC<Iprops> = ({
           </div>
         </div>
       )}
-      {screen === 'desktop' && (
+      {screenType === 'desktop' && (
         <div className="max-w-fit w-full bg-primary-50 p-4  pt-16   lg:flex lg:items-center lg:flex-col sm:flex sm:justify-between sm:items-center gap-8 rounded-xl">
           <div>
             <div className="">
@@ -248,7 +250,7 @@ export const UserProfileMatch: FC<Iprops> = ({
                 variant={'h5'}
                 weight={'semibold'}
               >
-                {matches}
+                {interestsMatched}
               </Typography>
             </div>
             <div className="lg:flex lg:items-center lg:flex-col sm:flex flex justify-between items-center gap-8">
@@ -322,10 +324,12 @@ export const UserProfileMatch: FC<Iprops> = ({
           <div className="lg:flex lg:flex-row lg:gap-4 lg:mt-8 sm:flex sm:flex-col sm:justify-between sm:gap-32 flex justify-center items-center  gap-4 ">
             <Button
               size={'md'}
-              className={connect ? 'bg-red-100 text-red-600' : 'bg-primary-500'}
-              onClick={buttonOnClick}
+              className={
+                buttonText ? 'bg-red-100 text-red-600' : 'bg-primary-500'
+              }
+              onClick={onButtonClick}
             >
-              {connect ? 'Remove' : 'Connect'}
+              {buttonText ? 'Remove' : 'Connect'}
             </Button>
             <Button
               size={'md'}
