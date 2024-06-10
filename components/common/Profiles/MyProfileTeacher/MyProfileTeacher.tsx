@@ -11,39 +11,30 @@ import {
   UniversityLink,
 } from '@/components/common/Profiles';
 import { Mail, MapPin, Phone } from 'lucide-react';
-import { getProfiledata } from '@/app/api/teachers';
+import { getProfile, getProfiledata } from '@/app/api/teachers';
 import { TabsComponent } from '@/components/ui/tabs/tabs';
 
-interface IProps {
-  id: number;
-}
-
-export const TeacherProfileView: FC<IProps> = ({ id }) => {
+export const MyProfileTeacher: FC = () => {
   const {
     data: profileData,
     error,
     isLoading,
-  } = useQuery(
-    ['profileData', id],
-    () =>
-      getProfiledata(id as number).then((res) => {
-        return res.data.data;
-      }),
-    {
-      enabled: id ? true : false,
-    }
+  } = useQuery(['getProfile'], () =>
+    getProfile().then((res) => {
+      return res.data.data;
+    })
   );
 
   if (isLoading)
     return <div className="flex justify-center py-8 ">Loading...</div>;
 
   const bio =
-    (profileData && JSON.parse(profileData?.user?.profile[0]?.meta)?.bio) || '';
+    (profileData && JSON.parse(profileData?.profile[0]?.meta)?.bio) || '';
 
-  const interestsArray = profileData?.user.interests.split(',');
+  const interestsArray = profileData.interests.split(',');
 
   const contactDetails = () => {
-    const detailsData = profileData?.user?.profile[0];
+    const detailsData = profileData?.profile[0];
     const details: any = [
       {
         title: 'Email',
@@ -76,11 +67,11 @@ export const TeacherProfileView: FC<IProps> = ({ id }) => {
   return (
     <div className="space-y-4">
       <ProfileHeader
-        name={profileData?.fullname}
+        name={profileData?.name}
         role={'N/A'}
         subrole={'N/A'}
-        location={profileData?.user?.profile[0]?.state}
-        profileIcon={profileData?.user?.attachment?.file_path}
+        location={profileData?.profile[0]?.state}
+        profileIcon={profileData?.attachment?.file_path}
       />
       <div>
         <TabsComponent
@@ -187,4 +178,4 @@ export const TeacherProfileView: FC<IProps> = ({ id }) => {
   );
 };
 
-export default TeacherProfileView;
+export default MyProfileTeacher;
