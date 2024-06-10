@@ -5,16 +5,8 @@ import { usePathname } from 'next/navigation';
 import Navbar from '../common/navbar/MainBar';
 import { useRouter } from 'next/navigation';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
-
 import { useResponsive } from '@/lib/hooks';
-import {
-  Bell,
-  CircleHelp,
-  LogOut,
-  MessageCircle,
-  Settings,
-  UserCheck,
-} from 'lucide-react';
+import { Bell, LogOut, MessageCircle, Settings, UserCheck } from 'lucide-react';
 interface IProps {
   children: ReactNode;
   className?: string;

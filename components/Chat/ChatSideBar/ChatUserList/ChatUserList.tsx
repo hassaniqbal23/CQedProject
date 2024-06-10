@@ -4,7 +4,7 @@ import { ExpandableText } from '@/components/common/ExpandableText/ExpandableTex
 import { Typography } from '@/components/common/Typography/Typography';
 import { useChatGuard } from '../../ChatProvider/ChatGuard';
 import { useChatFeatures } from '../../ChatProvider/ChatProvider';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
 interface IProps {
   conversations: any[];

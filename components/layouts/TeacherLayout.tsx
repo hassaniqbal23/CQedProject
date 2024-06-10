@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
 
 import { useResponsive } from '@/lib/hooks';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
 import {
   Bell,
   CircleHelp,
@@ -21,7 +20,6 @@ interface IProps {
 }
 
 export const TeacherLayout: FC<IProps> = ({ children }) => {
-  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isMobile } = useResponsive();
@@ -48,11 +46,6 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
       icon: '/assets/sidebaricons/chat.svg',
       title: 'Chat & Communities',
       path: '/teachers/chats',
-    },
-    {
-      icon: '/assets/sidebaricons/classroom.svg',
-      title: 'Classrooms',
-      path: '/teachers/classrooms',
     },
     {
       icon: '/assets/sidebaricons/students.svg',
@@ -135,7 +128,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
                   },
                   {
                     title: 'Your Communities ',
-                    path: '/teachers/cq-communities',
+                    path: '/teachers/cq-communities/your-communities',
                     icon: <UserCheck size={15} />,
                   },
                   {
