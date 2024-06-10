@@ -31,7 +31,6 @@ export const CreatePostModal = ({
   title,
   textarea,
   buttonAction,
-  buttonTrigger,
   onPublish,
   buttonActionLoading,
 }: CreatePostModalProps) => {
