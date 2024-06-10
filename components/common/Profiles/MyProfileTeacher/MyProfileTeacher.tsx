@@ -31,7 +31,7 @@ export const MyProfileTeacher: FC = () => {
   const bio =
     (profileData && JSON.parse(profileData?.profile[0]?.meta)?.bio) || '';
 
-  const interestsArray = profileData.interests.split(',');
+  const interestsArray = (profileData?.interests ?? '').split(',');
 
   const contactDetails = () => {
     const detailsData = profileData?.profile[0];
