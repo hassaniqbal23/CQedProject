@@ -15,8 +15,8 @@ import { CircleIcon } from '@/components/AiMatches/Circle/Circle';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { createPenpal, deletePenpal, penpalsFilters } from '@/app/api/penpals';
 import { useRouter } from 'next/navigation';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
 import { UserProfileMatch } from '@/components/AiMatches/UserProfileMatch/UserProfileMatch';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
 const formSchema = z.object({
   country: z.object({
