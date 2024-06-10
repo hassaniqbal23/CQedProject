@@ -5,24 +5,14 @@ import { usePathname } from 'next/navigation';
 import Navbar from '../common/navbar/MainBar';
 import { useRouter } from 'next/navigation';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
-
 import { useResponsive } from '@/lib/hooks';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
-import {
-  Bell,
-  CircleHelp,
-  LogOut,
-  MessageCircle,
-  Settings,
-  UserCheck,
-} from 'lucide-react';
+import { Bell, LogOut, MessageCircle, Settings, UserCheck } from 'lucide-react';
 interface IProps {
   children: ReactNode;
   className?: string;
 }
 
 export const StudentsLayout: FC<IProps> = ({ children, className }) => {
-  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isTabletMini } = useResponsive();
@@ -65,7 +55,7 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
     },
     {
       icon: '/assets/sidebaricons/penpalship.svg',
-      title: 'Penpalship',
+      title: 'Global Friends',
       path: '/students/penpalship',
     },
     {
@@ -102,9 +92,13 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
           />
           <Navbar
             horizontalLinks={[
-              { href: '/chat', type: 'icon', icon: <MessageCircle /> },
               {
-                href: '/notification',
+                href: '/students/chats',
+                type: 'icon',
+                icon: <MessageCircle />,
+              },
+              {
+                href: '/students/notifications',
                 type: 'icon',
                 icon: <Bell />,
               },
@@ -119,19 +113,19 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
                   },
                   {
                     title: 'Account',
-                    path: '/students/account',
+                    path: '/students/account-settings',
                     icon: <Settings size={15} />,
                   },
                   {
                     title: 'Your Communities ',
-                    path: '/students/cq-communities',
+                    path: '/students/cq-communities/your-communities',
                     icon: <UserCheck size={15} />,
                   },
-                  {
-                    title: 'Help ',
-                    path: '/students/help',
-                    icon: <CircleHelp size={15} />,
-                  },
+                  // {
+                  //   title: 'Help ',
+                  //   path: '/students/help',
+                  //   icon: <CircleHelp size={15} />,
+                  // },
                   {
                     title: 'Logout',
                     icon: <LogOut size={15} />,

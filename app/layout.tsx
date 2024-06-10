@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer } from 'react-toastify';
@@ -9,7 +9,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { ThemeProvider } from '@/components/theme-provider';
 import { getAccessToken } from './utils/encryption';
 import { updateToken } from './utils/http';
-import { GlobalProvider } from './gobalContext/globalContext';
+import { GlobalProvider } from './globalContext/globalContext';
 import { Toaster } from '@/components/ui/toaster/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner/sonner';
 import localFont from 'next/font/local';

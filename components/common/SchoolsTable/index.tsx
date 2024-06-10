@@ -34,6 +34,7 @@ function SchoolTable(props: SchoolTableProps) {
                     alt={data?.ImagePath || 'school profile '}
                     width={30}
                     height={30}
+                    unoptimized={true}
                   />
                   <h2>{data['name']}</h2>
                 </div>

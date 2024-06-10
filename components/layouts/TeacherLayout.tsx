@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
 
 import { useResponsive } from '@/lib/hooks';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
 import {
   Bell,
   CircleHelp,
@@ -21,7 +20,6 @@ interface IProps {
 }
 
 export const TeacherLayout: FC<IProps> = ({ children }) => {
-  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isMobile } = useResponsive();
@@ -50,14 +48,14 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
       path: '/teachers/chats',
     },
     {
-      icon: '/assets/sidebaricons/classroom.svg',
-      title: 'Classrooms',
-      path: '/teachers/classrooms',
-    },
-    {
       icon: '/assets/sidebaricons/students.svg',
       title: 'Students',
       path: '/teachers/students',
+    },
+    {
+      icon: '/assets/sidebaricons/penpalship.svg',
+      title: 'Global Friends',
+      path: '/teachers/penpalship',
     },
     {
       icon: '/assets/sidebaricons/CQCommunities.svg',
@@ -70,6 +68,19 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
       path: '/teachers/cq-courses',
     },
   ];
+
+  const isChatPage = useMemo(() => {
+    const routes = [
+      '/students/chats',
+      '/teachers/chats',
+      '/students/chat',
+      '/teachers/chat',
+      '/schools/chat',
+      '/schools/chats',
+    ];
+    if (!pathname) return false;
+    return !!routes.find((route) => pathname.startsWith(route));
+  }, [pathname]);
 
   if (showLayout) {
     return (
@@ -91,9 +102,13 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
           />
           <Navbar
             horizontalLinks={[
-              { href: '/chat', type: 'icon', icon: <MessageCircle /> },
               {
-                href: '/notification',
+                href: '/teachers/chats',
+                type: 'icon',
+                icon: <MessageCircle />,
+              },
+              {
+                href: '/teachers/notifications',
                 type: 'icon',
                 icon: <Bell />,
               },
@@ -101,19 +116,19 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
                 href: '',
                 type: 'profile',
                 dropdownOption: [
-                  {
-                    title: 'Profile',
-                    path: '/teachers/profile',
-                    icon: <Bell size={15} />,
-                  },
+                  // {
+                  //   title: 'Profile',
+                  //   path: '/teachers/profile',
+                  //   icon: <Bell size={15} />,
+                  // },
                   {
                     title: 'Account',
-                    path: '/teachers/account',
+                    path: '/teachers/account-settings',
                     icon: <Settings size={15} />,
                   },
                   {
                     title: 'Your Communities ',
-                    path: '/teachers/cq-communities',
+                    path: '/teachers/cq-communities/your-communities',
                     icon: <UserCheck size={15} />,
                   },
                   {
@@ -137,7 +152,9 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
         </div>
       </div>
       <div className="block md:w-full pl-0 md:pl-8 pt-[60px] overflow-hidden bg-[#FDFDFD]">
-        <div className="mx-[10px] my-[30px] md:m-[40px]">
+        <div
+          className={`${isChatPage ? 'mt-[11px]' : 'mx-[10px] my-[30px] md:m-[40px]'} `}
+        >
           <div className="teacher-layout">{children}</div>
         </div>
       </div>

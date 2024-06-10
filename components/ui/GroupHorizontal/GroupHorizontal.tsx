@@ -24,7 +24,13 @@ const GroupHorizontal: React.FC<GroupHorizontalProps> = ({
         <div className="flex justify-between  w-full md:items-center sm:items-start   ">
           <div className="md:flex gap-4 md:flex-row sm:flex-col sm:items-start md:gap-3">
             <div>
-              <Image src={image} alt="" width={67} height={67} />
+              <Image
+                src={image}
+                alt=""
+                width={67}
+                height={67}
+                unoptimized={true}
+              />
             </div>
             <div>
               <h2 className="text-lg font-semibold text-black">{title}</h2>

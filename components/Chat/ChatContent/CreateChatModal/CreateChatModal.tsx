@@ -1,5 +1,5 @@
 import { startConversation } from '@/app/api/chat';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import Modal from '@/components/common/Modal/Modal';
 import { Typography } from '@/components/common/Typography/Typography';
 import {
@@ -26,6 +26,8 @@ import * as z from 'zod';
 
 export interface ICreateChatModalProps {
   onChatCreated?: (conversationId: number) => void;
+  trigger?: React.ReactNode;
+  defaultReceiverId?: number;
 }
 
 const formSchema = z.object({
@@ -64,6 +66,18 @@ const CreateChatModal = (props: ICreateChatModalProps) => {
     }
   );
 
+  const trigger = props.trigger || (
+    <div className="cursor-pointer">
+      <SquarePen className="items-center mt-2 ml-1.5" />
+    </div>
+  );
+
+  React.useEffect(() => {
+    if (props.defaultReceiverId) {
+      form.setValue('receiverId', props.defaultReceiverId);
+    }
+  }, [myPenpals, open]);
+
   const onSubmit = form.handleSubmit((values) => {
     sendMessage(values);
   });
@@ -74,11 +88,7 @@ const CreateChatModal = (props: ICreateChatModalProps) => {
       className="!w-[530px]"
       onOpenChange={() => setOpen(!open)}
       isSeperator={false}
-      openModalButton={
-        <div className="cursor-pointer">
-          <SquarePen className="items-center mt-2 ml-1.5" />
-        </div>
-      }
+      openModalButton={trigger}
       header={
         <>
           <Typography variant="h3" weight="semibold" className="text-center">
@@ -96,7 +106,9 @@ const CreateChatModal = (props: ICreateChatModalProps) => {
               control={form.control}
               name="receiverId"
               render={({ field }) => (
-                <FormItem className="mb-7">
+                <FormItem
+                  className={`mb-7 ${props.defaultReceiverId ? 'hidden' : ''}`}
+                >
                   <FormLabel>To:</FormLabel>
                   <FormControl>
                     {/* <Select
@@ -107,6 +119,7 @@ const CreateChatModal = (props: ICreateChatModalProps) => {
                       }}
                     /> */}
                     <SelectV2
+                      isDisabled={props.defaultReceiverId ? true : false}
                       options={
                         myPenpals?.map((penpal: any) => ({
                           label: penpal.friend?.profile[0]?.fullname,

@@ -8,6 +8,7 @@ import {
   removeUserId,
 } from '../utils/encryption';
 import { myPenpals as getMyPenpals } from '../api/penpals';
+import { getBlockedUsers } from '../api/users';
 
 type IGlobalState = {
   isUserGetInfo: boolean;
@@ -17,6 +18,7 @@ type IGlobalState = {
   myPenpals: IPenpal[];
   setIsUserGetInfo: (value: boolean) => void;
   setUserInformation: (value: IUserInformation) => void;
+  usersIBlocked: any[];
   setIsAuthenticated?: (value: boolean) => void;
   isAuthenticated?: boolean;
   logout: () => void;
@@ -31,6 +33,7 @@ export const GlobalState = createContext<IGlobalState>({
   myPenpals: [] as IPenpal[],
   setIsUserGetInfo: () => {},
   setUserInformation: () => {},
+  usersIBlocked: [] as any[],
   setIsAuthenticated: () => {},
   isAuthenticated: false,
   logout: () => {},
@@ -44,6 +47,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     {} as IUserInformation
   );
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [usersIBlocked, setUsersIBlocked] = useState<any[]>([]);
   const [myPenpals, setMyPenpals] = useState<IPenpal[]>([]);
   const [joinedCommunities, setJoinedCommunities] = useState<ICommunityJoin[]>(
     []
@@ -57,6 +61,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     setMyPenpals([]);
     removeToken();
     removeUserId();
+    setUsersIBlocked([]);
   };
 
   useQuery(
@@ -82,7 +87,17 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     }
   );
 
-  console.log(isAuthenticated, 'isAuthenticated');
+  useQuery(['get-users-i-blocked', userId], () => getBlockedUsers(), {
+    enabled: userId !== 'undefined' && userId !== null ? true : false,
+    retry: 100,
+    retryDelay: 5000,
+    onSuccess: (res) => {
+      setUsersIBlocked(res.data.data);
+    },
+    onError: (err) => {
+      console.log(err, '======> ERROR');
+    },
+  });
 
   useQuery(
     ['UserJoinedCommunities', userId],
@@ -133,6 +148,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         myPenpals,
         isAuthenticated,
         setIsAuthenticated,
+        usersIBlocked,
         logout,
         setIsUserGetInfo,
         setUserInformation,

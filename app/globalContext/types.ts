@@ -1,3 +1,17 @@
+export interface BlockedFrom {
+  User: {
+    id: number;
+    name: string;
+    email: string;
+    attachment: {
+      file_path: string;
+      id: number;
+    };
+  };
+  blockedUserId: number;
+  userId: number;
+  id: number;
+}
 export interface IUserInformation {
   id: number;
   name: string;
@@ -9,6 +23,7 @@ export interface IUserInformation {
     file_path: string;
     id: number;
   };
+  BlockedFrom: BlockedFrom[];
 }
 
 interface IProfile {

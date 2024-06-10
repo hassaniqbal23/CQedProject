@@ -1,3 +1,4 @@
+import { number } from 'echarts';
 import http from '../utils/http';
 
 export const getCommunities = (
@@ -145,4 +146,37 @@ export const unlikeCommunityPost = (id: number) => {
   return http.delete(`/community-post-like/${id}/delete-community-post-like`);
 };
 
-//community/communities-joined  get
+export const getStudentsFeeds = (
+  id: number,
+  limit = 10,
+  pageParam = number
+) => {
+  return http.get(`/community/${id}/feeds?page=${1}&limit=10`);
+};
+
+export const getStudentCommunities = (id: number) => {
+  return http.get(`/users/${id}/communities`);
+};
+
+export const getCommunityJoined = (page: number = 1, limit: number = 10) => {
+  return http
+    .get(`/community/communities-joined?page=${page}&limit=${limit}`)
+    .then((res) => res.data);
+};
+export const getMyCommunity = (page: number = 1, limit: number = 10) => {
+  return http
+    .get(`/community/my-communities?page=${page}&limit=${limit}`)
+    .then((res) => res.data);
+};
+export const getMyCommunityMembers = (
+  id: number,
+  page: number = 1,
+  limit: number = 10,
+  search: string = ''
+) => {
+  return http
+    .get(
+      `/community/${id}/community-members?page=${page}&limit=${limit}&search=${search}`
+    )
+    .then((res) => res.data);
+};

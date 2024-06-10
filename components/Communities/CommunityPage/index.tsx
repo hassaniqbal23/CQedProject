@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useQuery, useQueryClient } from 'react-query';
 import { getCommunity } from '@/app/api/communities';
@@ -6,11 +6,14 @@ import { CommunityDetailsCard } from '../CommunityDetailsCard/CommnunityDetailsC
 import { CommunityMembersCard } from '../CommunityMembersCard/CommunityMembersCard';
 import { Feeds } from '../Feeds/Feeds';
 
-const Community = () => {
+interface IProps {
+  module: 'teachers' | 'students';
+}
+const Community: FC<IProps> = ({ module }) => {
   const queryClient = useQueryClient();
   const params = useParams();
 
-  const { data, isLoading } = useQuery(
+  const { data: communities, isLoading } = useQuery(
     'community',
     () => getCommunity(params?.id),
     {
@@ -24,26 +27,28 @@ const Community = () => {
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row gap-3">
-        <div className="w-full md:w-3/4 ">
+      <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-10 gap-4 lg:gap-6">
+        <div className="w-full col-span-1 md:col-span-4 lg:col-span-7 ">
           <CommunityDetailsCard
             loading={isLoading}
-            communityId={data?.data.id}
-            title={data?.data.name}
-            image={data?.data.profile_picture.file_path}
-            members={data?.data?._count.CommunityUsers}
-            description={data?.data.description}
+            communityId={communities?.data?.id}
+            title={communities?.data?.name}
+            image={communities?.data?.profile_picture?.file_path}
+            members={communities?.data?._count?.CommunityUsers}
+            description={communities?.data?.description}
+            createdBy={communities?.data?.created_by}
           />
         </div>
-        <div>
+        <div className="col-span-1 md:col-span-2 lg:col-span-3">
           <CommunityMembersCard
             loading={isLoading}
-            members={data?.data.CommunityUsers}
-            totalMembers={data?.data._count.CommunityUsers}
+            members={communities?.data?.CommunityUsers}
+            totalMembers={communities?.data?._count?.CommunityUsers}
+            routeLink={module}
           />
         </div>
       </div>
-      <Feeds communityId={data?.data.id} />
+      <Feeds communityId={communities?.data?.id} />
     </div>
   );
 };

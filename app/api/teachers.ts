@@ -19,3 +19,17 @@ export const updateProfile = (meta: { bio: string }) => {
 
 export const deleteTeacher = (id: number) =>
   http.delete(`/teachers/${id}/delete-teacher`);
+
+export const getProfiledata = async (id: number | string) => {
+  return http.get(`/teachers/${id}/get-teacher`);
+};
+
+export const getTeachersBySearch = (
+  page: string | number = 1,
+  pageSize: number | string = 10,
+  search: string
+) => {
+  return http.get(
+    `/teachers/search?page=${page}&limit=${pageSize}&name=${search}`
+  );
+};

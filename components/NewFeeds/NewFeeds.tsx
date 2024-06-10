@@ -17,15 +17,16 @@ export const NewFeeds: React.FC<NewFeedsProps> = ({
   return (
     <Card className={className}>
       <div className="grid gap-4 p-4">
-        <div className="flex items-center gap-5">
+        <div className="flex items-center flex-wrap md:flex-nowrap gap-5">
           <Image
             src={userImage}
             alt="user-img"
             width={40}
             height={40}
             className="rounded-full h-10 w-10"
+            unoptimized={true}
           />
-          <div className="w-full">
+          <div className="w-7/12 md:w-full ">
             <Input
               iconColor="#5D5E68"
               iconPosition="right"
@@ -36,8 +37,8 @@ export const NewFeeds: React.FC<NewFeedsProps> = ({
             />
           </div>
         </div>
-        <div className="flex justify-between items-center ml-16">
-          <div className="flex gap-5">
+        <div className="flex justify-between items-center flex-wrap md:flex-nowrap ml-0 md:ml-16">
+          <div className="flex gap-5 mb-2 md:mb-0">
             <div className="flex gap-3" onClick={onClick}>
               <ImageIcon />
               <p className="cursor-pointer">Photo/Video</p>

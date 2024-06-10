@@ -23,7 +23,7 @@ import { toast } from 'react-toastify';
 import { Camera, CircleUser, ImagePlus } from 'lucide-react';
 import ImageUpload from '../ImageUpload/ImageUpload';
 import { deleteProfileImage, uploadProfileImage } from '@/app/api/admin';
-import { useGlobalState } from '@/app/gobalContext/globalContext';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import { Typography } from '../Typography/Typography';
 
 const formSchema = z.object({
