@@ -107,7 +107,7 @@ export const ChatProvider = ({ children }: any) => {
     );
 
   const { isLoading: inboxLoading, data: allConversationResponse } = useQuery(
-    ['get-all-conversations', selectedConversationId],
+    ['get-all-conversations'],
     () => getAllConversations(),
     {
       onSuccess(res) {
