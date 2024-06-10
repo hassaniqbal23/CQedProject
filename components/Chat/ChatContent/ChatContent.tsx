@@ -1,8 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ChatHeader } from './ChatHeader/ChatHeader';
-import iconMenu from '@/public/IconsMenu.svg';
 import { v4 as uuidv4 } from 'uuid';
-
 import { ChatInput } from './ChatInput/ChatInput';
 import ChatMessages from './Chatmessages/ChatMessages';
 import { useChatGuard } from '../ChatProvider/ChatGuard';
@@ -30,34 +28,36 @@ const ChatContent: FC = () => {
   const queryClient = useQueryClient();
 
   const onSendMessage = (data: any) => {
-    const messageData = {
-      clientID: uuidv4(),
-      message: data.message,
-      conversationId: currentConversation.id,
-      attachments: data.attachments.map((file: any) => {
-        return { file_path: file.file_path, id: file.id };
-      }),
-      receiverId: currentConversation.user.id,
-      users: currentConversation.users,
-      senderId: userInformation.id,
-      created_at: new Date().toISOString(),
-    };
-    setInboxResponse(
-      inboxResponse.map((conversation: any) => {
-        if (conversation.id === currentConversation.id) {
-          return {
-            ...conversation,
-            messages: [
-              ...conversation.messages,
-              JSON.parse(JSON.stringify(messageData)),
-            ],
-            lastMessageReceived: messageData.created_at,
-          };
-        }
-        return conversation;
-      })
-    );
-    sendMessage(messageData);
+    if (currentConversation) {
+      const messageData = {
+        clientID: uuidv4(),
+        message: data.message,
+        conversationId: currentConversation.id,
+        attachments: data.attachments.map((file: any) => {
+          return { file_path: file.file_path, id: file.id };
+        }),
+        receiverId: currentConversation.user.id,
+        users: currentConversation.users,
+        senderId: userInformation.id,
+        created_at: new Date().toISOString(),
+      };
+      setInboxResponse(
+        inboxResponse.map((conversation: any) => {
+          if (conversation.id === currentConversation.id) {
+            return {
+              ...conversation,
+              messages: [
+                ...conversation.messages,
+                JSON.parse(JSON.stringify(messageData)),
+              ],
+              lastMessageReceived: messageData.created_at,
+            };
+          }
+          return conversation;
+        })
+      );
+      sendMessage(messageData);
+    }
   };
   let noChatMessage =
     inboxResponse && inboxResponse.length > 0
@@ -95,7 +95,7 @@ const ChatContent: FC = () => {
         <div className="flex flex-col w-full h-[calc(100vh_-_79px)] overflow-hidden bg-white ">
           <div className="sticky top-0 bg-white">
             <ChatHeader
-              user={currentConversation}
+              conversation={currentConversation}
               isOnline={realtimeConnectedUsersIds.includes(
                 currentConversation.user.id
               )}
@@ -108,7 +108,7 @@ const ChatContent: FC = () => {
             />
           </div>
           <div className="flex-grow ">
-            <ChatMessages user={currentConversation} />
+            <ChatMessages conversation={currentConversation} />
           </div>
           <div className="bottom-0 bg-white py-3 px-6 border-t">
             <ChatInput onSendMessage={onSendMessage} />

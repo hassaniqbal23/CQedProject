@@ -16,7 +16,6 @@ export const TeacherProfileView = () => {
   const { data, error, isLoading } = useQuery(['profileData', params?.id], () =>
     getProfiledata(params?.id as any)
   );
-  console.log(data);
 
   if (isLoading) return <div>Loading...</div>;
 

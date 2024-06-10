@@ -11,16 +11,17 @@ import 'react-image-lightbox/style.css';
 import { ConversationUserSheet } from '../../ConversationUserSheet/ConversationUserSheet';
 import { DELETE_CONVERSATION } from '@/components/Chat/EventBus/constants';
 import { useEventBus } from '@/components/Chat/EventBus/EventBus';
-import { ChatUser, IAttachment, IMessage } from '@/app/globalContext/types';
+import { IAttachment, IMessage } from '@/app/globalContext/types';
+import { ChatConversation } from '@/types/chat';
 
 interface Iprops {
-  userImage: string;
+  userImage?: string;
   isCurrentUser?: boolean;
   onDeleteMessage?: (id: string | number) => void;
   showProfile?: boolean;
   showDate?: boolean;
   hasDeleted?: boolean;
-  user?: ChatUser;
+  conversation: ChatConversation;
   messages?: IMessage;
 }
 
@@ -33,7 +34,7 @@ const ChatMessage: FC<Iprops> = ({
   showDate,
   showProfile,
   hasDeleted,
-  user,
+  conversation,
   messages,
 }: Iprops) => {
   const { dispatchEvent } = useEventBus();
@@ -66,7 +67,7 @@ const ChatMessage: FC<Iprops> = ({
               }
             >
               <ConversationUserSheet
-                user={user}
+                conversation={conversation}
                 onChatDelete={() => {
                   dispatchEvent(DELETE_CONVERSATION, null);
                 }}

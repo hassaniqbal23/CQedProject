@@ -8,19 +8,19 @@ import {
 import { Typography } from '@/components/common/Typography/Typography';
 import { EllipsisVertical } from 'lucide-react';
 import { ConversationUserSheet } from '../ConversationUserSheet/ConversationUserSheet';
-import { ChatUser } from '@/app/globalContext/types';
+import { ChatConversation } from '@/types/chat';
 
 interface IProps {
   isOnline: boolean;
   onDeleteConversations?: (id: string | number) => void;
   isTyping?: boolean;
-  user: ChatUser;
+  conversation: ChatConversation;
 }
 
 export const ChatHeader: FC<IProps> = ({
   isOnline,
   isTyping,
-  user,
+  conversation,
   onDeleteConversations,
 }: IProps) => {
   return (
@@ -32,7 +32,7 @@ export const ChatHeader: FC<IProps> = ({
               <Avatar className="w-14 h-14 md:w-[48px] md:h-[48px] rounded-full bg-lightgray">
                 <AvatarImage
                   src={
-                    user.user.attachment?.file_path ||
+                    conversation.user.attachment?.file_path ||
                     '/assets/profile/profile.svg'
                   }
                   alt="Profile Picture"
@@ -44,7 +44,7 @@ export const ChatHeader: FC<IProps> = ({
                   weight="medium"
                   className="text-[#1E1F21] !text-[17px] font-semibold"
                 >
-                  {user.user.name}
+                  {conversation.user.name}
                 </Typography>
                 <Typography
                   variant="p"
@@ -58,9 +58,10 @@ export const ChatHeader: FC<IProps> = ({
           }
         >
           <ConversationUserSheet
-            user={user}
+            conversation={conversation}
             onChatDelete={() => {
-              onDeleteConversations && onDeleteConversations(user.user.id);
+              onDeleteConversations &&
+                onDeleteConversations(conversation.user.id);
             }}
           />
         </ChatSidebarSheetDemo>
@@ -77,7 +78,8 @@ export const ChatHeader: FC<IProps> = ({
               content: (
                 <div
                   onClick={() =>
-                    onDeleteConversations && onDeleteConversations(user.user.id)
+                    onDeleteConversations &&
+                    onDeleteConversations(conversation.user.id)
                   }
                 >
                   Delete Conversation

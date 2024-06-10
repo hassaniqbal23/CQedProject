@@ -6,13 +6,13 @@ import { useMutation } from 'react-query';
 import { deleteMessage } from '@/app/api/chat';
 import dayjs from 'dayjs';
 import { format, isSameDay, parseISO, differenceInMinutes } from 'date-fns';
-import { ChatUser } from '@/app/globalContext/types';
+import { ChatConversation } from '@/types/chat';
 
 interface IChatMessages {
-  user: ChatUser;
+  conversation: ChatConversation;
 }
 
-const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
+const ChatMessages: React.FC<IChatMessages> = ({ conversation }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { userInformation } = useGlobalState();
   const [deletedMessage, setDeletedMessage] = React.useState<Number[]>([]);
@@ -87,11 +87,13 @@ const ChatMessages: React.FC<IChatMessages> = ({ user }) => {
               messages={message}
               showProfile={showProfile}
               showDate={showDate}
-              user={user}
+              conversation={conversation}
               userImage={
                 isMe
                   ? userInformation.attachment?.file_path
-                  : user.user.attachment?.file_path
+                  : conversation.user.attachment
+                    ? conversation.user.attachment?.file_path
+                    : ''
               }
               onDeleteMessage={handleDeleteMessage}
               isCurrentUser={isMe}

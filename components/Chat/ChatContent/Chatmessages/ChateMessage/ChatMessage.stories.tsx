@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ChatMessage from './ChatMessage';
-import { ChatUser, IMessage } from '@/app/globalContext/types';
+import { IMessage } from '@/app/globalContext/types';
+import { ChatConversation } from '@/types/chat';
 
 const meta: Meta<typeof ChatMessage> = {
   title: 'Chat/ChatMessage',
@@ -10,17 +11,31 @@ const meta: Meta<typeof ChatMessage> = {
 export default meta;
 type Story = StoryObj<typeof ChatMessage>;
 
-const user: ChatUser = {
+const user: ChatConversation = {
   user: {
     id: 1,
-    name: 'ASArtist',
     email: 'asartist@example.com',
-    attachment: {
-      file_path: '/assets/profile/profile.svg',
-      id: 1,
-    },
+    schoolId: 0,
+    status: 0,
+    name: 'ayaz',
   },
   id: 1,
+  lastMessageReceived: '2023-06-11T10:00:00Z',
+  messages: [
+    {
+      id: 1,
+      message: 'Hello, how are you?',
+      created_at: '2023-06-11T09:00:00Z',
+      attachments: [
+        {
+          id: 1,
+          file_path: '/assets/messages/attachment1.svg',
+        },
+      ],
+    },
+  ],
+  schoolId: 1,
+  users: [1, 2],
 };
 
 const message: IMessage = {
@@ -40,7 +55,7 @@ export const ChatMessageItem: Story = {
   args: {
     userImage: '/assets/profile/profile.svg',
     messages: message,
-    user: user,
+    conversation: user,
     showProfile: true,
     showDate: true,
     isCurrentUser: false,

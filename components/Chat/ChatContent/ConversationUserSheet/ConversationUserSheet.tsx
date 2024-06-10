@@ -8,14 +8,17 @@ import { useGlobalState } from '@/app/globalContext/globalContext';
 import { ReportClassDialog } from '@/components/common/DeleteClassModal/ReportClassModal';
 import { useChatFeatures } from '../../ChatProvider/ChatProvider';
 import Image from 'next/image';
-import { ChatUser } from '@/app/globalContext/types';
+import { ChatConversation } from '@/types/chat';
 
 interface IProps {
-  user: ChatUser | undefined;
+  conversation: ChatConversation;
   onChatDelete?: () => void;
 }
 
-export const ConversationUserSheet: FC<IProps> = ({ user, onChatDelete }) => {
+export const ConversationUserSheet: FC<IProps> = ({
+  conversation,
+  onChatDelete,
+}) => {
   const { usersIBlocked } = useGlobalState();
   const queryClient = useQueryClient();
   const { currentConversationAttachments } = useChatFeatures();
@@ -72,12 +75,12 @@ export const ConversationUserSheet: FC<IProps> = ({ user, onChatDelete }) => {
   };
 
   const handleBlockUnblock = () => {
-    if (user) {
-      const blockedUserId = getBlockedUserId(Number(user.user.id));
+    if (conversation) {
+      const blockedUserId = getBlockedUserId(Number(conversation.user.id));
       if (blockedUserId) {
         unblockUserMutation(blockedUserId);
       } else {
-        blockUserMutation(Number(user.user.id));
+        blockUserMutation(Number(conversation.user.id));
       }
     }
   };
@@ -92,7 +95,9 @@ export const ConversationUserSheet: FC<IProps> = ({ user, onChatDelete }) => {
     },
     {
       icon: <PhoneOff size={18} />,
-      label: isUserBlocked(Number(user?.user?.id)) ? 'Unblock' : 'Block',
+      label: isUserBlocked(Number(conversation?.user?.id))
+        ? 'Unblock'
+        : 'Block',
       command: handleBlockUnblock,
     },
     {
@@ -108,7 +113,10 @@ export const ConversationUserSheet: FC<IProps> = ({ user, onChatDelete }) => {
 
   const handleReport = (reportText?: string) => {
     if (reportText) {
-      reportUserMutation({ userId: Number(user?.user?.id), reportText });
+      reportUserMutation({
+        userId: Number(conversation?.user?.id),
+        reportText,
+      });
     }
     setReport(false);
   };
@@ -119,7 +127,8 @@ export const ConversationUserSheet: FC<IProps> = ({ user, onChatDelete }) => {
         <Avatar className="w-[150px] h-[150px] rounded-full bg-lightgray">
           <AvatarImage
             src={
-              user?.user?.attachment?.file_path || '/assets/profile/profile.svg'
+              conversation?.user?.attachment?.file_path ||
+              '/assets/profile/profile.svg'
             }
             alt="Profile Picture"
           />
@@ -129,7 +138,7 @@ export const ConversationUserSheet: FC<IProps> = ({ user, onChatDelete }) => {
           weight="medium"
           className="text-[#131517] text-[20px] font-semibold text-center mt-4"
         >
-          {user?.user?.name}
+          {conversation?.user?.name}
         </Typography>
         <Button className="rounded-full bg-[#2183C4] text-[#F5FBFF] text-sm w-32 h-10 mt-3">
           View Profile
