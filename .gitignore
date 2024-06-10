@@ -40,3 +40,5 @@ yarn.lock
 certificates
 *storybook.log
 /storybook-static
+
+/package.json/yarn.lock

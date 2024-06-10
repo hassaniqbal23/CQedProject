@@ -44,11 +44,6 @@ export const SchoolLayout: FC<IProps> = ({ children }) => {
       path: '/schools/dashboard',
     },
     {
-      icon: '/assets/sidebaricons/classroom.svg',
-      title: 'Classrooms',
-      path: '/schools/classrooms',
-    },
-    {
       icon: '/assets/sidebaricons/students.svg',
       title: 'Students',
       path: '/schools/students',
