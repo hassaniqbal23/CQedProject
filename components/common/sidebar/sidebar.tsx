@@ -58,7 +58,7 @@ export const Sidebar: FC<IProps> = ({
               priority={true}
             />
           </div>
-          <div className="flex justify-between flex-col h-full pt-6 pb-[16px] overflow-y-auto">
+          <div className="flex justify-between flex-col h-full pt-6 pb-[16px] overflow-y-auto  scrollbar-hide ">
             <SidebarMenu
               sidebarLinks={sidebarLinks}
               pathname={pathname}
