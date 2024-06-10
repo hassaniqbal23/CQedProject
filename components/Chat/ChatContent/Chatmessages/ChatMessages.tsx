@@ -6,7 +6,7 @@ import { useMutation } from 'react-query';
 import { deleteMessage } from '@/app/api/chat';
 import dayjs from 'dayjs';
 import { format, isSameDay, parseISO, differenceInMinutes } from 'date-fns';
-import { ChatUser } from '@/app/gobalContext/types';
+import { ChatUser } from '@/app/globalContext/types';
 
 interface IChatMessages {
   user: ChatUser;

@@ -4,12 +4,11 @@ import { Typography } from '@/components/common/Typography/Typography';
 import { CircleAlert, PhoneOff, Trash2 } from 'lucide-react';
 import { useMutation, useQueryClient } from 'react-query';
 import { blockUser, unblockUser, reportUser } from '@/app/api/users';
-import { DeleteClassDialog } from '@/components/common/DeleteClassModal/DeleteClassModal';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { ReportClassDialog } from '@/components/common/DeleteClassModal/ReportClassModal';
 import { useChatFeatures } from '../../ChatProvider/ChatProvider';
 import Image from 'next/image';
-import { ChatUser } from '@/app/gobalContext/types';
+import { ChatUser } from '@/app/globalContext/types';
 
 interface IProps {
   user: ChatUser | undefined;

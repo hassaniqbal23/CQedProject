@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ChatHeader } from './ChatHeader';
-import { ChatUser } from '@/app/gobalContext/types';
+import { ChatUser } from '@/app/globalContext/types';
 
 const meta: Meta<typeof ChatHeader> = {
   title: 'Chat/ChatHeader',

@@ -11,7 +11,7 @@ import 'react-image-lightbox/style.css';
 import { ConversationUserSheet } from '../../ConversationUserSheet/ConversationUserSheet';
 import { DELETE_CONVERSATION } from '@/components/Chat/EventBus/constants';
 import { useEventBus } from '@/components/Chat/EventBus/EventBus';
-import { ChatUser, IAttachment, IMessage } from '@/app/gobalContext/types';
+import { ChatUser, IAttachment, IMessage } from '@/app/globalContext/types';
 
 interface Iprops {
   userImage: string;
@@ -113,14 +113,14 @@ const ChatMessage: FC<Iprops> = ({
                     prevSrc={
                       attachments[
                         (photoIndex + attachments.length - 1) %
-                        attachments.length
+                          attachments.length
                       ].file_path
                     }
                     onCloseRequest={() => setIsOpen(false)}
                     onMovePrevRequest={() =>
                       setPhotoIndex(
                         (photoIndex + attachments.length - 1) %
-                        attachments.length
+                          attachments.length
                       )
                     }
                     onMoveNextRequest={() =>

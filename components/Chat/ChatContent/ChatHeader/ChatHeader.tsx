@@ -8,7 +8,7 @@ import {
 import { Typography } from '@/components/common/Typography/Typography';
 import { EllipsisVertical } from 'lucide-react';
 import { ConversationUserSheet } from '../ConversationUserSheet/ConversationUserSheet';
-import { ChatUser } from '@/app/gobalContext/types';
+import { ChatUser } from '@/app/globalContext/types';
 
 interface IProps {
   isOnline: boolean;
