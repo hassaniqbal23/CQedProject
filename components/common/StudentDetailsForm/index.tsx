@@ -2,7 +2,6 @@ import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import {
-  Dropdown,
   Form,
   FormControl,
   FormField,
@@ -16,14 +15,12 @@ import { useForm } from 'react-hook-form';
 import Progressbar from '../Progressbar/Progressbar';
 import DatePicker from '@/components/ui/date-picker/date-picker';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
+import MultipleSelector from '@/components/common/From/MultiSelect';
 import BottomNavbar from '../navbar/bottomNavbar';
 import { useMutation } from 'react-query';
 import { StudentsCreate } from '@/app/api/students';
 import { IStudentInfo } from '@/app/api/types';
-import {
-  SelectCountry,
-  SelectLanguage,
-} from '@/components/ui/select-v2/select-v2-components';
+import { SelectCountry } from '@/components/ui/select-v2/select-v2-components';
 import { Typography } from '../Typography/Typography';
 
 const formSchema = z.object({
@@ -45,9 +42,14 @@ const formSchema = z.object({
   gender: z.string().refine((value) => value.trim() !== '', {
     message: ' Please select your Gender.',
   }),
-  language: z.string().refine((value) => value.trim() !== '', {
-    message: 'Please Select one language.',
-  }),
+  language: z
+    .array(
+      z.object({
+        value: z.string(),
+        label: z.string(),
+      })
+    )
+    .nonempty({ message: 'Please Select one language.' }),
   university: z.string().refine((value) => value.trim() !== '', {
     message: 'Please enter your University.',
   }),
@@ -62,7 +64,7 @@ function StudentsDetailsFrom() {
       nick_name: '',
       country: '',
       gender: '',
-      language: '',
+      language: [],
       university: '',
     },
   });
@@ -86,8 +88,8 @@ function StudentsDetailsFrom() {
 
   return (
     <>
-      <div className="flex flex-col items-center max-w-3xl mx-auto mt-8  h-screen ">
-        <div className="my-8 w-3/5">
+      <div className="flex flex-col w-9/12 items-center mx-auto mt-8  h-screen ">
+        <div className="my-8 w-2/6 ">
           <Progressbar heading="Get Started" percentage={0} />
         </div>
         <div className="flex flex-col justify-center items-center mb-4">
@@ -219,7 +221,7 @@ function StudentsDetailsFrom() {
                   )}
                 />
               </div>
-              <div className="grid md:grid-cols-2 md:gap-6 items-center">
+              <div className="grid md:grid-cols-2 md:gap-6 ">
                 <FormField
                   control={form.control}
                   name="country"
@@ -235,7 +237,6 @@ function StudentsDetailsFrom() {
                               return;
                             }
                             form.setValue('country', e.value);
-                            form.setValue('language', '');
                           }}
                           label=""
                         ></SelectCountry>
@@ -254,19 +255,15 @@ function StudentsDetailsFrom() {
                       <FormItem>
                         <FormLabel>Language</FormLabel>
                         <FormControl>
-                          <SelectLanguage
-                            menuPosition={'fixed'}
-                            isDisabled={values.country.length == 0}
-                            label=""
-                            countryCode={values.country}
-                            onChange={(e: any) => {
-                              if (!e) {
-                                form.setValue('language', '');
-                                return;
-                              }
-                              form.setValue('language', e.value);
-                            }}
-                          ></SelectLanguage>
+                          <MultipleSelector
+                            options={[
+                              { value: 'English', label: 'English' },
+                              { value: 'Udru', label: 'Udru' },
+                              { value: 'Spanish', label: 'Spanish' },
+                              { value: 'French', label: 'French' },
+                            ]}
+                            placeholder="Add Your Languages "
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
