@@ -52,7 +52,6 @@ export const AiMatch = ({ module }: AiMatchProps) => {
   const { myPenpals } = useGlobalState();
   const [userInterests, setUserInterests] = useState<string[]>([]);
   const [showUserProfile, setShowUserProfile] = useState<boolean>(false);
-  const [queryParams, setQueryParams] = useState<string>('');
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -156,6 +155,17 @@ export const AiMatch = ({ module }: AiMatchProps) => {
     interestsScore !== null
       ? `${interestsScore}/${userInterests.length} interests matched`
       : '';
+  const { user } = data?.data?.data || {};
+  const userId = user?.id;
+  const userRole = user?.role?.name;
+
+  const handleViewProfile = () => {
+    const path =
+      userRole === 'Teacher'
+        ? `/schools/teachers/${userId}`
+        : `/teachers/students/${userId}`;
+    router.push(path);
+  };
   return (
     <>
       <div className="mt-4">
@@ -242,12 +252,12 @@ export const AiMatch = ({ module }: AiMatchProps) => {
                         onChange={field.onChange}
                         placeholder="Add interests"
                         options={[
-                          { value: 'culture', label: 'Culture' },
-                          { value: 'languages', label: 'Languages' },
-                          { value: 'vulticulus', label: 'Vulticulus' },
-                          { value: 'alias', label: 'Alias' },
-                          { value: 'adventure', label: 'Adventure' },
-                          { value: 'ait', label: 'Ait' },
+                          { value: 'Culture', label: 'Culture' },
+                          { value: 'Languages', label: 'Languages' },
+                          { value: 'Vulticulus', label: 'Vulticulus' },
+                          { value: 'Alias', label: 'Alias' },
+                          { value: 'Adventure', label: 'Adventure' },
+                          { value: 'Ait', label: 'Ait' },
                         ]}
                       />
                     </FormControl>
@@ -325,17 +335,7 @@ export const AiMatch = ({ module }: AiMatchProps) => {
                 isMobile ? 'mobile' : isTabletMini ? 'tablet' : 'desktop'
               }
               interestsMatched={interestsMatch}
-              onViewProfile={() => {
-                if (module === 'teacher') {
-                  router.push(
-                    `/schools/teachers/${data?.data?.data?.user?.id}`
-                  );
-                } else {
-                  router.push(
-                    `/teachers/students/${data?.data?.data?.user?.id}`
-                  );
-                }
-              }}
+              onViewProfile={handleViewProfile}
             />
           </div>
         ) : (
