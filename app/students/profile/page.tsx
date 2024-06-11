@@ -1,8 +1,9 @@
 import React from 'react';
+import PersonalProfilePage from '@/components/PersonalProfilePage/PersonalProfilePage';
 export default function StudentProfile() {
   return (
     <div>
-      <h1>Student Profile</h1>
+      <PersonalProfilePage />
     </div>
   );
 }
