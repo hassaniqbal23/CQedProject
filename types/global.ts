@@ -26,9 +26,9 @@ export interface IAttachments {
 
 export interface IUser {
   id: number;
-  name: string;
   schoolId: number;
   email: string;
+  name: string;
   status: number;
   attachment?: IAttachments;
 }

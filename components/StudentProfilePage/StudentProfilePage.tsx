@@ -28,8 +28,6 @@ const StudentProfilePage = () => {
     getStudentProfile(params?.id as any)
   );
 
-  console.log(studentProfile);
-
   const { mutate } = useMutation(
     ['startConversation'],
     (params: { id: number | string }) => startConversation(params.id),
@@ -114,8 +112,6 @@ const StudentProfilePage = () => {
       ),
     },
   ];
-
-  console.log(studentProfile?.data.data);
 
   return (
     <div className="">

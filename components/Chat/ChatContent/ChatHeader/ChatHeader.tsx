@@ -8,22 +8,19 @@ import {
 import { Typography } from '@/components/common/Typography/Typography';
 import { EllipsisVertical } from 'lucide-react';
 import { ConversationUserSheet } from '../ConversationUserSheet/ConversationUserSheet';
+import { ChatConversation } from '@/types/chat';
 
 interface IProps {
-  userImage: string;
-  userFullName: string;
   isOnline: boolean;
   onDeleteConversations?: (id: string | number) => void;
-  userId: string | number;
   isTyping?: boolean;
+  conversation: ChatConversation;
 }
 
 export const ChatHeader: FC<IProps> = ({
-  userImage,
-  userFullName,
   isOnline,
-  userId,
   isTyping,
+  conversation,
   onDeleteConversations,
 }: IProps) => {
   return (
@@ -33,18 +30,24 @@ export const ChatHeader: FC<IProps> = ({
           trigger={
             <div className="flex gap-3 items-center cursor-pointer">
               <Avatar className="w-14 h-14 md:w-[48px] md:h-[48px] rounded-full bg-lightgray">
-                <AvatarImage src={userImage} alt="Profile Picture" />
+                <AvatarImage
+                  src={
+                    conversation.user.attachment?.file_path ||
+                    '/assets/profile/profile.svg'
+                  }
+                  alt="Profile Picture"
+                />
               </Avatar>
               <div>
                 <Typography
-                  variant="body"
+                  variant="p"
                   weight="medium"
-                  className="text-[#1E1F21] text-[17px] font-semibold"
+                  className="text-[#1E1F21] !text-[17px] font-semibold"
                 >
-                  {userFullName}
+                  {conversation.user.name}
                 </Typography>
                 <Typography
-                  variant="body"
+                  variant="p"
                   weight="medium"
                   className={`text-sm  ${isOnline && !isTyping ? 'text-[#70C670]' : 'text-gray-400'}`}
                 >
@@ -55,11 +58,10 @@ export const ChatHeader: FC<IProps> = ({
           }
         >
           <ConversationUserSheet
-            userImage={userImage}
-            userFullName={userFullName}
-            userId={userId}
+            conversation={conversation}
             onChatDelete={() => {
-              onDeleteConversations && onDeleteConversations(userId);
+              onDeleteConversations &&
+                onDeleteConversations(conversation.user.id);
             }}
           />
         </ChatSidebarSheetDemo>
@@ -76,7 +78,8 @@ export const ChatHeader: FC<IProps> = ({
               content: (
                 <div
                   onClick={() =>
-                    onDeleteConversations && onDeleteConversations(userId)
+                    onDeleteConversations &&
+                    onDeleteConversations(conversation.user.id)
                   }
                 >
                   Delete Conversation
