@@ -352,40 +352,6 @@ const StudentProfileSettings = () => {
                 )}
               />
             </div>
-            <div className="grid grid-cols-2 md:gap-9 my-4 items-center">
-              <div>
-                <Typography
-                  variant="p"
-                  weight="semibold"
-                  className="mb-2 !text-[#12121B]"
-                >
-                  Countries I wish to visit
-                </Typography>
-
-                <FormField
-                  control={form.control}
-                  name="country"
-                  render={({ field }) => (
-                    <FormItem className="">
-                      <FormControl>
-                        <SelectCountry
-                          menuPosition={'fixed'}
-                          onChange={(e: any) => {
-                            if (!e) {
-                              form.setValue('country', '');
-                              return;
-                            }
-                            form.setValue('country', e.value);
-                          }}
-                          label=""
-                        ></SelectCountry>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
             <Button className="text-md" type="submit">
               Save Settings
             </Button>
