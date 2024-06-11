@@ -22,6 +22,8 @@ export const NewilyJoinedCard: Story = {
         buttonOnClick={() => {
           console.log('clicked');
         }}
+        onChatClick={() => {}}
+        // onUserClick={() => {}}
         description="Even though our cultural backgrounds and lifestyles were completely different..."
         mutualFriends="5 mutual friends"
         countryName="Pakistan"
