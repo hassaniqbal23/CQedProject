@@ -23,6 +23,17 @@ export interface IUserInformation {
     file_path: string;
     id: number;
   };
+  fullName: string;
+  username: string;
+  country: string;
+  birthday: string;
+  gender: string;
+  language: string[];
+  interests: string[];
+  aboutMe: string;
+  aboutMyCulture: string;
+  amazingThing: string;
+  shareExploreLearn: string;
   BlockedFrom: BlockedFrom[];
 }
 
