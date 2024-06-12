@@ -16,7 +16,6 @@ import { z } from 'zod';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { useMutation, useQueryClient } from 'react-query';
 import { deleteProfileImage, uploadProfileImage } from '@/app/api/admin';
-
 import { toast } from 'sonner';
 import { FormInput } from '../From/FormInput';
 import ImageUpload from '../ImageUpload/ImageUpload';
@@ -24,10 +23,10 @@ import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
 import DatePicker from '@/components/ui/date-picker/date-picker';
 import { SelectCountry } from '@/components/ui/select-v2/select-v2-components';
 import MultipleSelector from '../From/MultiSelect';
-import { Typography } from '../Typography/Typography';
+import DatePickerDemo from '@/components/ui/date-picker/date-picker';
 
 const formSchema = z.object({
-  fullName: z.string().min(2, {
+  name: z.string().min(2, {
     message: 'Name must be at least 2 characters',
   }),
   username: z.string().min(5, {
@@ -43,16 +42,16 @@ const StudentProfileSettings = () => {
   const form = useForm<any>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: '',
-      username: '',
-      photo: '',
-      birthday: '',
-      country: '',
-      gender: '',
-      language: [],
-      interests: [],
-      aboutMe: '',
-      aboutMyCulture: '',
+      name: userInformation?.profile?.full_name || '',
+      username: userInformation?.profile?.nick_name || '',
+      photo: userInformation?.attachment?.file_path || '',
+      birthday: userInformation?.profile?.dob || '',
+      country: userInformation?.profile?.state || '',
+      gender: userInformation?.profile?.gender || '',
+      language: userInformation?.profile?.languages || [],
+      interests: userInformation?.profile?.interests || [],
+      aboutMe: userInformation?.profile?.bio || '',
+      aboutMyCulture: userInformation?.profile?.culture_information?.[0] || '',
       amazingThing: '',
       shareExploreLearn: '',
     },
@@ -87,27 +86,60 @@ const StudentProfileSettings = () => {
       },
     }
   );
+  const formatDOB = (dob: string) => {
+    if (!dob) return null;
+    const dateOfBirth = new Date(dob);
+    const formattedDOB = new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    }).format(dateOfBirth);
 
+    return formattedDOB;
+  };
   useEffect(() => {
     if (userInformation) {
-      form.setValue('name', userInformation.name);
-      form.setValue('username', userInformation.username);
-      form.setValue('country', userInformation.country);
-      form.setValue('birthday', userInformation.birthday);
-      form.setValue('gender', userInformation.gender);
-      form.setValue('language', userInformation.language);
-      form.setValue('interests', userInformation.interests);
-      form.setValue('aboutMe', userInformation.aboutMe);
-      form.setValue('aboutMyCulture', userInformation.aboutMyCulture);
-      form.setValue('amazingThing', userInformation.amazingThing);
-      form.setValue('shareExploreLearn', userInformation.shareExploreLearn);
+      form.setValue(
+        'name',
+        userInformation.profile?.full_name || userInformation.name
+      );
+      form.setValue('username', userInformation.profile?.nick_name);
+      form.setValue('country', userInformation.profile?.state);
+      form.setValue('birthday', formatDOB(userInformation.profile?.dob));
+      form.setValue('gender', userInformation.profile?.gender);
+      form.setValue(
+        'language',
+        userInformation.profile?.languages.map((label: string) => ({
+          label: label,
+          value: label,
+        }))
+      );
+      form.setValue(
+        'interests',
+        userInformation.profile?.interests.map((label: string) => ({
+          label: label,
+          value: label,
+        }))
+      );
+      form.setValue('aboutMe', userInformation.profile?.bio);
+      form.setValue(
+        'aboutMyCulture',
+        userInformation.profile?.culture_information?.[0]
+      );
+      form.setValue('amazingThing', userInformation.profile?.amazingThing);
+      form.setValue(
+        'shareExploreLearn',
+        userInformation.profile?.shareExploreLearn
+      );
     }
   }, [userInformation]);
 
-  const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (values) => {
-    console.log(values, 'dataa');
-    console.log('ayaz');
-    // form.reset();
+  // console.log(userInformation.profile, 'userInformation..profile.hobbies.interests')
+
+  const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = () => {
+    const formData = form.getValues();
+    console.log('Form submitted with values:', formData);
+    form.reset();
   };
 
   return (
@@ -147,16 +179,16 @@ const StudentProfileSettings = () => {
                   <FormItem className="flex flex-col">
                     <FormLabel className="!text-sm">Birthday</FormLabel>
                     <FormControl>
-                      <DatePicker
-                        selectDate={(data: any) => {
-                          form.setValue('birthday', data);
-                        }}
+                      <DatePickerDemo
+                        // defaultValue={field.value ? new Date(field.value) : undefined}
+                        selectDate={(data: any) => field.onChange(data)}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="country"
@@ -166,6 +198,11 @@ const StudentProfileSettings = () => {
                     <FormControl>
                       <SelectCountry
                         menuPosition={'fixed'}
+                        value={
+                          field.value
+                            ? { value: field.value, label: field.value }
+                            : null
+                        }
                         onChange={(e: any) => {
                           if (!e) {
                             form.setValue('country', '');
@@ -188,15 +225,18 @@ const StudentProfileSettings = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-sm">Gender</FormLabel>
-                    <FormControl>
+                    <FormControl className="!bg-red-900 asasas">
                       <ChipSelector
+                        field={field.value}
                         onChange={(data: any) => field.onChange(data as string)}
                         options={[
                           {
                             label: 'Male',
                             value: 'Male',
                             render: (data: any) => (
-                              <div className="w-24 text-sm">{data.label}</div>
+                              <div className={`w-24 text-sm `}>
+                                {data.label}
+                              </div>
                             ),
                           },
                           {
@@ -224,13 +264,14 @@ const StudentProfileSettings = () => {
                 control={form.control}
                 name="language"
                 render={({ field }) => {
-                  const values = form.watch();
-
                   return (
                     <FormItem>
                       <FormLabel className="text-sm">Language</FormLabel>
                       <FormControl>
                         <MultipleSelector
+                          {...field}
+                          value={field.value}
+                          onChange={field.onChange}
                           options={[
                             { value: 'English', label: 'English' },
                             { value: 'Udru', label: 'Udru' },
@@ -353,7 +394,7 @@ const StudentProfileSettings = () => {
                 )}
               />
             </div>
-            <Button className="text-md my-4" type="submit">
+            <Button className="text-md my-4 hover:bg-primary-600" type="submit">
               Save Settings
             </Button>
           </form>
