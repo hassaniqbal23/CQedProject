@@ -25,7 +25,7 @@ import { Typography } from '@/components/common/Typography/Typography';
 import { IoEllipsisVertical } from 'react-icons/io5';
 import Delete from '@/components/common/DeleteAlert/DeleteAlert';
 
-const Schools = () => {
+const Universities = () => {
   const queryClent = useQueryClient();
   const [paginationSchools, setPaginationSchools] = useState<{
     schoolPage: number;
@@ -347,4 +347,4 @@ const Schools = () => {
   );
 };
 
-export default Schools;
+export default Universities;
