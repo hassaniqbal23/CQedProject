@@ -1,11 +1,12 @@
 'use client';
-
+import { deactivateSchool } from '@/app/api/admin';
 import { Dropdown } from '@/components/ui';
 import DataTable from '@/components/ui/table/table';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { IoEllipsisVertical } from 'react-icons/io5';
+import { useMutation, useQueryClient } from 'react-query';
 
 export interface SchoolTableProps {
   data: any;
@@ -15,6 +16,24 @@ export interface SchoolTableProps {
 
 function SchoolTable(props: SchoolTableProps) {
   const { data, noDataMessage, loading } = props;
+  const queryClient = useQueryClient();
+
+  const { mutate: deactiveSchool } = useMutation(
+    (schoolData: { schoolId: number; status: number }) => deactivateSchool(schoolData.schoolId, { status: schoolData.status }),
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries('getInvitedSchools');
+      },
+      onError: (error) => {
+        console.log('Error deactivating school', error);
+      },
+    }
+  );
+
+  const handleDeactivation = (schoolId: number, status: number) => {
+    deactiveSchool({ schoolId, status });
+  };
+
   return (
     <div className="w-full">
       <DataTable
@@ -72,7 +91,9 @@ function SchoolTable(props: SchoolTableProps) {
                       },
                       {
                         content: (
-                          <div onClick={() => console.log('ok')}>
+                          <div onClick={() =>
+                              handleDeactivation(data?.id, 2)
+                            }>
                             Deactivate University
                           </div>
                         ),
