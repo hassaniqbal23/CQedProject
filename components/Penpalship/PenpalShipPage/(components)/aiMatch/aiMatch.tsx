@@ -7,7 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
 import MultipleSelector from '@/components/common/From/MultiSelect';
-import { ProfileNotification } from '@/components/AiMatches/ProfileNotifaction/ProfileNotifaction';
 import { Form, FormField, FormLabel, FormMessage } from '@/components/ui';
 import { SelectCountry } from '@/components/ui/select-v2/select-v2-components';
 import { Typography } from '@/components/common/Typography/Typography';
@@ -16,6 +15,7 @@ import { CircleIcon } from '@/components/AiMatches/Circle/Circle';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { createPenpal, deletePenpal, penpalsFilters } from '@/app/api/penpals';
 import { useRouter } from 'next/navigation';
+import { UserProfileMatch } from '@/components/AiMatches/UserProfileMatch/UserProfileMatch';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 
 const formSchema = z.object({
@@ -52,25 +52,8 @@ export const AiMatch = ({ module }: AiMatchProps) => {
   const { myPenpals } = useGlobalState();
   const [userInterests, setUserInterests] = useState<string[]>([]);
   const [showUserProfile, setShowUserProfile] = useState<boolean>(false);
-  const [queryParams, setQueryParams] = useState<string>('');
   const queryClient = useQueryClient();
   const router = useRouter();
-
-  // const { data, isLoading, isError } = useQuery(
-  //   ['search-penpals'],
-  //   () => (queryParams ? penpalsFilters(queryParams) : Promise.resolve(null)),
-  //   {
-  //     enabled: !!queryParams,
-  //     onSuccess: (res) => {
-  //       queryClient.refetchQueries('penpalSuggestions');
-  //       queryClient.refetchQueries('MyPenPals');
-  //       setQueryParams('');
-  //     },
-  //     onError: (err) => {
-  //       console.log(err);
-  //     },
-  //   }
-  // );
 
   const {
     mutate: SearchPenpal,
@@ -130,7 +113,6 @@ export const AiMatch = ({ module }: AiMatchProps) => {
     if (myPenpal) {
       removePanpalRequest && removePanpalRequest(Number(myPenpal.id));
       setTimeout(() => {
-        // queryClient.removeQueries('search-penpals');
         setShowUserProfile(false);
         form.reset();
       }, 1000);
@@ -160,9 +142,7 @@ export const AiMatch = ({ module }: AiMatchProps) => {
       languages: values.language.map((language) => language.value),
     };
     SearchPenpal(formattedValues);
-    // setQueryParams(formattedValues as any);
     setUserInterests(formattedValues.interests);
-    // form.reset();
   };
 
   useEffect(() => {
@@ -176,6 +156,13 @@ export const AiMatch = ({ module }: AiMatchProps) => {
       ? `${interestsScore}/${userInterests.length} interests matched`
       : '';
 
+  const handleViewProfile = () => {
+    if (module === 'teacher') {
+      router.push(`/schools/teachers/${data?.data.data.user.id}`);
+    } else {
+      router.push(`/teachers/students/${data?.data.data.user.id}`);
+    }
+  };
   return (
     <>
       <div className="mt-4">
@@ -262,12 +249,15 @@ export const AiMatch = ({ module }: AiMatchProps) => {
                         onChange={field.onChange}
                         placeholder="Add interests"
                         options={[
-                          { value: 'culture', label: 'Culture' },
-                          { value: 'languages', label: 'Languages' },
-                          { value: 'vulticulus', label: 'Vulticulus' },
-                          { value: 'alias', label: 'Alias' },
-                          { value: 'adventure', label: 'Adventure' },
-                          { value: 'ait', label: 'Ait' },
+                          { value: 'Culture', label: 'Culture' },
+                          { value: 'Languages', label: 'Languages' },
+                          { value: 'Hiking', label: 'Hiking' },
+                          { value: 'Walking', label: 'Walking' },
+                          { value: 'Adventure', label: 'Adventure' },
+                          { value: 'Writing', label: 'Writing' },
+                          { value: 'Cooking', label: 'Cooking' },
+                          { value: 'Yoga', label: 'Yoga' },
+                          { value: 'Gym', label: 'Gym' },
                         ]}
                       />
                     </FormControl>
@@ -314,6 +304,8 @@ export const AiMatch = ({ module }: AiMatchProps) => {
                           { label: 'Persian', value: 'Persian' },
                           { label: 'English', value: 'English' },
                           { label: 'Korean', value: 'Korean' },
+                          { label: 'Italian', value: 'Italian' },
+                          { label: 'Spanish', value: 'Spanish' },
                         ]}
                       />
                     </FormControl>
@@ -335,28 +327,17 @@ export const AiMatch = ({ module }: AiMatchProps) => {
         </div>
         {showUserProfile ? (
           <div className={`order-1`}>
-            <ProfileNotification
-              heading="We have a match for you"
-              buttonOnClick={() => handleRemovePaypals(data?.data.data.user.id)}
-              countryFlag={`/country-flags/svg/${data?.data.data?.user?.country?.toLowerCase()}.svg`}
-              notification="Hello"
-              connect={
-                isUserPanpals(data?.data.data.user.id) ? 'Remove' : 'Connect'
+            <UserProfileMatch
+              user={data?.data?.data}
+              onButtonClick={() =>
+                handleRemovePaypals(data?.data?.data?.user?.id)
               }
-              username={data?.data?.data?.fullname}
-              screen={isMobile ? 'mobile' : isTabletMini ? 'tablet' : 'desktop'}
-              country={data?.data?.data?.user?.country?.toUpperCase()}
-              matches={interestsMatch}
-              userImage={data?.data.data.user.attachment.file_path}
-              userBio={`Hi I am ${data?.data?.data?.fullname}, a 24-year-old from ${data?.data?.data?.state} with a love for drawing and a passion for adventure`}
-              caption={`Did you know ${data?.data?.data?.fullname} has read 20 books last year 📖 🙂`}
-              onViewProfile={() => {
-                if (module === 'teacher') {
-                  router.push(`/schools/teachers/${data?.data.data.user.id}`);
-                } else {
-                  router.push(`/teachers/students/${data?.data.data.user.id}`);
-                }
-              }}
+              buttonText={isUserPanpals(data?.data?.data?.user?.id)}
+              screenType={
+                isMobile ? 'mobile' : isTabletMini ? 'tablet' : 'desktop'
+              }
+              interestsMatched={interestsMatch}
+              onViewProfile={handleViewProfile}
             />
           </div>
         ) : (

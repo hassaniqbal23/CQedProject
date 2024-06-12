@@ -3,47 +3,49 @@ import Image from 'next/image';
 import { Avatar, AvatarImage, Button } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import countriesData from '@/public/countries/countries.json';
-import { useChatGuard } from '@/components/Chat/ChatProvider/ChatGuard';
 interface Countries {
   [key: string]: string;
 }
 
 interface Iprops {
-  userImage: string;
-  heading: string;
-  countryFlag: string;
-  notification: string;
-  username: string;
-  country: string;
-  matches: string;
-  caption?: string;
-  userBio?: string;
-  connect?: string;
-  buttonOnClick?: () => void;
-  screen?: 'mobile' | 'tablet' | 'desktop';
+  user: {
+    user?: any;
+    id: string;
+    attachment: { file_path: string };
+    fullname: string;
+    country: string;
+    countryFlag: string;
+    state: string;
+  };
+  buttonText?: string;
+  interestsMatched?: string;
+  screenType?: string;
+  onButtonClick?: () => void;
   onViewProfile?: () => void;
 }
 
 const countries: Countries = countriesData;
 
-export const ProfileNotification: FC<Iprops> = ({
-  userImage,
-  notification,
-  countryFlag,
-  heading,
-  username,
-  country,
-  matches,
-  caption,
-  userBio,
-  buttonOnClick,
-  connect,
-  screen = 'desktop',
+export const UserProfileMatch: FC<Iprops> = ({
+  user,
+  onButtonClick,
   onViewProfile,
+  buttonText,
+  interestsMatched,
+  screenType,
 }: Iprops) => {
+  const { fullname, country } = user;
+  const countryFlag = `/country-flags/svg/${user.country.toLowerCase()}.svg`;
+  const notification = 'Hello';
+  const userImage = user.user.attachment.file_path;
+  const heading = 'We have a match for you.';
+  const userBio = `Hi, I am ${user.fullname}, a 24-year-old from ${user.state} with a love for drawing and a passion for adventure`;
+  const caption = `Did you know ${user.fullname} has read 20 books last year 📖 🙂`;
+
+  console.log(buttonText, 'buttonTextbuttonTextbuttonText');
   return (
     <>
-      {screen === 'mobile' && (
+      {screenType === 'mobile' && (
         <div className="bg-primary-50  p-4 pb-3 rounded-xl mt-3">
           <div className="flex justify-between">
             <div className="">
@@ -51,7 +53,7 @@ export const ProfileNotification: FC<Iprops> = ({
                 {heading}
               </Typography>
               <Typography className="py-1" variant={'h6'} weight={'medium'}>
-                {matches}
+                {interestsMatched}
               </Typography>
             </div>
           </div>
@@ -95,7 +97,7 @@ export const ProfileNotification: FC<Iprops> = ({
                 </div>
                 <div className="lg:flex lg:flex-col lg:items-center lg:justify-center sm:flex sm:flex-col sm:items-start sm:justify-center">
                   <h1 className="lg:text-center text-left text-[18px] font-semibold">
-                    {username}
+                    {fullname}
                   </h1>
                   <div className="lg:flex gap-2 sm:items-center  lg:items-center lg:justify-center lg:mt-2 flex justify-start items-center">
                     <Image
@@ -105,7 +107,6 @@ export const ProfileNotification: FC<Iprops> = ({
                       height={15}
                       className="object-contain"
                     />
-                    {}
                     <h1>{countries[country] || 'Unknown Country'}</h1>
                   </div>
                   <div>
@@ -124,10 +125,12 @@ export const ProfileNotification: FC<Iprops> = ({
           <div className="flex justify-center gap-4 mt-4 mb-1">
             <Button
               size={'md'}
-              className="bg-primary-500"
-              onClick={buttonOnClick}
+              className={
+                buttonText ? 'bg-red-100 text-red-600' : 'bg-primary-500'
+              }
+              onClick={onButtonClick}
             >
-              {connect}
+              {buttonText ? 'Remove' : 'Connect'}
             </Button>
             <Button
               size={'sm'}
@@ -139,7 +142,7 @@ export const ProfileNotification: FC<Iprops> = ({
           </div>
         </div>
       )}
-      {screen === 'tablet' && (
+      {screenType === 'tablet' && (
         <div className="bg-primary-50 py-6 p-4 pb-3 rounded-xl mt-4">
           <div className="flex justify-between">
             <div className="">
@@ -147,16 +150,18 @@ export const ProfileNotification: FC<Iprops> = ({
                 {heading}
               </Typography>
               <Typography className="py-2" variant={'h6'} weight={'medium'}>
-                {matches}
+                {interestsMatched}
               </Typography>
             </div>
             <div className="">
               <Button
                 size={'md'}
-                className="bg-primary-500"
-                onClick={buttonOnClick}
+                className={
+                  buttonText ? 'bg-red-100 text-red-600' : 'bg-primary-500'
+                }
+                onClick={onButtonClick}
               >
-                {connect}
+                {buttonText ? 'Remove' : 'Connect'}
               </Button>
             </div>
           </div>
@@ -194,7 +199,7 @@ export const ProfileNotification: FC<Iprops> = ({
                 </div>
                 <div className="lg:flex lg:flex-col lg:items-center lg:justify-center sm:flex sm:flex-col sm:items-start sm:justify-center">
                   <h1 className="lg:text-center text-left text-[18px] font-semibold">
-                    {username}
+                    {fullname}
                   </h1>
                   <div className="lg:flex gap-2 sm:items-center  lg:items-center lg:justify-center lg:mt-2 flex justify-start items-start ">
                     <Image
@@ -230,7 +235,7 @@ export const ProfileNotification: FC<Iprops> = ({
           </div>
         </div>
       )}
-      {screen === 'desktop' && (
+      {screenType === 'desktop' && (
         <div className="max-w-fit w-full bg-primary-50 p-4  pt-16   lg:flex lg:items-center lg:flex-col sm:flex sm:justify-between sm:items-center gap-8 rounded-xl">
           <div>
             <div className="">
@@ -246,7 +251,7 @@ export const ProfileNotification: FC<Iprops> = ({
                 variant={'h5'}
                 weight={'semibold'}
               >
-                {matches}
+                {interestsMatched}
               </Typography>
             </div>
             <div className="lg:flex lg:items-center lg:flex-col sm:flex flex justify-between items-center gap-8">
@@ -290,7 +295,7 @@ export const ProfileNotification: FC<Iprops> = ({
                   weight={'semibold'}
                   className="lg:text-center text-left  "
                 >
-                  {username}
+                  {fullname}
                 </Typography>
 
                 <div className="lg:flex gap-2 lg:items-center lg:justify-center lg:mt-2 flex justify-start items-start">
@@ -320,10 +325,12 @@ export const ProfileNotification: FC<Iprops> = ({
           <div className="lg:flex lg:flex-row lg:gap-4 lg:mt-8 sm:flex sm:flex-col sm:justify-between sm:gap-32 flex justify-center items-center  gap-4 ">
             <Button
               size={'md'}
-              className="bg-primary-500"
-              onClick={buttonOnClick}
+              className={
+                buttonText ? 'bg-red-100 text-red-600' : 'bg-primary-500'
+              }
+              onClick={onButtonClick}
             >
-              {connect}
+              {buttonText ? 'Remove' : 'Connect'}
             </Button>
             <Button
               size={'md'}
