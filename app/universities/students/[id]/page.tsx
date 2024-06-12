@@ -3,7 +3,7 @@
 import React from 'react';
 import StudentProfilePage from '@/components/StudentProfilePage/StudentProfilePage';
 
-const Profile = () => {
+const UniversityStudentsProfile = () => {
   return (
     <div>
       <StudentProfilePage />
@@ -11,4 +11,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default UniversityStudentsProfile;

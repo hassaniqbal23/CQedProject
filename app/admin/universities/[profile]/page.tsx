@@ -2,8 +2,8 @@
 import React from 'react';
 import { SchoolProfileView } from '@/components/common/Profiles/SchoolProfileView/SchoolProfileView';
 
-const SchoolProfile = ({ params }: { params: { profile: string } }) => {
+const UniversityProfile = ({ params }: { params: { profile: string } }) => {
   return <SchoolProfileView id={Number(params.profile)} />;
 };
 
-export default SchoolProfile;
+export default UniversityProfile;
