@@ -54,7 +54,7 @@ function StudentsTable(props: StudentsTableProps) {
         loading={loading}
         columns={[
           {
-            label: 'School Name',
+            label: 'University Name',
             key: 'name',
             className: 'w-2/6',
             render: (data) => {

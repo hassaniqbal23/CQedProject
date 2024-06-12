@@ -20,11 +20,11 @@ function SchoolTable(props: SchoolTableProps) {
       <DataTable
         data={data}
         selection={true}
-        noDataMessage={noDataMessage || 'No Schools'}
+        noDataMessage={noDataMessage || 'No Universities'}
         loading={loading}
         columns={[
           {
-            label: 'School Name',
+            label: 'University Name',
             key: 'name',
             render: (data) => {
               return (
@@ -65,7 +65,7 @@ function SchoolTable(props: SchoolTableProps) {
                     options={[
                       {
                         content: (
-                          <Link href={`/admin/schools/${data.id}`}>
+                          <Link href={`/admin/universities/${data.id}`}>
                             View Profile
                           </Link>
                         ),
@@ -73,7 +73,7 @@ function SchoolTable(props: SchoolTableProps) {
                       {
                         content: (
                           <div onClick={() => console.log('ok')}>
-                            Deactivate School
+                            Deactivate University
                           </div>
                         ),
                       },

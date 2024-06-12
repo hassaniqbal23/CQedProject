@@ -3,7 +3,7 @@
 import { ForgetPasswordSuccess } from '@/components/common/ForgetPasswordSuccess/ForgetPasswordSuccess';
 import TopNavbar from '@/components/common/navbar/TopNavbar';
 
-export default function SchoolForgetPassword() {
+export default function UniversityForgetPassword() {
   return (
     <>
       <div className="w-full h-screen">

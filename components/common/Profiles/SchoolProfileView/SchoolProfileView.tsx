@@ -27,7 +27,7 @@ export const SchoolProfileView: FC<IProps> = ({ id }) => {
         'Hi I am Ethan, an 8-year-old form United States with a passion for drawing and a heart full love',
       name: 'Ethan',
       buttonText: 'View Profile',
-      href: '/admin',
+      href: '/admin/universities',
     },
 
     {
@@ -36,7 +36,7 @@ export const SchoolProfileView: FC<IProps> = ({ id }) => {
         'Hi I am Ethan, an 8-year-old form United States with a passion for drawing and a heart full love',
       name: 'Lily',
       buttonText: 'View Profile',
-      href: '/admin',
+      href: '/admin/universities',
     },
 
     {
@@ -45,7 +45,7 @@ export const SchoolProfileView: FC<IProps> = ({ id }) => {
         'Hi I am Ethan, an 8-year-old form United States with a passion for drawing and a heart full love',
       name: 'Moominmadeness',
       buttonText: 'View Profile',
-      href: '/admin',
+      href: '/admin/universities',
     },
     {
       profileImg: '/assets/teacher/EthanAvatar.svg',
@@ -53,7 +53,7 @@ export const SchoolProfileView: FC<IProps> = ({ id }) => {
         'Hi I am Ethan, an 8-year-old form United States with a passion for drawing and a heart full love',
       name: 'Ethan',
       buttonText: 'View Profile',
-      href: '/admin',
+      href: '/admin/universities',
     },
   ];
 

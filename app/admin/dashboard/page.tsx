@@ -26,8 +26,9 @@ const Dashboard = () => {
   const [lineData, setLineData] = useState<any>(initialBar);
   const [barData, setbarData] = useState<any>(initialBar);
 
-  const { data, isLoading } = useQuery(['getInvitedSchools'], () =>
-    getAllSchools()
+  const { data: universitiesData, isLoading } = useQuery(
+    ['getInvitedSchools'],
+    () => getAllSchools()
   );
 
   const { data: dashboardData } = useQuery(['getSchoolDashboard'], () =>
@@ -38,7 +39,7 @@ const Dashboard = () => {
 
   const cardData = [
     {
-      title: 'Total Schools',
+      title: 'Total Universities',
       link: '/',
       number: dashboardData?.totalSchoolCount,
       percentage: 2.5,
@@ -167,7 +168,7 @@ const Dashboard = () => {
   return (
     <div>
       <>
-        {!data && data?.data?.length === 0 ? (
+        {universitiesData?.data?.data.length === 0 ? (
           <>
             <AdminWelCome />
           </>
@@ -227,15 +228,18 @@ const Dashboard = () => {
             </div>
             <div className="w-full py-3 mt-7">
               <div className="w-full flex justify-between mb-4">
-                <h2 className="font-semibold">Schools</h2>
+                <h2 className="font-semibold">Universities</h2>
                 <Link
-                  href={'/admin/schools'}
+                  href={'/admin/universities'}
                   className="text-primary text-base font-normal"
                 >
                   View All
                 </Link>
               </div>
-              <SchoolTable data={data?.data?.data || []} loading={isLoading} />
+              <SchoolTable
+                data={universitiesData?.data?.data || []}
+                loading={isLoading}
+              />
             </div>
           </>
         )}
