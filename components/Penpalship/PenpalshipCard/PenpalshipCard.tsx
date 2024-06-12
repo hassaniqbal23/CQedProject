@@ -27,7 +27,7 @@ interface PenpalshipCardProps {
   countryName: string;
   studentAge: string | number;
   mutualFriends?: string | number;
-  onChatClick: () => void;
+  onChatClick?: () => void;
   // onUserClick: () => void;
   showRemoveButton?: boolean; // Add this prop
   showIcons: boolean;

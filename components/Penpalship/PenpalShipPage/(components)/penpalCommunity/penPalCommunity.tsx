@@ -259,6 +259,7 @@ export const PenPalCommunity = () => {
               countryFlag={`/country-flags/svg/${item?.profile?.country.toLowerCase()}.svg`}
               countryName={item?.profile?.country.toUpperCase()}
               studentAge={item?.profile?.age}
+              showIcons={false}
             />
           ))}
         </div>
