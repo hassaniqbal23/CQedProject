@@ -23,9 +23,6 @@ export const deleteTeacher = (id: number) =>
 export const getProfiledata = async (id: number | string) => {
   return http.get(`/teachers/${id}/get-teacher`);
 };
-export const getProfile = async () => {
-  return http.get(`/users/get-profile`);
-};
 
 export const getTeachersBySearch = (
   page: string | number = 1,

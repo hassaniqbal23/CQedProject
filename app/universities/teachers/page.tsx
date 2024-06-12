@@ -92,7 +92,7 @@ export default function UniversityTeachers() {
             Teachers
           </Typography>
           <Typography variant="p" weight="regular">
-            The total number of teachers in your school
+            The total number of teachers in your University
           </Typography>
         </div>
         <div className={'flex ml-auto gap-3  items-center'}>
@@ -103,7 +103,7 @@ export default function UniversityTeachers() {
             onChange={handleInputChange}
           />
           <div>
-            <Button
+            {/* <Button
               variant={'default'}
               iconPosition={'left'}
               size={'md'}
@@ -111,7 +111,7 @@ export default function UniversityTeachers() {
               onClick={() => setInviteStudentModal(true)}
             >
               Add Teachers
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>
@@ -142,14 +142,14 @@ export default function UniversityTeachers() {
           />
         </div>
       </div>
-      <SendEmail
+      {/* <SendEmail
         inviteLoading={isLoading}
         setOpen={setInviteStudentModal}
         open={inviteStudentModal}
         onSubmit={onSubmit}
         inviteButtonTitle={'Invite Teachers'}
         headerTitle={'Invite Teachers'}
-      />
+      /> */}
     </>
   );
 }
