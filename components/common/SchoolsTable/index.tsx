@@ -19,7 +19,8 @@ function SchoolTable(props: SchoolTableProps) {
   const queryClient = useQueryClient();
 
   const { mutate: deactiveSchool } = useMutation(
-    (schoolData: { schoolId: number; status: number }) => deactivateSchool(schoolData.schoolId, { status: schoolData.status }),
+    (schoolData: { schoolId: number; status: number }) =>
+      deactivateSchool(schoolData.schoolId, { status: schoolData.status }),
     {
       onSuccess: () => {
         queryClient.refetchQueries('getInvitedSchools');
@@ -39,11 +40,11 @@ function SchoolTable(props: SchoolTableProps) {
       <DataTable
         data={data}
         selection={true}
-        noDataMessage={noDataMessage || 'No Schools'}
+        noDataMessage={noDataMessage || 'No Universities'}
         loading={loading}
         columns={[
           {
-            label: 'School Name',
+            label: 'University Name',
             key: 'name',
             render: (data) => {
               return (
@@ -84,19 +85,15 @@ function SchoolTable(props: SchoolTableProps) {
                     options={[
                       {
                         content: (
-                          <Link href={`/admin/schools/${data.id}`}>
+                          <Link href={`/admin/universities/${data.id}`}>
                             View Profile
                           </Link>
                         ),
                       },
                       {
                         content: (
-                          <div
-                            onClick={() =>
-                              handleDeactivation(data?.id, 2)
-                            }
-                          >
-                            Deactivate School
+                          <div onClick={() => handleDeactivation(data?.id, 2)}>
+                            Deactivate University
                           </div>
                         ),
                       },

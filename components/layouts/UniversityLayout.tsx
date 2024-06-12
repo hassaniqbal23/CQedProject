@@ -1,18 +1,25 @@
 'use client';
 import { FC, ReactNode, Suspense, useMemo } from 'react';
+import Sidebar from '../common/sidebar/sidebar';
 import { usePathname } from 'next/navigation';
+import Navbar from '../common/navbar/MainBar';
 import { useRouter } from 'next/navigation';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
-import { useResponsive } from '@/lib/hooks';
-import Sidebar from '../common/sidebar/sidebar';
-import Navbar from '../common/navbar/MainBar';
-import { Bell, CircleHelp, LogOut, Settings } from 'lucide-react';
 
+import { useResponsive } from '@/lib/hooks';
+import {
+  Bell,
+  CircleHelp,
+  LogOut,
+  MessageCircle,
+  Settings,
+  UserCheck,
+} from 'lucide-react';
 interface IProps {
   children: ReactNode;
 }
 
-export const AdminLayout: FC<IProps> = ({ children }) => {
+export const UniversityLayout: FC<IProps> = ({ children }) => {
   const pathname = usePathname();
   const router = useRouter();
   const { isTabletMini } = useResponsive();
@@ -20,7 +27,11 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
   const showLayout = useMemo(() => {
     if (!pathname) return false;
 
-    const routes = ['/admin/forgot-password', '/login'];
+    const routes = [
+      '/universities/onboarding',
+      '/universities/forget-password',
+      '/universities/sign-in',
+    ];
 
     return routes.some((route) => pathname.startsWith(route));
   }, [pathname]);
@@ -29,24 +40,25 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
     {
       icon: '/assets/sidebaricons/dashboard.svg',
       title: 'Dashboard',
-      path: '/admin/dashboard',
+      path: '/universities/dashboard',
     },
     {
-      icon: '/assets/sidebaricons/schools.svg',
-      title: 'Universities',
-      path: '/admin/universities',
+      icon: '/assets/sidebaricons/students.svg',
+      title: 'Students',
+      path: '/universities/students',
     },
     {
-      icon: '/assets/sidebaricons/accounts.svg',
-      title: 'Accounts',
-      path: '/admin/accounts',
+      icon: '/assets/sidebaricons/teachers.svg',
+      title: 'Teachers',
+      path: '/universities/teachers',
     },
     {
       icon: '/assets/sidebaricons/settings.svg',
       title: 'Settings',
-      path: '/admin/settings',
+      path: '/universities/settings',
     },
   ];
+
   if (showLayout) {
     return (
       <>
@@ -54,12 +66,13 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
       </>
     );
   }
+
   return (
     <div className="md:flex md:justify-stretch min-h-screen">
       <div
         className={`block ${isTabletMini ? '' : 'w-[70px] md:w-[240px]'} bg-[#F6F8F9] dark:bg-slate-900`}
       >
-        <div className="flex ">
+        <div className="flex">
           <Sidebar
             isMobileSidebar={isTabletMini}
             isVerticalIcon={false}
@@ -69,7 +82,7 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
           <Navbar
             horizontalLinks={[
               {
-                href: '/admin/notifications',
+                href: '/universities/notifications',
                 type: 'icon',
                 icon: <Bell />,
               },
@@ -79,18 +92,17 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
                 dropdownOption: [
                   // {
                   //   title: 'Profile',
-                  //   path: '/admin/profile',
+                  //   path: '/university/profile',
                   //   icon: <Bell size={15} />,
                   // },
                   // {
-                  //   title: 'settings',
-                  //   path: '/admin/settings',
+                  //   title: 'Account',
+                  //   path: '/university/account',
                   //   icon: <Settings size={15} />,
                   // },
-
                   // {
                   //   title: 'Help ',
-                  //   path: '/admin/help',
+                  //   path: '/universities/help',
                   //   icon: <CircleHelp size={15} />,
                   // },
                   {
@@ -99,7 +111,7 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
                     onClick: () => {
                       removeToken();
                       removeUserId();
-                      router.push('/login');
+                      router.push('/universities/sign-in');
                     },
                   },
                 ],
@@ -114,7 +126,7 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
         <div
           className={`mx-[10px] my-[30px] ${isTabletMini ? '' : 'md:m-[40px]'}`}
         >
-          <div className="admin-layout">{children}</div>
+          <div className="school-layout">{children}</div>
         </div>
       </div>
     </div>
