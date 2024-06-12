@@ -1,13 +1,13 @@
 import { createPenpal } from '@/app/api/penpals';
 import { useMutation, useQueryClient } from 'react-query';
 
+interface SearchParams {
+    memberId: number;
+    userName: string;
+}
 interface MutationContext {
-    searchParams?: {
-        memberId: number;
-        userName: string;
-    };
+    searchParams?: SearchParams;
     setCreatingPenpalId?: (id: number | null) => void;
-    setCreatingPanpalId?: (id: number | null) => void;
 }
 
 const useSendPenpalRequest = () => {
@@ -15,8 +15,8 @@ const useSendPenpalRequest = () => {
 
     const { mutate: sendPenpalRequest, isLoading: isCreatingPenpal } =
         useMutation((payload: any) => createPenpal(payload), {
-            onSuccess: (res, variables, context: MutationContext | undefined) => {
-                const { searchParams, setCreatingPenpalId, setCreatingPanpalId } = context || {};
+            onSuccess: (res, context: MutationContext | undefined) => {
+                const { searchParams, setCreatingPenpalId } = context || {};
 
                 if (searchParams) {
                     queryClient.refetchQueries([
@@ -32,13 +32,9 @@ const useSendPenpalRequest = () => {
                 if (setCreatingPenpalId) {
                     setCreatingPenpalId(null);
                 }
-
-                if (setCreatingPanpalId) {
-                    setCreatingPanpalId(null);
-                }
             },
             onError: (error) => {
-                console.error(error, 'Error =====> log');
+                console.error('Error =====>', error);
             },
         });
 

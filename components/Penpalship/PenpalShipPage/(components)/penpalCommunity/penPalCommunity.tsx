@@ -73,7 +73,7 @@ export const PenPalCommunity = () => {
       }),
     {
       enabled: typeof viewUserStoryId === 'number' ? true : false,
-      onSuccess: (res) => {},
+      onSuccess: (res) => { },
       onError(err) {
         console.log(err);
       },
@@ -105,7 +105,7 @@ export const PenPalCommunity = () => {
       }),
     {
       enabled: true,
-      onSuccess: (res) => {},
+      onSuccess: (res) => { },
       onError(err) {
         console.log(err);
       },
