@@ -163,13 +163,6 @@ export const AiMatch = ({ module }: AiMatchProps) => {
       router.push(`/teachers/students/${data?.data.data.user.id}`);
     }
   };
-  const handleViewProfile = () => {
-    if (module === 'teacher') {
-      router.push(`/schools/teachers/${data?.data.data.user.id}`);
-    } else {
-      router.push(`/teachers/students/${data?.data.data.user.id}`);
-    }
-  };
   return (
     <>
       <div className="mt-4">
@@ -265,15 +258,6 @@ export const AiMatch = ({ module }: AiMatchProps) => {
                           { value: 'Cooking', label: 'Cooking' },
                           { value: 'Yoga', label: 'Yoga' },
                           { value: 'Gym', label: 'Gym' },
-                          { value: 'Culture', label: 'Culture' },
-                          { value: 'Languages', label: 'Languages' },
-                          { value: 'Hiking', label: 'Hiking' },
-                          { value: 'Walking', label: 'Walking' },
-                          { value: 'Adventure', label: 'Adventure' },
-                          { value: 'Writing', label: 'Writing' },
-                          { value: 'Cooking', label: 'Cooking' },
-                          { value: 'Yoga', label: 'Yoga' },
-                          { value: 'Gym', label: 'Gym' },
                         ]}
                       />
                     </FormControl>
@@ -322,8 +306,6 @@ export const AiMatch = ({ module }: AiMatchProps) => {
                           { label: 'Korean', value: 'Korean' },
                           { label: 'Italian', value: 'Italian' },
                           { label: 'Spanish', value: 'Spanish' },
-                          { label: 'Italian', value: 'Italian' },
-                          { label: 'Spanish', value: 'Spanish' },
                         ]}
                       />
                     </FormControl>
@@ -345,17 +327,6 @@ export const AiMatch = ({ module }: AiMatchProps) => {
         </div>
         {showUserProfile ? (
           <div className={`order-1`}>
-            <UserProfileMatch
-              user={data?.data?.data}
-              onButtonClick={() =>
-                handleRemovePaypals(data?.data?.data?.user?.id)
-              }
-              buttonText={isUserPanpals(data?.data?.data?.user?.id)}
-              screenType={
-                isMobile ? 'mobile' : isTabletMini ? 'tablet' : 'desktop'
-              }
-              interestsMatched={interestsMatch}
-              onViewProfile={handleViewProfile}
             <UserProfileMatch
               user={data?.data?.data}
               onButtonClick={() =>
