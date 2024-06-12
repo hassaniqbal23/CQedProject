@@ -11,7 +11,7 @@ import {
   UniversityLink,
 } from '@/components/common/Profiles';
 import { Mail, MapPin, Phone } from 'lucide-react';
-import { getProfile, getProfiledata } from '@/app/api/teachers';
+import { getProfileLoginUser } from '@/app/api/auth';
 import { TabsComponent } from '@/components/ui/tabs/tabs';
 
 export const MyProfileTeacher: FC = () => {
@@ -19,8 +19,8 @@ export const MyProfileTeacher: FC = () => {
     data: profileData,
     error,
     isLoading,
-  } = useQuery(['getProfile'], () =>
-    getProfile().then((res) => {
+  } = useQuery(['getProfileLoginUser'], () =>
+    getProfileLoginUser().then((res) => {
       return res.data.data;
     })
   );
@@ -29,7 +29,7 @@ export const MyProfileTeacher: FC = () => {
     return <div className="flex justify-center py-8 ">Loading...</div>;
 
   const bio =
-    (profileData && JSON.parse(profileData?.profile[0]?.meta)?.bio) || '';
+    (profileData && JSON.parse(profileData?.profile?.meta)?.bio) || '';
 
   const interestsArray = (profileData?.interests ?? '').split(',');
 
