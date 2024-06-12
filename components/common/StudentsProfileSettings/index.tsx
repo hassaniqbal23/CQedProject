@@ -125,19 +125,20 @@ const StudentProfileSettings = () => {
       <div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormInput
-              label="Full Name"
-              form={form}
-              name="name"
-              placeholder={'admin'}
-            />
-            <FormInput
-              label="Set a Nickname"
-              form={form}
-              name="username"
-              placeholder={'admin'}
-            />
-
+            <div className="grid grid-cols-2 gap-9 mt-10">
+              <FormInput
+                label="Full Name"
+                form={form}
+                name="name"
+                placeholder={'admin'}
+              />
+              <FormInput
+                label="Set a Nickname"
+                form={form}
+                name="username"
+                placeholder={'admin'}
+              />
+            </div>
             <div className="grid md:grid-cols-2 md:gap-9 my-4 items-center">
               <FormField
                 control={form.control}
@@ -180,14 +181,13 @@ const StudentProfileSettings = () => {
                 )}
               />
             </div>
-            {/* Rest of the form fields */}
             <div className="grid md:grid-cols-2 md:gap-9 my-4 items-center">
               <FormField
                 control={form.control}
                 name="gender"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Gender</FormLabel>
+                    <FormLabel className="text-sm">Gender</FormLabel>
                     <FormControl>
                       <ChipSelector
                         onChange={(data: any) => field.onChange(data as string)}
@@ -228,7 +228,7 @@ const StudentProfileSettings = () => {
 
                   return (
                     <FormItem>
-                      <FormLabel>Language</FormLabel>
+                      <FormLabel className="text-sm">Language</FormLabel>
                       <FormControl>
                         <MultipleSelector
                           options={[
@@ -260,12 +260,12 @@ const StudentProfileSettings = () => {
                         onChange={field.onChange}
                         placeholder="Add interests"
                         options={[
-                          { value: 'culture', label: 'Culture' },
-                          { value: 'languages', label: 'Languages' },
-                          { value: 'vulticulus', label: 'Vulticulus' },
-                          { value: 'alias', label: 'Alias' },
-                          { value: 'adventure', label: 'Adventure' },
-                          { value: 'ait', label: 'Ait' },
+                          { value: 'Culture', label: 'Culture' },
+                          { value: 'Languages', label: 'Languages' },
+                          { value: 'Vulticulus', label: 'Vulticulus' },
+                          { value: 'Alias', label: 'Alias' },
+                          { value: 'Adventure', label: 'Adventure' },
+                          { value: 'Ait', label: 'Ait' },
                         ]}
                       />
                     </FormControl>
@@ -274,6 +274,7 @@ const StudentProfileSettings = () => {
                 )}
               />
             </div>
+            <div className="border rounded-full border-[#CDD0D7] my-5" />
             <div className="grid grid-rows gap-2">
               <FormField
                 control={form.control}
@@ -352,7 +353,7 @@ const StudentProfileSettings = () => {
                 )}
               />
             </div>
-            <Button className="text-md" type="submit">
+            <Button className="text-md my-4" type="submit">
               Save Settings
             </Button>
           </form>
