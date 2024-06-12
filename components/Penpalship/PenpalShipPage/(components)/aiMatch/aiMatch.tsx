@@ -155,16 +155,13 @@ export const AiMatch = ({ module }: AiMatchProps) => {
     interestsScore !== null
       ? `${interestsScore}/${userInterests.length} interests matched`
       : '';
-  const { user } = data?.data?.data || {};
-  const userId = user?.id;
-  const userRole = user?.role?.name;
 
   const handleViewProfile = () => {
-    const path =
-      userRole === 'Teacher'
-        ? `/schools/teachers/${userId}`
-        : `/teachers/students/${userId}`;
-    router.push(path);
+    if (module === 'teacher') {
+      router.push(`/schools/teachers/${data?.data.data.user.id}`);
+    } else {
+      router.push(`/teachers/students/${data?.data.data.user.id}`);
+    }
   };
   return (
     <>
@@ -254,10 +251,13 @@ export const AiMatch = ({ module }: AiMatchProps) => {
                         options={[
                           { value: 'Culture', label: 'Culture' },
                           { value: 'Languages', label: 'Languages' },
-                          { value: 'Vulticulus', label: 'Vulticulus' },
-                          { value: 'Alias', label: 'Alias' },
+                          { value: 'Hiking', label: 'Hiking' },
+                          { value: 'Walking', label: 'Walking' },
                           { value: 'Adventure', label: 'Adventure' },
-                          { value: 'Ait', label: 'Ait' },
+                          { value: 'Writing', label: 'Writing' },
+                          { value: 'Cooking', label: 'Cooking' },
+                          { value: 'Yoga', label: 'Yoga' },
+                          { value: 'Gym', label: 'Gym' },
                         ]}
                       />
                     </FormControl>
@@ -304,6 +304,8 @@ export const AiMatch = ({ module }: AiMatchProps) => {
                           { label: 'Persian', value: 'Persian' },
                           { label: 'English', value: 'English' },
                           { label: 'Korean', value: 'Korean' },
+                          { label: 'Italian', value: 'Italian' },
+                          { label: 'Spanish', value: 'Spanish' },
                         ]}
                       />
                     </FormControl>
@@ -326,7 +328,7 @@ export const AiMatch = ({ module }: AiMatchProps) => {
         {showUserProfile ? (
           <div className={`order-1`}>
             <UserProfileMatch
-              user={data?.data?.data?.user}
+              user={data?.data?.data}
               onButtonClick={() =>
                 handleRemovePaypals(data?.data?.data?.user?.id)
               }

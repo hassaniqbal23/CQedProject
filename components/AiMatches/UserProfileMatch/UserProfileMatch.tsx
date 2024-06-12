@@ -9,6 +9,7 @@ interface Countries {
 
 interface Iprops {
   user: {
+    user?: any;
     id: string;
     attachment: { file_path: string };
     fullname: string;
@@ -36,7 +37,7 @@ export const UserProfileMatch: FC<Iprops> = ({
   const { fullname, country } = user;
   const countryFlag = `/country-flags/svg/${user.country.toLowerCase()}.svg`;
   const notification = 'Hello';
-  const userImage = user.attachment.file_path;
+  const userImage = user.user.attachment.file_path;
   const heading = 'We have a match for you.';
   const userBio = `Hi, I am ${user.fullname}, a 24-year-old from ${user.state} with a love for drawing and a passion for adventure`;
   const caption = `Did you know ${user.fullname} has read 20 books last year 📖 🙂`;
