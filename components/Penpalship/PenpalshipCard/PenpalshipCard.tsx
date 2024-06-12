@@ -30,7 +30,7 @@ interface PenpalshipCardProps {
   onChatClick?: () => void;
   // onUserClick: () => void;
   showRemoveButton?: boolean; // Add this prop
-  showIcons: boolean;
+  showIcons?: boolean;
 }
 
 const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
