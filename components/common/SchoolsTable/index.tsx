@@ -19,7 +19,8 @@ function SchoolTable(props: SchoolTableProps) {
   const queryClient = useQueryClient();
 
   const { mutate: deactiveSchool } = useMutation(
-    (schoolData: { schoolId: number; status: number }) => deactivateSchool(schoolData.schoolId, { status: schoolData.status }),
+    (schoolData: { schoolId: number; status: number }) =>
+      deactivateSchool(schoolData.schoolId, { status: schoolData.status }),
     {
       onSuccess: () => {
         queryClient.refetchQueries('getInvitedSchools');
@@ -91,9 +92,7 @@ function SchoolTable(props: SchoolTableProps) {
                       },
                       {
                         content: (
-                          <div onClick={() =>
-                              handleDeactivation(data?.id, 2)
-                            }>
+                          <div onClick={() => handleDeactivation(data?.id, 2)}>
                             Deactivate University
                           </div>
                         ),
