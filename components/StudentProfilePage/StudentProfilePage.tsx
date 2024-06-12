@@ -15,6 +15,7 @@ import { startConversation } from '@/app/api/chat';
 import { getStudentProfile } from '@/app/api/students';
 import Loading from '../ui/button/loading';
 import { format, parseISO, differenceInYears } from 'date-fns';
+import { IStudents } from '@/types/students';
 
 const StudentProfilePage = () => {
   const params = useParams();
@@ -24,11 +25,17 @@ const StudentProfilePage = () => {
     data: studentProfile,
     isLoading,
     error,
-  } = useQuery(['getStudentProfile', params?.id], () =>
-    getStudentProfile(params?.id as any)
+  } = useQuery(
+    ['getStudentProfile', params?.id],
+    () =>
+      getStudentProfile(Number(params?.id) as number).then((result) => {
+        return result?.data?.data as IStudents;
+      }),
+    {
+      enabled: params?.id ? true : false,
+    }
   );
-
-  console.log(studentProfile);
+  console.log(studentProfile, 'getStudentProfile');
 
   const { mutate } = useMutation(
     ['startConversation'],
@@ -48,10 +55,6 @@ const StudentProfilePage = () => {
     );
   }
 
-  if (error) {
-    return <div>Error loading profile</div>;
-  }
-
   const tabContents = [
     {
       value: 'profile',
@@ -59,24 +62,16 @@ const StudentProfilePage = () => {
         <div className="mt-3 ">
           <ProfileStudent
             cardtitle="PERSONAL INFO"
-            name={studentProfile?.data.data.fullname}
-            email={studentProfile?.data.data.user.email}
-            age={differenceInYears(
-              new Date(),
-              parseISO(studentProfile?.data.data.dob)
-            )}
-            birthDate={format(
-              parseISO(studentProfile?.data.data.dob),
-              'dd/MM/yyyy'
-            )}
-            gender={studentProfile?.data.data.gender}
-            country={studentProfile?.data.data.country}
-            address={studentProfile?.data.data.user.profile[0].address}
-            status={
-              studentProfile?.data.data.status === 1 ? 'Active' : 'Inactive'
-            }
+            name={studentProfile?.user?.name || ''}
+            email={studentProfile?.user?.email || ''}
+            age={24}
+            birthDate={24 / 2000}
+            gender={studentProfile?.user?.profile?.gender || ''}
+            country={studentProfile?.user?.profile?.country || ''}
+            address={studentProfile?.user?.profile?.address || ''}
+            status={studentProfile?.status === 1 ? 'Active' : 'Inactive'}
             Schedule="View all schedules"
-            studentId={`#${studentProfile?.data.data.id}`}
+            studentId={`#${studentProfile?.id}`}
           />
         </div>
       ),
@@ -86,7 +81,7 @@ const StudentProfilePage = () => {
       content: (
         <div className="mt-3">
           <StudentFeeds
-            userName={studentProfile?.data.data.user.profile[0].first_name}
+            userName={studentProfile?.user?.profile?.first_name || ''}
           />
         </div>
       ),
@@ -96,7 +91,7 @@ const StudentProfilePage = () => {
       content: (
         <div className="mt-3">
           <StudentGroups
-            userName={studentProfile?.data.data.user.profile[0].first_name}
+            userName={studentProfile?.user?.profile?.full_name || ''}
           />
         </div>
       ),
@@ -115,12 +110,10 @@ const StudentProfilePage = () => {
     },
   ];
 
-  console.log(studentProfile?.data.data);
-
   return (
     <div className="">
       <ProfileHeader
-        name={studentProfile?.data.data.fullname}
+        name={studentProfile?.user?.profile?.first_name}
         imageSize={{ width: 100, height: 100 }}
         titleClass="text-3xl"
         buttonProps={{
@@ -130,7 +123,7 @@ const StudentProfilePage = () => {
           },
           buttonText: 'Message',
         }}
-        profileIcon={studentProfile?.data.data.user.attachment.file_path}
+        profileIcon={studentProfile?.user?.attachment?.file_path || ''}
       />
       <div className="mt-4">
         <TabsComponent

@@ -1,8 +1,7 @@
 'use client';
-import { SchoolLayout } from '@/components/layouts/SchoolLayout';
+import { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { getAccessToken } from './utils/encryption';
 import { AdminLayout } from '@/components/layouts/AdminLayout';
 

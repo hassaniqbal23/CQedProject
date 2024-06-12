@@ -49,7 +49,7 @@ export const SendEmail: FC<SendEmailProps> = ({
   setOpen,
   inviteButtonTitle,
   inviteLoading,
-  headerTitle = 'Invite School',
+  headerTitle = 'Invite University',
 }: SendEmailProps) => {
   const form = useForm<any>({
     resolver: zodResolver(schema),
@@ -75,7 +75,7 @@ export const SendEmail: FC<SendEmailProps> = ({
       }}
       header={true}
       headerTitle={headerTitle}
-      footerOkButton="Invite School"
+      footerOkButton="Invite University"
       showFooterCloseButton={false}
       footer={false}
       onOkClick={() => console.log('ok')}

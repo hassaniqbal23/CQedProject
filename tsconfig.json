@@ -31,7 +31,7 @@
     ".next/types/**/*.ts",
     "components/ImageCropper/imageDialog.js",
     "app/utils/canvasUtils.js",
-    "app/schools/onboarding/about-user"
+    "app/universities/onboarding/about-user"
   ],
   "exclude": ["node_modules"]
 }

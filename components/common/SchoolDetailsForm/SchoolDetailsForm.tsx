@@ -60,7 +60,7 @@ export function SchoolDetailsForm() {
     (data: AcceptInvite) => AcceptInvite(data),
     {
       onSuccess: (res) => {
-        router.push('/schools/onboarding/update-password');
+        router.push('/universities/onboarding/update-password');
         form.reset();
       },
       onError: (error: any) => {
@@ -78,14 +78,14 @@ export function SchoolDetailsForm() {
       <div className="grid gird-cols-1 py-10 justify-center">
         <div className="mb-4">
           <Typography variant="h3" weight="bold" className="text-primary mb-2">
-            Add your school details
+            Add your university details
           </Typography>
           <Typography
             variant="h4"
             weight="regular"
             className="text-[#464650] flex justify-center "
           >
-            Create your school profile
+            Create your university profile
           </Typography>
         </div>
       </div>
@@ -98,7 +98,7 @@ export function SchoolDetailsForm() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>School name</FormLabel>
+                    <FormLabel>University name</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="e.g John, Emma"
@@ -184,7 +184,7 @@ export function SchoolDetailsForm() {
                 name="address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>School Address</FormLabel>
+                    <FormLabel>University Address</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="e.g 123 Main St"
