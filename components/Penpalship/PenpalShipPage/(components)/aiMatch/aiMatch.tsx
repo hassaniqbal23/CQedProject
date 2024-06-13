@@ -17,6 +17,7 @@ import { createPenpal, deletePenpal, penpalsFilters } from '@/app/api/penpals';
 import { useRouter } from 'next/navigation';
 import { UserProfileMatch } from '@/components/AiMatches/UserProfileMatch/UserProfileMatch';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 
 const formSchema = z.object({
   country: z.object({
@@ -55,6 +56,9 @@ export const AiMatch = ({ module }: AiMatchProps) => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
+
+  const { sendRequest } = useSendPenpalRequest();
+
   const {
     mutate: SearchPenpal,
     data,
@@ -79,17 +83,6 @@ export const AiMatch = ({ module }: AiMatchProps) => {
       setInterestsScore(score);
     }
   }, [data, userInterests]);
-
-  const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
-    useMutation((id: number) => createPenpal({ receiverId: id }), {
-      onSuccess: (res) => {
-        queryClient.refetchQueries('penpalSuggestions');
-        queryClient.refetchQueries('MyPenPals');
-      },
-      onError: (error) => {
-        console.error(error, 'Error =====> log');
-      },
-    });
 
   const { mutate: removePanpalRequest, isLoading: isDeletingPanpalRequest } =
     useMutation((id: number) => deletePenpal(id), {
@@ -117,7 +110,7 @@ export const AiMatch = ({ module }: AiMatchProps) => {
         form.reset();
       }, 1000);
     } else {
-      sendPanpalRequest && sendPanpalRequest(Number(id));
+      sendRequest({ receiverId: Number(id) });
     }
   };
 

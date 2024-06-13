@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { createPenpal, searchNewPenpal } from '@/app/api/penpals';
 import SkeletonCard from '@/components/common/SkeletonCard/SkeletonCard';
+import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 
 const formSchema = z.object({
   memberId: z
@@ -43,22 +44,7 @@ export const PalSearchId = () => {
     formState: { errors, isValid },
   } = form;
 
-  const { mutate: sendPenpalRequest, isLoading: isCreatingPanpal } =
-    useMutation((id: number) => createPenpal({ receiverId: id }), {
-      onSuccess: (res) => {
-        if (searchParams) {
-          queryClient.refetchQueries([
-            'penpalSearchData',
-            searchParams.memberId,
-            searchParams.userName,
-          ]);
-        }
-        setCreatingPenpalId(null);
-      },
-      onError: (error) => {
-        console.error(error, 'Error =====> log');
-      },
-    });
+  const { sendRequest, isCreatingPenpal } = useSendPenpalRequest();
 
   const { data: penpalSearchResult, isLoading } = useQuery(
     ['penpalSearchData', searchParams?.memberId, searchParams?.userName],
@@ -127,11 +113,14 @@ export const PalSearchId = () => {
                     title={item?.name}
                     buttonText="Connect"
                     buttonOnClick={() => {
-                      sendPenpalRequest(item.id);
                       setCreatingPenpalId(item.id);
+                      sendRequest(
+                        { receiverId: item.id },
+                        { searchParams, setCreatingPenpalId }
+                      );
                     }}
                     buttonLoading={
-                      creatingPanpalId === item.id && isCreatingPanpal
+                      creatingPanpalId === item.id && isCreatingPenpal
                     }
                     description="Even though our cultural backgrounds and lifestyles were completely different..."
                     mutualFriends="5 mutual friends"
