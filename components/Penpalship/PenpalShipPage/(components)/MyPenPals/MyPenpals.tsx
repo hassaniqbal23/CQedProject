@@ -69,8 +69,8 @@ export const MyPenpals: React.FC = () => {
       ...c,
       user:
         c.sender.id === userInformation.id
-          ? { ...c.receiver, profile: c.receiver.profile?.[0] }
-          : { ...c.sender, profile: c.sender.profile?.[0] },
+          ? { ...c.receiver, profile: c.receiver.profile }
+          : { ...c.sender, profile: c.sender.profile },
     }));
   }, [
     penpalsQuery.data,
@@ -103,8 +103,9 @@ export const MyPenpals: React.FC = () => {
         {penpals.map((item: any, index: number) => (
           <PenpalshipCard
             key={index}
+            id={item?.user?.id}
             imgPath={item?.user?.attachment?.file_path}
-            title={item?.user?.profile?.fullname || ''}
+            title={item?.user?.profile?.full_name || ''}
             mutualFriends="5 mutual friends"
             buttonOnClick={() => handleRemove.mutate(item?.id)}
             buttonText="Remove"

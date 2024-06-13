@@ -1,10 +1,13 @@
 import React from 'react';
-import { Button } from '@/components/ui';
+import { Button, Dropdown } from '@/components/ui';
 import { MapPin } from 'lucide-react';
 import Image from 'next/image';
 import { Avatar, AvatarImage } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import countriesData from '@/public/countries/countries.json';
+import { IoChevronDown, IoChatbubbleOutline } from 'react-icons/io5';
+import { getCountry } from '@/app/utils/helpers';
+
 import Link from 'next/link';
 
 interface Countries {
@@ -25,10 +28,13 @@ interface HeaderProps {
   country?: string;
   mutualFriends?: string;
   profileId?: string;
+  loggedInUser?: boolean;
   buttonProps?: {
     isVisbile?: boolean;
     onClick?: () => void;
     buttonText?: string;
+    isFriend?: boolean;
+    isLoading?: boolean;
   };
   imageSize?: {
     height?: number;
@@ -47,10 +53,12 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   titleClass = 'text-xl',
   age,
   gender,
-  country,
+  country = '',
   mutualFriends,
   profileId,
+  loggedInUser,
 }) => {
+  const { flag = '', country: countryName = '' } = getCountry(country);
   return (
     <div className="flex items-center  flex-wrap justify-between w-full bg-primary-500 rounded-2xl text-white p-3 md:p-6 shadow-md text-left md:text-left">
       <div className="flex items-center">
@@ -78,7 +86,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
           {country && (
             <div className="flex items-center">
               <Image
-                src={`/country-flags/svg/pk.svg`}
+                src={flag}
                 alt="flag"
                 className="rounded-md"
                 width={38}
@@ -86,7 +94,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                 unoptimized={true}
               />
               <Typography variant="h6" weight="medium" className="ml-2 text-xl">
-                {countries['PK'] || 'Unknown Country'}
+                {countryName}
               </Typography>
             </div>
           )}
@@ -103,27 +111,88 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
           </Typography>
         )}
         {buttonProps?.isVisbile && (
-          <div>
-            <Button
-              onClick={buttonProps?.onClick}
-              iconPosition="left"
-              className={`rounded-full bg-[#ECEDF8] text-primary-500 w-36 h-10 text-base`}
-              variant={'outline'}
-              type="button"
-              size={'sm'}
-            >
-              {buttonProps.buttonText}
-            </Button>
-            <Typography
-              variant="p"
-              weight="semibold"
-              className="mb-1 text-xs pt-2"
-            >
-              <Link href="" className="">
-                {mutualFriends}
-              </Link>
-            </Typography>
-          </div>
+          <>
+            {buttonProps.isFriend ? (
+              <div className="flex">
+                <Button
+                  onClick={() => {}}
+                  icon={<IoChatbubbleOutline size={20} />}
+                  iconPosition="left"
+                  className={`rounded-full bg-[#ECEDF8] text-primary-500 h-10 text-base mr-2 hover: border border-white`}
+                  variant={'outline'}
+                  type="button"
+                  size={'sm'}
+                ></Button>
+                <Dropdown
+                  trigger={
+                    <div>
+                      <Button
+                        onClick={() => {}}
+                        iconPosition="right"
+                        icon={<IoChevronDown />}
+                        className={`rounded-full bg-[#ECEDF8] text-primary-500 w-36 h-10 text-base hover: border border-white`}
+                        variant={'outline'}
+                        type="button"
+                        size={'sm'}
+                      >
+                        Friends
+                      </Button>
+                    </div>
+                  }
+                  options={[
+                    {
+                      content: (
+                        <div className="text-xs" onClick={buttonProps.onClick}>
+                          Unfriend
+                        </div>
+                      ),
+                    },
+                    {
+                      content: (
+                        <div className="text-xs" onClick={() => {}}>
+                          Block
+                        </div>
+                      ),
+                    },
+                    {
+                      content: (
+                        <div
+                          className="text-xs text-primary-600 font-semibold"
+                          onClick={() => {}}
+                        >
+                          Report profile
+                        </div>
+                      ),
+                    },
+                  ]}
+                />
+              </div>
+            ) : (
+              <div>
+                <Button
+                  onClick={buttonProps?.onClick}
+                  className={`rounded-full bg-[#ECEDF8] text-primary-500 w-36 h-10 text-base hover: border border-white`}
+                  variant={'outline'}
+                  type="button"
+                  size={'sm'}
+                  loading={buttonProps?.isLoading}
+                >
+                  {buttonProps.buttonText}
+                </Button>
+                {!loggedInUser && (
+                  <Typography
+                    variant="p"
+                    weight="semibold"
+                    className="mb-1 text-xs pt-2"
+                  >
+                    <Link href="" className="">
+                      {mutualFriends}
+                    </Link>
+                  </Typography>
+                )}
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

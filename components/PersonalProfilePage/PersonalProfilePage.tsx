@@ -1,57 +1,32 @@
 'use client';
-
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useGlobalState } from '@/app/globalContext/globalContext';
+import { createPenpal, deletePenpal } from '@/app/api/penpals';
 import { Card, TabsComponent } from '@/components/ui';
+import { getProfile } from '@/app/api/students';
+import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import Loading from '../ui/button/loading';
+import dynamic from 'next/dynamic';
 import {
   ProfileHeader,
   ProfileAbout,
   ProfileInterests,
   WishCountries,
   Gallery,
+  Languages,
 } from '@/components/common/Profiles';
-import { useParams, useRouter } from 'next/navigation';
-import { useMutation, useQuery } from 'react-query';
-import { startConversation } from '@/app/api/chat';
-import { getStudentProfile } from '@/app/api/students';
-import Loading from '../ui/button/loading';
-import dynamic from 'next/dynamic';
-
-let details: string =
-  " Meet John, a spirited 12-year-old with a contagious enthusiasm for life. His bright blue eyes sparkle with curiosity, and his perpetually messy hair reflects the adventures he embarks on each day. Jake's world is filled with a kaleidoscope of interests, from building intricate LEGO masterpieces to exploring the fascinating realms of video games. With a backpack full of dreams and a heart full of laughter, Jake navigates the maze of adolescence with an infectious";
 
 const PersonalProfilePage = () => {
+  const queryClient = useQueryClient();
   const params = useParams();
   const router = useRouter();
-  let studentProfile = [] as any;
-  // const {
-  //   data: studentProfile,
-  //   isLoading,
-  //   error,
-  // } = useQuery(['getStudentProfile', params?.id], () =>
-  //   getStudentProfile(params?.id as any)
-  // );
-
-  // const { mutate } = useMutation(
-  //   ['startConversation'],
-  //   (params: { id: number | string }) => startConversation(params.id),
-  //   {
-  //     onSuccess(data) {
-  //       router.push('/teachers/chats');
-  //     },
-  //   }
-  // );
-
-  if (false) {
-    return (
-      <div className="flex items-center justify-center h-[500px] w-full">
-        <Loading />
-      </div>
-    );
-  }
-
-  if (false) {
-    return <div>Error loading profile</div>;
-  }
+  const currentProfileId = Number(params?.id);
+  const { userInformation, myPenpals } = useGlobalState();
+  const [isFriend, setIsFriend] = useState<boolean>(false);
+  const buttonText =
+    userInformation?.id === currentProfileId ? 'Edit Profile' : 'Add Friend';
   const Map = useMemo(
     () =>
       dynamic(() => import('@/components/ui/MapComponent/Map'), {
@@ -60,6 +35,76 @@ const PersonalProfilePage = () => {
       }),
     []
   );
+
+  const getPenpalInfo = (id: number | string) => {
+    const penpal = myPenpals.find(
+      (penpal: { receiverId: string | number }) => penpal.receiverId === id
+    );
+    return { isPenpal: !!penpal, penpal };
+  };
+
+  const { data, isLoading, error } = useQuery(
+    ['getProfile', currentProfileId],
+    () => getProfile(currentProfileId as any),
+    {
+      enabled: true,
+      onSuccess: (data) => {
+        let { isPenpal } = getPenpalInfo(currentProfileId);
+        setIsFriend(userInformation?.id !== currentProfileId && isPenpal);
+      },
+    }
+  );
+
+  const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
+    useMutation((id: number) => createPenpal({ receiverId: id }), {
+      onSuccess: (res) => {
+        queryClient.invalidateQueries('MyPenPals');
+      },
+      onError: (error) => {
+        console.error(error, 'Error =====> log');
+      },
+    });
+
+  const studentProfile = data?.data?.data;
+  const location = [
+    studentProfile?.profile?.latitude,
+    studentProfile?.profile?.longitude,
+  ];
+
+  const handleRemove = useMutation((id: number) => deletePenpal(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('MyPenPals');
+    },
+    onError: (error: any) => {
+      console.error('Error:', error);
+    },
+  });
+  const handleClick = () => {
+    const { penpal } = getPenpalInfo(studentProfile?.id);
+
+    userInformation?.id === currentProfileId
+      ? router.push('/students/settings')
+      : isFriend
+        ? penpal && handleRemove.mutate(penpal?.id)
+        : sendPanpalRequest(studentProfile?.id);
+  };
+
+  useEffect(() => {
+    let { isPenpal } = getPenpalInfo(currentProfileId);
+    setIsFriend(isPenpal);
+  }, [myPenpals, currentProfileId]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[500px] w-full">
+        <Loading />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div>Error loading profile</div>;
+  }
 
   const tabContents = [
     {
@@ -70,41 +115,32 @@ const PersonalProfilePage = () => {
             <ProfileAbout
               title="About"
               className="border-0 shadow-0"
-              details={details}
+              details={studentProfile?.profile?.bio}
             />
             <ProfileAbout
               title="About my culture"
               className="border-0 shadow-0"
-              details={details}
+              details={studentProfile?.profile?.culture_information?.[0]}
             />
             <WishCountries
               className="border-0 shadow-0"
               title="Countries I wish to visit"
-              countriesList={[
-                { flag: '/country-flags/svg/us.svg', countryCode: 'US' },
-                { flag: '/country-flags/svg/ca.svg', countryCode: 'CA' },
-              ]}
+              countriesList={studentProfile?.profile?.countriesWishToVisit}
             />
           </Card>
           <ProfileInterests
             title="Interests"
-            interests={[
-              { title: 'Nature', img: '' },
-              { title: 'Dancing', img: '' },
-              { title: 'Culture', img: '' },
-              { title: 'Pets', img: '' },
-              { title: 'Food', img: '' },
-              { title: 'Movies', img: '' },
-              { title: 'Cooking', img: '' },
-              { title: 'Dancing', img: '' },
-              { title: 'Nature', img: '' },
-            ]}
+            interests={studentProfile?.profile?.interests}
+          />
+          <Languages
+            title="Languages"
+            languages={studentProfile?.profile?.languages}
           />
           <Card>
             <ProfileAbout
               title="About your culture, city, country and food"
               className="border-0 shadow-0"
-              details={details}
+              details={studentProfile?.profile?.culture_information?.[0]}
             />
             <Gallery
               title="Gallery"
@@ -136,26 +172,26 @@ const PersonalProfilePage = () => {
       ),
     },
   ];
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
       <div className="md:col-span-9">
         <ProfileHeader
-          name={'Test Name'}
-          age={'14'}
-          gender={'Male'}
+          name={studentProfile?.name}
+          loggedInUser={userInformation?.id === currentProfileId ? true : false}
+          age={studentProfile?.profile?.age}
+          gender={studentProfile?.profile?.gender}
           imageSize={{ width: 100, height: 100 }}
-          country="PK"
+          country={studentProfile?.profile?.country}
           titleClass="text-3xl"
-          profileId={'896372'}
+          profileId={studentProfile?.id}
           buttonProps={{
             isVisbile: true,
-            onClick: () => {
-              // mutate({ id: params?.id as any });
-            },
-            buttonText: 'Add Friend',
+            isLoading: isCreatingPanpal,
+            onClick: handleClick,
+            buttonText,
+            isFriend,
           }}
-          profileIcon="/assets/profile/teacherprofile.svg"
+          profileIcon={studentProfile?.attachment?.file_path}
           mutualFriends={'5 Mutual Friends'}
         />
         <div className="mt-4">
@@ -178,7 +214,7 @@ const PersonalProfilePage = () => {
       </div>
       <div className="md:col-span-3">
         <Card className="p-4 mb-4">
-          <Map />
+          <Map position={location} />
         </Card>
         <ProfileAbout
           className="text-center"
