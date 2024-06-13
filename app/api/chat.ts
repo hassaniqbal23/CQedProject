@@ -37,13 +37,18 @@ export const uploadFile = async (file: Blob) => {
     .then((res) => res.data.data);
 };
 
-
 export const translateMessage = async (message: string, to: string = 'en') => {
-  return await axios.post(`https://api.apilayer.com/language_translation/translate?target=${to}`, {
-    message,
-  }, {
-    headers: {
-      apikey: 'CGORGvz7wYwharq9mB6ZtTYavaFifQtX'
-    }
-  }).then((res) => res.data);
-}
+  return await axios
+    .post(
+      `https://api.apilayer.com/language_translation/translate?target=${to}`,
+      {
+        message,
+      },
+      {
+        headers: {
+          apikey: 'CGORGvz7wYwharq9mB6ZtTYavaFifQtX',
+        },
+      }
+    )
+    .then((res) => res.data);
+};
