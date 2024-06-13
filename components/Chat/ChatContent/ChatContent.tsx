@@ -112,7 +112,7 @@ const ChatContent: FC = () => {
               }}
             />
           </div>
-          <div className="flex-grow ">
+          <div className="flex-grow overflow-y-auto">
             <ChatMessages user={currentConversation.user} />
           </div>
           <div className="bottom-0 bg-white py-3 px-6 border-t">

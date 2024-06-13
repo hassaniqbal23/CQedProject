@@ -1,10 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui';
 import { ExpandableText } from '@/components/common/ExpandableText/ExpandableText';
 import { Typography } from '@/components/common/Typography/Typography';
 import { useChatGuard } from '../../ChatProvider/ChatGuard';
 import { useChatFeatures } from '../../ChatProvider/ChatProvider';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import { useSearchParams } from 'next/navigation';
 
 interface IProps {
   conversations: any[];
@@ -12,6 +13,7 @@ interface IProps {
 
 export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
   const { userInformation } = useGlobalState();
+  const searchParams = useSearchParams();
   const {
     joinConversation,
     realtimeConnectedUsersIds,
@@ -23,11 +25,28 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
     setSelectedConversationId,
   } = useChatFeatures();
 
+  useEffect(() => {
+    const param = new URLSearchParams(searchParams?.toString()).get(
+      'conversation'
+    );
+    if (param) {
+      const conversation = conversations.find(
+        (conversation) => conversation.id === +param
+      );
+      if (conversation && conversation.id === +param) {
+        setSelectedConversationId(conversation.id);
+        return;
+      }
+      joinConversation(+param);
+    }
+  }, [searchParams]);
+
   const handleSelectConversation = (conversationId: string | number) => {
     if (currentConversation && currentConversation.id === conversationId) {
       setSelectedConversationId(currentConversation.id);
       return;
     }
+    setCurrentConversationToParams(conversationId);
     joinConversation(conversationId);
   };
 
@@ -39,6 +58,14 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
       );
     });
   }, [conversations]);
+
+  function setCurrentConversationToParams(conversationId: number | string) {
+    if (searchParams) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('conversation', conversationId as string);
+      window.history.pushState(null, '', `?${params.toString()}`);
+    }
+  }
 
   return (
     <div className="flex flex-col gap-3">
