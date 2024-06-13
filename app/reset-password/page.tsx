@@ -83,7 +83,7 @@ const ResetPasswordContent = () => {
     {
       onSuccess: (res) => {
         if (currentType === 'school') {
-          router.push('/schools/sign-in ');
+          router.push('/universities/sign-in ');
         } else if (currentType === 'admin') {
           router.push('/login');
         } else if (currentType === 'student') {
