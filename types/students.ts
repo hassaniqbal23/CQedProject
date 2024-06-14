@@ -1,5 +1,5 @@
+import { IUserProfile } from '@/app/globalContext/types';
 import { IUser } from './global';
-import { IUserProfile } from '@/app/api/types';
 
 export interface IStudentUser extends IUser {
   profile: IUserProfile;
