@@ -179,10 +179,7 @@ export const PenPalCommunity = () => {
             userInfo={{
               username: getUserStory?.User?.name,
               userId: getUserStory?.userId,
-              location: {
-                name: getUserStory?.User?.profile?.[0]?.country,
-                flag: getUserStory?.User?.profile?.[0]?.country,
-              },
+              location: getUserStory?.User?.profile?.country,
               imageUrl: getUserStory?.User?.attachment?.file_path,
             }}
           />
@@ -256,7 +253,6 @@ export const PenPalCommunity = () => {
               buttonLoading={creatingPanpalId === item.id && isCreatingPanpal}
               buttonText="Connect"
               description={JSON.parse(item?.profile?.meta || '{}').bio}
-              countryFlag={item?.profile?.country}
               countryName={item?.profile?.country}
               studentAge={item?.profile?.age}
             />

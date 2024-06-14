@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Dropdown } from '@/components/ui';
 import { MapPin } from 'lucide-react';
 import Image from 'next/image';
 import { Avatar, AvatarImage } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
-import countriesData from '@/public/countries/countries.json';
 import { IoChevronDown, IoChatbubbleOutline } from 'react-icons/io5';
 import { getCountry } from '@/app/utils/helpers';
-
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal';
+import { useChatFeatures } from '@/components/Chat/ChatProvider/ChatProvider';
+import { useMutation, useQueryClient } from 'react-query';
+import { blockUser, reportUser, unblockUser } from '@/app/api/users';
+import { ReportClassDialog } from '../../DeleteClassModal/ReportClassModal';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
-interface Countries {
-  [key: string]: string;
-}
-
-const countries: Countries = countriesData;
 interface HeaderProps {
   name?: string;
   role?: string;
@@ -58,7 +58,85 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   profileId,
   loggedInUser,
 }) => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const { usersIBlocked } = useGlobalState();
+
   const { flag = '', country: countryName = '' } = getCountry(country);
+  const { setSelectedConversationId } = useChatFeatures();
+  const [report, setReport] = useState(false);
+
+  const { mutate: reportUserMutation, isLoading: isReportingUser } =
+    useMutation(
+      ({ userId, reportText }: { userId: number; reportText: string }) =>
+        reportUser(userId, reportText),
+      {
+        onSuccess: () => {
+          console.log('User reported..!');
+        },
+        onError: (error) => {
+          console.log('Error reporting user', error);
+        },
+      }
+    );
+
+  const { mutate: blockProfile } = useMutation(
+    (userId: number) => blockUser(userId),
+    {
+      onSuccess: (data) => {
+        queryClient.refetchQueries('get-users-i-blocked');
+      },
+      onError: (error) => {
+        console.log('Error blocking user', error);
+      },
+    }
+  );
+
+  const { mutate: unBlockProfile } = useMutation(
+    (blockedUserId: number) => unblockUser(blockedUserId),
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries('get-users-i-blocked');
+      },
+      onError: (error) => {
+        console.log('Error unblocking user', error);
+      },
+    }
+  );
+
+  const isUserBlocked = (userId: number | string) => {
+    return usersIBlocked.some(
+      (blockedUser: any) => blockedUser.blockedUserId === userId
+    );
+  };
+
+  const getBlockedUserId = (userId: number | string) => {
+    const blockedUser = usersIBlocked.find(
+      (blockedUser: any) => blockedUser.blockedUserId === userId
+    );
+    return blockedUser ? blockedUser.id : null;
+  };
+
+  const handleBlockUnblock = () => {
+    const blockedUserId = getBlockedUserId(Number(profileId));
+    if (blockedUserId) {
+      unBlockProfile(blockedUserId);
+    } else {
+      blockProfile(Number(profileId));
+    }
+  };
+
+  const handleReport = (reportText?: string) => {
+    if (reportText) {
+      reportUserMutation({
+        userId: Number(profileId),
+        reportText,
+      });
+    }
+    !isReportingUser && setReport(false);
+  };
+
   return (
     <div className="flex items-center  flex-wrap justify-between w-full bg-primary-500 rounded-2xl text-white p-3 md:p-6 shadow-md text-left md:text-left">
       <div className="flex items-center">
@@ -114,15 +192,28 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
           <>
             {buttonProps.isFriend ? (
               <div className="flex">
-                <Button
-                  onClick={() => {}}
-                  icon={<IoChatbubbleOutline size={20} />}
-                  iconPosition="left"
-                  className={`rounded-full bg-[#ECEDF8] text-primary-500 h-10 text-base mr-2 hover: border border-white`}
-                  variant={'outline'}
-                  type="button"
-                  size={'sm'}
-                ></Button>
+                <CreateChatModal
+                  defaultReceiverId={Number(profileId)}
+                  onChatCreated={(id) => {
+                    setSelectedConversationId(id);
+                    if (pathname?.startsWith('/student')) {
+                      router.push(`/students/chats`);
+                    } else if (pathname?.startsWith('/teacher')) {
+                      router.push(`/teachers/chats`);
+                    }
+                  }}
+                  trigger={
+                    <Button
+                      onClick={() => {}}
+                      icon={<IoChatbubbleOutline size={20} />}
+                      iconPosition="left"
+                      className={`rounded-full bg-[#ECEDF8] text-primary-500 h-10 text-base mr-2 hover: border border-white`}
+                      variant={'outline'}
+                      type="button"
+                      size={'sm'}
+                    ></Button>
+                  }
+                />
                 <Dropdown
                   trigger={
                     <div>
@@ -149,8 +240,10 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                     },
                     {
                       content: (
-                        <div className="text-xs" onClick={() => {}}>
-                          Block
+                        <div className="text-xs" onClick={handleBlockUnblock}>
+                          {isUserBlocked(Number(profileId))
+                            ? 'Unblock'
+                            : 'Block'}
                         </div>
                       ),
                     },
@@ -158,7 +251,9 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                       content: (
                         <div
                           className="text-xs text-primary-600 font-semibold"
-                          onClick={() => {}}
+                          onClick={() => {
+                            setReport(true);
+                          }}
                         >
                           Report profile
                         </div>
@@ -195,6 +290,16 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
           </>
         )}
       </div>
+      <ReportClassDialog
+        title="Report User"
+        description="Are you sure you want to report this user?"
+        ButtonAction="Report"
+        ButtonCancel="Cancel"
+        open={report}
+        okLoading={isReportingUser}
+        onClose={() => setReport(false)}
+        onClickOk={handleReport}
+      />
     </div>
   );
 };
