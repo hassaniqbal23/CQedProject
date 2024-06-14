@@ -20,10 +20,7 @@ export const PublishStoryView = () => (
     userInfo={{
       userId: 12,
       username: 'Inayat - 12',
-      location: {
-        name: 'Pakistan',
-        flag: '/assets/flags/pakistanFlagLogo.svg',
-      },
+      location: 'PK',
       imageUrl: '/assets/profile/profile.svg',
     }}
   />
