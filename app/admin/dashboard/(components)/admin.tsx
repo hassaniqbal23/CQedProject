@@ -36,9 +36,9 @@ export const AdminWelCome = () => {
   return (
     <>
       <DashboardWelcome
-        buttonTitle="Invite Schools"
+        buttonTitle="Invite Universities"
         handleInviteClick={() => setInviteSchool(true)}
-        title="Schools"
+        title="Universities"
         icons={icons}
       />
       <SendEmail
@@ -46,7 +46,7 @@ export const AdminWelCome = () => {
         setOpen={setInviteSchool}
         open={inviteSchool}
         onSubmit={onSubmit}
-        inviteButtonTitle={'Invite School'}
+        inviteButtonTitle={'Invite University'}
       />
     </>
   );

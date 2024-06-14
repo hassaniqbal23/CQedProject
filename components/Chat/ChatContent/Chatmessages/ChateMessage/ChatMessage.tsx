@@ -14,43 +14,36 @@ import { useEventBus } from '@/components/Chat/EventBus/EventBus';
 import { useMutation } from 'react-query';
 import { translateMessage } from '@/app/api/chat';
 import Loading from '@/components/ui/button/loading';
+import { IAttachment, IMessage } from '@/app/globalContext/types';
+import { ChatConversation } from '@/types/chat';
 
 interface Iprops {
-  date?: string;
-  userImage: string;
-  content?: string;
+  userImage?: string;
   isCurrentUser?: boolean;
   onDeleteMessage?: (id: string | number) => void;
-  id: string | number;
   showProfile?: boolean;
   showDate?: boolean;
   hasDeleted?: boolean;
-  userFullName?: string;
-  userId?: number;
-  attachments?: IAttachment[];
-}
-
-interface IAttachment {
-  id: number;
-  file_path: string;
+  conversation: ChatConversation;
+  messages?: IMessage;
 }
 
 dayjs.extend(relativeTime);
 
 const ChatMessage: FC<Iprops> = ({
-  date,
   userImage,
-  content,
   isCurrentUser,
-  id,
   onDeleteMessage,
   showDate,
   showProfile,
   hasDeleted,
-  attachments = [],
-  userFullName,
-  userId,
+  conversation,
+  messages,
 }: Iprops) => {
+  const attachments = messages?.attachments ?? [];
+  const messageContent = messages?.message ?? '';
+  const createdAt = messages?.created_at ?? '';
+
   const { dispatchEvent } = useEventBus();
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
@@ -61,7 +54,7 @@ const ChatMessage: FC<Iprops> = ({
   if (hasDeleted) return null;
 
   const { isLoading, mutate: translate } = useMutation(
-    ['translateMessage', content, 'en'],
+    ['translateMessage', messageContent, 'en'],
     (message: string, to: string = 'en') => translateMessage(message, to),
     {
       onSuccess: (data) => {
@@ -80,12 +73,13 @@ const ChatMessage: FC<Iprops> = ({
   );
 
   const handleTranslate = () => {
-    if (content) {
-      translate(content);
+    if (messageContent) {
+      translate(messageContent);
       setShowTranslatedMessage(true);
     }
   };
 
+  if (hasDeleted) return null;
   return (
     <div
       className={`flex flex-col group gap-1 mb-5 ${isCurrentUser ? 'items-end' : 'items-start'}`}
@@ -107,9 +101,7 @@ const ChatMessage: FC<Iprops> = ({
               }
             >
               <ConversationUserSheet
-                userImage={userImage}
-                userFullName={userFullName}
-                userId={userId}
+                conversation={conversation}
                 onChatDelete={() => {
                   dispatchEvent(DELETE_CONVERSATION, null);
                 }}
@@ -173,7 +165,7 @@ const ChatMessage: FC<Iprops> = ({
                   )}
                 </div>
               )}
-              <span>{content}</span>
+              <span>{messageContent}</span>
             </Typography>
             {!isCurrentUser && showTranslatedMessage && (
               <Typography
@@ -215,15 +207,17 @@ const ChatMessage: FC<Iprops> = ({
             <div className="relative">
               <Dropdown
                 trigger={
-                  <div>
-                    <Ellipsis />
+                  <div className="mr-2 cursor-pointer">
+                    <Ellipsis size={16} />
                   </div>
                 }
                 options={[
                   {
                     content: (
                       <div
-                        onClick={() => onDeleteMessage && onDeleteMessage(id)}
+                        onClick={() =>
+                          onDeleteMessage && onDeleteMessage(messages?.id ?? '')
+                        }
                       >
                         Delete Message
                       </div>
@@ -240,7 +234,7 @@ const ChatMessage: FC<Iprops> = ({
         weight="medium"
         className={`${isCurrentUser ? 'mr-16' : 'ml-16'} text-[#A1A4B1] !text-[12px] `}
       >
-        {showDate && dayjs(date).fromNow()}
+        {showDate && dayjs(createdAt).fromNow()}
       </Typography>
     </div>
   );

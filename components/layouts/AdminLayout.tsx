@@ -33,8 +33,8 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
     },
     {
       icon: '/assets/sidebaricons/schools.svg',
-      title: 'Schools',
-      path: '/admin/schools',
+      title: 'Universities',
+      path: '/admin/universities',
     },
     {
       icon: '/assets/sidebaricons/accounts.svg',
@@ -69,7 +69,7 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
           <Navbar
             horizontalLinks={[
               {
-                href: '/notification',
+                href: '/admin/notifications',
                 type: 'icon',
                 icon: <Bell />,
               },
@@ -77,22 +77,22 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
                 href: '',
                 type: 'profile',
                 dropdownOption: [
-                  {
-                    title: 'Profile',
-                    path: '/admin/profile',
-                    icon: <Bell size={15} />,
-                  },
-                  {
-                    title: 'Account',
-                    path: '/admin/account',
-                    icon: <Settings size={15} />,
-                  },
+                  // {
+                  //   title: 'Profile',
+                  //   path: '/admin/profile',
+                  //   icon: <Bell size={15} />,
+                  // },
+                  // {
+                  //   title: 'settings',
+                  //   path: '/admin/settings',
+                  //   icon: <Settings size={15} />,
+                  // },
 
-                  {
-                    title: 'Help ',
-                    path: '/admin/help',
-                    icon: <CircleHelp size={15} />,
-                  },
+                  // {
+                  //   title: 'Help ',
+                  //   path: '/admin/help',
+                  //   icon: <CircleHelp size={15} />,
+                  // },
                   {
                     title: 'Logout',
                     icon: <LogOut size={15} />,
