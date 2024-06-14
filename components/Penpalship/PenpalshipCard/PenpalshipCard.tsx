@@ -4,10 +4,11 @@ import Link from 'next/link';
 import { Button, Dropdown } from '@/components/ui';
 import { Card } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
-import { truncateText } from '@/app/utils/helpers';
+import { getCountry, truncateText } from '@/app/utils/helpers';
 import countriesData from '@/public/countries/countries.json';
 import { MessageCircle } from 'lucide-react';
 import { LucideUsers } from 'lucide-react';
+import { useRouter } from 'next/router';
 
 interface Countries {
   [key: string]: string;
@@ -23,14 +24,15 @@ interface PenpalshipCardProps {
   description?: string;
   buttonOnClick?: () => void;
   buttonLoading?: boolean;
-  countryFlag: string;
-  countryName: string;
+  countryFlag?: string;
+  countryName?: string;
   studentAge: string | number;
   mutualFriends?: string | number;
   onChatClick?: () => void;
   // onUserClick: () => void;
   showRemoveButton?: boolean; // Add this prop
   showIcons?: boolean;
+  id?: string | number;
 }
 
 const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
@@ -41,20 +43,28 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   buttonOnClick,
   mutualFriends,
   countryFlag,
-  countryName,
+  countryName = '',
   studentAge,
   buttonLoading,
   onChatClick,
   // onUserClick,
   showRemoveButton = true,
   showIcons = false,
+  id,
 }) => {
+  const route = useRouter();
+
   const truncatedDescription =
     (description && truncateText(description, 12)) || '';
   function setIsSelectTeacher(arg0: { isOpenModal: boolean }): void {
     throw new Error('Function not implemented.');
   }
 
+  const { flag = '', country = '' } = getCountry(countryName);
+
+  const handleClick = () => {
+    route.push(`/students/profile/${id}`);
+  };
   return (
     <Card className="flex flex-col h-full">
       <div className="flex flex-col flex-grow p-2 rounded-sm">
@@ -125,7 +135,12 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
             weight="bold"
             className="text-black break-words break-all text-lg font-semibold mt-2"
           >
-            {title}
+            <span
+              className="cursor-pointer hover:text-gray-700"
+              onClick={handleClick}
+            >
+              {title}
+            </span>
           </Typography>
           <Typography variant="p" weight="semibold" className="mb-1 text-xs">
             <Link href="" className="text-primary-500">
@@ -144,7 +159,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
           <div className="block sm:flex justify-between p-2 items-center">
             <div className="flex items-center">
               <Image
-                src={countryFlag}
+                src={flag}
                 alt="flag"
                 className=""
                 width={38}
@@ -152,7 +167,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                 unoptimized={true}
               />
               <Typography variant="h6" weight="medium" className="ml-2 text-sm">
-                {countries[countryName] || 'Unknown Country'}
+                {country}
               </Typography>
             </div>
             <div>

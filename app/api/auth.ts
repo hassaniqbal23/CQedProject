@@ -25,3 +25,7 @@ export const UserResetPassword = (payload: IResetPassword) =>
 
 export const UserForgotPassword = (payload: { email: string; type: string }) =>
   http.patch('/password/forgot-password', payload);
+
+export const getProfileLoginUser = async () => {
+  return http.get(`/users/get-profile`);
+};

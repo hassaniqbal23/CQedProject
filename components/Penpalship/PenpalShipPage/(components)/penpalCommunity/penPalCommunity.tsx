@@ -131,7 +131,6 @@ export const PenPalCommunity = () => {
       return suggestionsResponse?.data?.data?.map((c: any) => {
         return {
           ...c,
-          profile: c.profile[0],
         };
       });
     }
@@ -180,10 +179,7 @@ export const PenPalCommunity = () => {
             userInfo={{
               username: getUserStory?.User?.name,
               userId: getUserStory?.userId,
-              location: {
-                name: getUserStory?.User?.profile?.[0]?.country,
-                flag: getUserStory?.User?.profile?.[0]?.country,
-              },
+              location: getUserStory?.User?.profile?.country,
               imageUrl: getUserStory?.User?.attachment?.file_path,
             }}
           />
@@ -246,8 +242,9 @@ export const PenPalCommunity = () => {
           {suggestions?.map((item: any, index: number) => (
             <PenpalshipCard
               key={index}
+              id={item?.id}
               imgPath={item?.attachment?.file_path}
-              title={item?.profile?.fullname || item.email}
+              title={item?.profile?.full_name || item.email}
               mutualFriends={'5 mutual friends'}
               buttonOnClick={() => {
                 sendPanpalRequest(item.id);
@@ -256,8 +253,7 @@ export const PenPalCommunity = () => {
               buttonLoading={creatingPanpalId === item.id && isCreatingPanpal}
               buttonText="Connect"
               description={JSON.parse(item?.profile?.meta || '{}').bio}
-              countryFlag={`/country-flags/svg/${item?.profile?.country.toLowerCase()}.svg`}
-              countryName={item?.profile?.country.toUpperCase()}
+              countryName={item?.profile?.country}
               studentAge={item?.profile?.age}
               showIcons={false}
             />

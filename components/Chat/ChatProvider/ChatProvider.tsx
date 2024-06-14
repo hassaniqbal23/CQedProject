@@ -28,6 +28,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { toast } from 'react-toastify';
+import { ChatConversation } from '@/types/chat';
 
 interface ChatInterface {
   currentThread?: any;
@@ -40,7 +41,7 @@ interface ChatInterface {
   unSendMessage?: (chatId: number) => void;
   currentThreadId?: number | null;
   inboxResponse?: any;
-  currentConversation: any;
+  currentConversation: ChatConversation | null | undefined;
   memoizedMessagesList: any[];
   onConversationDelete: (id: number | string) => void;
   setInboxResponse: Dispatch<SetStateAction<any[]>>;
@@ -76,15 +77,16 @@ export const ChatProvider = ({ children }: any) => {
   const { joinConversation } = useChatGuard();
   const [searchQuery, setSearchQuery] = useState('');
   const { subscribeEvent, unsubscribeEvent } = useEventBus();
-  const [inboxResponse, setInboxResponse] = useState<any[]>([]);
+  const [inboxResponse, setInboxResponse] = useState<ChatConversation[]>([]);
   const queryClient = useQueryClient();
   const { userInformation } = useGlobalState();
   const [currentConversationAttachments, setCurrentConversationAttachments] =
     useState<any[]>([]);
-  const [selectedConversationId, setSelectedConversationId] =
-    useState<any>(null);
+  const [selectedConversationId, setSelectedConversationId] = useState<
+    number | string | null
+  >(null);
 
-  const currentConversation = useMemo(() => {
+  const currentConversation: ChatConversation | undefined = useMemo(() => {
     return inboxResponse.find((item) => item.id === selectedConversationId);
   }, [selectedConversationId, inboxResponse]);
 
@@ -105,7 +107,7 @@ export const ChatProvider = ({ children }: any) => {
     );
 
   const { isLoading: inboxLoading, data: allConversationResponse } = useQuery(
-    ['get-all-conversations', selectedConversationId],
+    ['get-all-conversations'],
     () => getAllConversations(),
     {
       onSuccess(res) {
@@ -181,7 +183,10 @@ export const ChatProvider = ({ children }: any) => {
       }
       setInboxResponse(
         inboxResponse.map((conversation) => {
-          if (conversation.id === currentConversation.id) {
+          if (
+            currentConversation &&
+            conversation.id === currentConversation.id
+          ) {
             return {
               ...conversation,
               messages: [...conversation.messages, message],
@@ -195,7 +200,10 @@ export const ChatProvider = ({ children }: any) => {
         // do nothing just update the message int id.
         setInboxResponse(
           inboxResponse.map((conversation) => {
-            if (conversation.id === currentConversation.id) {
+            if (
+              currentConversation &&
+              conversation.id === currentConversation.id
+            ) {
               return {
                 ...conversation,
                 messages: conversation.messages.map((msg: any) => {

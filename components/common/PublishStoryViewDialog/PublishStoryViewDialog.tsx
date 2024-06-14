@@ -22,17 +22,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
 import { Typography } from '../Typography/Typography';
 import { useGlobalState } from '@/app/globalContext/globalContext';
-import countriesData from '@/public/countries/countries.json';
 import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal';
 import { useRouter, usePathname } from 'next/navigation';
 import { useChatGuard } from '@/components/Chat/ChatProvider/ChatGuard';
 import { useChatFeatures } from '@/components/Chat/ChatProvider/ChatProvider';
-
-interface Countries {
-  [key: string]: string;
-}
-
-const countries: Countries = countriesData;
+import { getCountry } from '@/app/utils/helpers';
 
 const formSchema = z.object({
   story: z
@@ -58,7 +52,7 @@ export interface IPublishStoryViewDialogProps {
     username: string;
     imageUrl: string;
     userId: number;
-    location: { flag: string; name: string };
+    location: string;
   };
 }
 
@@ -88,7 +82,7 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
   }, [initialValue]);
 
   const { userInformation } = useGlobalState();
-  const countryCode = userInfo?.location?.name?.toUpperCase() || '';
+  const { country = '', flag = '' } = getCountry(userInfo?.location || '');
   const router = useRouter();
   const pathname = usePathname();
   const { setSelectedConversationId } = useChatFeatures();
@@ -115,13 +109,10 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
                       {userInfo?.username}
                     </Typography>
                     <div className="flex items-center">
-                      {userInfo?.location?.flag && (
+                      {userInfo?.location && (
                         <Image
                           className="mr-2"
-                          src={
-                            `/country-flags/svg/${userInfo?.location?.flag?.toLowerCase()}.svg` ||
-                            ''
-                          }
+                          src={flag}
                           height={30}
                           width={30}
                           alt="view-Story"
@@ -129,7 +120,7 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
                         />
                       )}
                       <Typography variant="h5" weight="regular">
-                        {countries[countryCode]}
+                        {country}
                       </Typography>
                     </div>
                   </div>
