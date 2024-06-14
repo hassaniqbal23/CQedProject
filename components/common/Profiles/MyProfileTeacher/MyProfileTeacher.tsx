@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryResult } from 'react-query';
 import {
   ProfileBio,
   ProfileCertificates,
@@ -11,37 +11,39 @@ import {
   UniversityLink,
 } from '@/components/common/Profiles';
 import { Mail, MapPin, Phone } from 'lucide-react';
-import { getProfileLoginUser } from '@/app/api/auth';
 import { TabsComponent } from '@/components/ui/tabs/tabs';
+import { useGlobalState } from '@/app/globalContext/globalContext';
+import { ITeacherProfileResponse } from '@/types/tearcher';
+import { getProfileInfo } from '@/app/api/auth';
 
 export const MyProfileTeacher: FC = () => {
+  const { userInformation } = useGlobalState();
   const {
     data: profileData,
     error,
     isLoading,
-  } = useQuery(['getProfileLoginUser'], () =>
-    getProfileLoginUser().then((res) => {
-      return res.data.data;
-    })
+  }: UseQueryResult<ITeacherProfileResponse, Error> = useQuery(
+    ['getProfileLoginUser'],
+    () => getProfileInfo(userInformation.id),
+    {
+      enabled: userInformation.id ? true : false,
+    }
   );
-
   if (isLoading)
     return <div className="flex justify-center py-8 ">Loading...</div>;
 
-  const bio =
-    (profileData && JSON.parse(profileData?.profile?.meta)?.bio) || '';
+  const bio = (profileData && profileData?.data?.profile?.bio) || '';
 
-  const interestsArray = (profileData?.interests ?? '').split(',');
+  const interestsArray = profileData?.data.profile?.skills;
 
   const contactDetails = () => {
-    const detailsData = profileData?.profile[0];
+    const detailsData = profileData?.data?.profile;
     const details: any = [
       {
         title: 'Email',
-        content: profileData?.email,
+        content: profileData?.data?.email,
         icon: Mail,
       },
-
       {
         title: 'Address',
         content: `${detailsData?.address}, ${detailsData?.state}, ${detailsData?.zip_code}`,
@@ -63,11 +65,11 @@ export const MyProfileTeacher: FC = () => {
   return (
     <div className="space-y-4">
       <ProfileHeader
-        name={profileData?.name}
-        role={'N/A'}
+        name={profileData?.data?.name}
+        role={profileData?.data?.profile?.address}
         subrole={'N/A'}
-        location={profileData?.profile[0]?.state}
-        profileIcon={profileData?.attachment?.file_path}
+        location={profileData?.data?.profile?.state}
+        profileIcon={profileData?.data?.attachment?.file_path}
       />
       <div>
         <TabsComponent
@@ -90,85 +92,72 @@ export const MyProfileTeacher: FC = () => {
           tabContent={[]}
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
-        <div className="sm:col-span-3 h-full">
-          <ProfileBio title="About The Teacher" bio={bio} />
-        </div>
-        <div className="sm:col-span-2 ">
-          <ProfileContactDetails
-            title="Contact Details"
-            details={contactDetails()}
-          />
-        </div>
+      <div className="">
+        <ProfileBio title="About The Teacher" bio={bio} />
       </div>
+      <div className="">
+        <ProfileContactDetails
+          title="Contact Details"
+          details={contactDetails()}
+        />
+      </div>
+      <ProfileSkills title="Skills" skills={interestsArray || []} />
+      <div>
+        <ProfileWorkHistory
+          title="Work History"
+          jobs={[
+            {
+              id: '1',
+              company: 'Massachusetts Institute of Technology (MIT)',
+              role: 'Simply Design',
+              duration: 'Dec 2019 - Present',
+            },
+            {
+              id: '2',
+              company: 'Harvard University',
+              role: 'Simply Design',
+              duration: 'Dec 2019 - Present',
+            },
+          ]}
+        />
 
-      <ProfileEducation
-        title="Education"
-        jobs={[
-          {
-            id: '1',
-            company: 'Mater’s degree in information Technolog',
-            role: 'Simply Design',
-            duration: 'Dec 2019 - Present',
-          },
-          {
-            id: '2',
-            company: 'Mater’s degree in information Technologyy',
-            role: 'Simply Design',
-            duration: 'Dec 2019 - Present',
-          },
-        ]}
-      />
-      <div className="col-span-3">
-        <div className="w-full grid grid-cols-1 gap-4">
-          <ProfileWorkHistory
-            title="Work History"
-            jobs={[
-              {
-                id: '1',
-                company: 'Massachusetts Institute of Technology (MIT)',
-                role: 'Simply Design',
-                duration: 'Dec 2019 - Present',
-              },
-              {
-                id: '2',
-                company: 'Harvard University',
-                role: 'Simply Design',
-                duration: 'Dec 2019 - Present',
-              },
-            ]}
-          />
-        </div>
+        <ProfileEducation
+          title="Education"
+          jobs={[
+            {
+              id: '1',
+              company: 'Mater’s degree in information Technolog',
+              role: 'Simply Design',
+              duration: 'Dec 2019 - Present',
+            },
+            {
+              id: '2',
+              company: 'Mater’s degree in information Technologyy',
+              role: 'Simply Design',
+              duration: 'Dec 2019 - Present',
+            },
+          ]}
+        />
       </div>
-      <ProfileSkills
-        title="Skills"
-        skills={
-          interestsArray?.map((skill: string) => {
-            return skill;
-          }) || []
-        }
-      />
-      <div className="sm:grid gap-4 grid-cols-1">
-        <div className="w-full space-y-4 col-span-2">
-          <UniversityLink />
-          <ProfileCertificates
-            title="Certificates"
-            certificates={[
-              {
-                id: '1',
-                name: 'Teaching Certificate',
-                date: '02/04 2024',
-                issueName: 'Certificate issuer',
-              },
-              {
-                id: '2',
-                name: 'Professional Development',
-                date: '02/04 2024',
-                issueName: 'Certificate issuer',
-              },
-            ]}
-          />
-        </div>
+      <div className="">
+        <UniversityLink />
+        <ProfileCertificates
+          title="Certificates"
+          certificates={[
+            {
+              id: '1',
+              name: 'Teaching Certificate',
+              date: '02/04 2024',
+              issueName: 'Certificate issuer',
+            },
+            {
+              id: '2',
+              name: 'Professional Development',
+              date: '02/04 2024',
+              issueName: 'Certificate issuer',
+            },
+          ]}
+        />
       </div>
     </div>
   );
