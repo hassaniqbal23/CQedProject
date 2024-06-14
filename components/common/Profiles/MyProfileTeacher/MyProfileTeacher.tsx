@@ -41,11 +41,7 @@ export const MyProfileTeacher: FC = () => {
         content: profileData?.email,
         icon: Mail,
       },
-      {
-        title: 'Phone',
-        content: detailsData?.phone_number,
-        icon: Phone,
-      },
+
       {
         title: 'Address',
         content: `${detailsData?.address}, ${detailsData?.state}, ${detailsData?.zip_code}`,
@@ -94,14 +90,53 @@ export const MyProfileTeacher: FC = () => {
           tabContent={[]}
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
         <div className="sm:col-span-3 h-full">
           <ProfileBio title="About The Teacher" bio={bio} />
         </div>
-        <div className="sm:col-span-2">
+        <div className="sm:col-span-2 ">
           <ProfileContactDetails
             title="Contact Details"
             details={contactDetails()}
+          />
+        </div>
+      </div>
+
+      <ProfileEducation
+        title="Education"
+        jobs={[
+          {
+            id: '1',
+            company: 'Mater’s degree in information Technolog',
+            role: 'Simply Design',
+            duration: 'Dec 2019 - Present',
+          },
+          {
+            id: '2',
+            company: 'Mater’s degree in information Technologyy',
+            role: 'Simply Design',
+            duration: 'Dec 2019 - Present',
+          },
+        ]}
+      />
+      <div className="col-span-3">
+        <div className="w-full grid grid-cols-1 gap-4">
+          <ProfileWorkHistory
+            title="Work History"
+            jobs={[
+              {
+                id: '1',
+                company: 'Massachusetts Institute of Technology (MIT)',
+                role: 'Simply Design',
+                duration: 'Dec 2019 - Present',
+              },
+              {
+                id: '2',
+                company: 'Harvard University',
+                role: 'Simply Design',
+                duration: 'Dec 2019 - Present',
+              },
+            ]}
           />
         </div>
       </div>
@@ -113,7 +148,7 @@ export const MyProfileTeacher: FC = () => {
           }) || []
         }
       />
-      <div className="sm:grid gap-4 grid-cols-5">
+      <div className="sm:grid gap-4 grid-cols-1">
         <div className="w-full space-y-4 col-span-2">
           <UniversityLink />
           <ProfileCertificates
@@ -133,45 +168,6 @@ export const MyProfileTeacher: FC = () => {
               },
             ]}
           />
-        </div>
-        <div className="col-span-3">
-          <div className="w-full grid grid-cols-1 gap-4">
-            <ProfileWorkHistory
-              title="Work History"
-              jobs={[
-                {
-                  id: '1',
-                  company: 'Massachusetts Institute of Technology (MIT)',
-                  role: 'Simply Design',
-                  duration: 'Dec 2019 - Present',
-                },
-                {
-                  id: '2',
-                  company: 'Harvard University',
-                  role: 'Simply Design',
-                  duration: 'Dec 2019 - Present',
-                },
-              ]}
-            />
-
-            <ProfileEducation
-              title="Education"
-              jobs={[
-                {
-                  id: '1',
-                  company: 'Mater’s degree in information Technolog',
-                  role: 'Simply Design',
-                  duration: 'Dec 2019 - Present',
-                },
-                {
-                  id: '2',
-                  company: 'Mater’s degree in information Technologyy',
-                  role: 'Simply Design',
-                  duration: 'Dec 2019 - Present',
-                },
-              ]}
-            />
-          </div>
         </div>
       </div>
     </div>
