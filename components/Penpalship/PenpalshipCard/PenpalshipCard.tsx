@@ -8,7 +8,9 @@ import { getCountry, truncateText } from '@/app/utils/helpers';
 import countriesData from '@/public/countries/countries.json';
 import { MessageCircle } from 'lucide-react';
 import { LucideUsers } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal'; // Import the CreateChatModal component
+import { useChatFeatures } from '@/components/Chat/ChatProvider/ChatProvider'; // Import the useChatFeatures hook
 
 interface Countries {
   [key: string]: string;
@@ -28,9 +30,7 @@ interface PenpalshipCardProps {
   countryName?: string;
   studentAge: string | number;
   mutualFriends?: string | number;
-  onChatClick?: () => void;
-  // onUserClick: () => void;
-  showRemoveButton?: boolean; // Add this prop
+  showRemoveButton?: boolean;
   showIcons?: boolean;
   id?: string | number;
 }
@@ -46,25 +46,26 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   countryName = '',
   studentAge,
   buttonLoading,
-  onChatClick,
-  // onUserClick,
   showRemoveButton = true,
   showIcons = false,
   id,
 }) => {
   const route = useRouter();
+  const { setSelectedConversationId } = useChatFeatures(); // Get the setSelectedConversationId function
 
   const truncatedDescription =
     (description && truncateText(description, 12)) || '';
-  function setIsSelectTeacher(arg0: { isOpenModal: boolean }): void {
-    throw new Error('Function not implemented.');
-  }
 
   const { flag = '', country = '' } = getCountry(countryName);
 
   const handleClick = () => {
     route.push(`/students/profile/${id}`);
   };
+
+  function setIsSelectTeacher(arg0: { isOpenModal: boolean }): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <Card className="flex flex-col h-full">
       <div className="flex flex-col flex-grow p-2 rounded-sm">
@@ -92,20 +93,22 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
           )}
           {showIcons && (
             <div className="flex gap-2 text-primary-500">
-              <button
-                onClick={onChatClick}
-                className=" bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center  justify-center"
-              >
-                <MessageCircle />
-              </button>
-
+              <CreateChatModal
+                defaultReceiverId={Number(id)}
+                onChatCreated={(chatId) => {
+                  setSelectedConversationId(chatId);
+                  route.push(`/students/chats`);
+                }}
+                trigger={
+                  <button className="bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center">
+                    <MessageCircle />
+                  </button>
+                }
+              />
               <Dropdown
                 trigger={
                   <div>
-                    <button
-                      // onClick={onUserClick}
-                      className="bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center"
-                    >
+                    <button className="bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center">
                       <LucideUsers />
                     </button>
                   </div>

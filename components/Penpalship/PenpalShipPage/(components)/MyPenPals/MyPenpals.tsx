@@ -89,16 +89,6 @@ export const MyPenpals: React.FC = () => {
     []
   );
 
-  const handleChatClick = () => {
-    // console.log('chat click');
-    router.push(`/students/chats`);
-  };
-
-  // const handleUserClick = (userId: string) => {
-  //   console.log(`${userId} clicked`);
-  //   router.push(`/students/profile/${userId}`);
-  // };
-
   return (
     <div>
       <div className="flex py-5 justify-between flex-wrap items-end">
@@ -125,8 +115,6 @@ export const MyPenpals: React.FC = () => {
             countryFlag={`/country-flags/svg/${item?.user?.profile?.country.toLowerCase()}.svg`}
             countryName={item?.user?.profile?.country.toUpperCase()}
             studentAge={item?.user?.profile?.age}
-            onChatClick={() => handleChatClick()}
-            // onUserClick={() => handleUserClick(item.user.id)}
             showRemoveButton={false}
             showIcons={true}
           />
