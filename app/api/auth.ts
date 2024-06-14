@@ -29,3 +29,9 @@ export const UserForgotPassword = (payload: { email: string; type: string }) =>
 export const getProfileLoginUser = async () => {
   return http.get(`/users/get-profile`);
 };
+
+export const getProfileInfo = async (id: number) => {
+  return http.get(`/users/${id}/view-profile`).then((res) => {
+    return res.data;
+  });
+};

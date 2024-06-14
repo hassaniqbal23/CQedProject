@@ -79,3 +79,33 @@ export interface IAttachment {
   id: number;
   file_path: string;
 }
+
+export interface IRole {
+  description: string;
+  id: number;
+  name: string;
+}
+
+export interface IUserProfile {
+  id: number;
+  full_name: string;
+  first_name: string;
+  last_name: string;
+  nick_name: string;
+  address: string;
+  country?: string;
+  state: string;
+  meta: string;
+  phone_number: string;
+  gender: string;
+  bio: string;
+  zip_code: string;
+  languages?: string[];
+  culture_information?: string[];
+  countriesWishToVisit?: string[];
+  skills?: string[];
+  hobbies?: string[];
+  interests?: string[];
+  dob: string;
+  skypeId?: number | string;
+}
