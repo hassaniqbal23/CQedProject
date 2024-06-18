@@ -16,6 +16,7 @@ import { getAllConversations, getConversationMessages } from '@/app/api/chat';
 import { useQuery, useQueryClient } from 'react-query';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { useParams } from 'next/navigation';
+import { ChatConversation } from '@/types/chat';
 
 interface ChatInterface {
   currentThread?: any;
