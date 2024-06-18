@@ -3,6 +3,7 @@ import { ChatSideBar } from './ChatSideBar/ChatSideBar';
 import ChatContent from './ChatContent/ChatContent';
 import { useQueryClient } from 'react-query';
 import { useChatProvider } from './ChatProvider/ChatProvider';
+import { Suspense } from 'react';
 
 export interface ChatPageProps {}
 
@@ -48,9 +49,11 @@ export const Chat: FC<ChatPageProps> = (props) => {
   }, [selectedConversationId]);
 
   return (
-    <div className="flex w-full">
-      <ChatSideBar chat={'Chats'} />
-      <ChatContent />
-    </div>
+    <Suspense>
+      <div className="flex w-full">
+        <ChatSideBar chat={'Chats'} />
+        <ChatContent />
+      </div>
+    </Suspense>
   );
 };
