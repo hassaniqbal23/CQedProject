@@ -8,15 +8,12 @@ import {
 } from 'react';
 import { useSocket } from '../WithSockets/WithSockets';
 import { useEventBus } from '../EventBus/EventBus';
-import {
-  EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
-  JOIN_TO_CHAT_ROOM,
-} from '../EventBus/constants';
+import { EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE } from '../EventBus/constants';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { socket } from '@/lib/socket';
-// import { UserProps, getCurrentUser } from '../../store/User.reducer';
-// import { useSelector } from 'react-redux';
-// import { incomingMessageToast } from '@gilgit-app-nx/ui';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
+import { useRouter } from 'next/navigation';
+import { useQueryClient } from 'react-query';
 
 interface ChatGuardContextProps {
   realtimeConnectedUsersIds: number[];
@@ -50,6 +47,9 @@ export const ChatGuardContext = createContext<ChatGuardContextProps>({
 export const useChatGuard = () => useContext(ChatGuardContext);
 
 export const ChatGuardProvider = ({ children }: any) => {
+  const { module } = useModule();
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const { userInformation, isAuthenticated } = useGlobalState();
   const { dispatchEvent } = useEventBus();
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
@@ -93,7 +93,6 @@ export const ChatGuardProvider = ({ children }: any) => {
       socket.on('disconnect', () => {
         setRealtimeConnectedUsersIds([]);
       });
-
       return () => {
         socket.off('SOCKET_USER_IS_TYPING', onUserIsTyping);
         socket.off('SOCKET_ONLINE_USERS_LIST', onOnlineUsersList);
@@ -130,8 +129,7 @@ export const ChatGuardProvider = ({ children }: any) => {
 
   const joinConversation = (conversationId: string | number) => {
     if (socket) {
-      socket.emit('JOIN_ROOM', { id: conversationId });
-      dispatchEvent(JOIN_TO_CHAT_ROOM, conversationId);
+      router.push(`/${module}/chats/${conversationId}`);
     }
   };
 

@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { Input } from '@/components/ui/input/input';
 import { ChatUserList } from './ChatUserList/ChatUserList';
 import { Typography } from '@/components/common/Typography/Typography';
-import { useChatFeatures } from '../ChatProvider/ChatProvider';
+import { useChatProvider } from '../ChatProvider/ChatProvider';
 import Loading from '../../ui/button/loading';
 import CreateChatModal from '../ChatContent/CreateChatModal/CreateChatModal';
 import { useChatGuard } from '../ChatProvider/ChatGuard';
@@ -14,7 +14,7 @@ interface IProps {
 }
 
 export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
-  const { inboxResponse, inboxLoading } = useChatFeatures();
+  const { inboxResponse, inboxLoading } = useChatProvider();
   const { joinConversation } = useChatGuard();
 
   const [search, setSearch] = React.useState('');
@@ -66,13 +66,12 @@ export const ChatSideBar: FC<IProps> = ({ chat }: IProps) => {
           </div>
 
           <div className="h-[calc(100vh_-_215px)] overflow-y-auto">
-            {inboxLoading ? (
+            {/* {inboxLoading && (
               <div className="w-full h-[500px] flex items-center justify-center">
                 <Loading />
               </div>
-            ) : (
-              <ChatUserList conversations={filtered} />
-            )}
+            )} */}
+            <ChatUserList conversations={filtered} />
           </div>
         </div>
       </div>

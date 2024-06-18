@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import ChatMessage from './ChateMessage/ChatMessage';
 import { useGlobalState } from '@/app/globalContext/globalContext';
-import { useChatFeatures } from '../../ChatProvider/ChatProvider';
+import { useChatProvider } from '../../ChatProvider/ChatProvider';
 import { useMutation } from 'react-query';
 import { deleteMessage } from '@/app/api/chat';
 import dayjs from 'dayjs';
@@ -15,12 +15,8 @@ interface IChatMessages {
 const ChatMessages: React.FC<IChatMessages> = ({ conversation }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { userInformation } = useGlobalState();
+  const { currentConversation } = useChatProvider();
   const [deletedMessage, setDeletedMessage] = React.useState<Number[]>([]);
-  const { memoizedMessagesList } = useChatFeatures();
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [memoizedMessagesList]);
 
   const { mutate: removeThread, isLoading: isDeletingThread } = useMutation(
     (id: number) => deleteMessage(id),
@@ -38,13 +34,18 @@ const ChatMessages: React.FC<IChatMessages> = ({ conversation }) => {
     const numericId = typeof id === 'string' ? parseInt(id) : id;
     removeThread(numericId);
   };
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
+
   return (
     <div className="p-3">
-      {memoizedMessagesList.map((message, index) => {
+      {currentConversation.messages.map((message: any, index: number) => {
         const isMe = [message.senderId].includes(userInformation.id);
         const sender = message.senderId;
-        const nextMessage = memoizedMessagesList[index + 1];
-        const previousMessage = memoizedMessagesList[index - 1];
+        const nextMessage = currentConversation.messages[index + 1];
+        const previousMessage = currentConversation.messages[index - 1];
 
         const messageDate = parseISO(message.created_at);
         const nextMessageDate = nextMessage
@@ -103,7 +104,7 @@ const ChatMessages: React.FC<IChatMessages> = ({ conversation }) => {
         );
       })}
 
-      <div ref={messagesEndRef}></div>
+      <div className="messagesEndRef" ref={messagesEndRef}></div>
     </div>
   );
 };

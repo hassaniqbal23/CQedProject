@@ -3,7 +3,7 @@ import { Avatar, AvatarImage } from '@/components/ui';
 import { ExpandableText } from '@/components/common/ExpandableText/ExpandableText';
 import { Typography } from '@/components/common/Typography/Typography';
 import { useChatGuard } from '../../ChatProvider/ChatGuard';
-import { useChatFeatures } from '../../ChatProvider/ChatProvider';
+import { useChatProvider } from '../../ChatProvider/ChatProvider';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { useSearchParams } from 'next/navigation';
 
@@ -23,7 +23,7 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
     currentConversation,
     selectedConversationId,
     setSelectedConversationId,
-  } = useChatFeatures();
+  } = useChatProvider();
 
   useEffect(() => {
     const param = new URLSearchParams(searchParams?.toString()).get(
@@ -43,34 +43,17 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
 
   const handleSelectConversation = (conversationId: string | number) => {
     if (currentConversation && currentConversation.id === conversationId) {
-      setSelectedConversationId(currentConversation.id);
       return;
     }
-    setCurrentConversationToParams(conversationId);
     joinConversation(conversationId);
   };
 
-  const sortedConversation = React.useMemo(() => {
-    return conversations.sort((a, b) => {
-      return (
-        new Date(b.lastMessageReceived).getTime() -
-        new Date(a.lastMessageReceived).getTime()
-      );
-    });
-  }, [conversations]);
-
-  function setCurrentConversationToParams(conversationId: number | string) {
-    if (searchParams) {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set('conversation', conversationId as string);
-      window.history.pushState(null, '', `?${params.toString()}`);
-    }
-  }
-
   return (
     <div className="flex flex-col gap-3">
-      {sortedConversation.map((conversation) => {
-        let lastMessage = conversation.messages[0];
+      {conversations.map((conversation) => {
+        let lastMessage =
+          conversation.messages[conversation.messages.length - 1];
+
         let lastMessageTXT = '';
 
         if (
