@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ChatInput } from './ChatInput/ChatInput';
 import ChatMessages from './Chatmessages/ChatMessages';
 import { useChatGuard } from '../ChatProvider/ChatGuard';
-import { useChatFeatures } from '../ChatProvider/ChatProvider';
+import { useChatProvider } from '../ChatProvider/ChatProvider';
 import NoChatFound from './NoChatFound/NoChatFound';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { deleteConversation } from '@/app/api/chat';
@@ -23,7 +23,7 @@ const ChatContent: FC = () => {
     onConversationDelete,
     setInboxResponse,
     setSelectedConversationId,
-  } = useChatFeatures();
+  } = useChatProvider();
   const { realtimeConnectedUsersIds, realtimeTypingUsersIds } = useChatGuard();
   const { userInformation } = useGlobalState();
 
@@ -58,6 +58,12 @@ const ChatContent: FC = () => {
       })
     );
     sendMessage(messageData);
+    const messagesEndRef = document.querySelector('.messagesEndRef');
+    if (messagesEndRef) {
+      setTimeout(() => {
+        messagesEndRef.scrollIntoView({ behavior: 'smooth' });
+      }, 10);
+    }
   };
   let noChatMessage =
     inboxResponse && inboxResponse.length > 0
@@ -112,7 +118,7 @@ const ChatContent: FC = () => {
               }}
             />
           </div>
-          <div className="flex-grow ">
+          <div className="flex-grow h-full overflow-auto">
             <ChatMessages user={currentConversation.user} />
           </div>
           <div className="bottom-0 bg-white py-3 px-6 border-t">

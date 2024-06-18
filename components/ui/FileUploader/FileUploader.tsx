@@ -162,6 +162,7 @@ export const FileUploader = forwardRef<
         const newValues: File[] = value ? [...value] : [];
 
         if (reSelectAll) {
+          console.log('slice');
           newValues.splice(0, newValues.length);
         }
 

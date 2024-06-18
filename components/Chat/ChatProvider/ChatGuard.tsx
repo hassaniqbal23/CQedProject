@@ -8,15 +8,12 @@ import {
 } from 'react';
 import { useSocket } from '../WithSockets/WithSockets';
 import { useEventBus } from '../EventBus/EventBus';
-import {
-  EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
-  JOIN_TO_CHAT_ROOM,
-} from '../EventBus/constants';
+import { EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE } from '../EventBus/constants';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { socket } from '@/lib/socket';
-// import { UserProps, getCurrentUser } from '../../store/User.reducer';
-// import { useSelector } from 'react-redux';
-// import { incomingMessageToast } from '@gilgit-app-nx/ui';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
+import { useRouter } from 'next/navigation';
+import { useQueryClient } from 'react-query';
 
 interface ChatGuardContextProps {
   realtimeConnectedUsersIds: number[];
@@ -31,7 +28,6 @@ interface ChatGuardContextProps {
   joinConversation: (conversationId: string | number) => void;
   userIsTyping: (conversationId: number, userIds: number[]) => void;
   setRealtimeConnectedUsersIds: React.Dispatch<React.SetStateAction<number[]>>;
-  currentChatId: string | number;
 }
 
 export const ChatGuardContext = createContext<ChatGuardContextProps>({
@@ -47,15 +43,16 @@ export const ChatGuardContext = createContext<ChatGuardContextProps>({
   totalUnreadMessageCount: 0,
   joinConversation: () => {},
   userIsTyping: () => {},
-  currentChatId: '',
 });
 export const useChatGuard = () => useContext(ChatGuardContext);
 
 export const ChatGuardProvider = ({ children }: any) => {
+  const { module } = useModule();
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const { userInformation, isAuthenticated } = useGlobalState();
   const { dispatchEvent } = useEventBus();
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
-  const [currentChatId, setCurrentChatId] = useState<number | string>('');
   const [realtimeTypingUsersIds, setRealtimeTypingUsersIds] = useState<
     number[]
   >([]);
@@ -96,7 +93,6 @@ export const ChatGuardProvider = ({ children }: any) => {
       socket.on('disconnect', () => {
         setRealtimeConnectedUsersIds([]);
       });
-
       return () => {
         socket.off('SOCKET_USER_IS_TYPING', onUserIsTyping);
         socket.off('SOCKET_ONLINE_USERS_LIST', onOnlineUsersList);
@@ -132,10 +128,8 @@ export const ChatGuardProvider = ({ children }: any) => {
   };
 
   const joinConversation = (conversationId: string | number) => {
-    setCurrentChatId(conversationId);
     if (socket) {
-      socket.emit('JOIN_ROOM', { id: conversationId });
-      dispatchEvent(JOIN_TO_CHAT_ROOM, conversationId);
+      router.push(`/${module}/chats/${conversationId}`);
     }
   };
 
@@ -164,7 +158,6 @@ export const ChatGuardProvider = ({ children }: any) => {
         totalUnreadMessageCount,
         joinConversation,
         userIsTyping,
-        currentChatId,
       }}
     >
       {children}

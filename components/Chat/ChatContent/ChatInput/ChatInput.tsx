@@ -15,7 +15,7 @@ import { ChatFileUploader } from './ChatFileUploader/ChatFileUploader';
 import { AspectRatio } from '@/components/ui/aspect-ratio/aspect-ratio';
 import Image from 'next/image';
 import { useSocket } from '../../WithSockets/WithSockets';
-import { useChatFeatures } from '../../ChatProvider/ChatProvider';
+import { useChatProvider } from '../../ChatProvider/ChatProvider';
 import { useChatGuard } from '../../ChatProvider/ChatGuard';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { uploadFile } from '@/app/api/chat';
@@ -27,7 +27,7 @@ import { toast as sonnerToast } from 'sonner';
 let TypingTimeout: any;
 
 function ChatInput({ onSendMessage }: any) {
-  const { currentConversation } = useChatFeatures();
+  const { currentConversation } = useChatProvider();
   const { userInformation } = useGlobalState();
   const { userIsTyping } = useChatGuard();
   const { isConnected } = useSocket();
@@ -263,7 +263,7 @@ function ChatInput({ onSendMessage }: any) {
         />
         <div>
           <Button
-            className="w-full bg-blue-100 h-[54px] w-[54px]"
+            className=" bg-blue-100 h-[54px] w-[54px] "
             type="submit"
             disabled={!isConnected || hasCurrentConversationUserBlockedMe}
           >

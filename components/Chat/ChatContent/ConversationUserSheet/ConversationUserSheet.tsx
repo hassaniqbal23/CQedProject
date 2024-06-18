@@ -7,7 +7,7 @@ import { blockUser, unblockUser, reportUser } from '@/app/api/users';
 import { DeleteClassDialog } from '@/components/common/DeleteClassModal/DeleteClassModal';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { ReportClassDialog } from '@/components/common/DeleteClassModal/ReportClassModal';
-import { useChatFeatures } from '../../ChatProvider/ChatProvider';
+import { useChatProvider } from '../../ChatProvider/ChatProvider';
 import Image from 'next/image';
 
 interface IProps {
@@ -25,7 +25,7 @@ export const ConversationUserSheet: FC<IProps> = ({
 }) => {
   const { usersIBlocked } = useGlobalState();
   const queryClient = useQueryClient();
-  const { currentConversationAttachments } = useChatFeatures();
+  const { currentConversationAttachments } = useChatProvider();
 
   const [report, setReport] = useState(false);
 

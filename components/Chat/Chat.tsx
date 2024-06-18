@@ -2,17 +2,34 @@ import React, { FC, useEffect } from 'react';
 import { ChatSideBar } from './ChatSideBar/ChatSideBar';
 import ChatContent from './ChatContent/ChatContent';
 import { useQueryClient } from 'react-query';
-import { useChatFeatures } from './ChatProvider/ChatProvider';
-import { useChatGuard } from './ChatProvider/ChatGuard';
+import { useChatProvider } from './ChatProvider/ChatProvider';
 
-export const Chat: FC = () => {
+export interface ChatPageProps {}
+
+export const Chat: FC<ChatPageProps> = (props) => {
   const queryClient = useQueryClient();
-  const { selectedConversationId, setSelectedConversationId } =
-    useChatFeatures();
-  const { currentChatId } = useChatGuard();
+  const {
+    selectedConversationId,
+    conversationFromParams,
+    setSelectedConversationId,
+    currentConversation,
+  } = useChatProvider();
 
   useEffect(() => {
-    currentChatId && setSelectedConversationId(currentChatId);
+    setTimeout(() => {
+      queryClient.refetchQueries('get-all-conversations');
+    });
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (conversationFromParams) {
+      setSelectedConversationId(conversationFromParams);
+    }
+    return () => {};
+  }, [conversationFromParams]);
+
+  useEffect(() => {
     const handleOnline = () => {
       queryClient.refetchQueries('get-all-conversations');
       if (selectedConversationId) {

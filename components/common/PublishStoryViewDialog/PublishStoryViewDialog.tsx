@@ -26,7 +26,7 @@ import countriesData from '@/public/countries/countries.json';
 import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal';
 import { useRouter, usePathname } from 'next/navigation';
 import { useChatGuard } from '@/components/Chat/ChatProvider/ChatGuard';
-import { useChatFeatures } from '@/components/Chat/ChatProvider/ChatProvider';
+import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
 
 interface Countries {
   [key: string]: string;
@@ -91,7 +91,7 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
   const countryCode = userInfo?.location?.name?.toUpperCase() || '';
   const router = useRouter();
   const pathname = usePathname();
-  const { setSelectedConversationId } = useChatFeatures();
+  const { setSelectedConversationId } = useChatProvider();
   const { joinConversation } = useChatGuard();
 
   return (
@@ -179,7 +179,6 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
                         defaultReceiverId={userInfo?.userId}
                         onChatCreated={(id) => {
                           joinConversation(id);
-                          setSelectedConversationId(id);
                           if (pathname?.startsWith('/student')) {
                             router.push(`/students/chats`);
                           } else if (pathname?.startsWith('/teacher')) {
