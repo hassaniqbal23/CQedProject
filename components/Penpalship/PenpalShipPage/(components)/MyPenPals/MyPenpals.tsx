@@ -89,64 +89,66 @@ export const MyPenpals: React.FC = () => {
     []
   );
 
-return (
-  <div>
-    <div className="flex py-5 justify-between flex-wrap items-end">
-      <Typography variant="h3" weight="semibold" className="mb-4">
-        My Penpals
-      </Typography>
-      <SearchBar
-        inputClassName="w-full rounded-full"
-        setSearchTerm={handleSearchTermChange}
-        placeholder="Search for Penpal"
-      />
-    </div>
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {penpals.map((item: any, index: number) => (
-        <PenpalshipCard
-          key={index}
-          imgPath={item?.user?.attachment?.file_path}
-          title={item?.user?.profile?.fullname || ''}
-          mutualFriends="5 mutual friends"
-          buttonOnClick={() => {
-            handleRemove.mutate(item?.id);
-            setRemovingItemId(item?.id);
-          }}
-          buttonText="Remove"
-          description={JSON.parse(item?.user?.profile?.meta || '{}').bio}
-          countryFlag={`/country-flags/svg/${item?.user?.profile?.country.toLowerCase()}.svg`}
-          countryName={item?.user?.profile?.country.toUpperCase()}
-          studentAge={item?.user?.profile?.age}
-          buttonLoading={removingItemId === item?.id && handleRemove.isLoading}
-        />
-      ))}
-    </div>
-    {penpals.length > 0 && !penpalsQuery.isLoading && (
-      <div className="flex justify-end py-5">
-        <Pagination
-          currentPage={page}
-          totalPages={Math.ceil(totalCount / limit)}
-          pageSize={limit}
-          onPageChange={(value: number) => {
-            setPagination((prev) => ({
-              ...prev,
-              page: value,
-            }));
-          }}
-          totalCount={totalCount}
+  return (
+    <div>
+      <div className="flex py-5 justify-between flex-wrap items-end">
+        <Typography variant="h3" weight="semibold" className="mb-4">
+          My Penpals
+        </Typography>
+        <SearchBar
+          inputClassName="w-full rounded-full"
+          setSearchTerm={handleSearchTermChange}
+          placeholder="Search for Penpal"
         />
       </div>
-    )}
-    {penpals.length === 0 &&
-      !searchPenpalsQuery.isLoading &&
-      !penpalsQuery.isLoading && (
-        <div className="flex justify-center text-center">
-          {searchTerm ? 'No penpal found.' : 'No penpals yet.'}
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {penpals.map((item: any, index: number) => (
+          <PenpalshipCard
+            key={index}
+            imgPath={item?.user?.attachment?.file_path}
+            title={item?.user?.profile?.fullname || ''}
+            mutualFriends="5 mutual friends"
+            buttonOnClick={() => {
+              handleRemove.mutate(item?.id);
+              setRemovingItemId(item?.id);
+            }}
+            buttonText="Remove"
+            description={JSON.parse(item?.user?.profile?.meta || '{}').bio}
+            countryFlag={`/country-flags/svg/${item?.user?.profile?.country.toLowerCase()}.svg`}
+            countryName={item?.user?.profile?.country.toUpperCase()}
+            studentAge={item?.user?.profile?.age}
+            buttonLoading={
+              removingItemId === item?.id && handleRemove.isLoading
+            }
+          />
+        ))}
+      </div>
+      {penpals.length > 0 && !penpalsQuery.isLoading && (
+        <div className="flex justify-end py-5">
+          <Pagination
+            currentPage={page}
+            totalPages={Math.ceil(totalCount / limit)}
+            pageSize={limit}
+            onPageChange={(value: number) => {
+              setPagination((prev) => ({
+                ...prev,
+                page: value,
+              }));
+            }}
+            totalCount={totalCount}
+          />
         </div>
       )}
-    {(penpalsQuery.isLoading || searchPenpalsQuery.isLoading) && (
-      <SkeletonCard />
-    )}
-  </div>
-);
+      {penpals.length === 0 &&
+        !searchPenpalsQuery.isLoading &&
+        !penpalsQuery.isLoading && (
+          <div className="flex justify-center text-center">
+            {searchTerm ? 'No penpal found.' : 'No penpals yet.'}
+          </div>
+        )}
+      {(penpalsQuery.isLoading || searchPenpalsQuery.isLoading) && (
+        <SkeletonCard />
+      )}
+    </div>
+  );
 };

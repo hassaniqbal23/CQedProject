@@ -146,6 +146,12 @@ export const ChatProvider = ({ children }: any) => {
           return conversation;
         })
       );
+      const messagesEndRef = document.querySelector('.messagesEndRef');
+      if (messagesEndRef) {
+        setTimeout(() => {
+          messagesEndRef.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
+      }
     };
 
     subscribeEvent(
