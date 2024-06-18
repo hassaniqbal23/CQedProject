@@ -27,7 +27,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useChatGuard } from '@/components/Chat/ChatProvider/ChatGuard';
 import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
 import { getCountry } from '@/app/utils/helpers';
-
+import countriesData from '@/public/countries/countries.json';
 interface Countries {
   [key: string]: string;
 }
