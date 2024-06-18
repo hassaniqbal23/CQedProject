@@ -62,13 +62,14 @@ export const ChatProvider = ({ children }: any) => {
   const { joinConversation } = useChatGuard();
   const [searchQuery, setSearchQuery] = useState('');
   const { subscribeEvent, unsubscribeEvent } = useEventBus();
-  const [inboxResponse, setInboxResponse] = useState<any[]>([]);
+  const [inboxResponse, setInboxResponse] = useState<ChatConversation[]>([]);
   const queryClient = useQueryClient();
   const { userInformation, isAuthenticated } = useGlobalState();
   const [currentConversationAttachments, setCurrentConversationAttachments] =
     useState<any[]>([]);
-  const [selectedConversationId, setSelectedConversationId] =
-    useState<any>(null);
+  const [selectedConversationId, setSelectedConversationId] = useState<
+    number | string | null
+  >(null);
 
   const currentConversation = inboxResponse.find(
     (item) => item.id === selectedConversationId

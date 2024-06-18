@@ -9,9 +9,10 @@ import { IoEllipsisVertical } from 'react-icons/io5';
 import { DeleteClassDialog } from '../DeleteClassModal/DeleteClassModal';
 import { useMutation, useQueryClient } from 'react-query';
 import { deleteStudent } from '@/app/api/schools';
+import { IStudents } from '@/types/students';
 
 export interface StudentsTableProps {
-  data: any;
+  data: IStudents[];
   noDataMessage?: string;
   loading?: boolean;
 }
@@ -19,7 +20,6 @@ export interface StudentsTableProps {
 function StudentsTable(props: StudentsTableProps) {
   const queryClient = useQueryClient();
   const { data, noDataMessage, loading } = props;
-  console.log(data);
   const [isSelectStudent, setIsSelectStudent] = useState<{
     id: number | null;
     isOpenModal: boolean;
@@ -50,40 +50,62 @@ function StudentsTable(props: StudentsTableProps) {
       <DataTable
         data={data}
         selection={true}
-        noDataMessage={noDataMessage || 'No Schools'}
+        noDataMessage={noDataMessage || 'No Students'}
         loading={loading}
         columns={[
           {
-            label: 'School Name',
+            label: 'Name',
             key: 'name',
             className: 'w-2/6',
-            render: (data) => {
+            render: (data: IStudents) => {
               return (
                 <div className="flex items-center gap-2 w-full">
-                  <Link
+                  {/* <Link
                     className="hover:text-primary-500"
-                    href={`/schools/students/${data.userId}`}
-                  >
-                    <div className="flex items-center gap-2 w-full">
-                      <Image
-                        src={
-                          data.user.attachment.file_path ||
-                          '/assets/profile/profile.svg'
-                        }
-                        alt={data.user.attachment.file_path}
-                        width={30}
-                        height={30}
-                        className="rounded-full w-[30px] h-[30px] object-cover"
-                      />
-                      <h2>{data['fullname']}</h2>
-                    </div>
-                  </Link>
+                    href={`/universities/students/${data.userId}`}
+                  > */}
+                  <div className="flex items-center gap-2 w-full">
+                    <Image
+                      src={
+                        data.user.attachment?.file_path ||
+                        '/assets/profile/profile.svg'
+                      }
+                      alt={data?.user.attachment?.file_name || ''}
+                      width={30}
+                      height={30}
+                      className="rounded-full w-[30px] h-[30px] object-cover"
+                    />
+                    <h2>{data.user['name']}</h2>
+                  </div>
+                  {/* </Link> */}
                 </div>
               );
             },
           },
-          { label: 'Country', key: 'country', className: 'w-2/6' },
-          { label: 'Nickname', key: 'nick_name', className: 'w-2/6' },
+          {
+            label: 'Email Address',
+            key: 'email',
+            className: 'w-2/6',
+            render(data: IStudents) {
+              return <div>{data?.user?.email}</div>;
+            },
+          },
+          {
+            label: 'Country',
+            key: 'country',
+            className: 'w-2/6',
+            render(data: IStudents) {
+              return <div>{data?.user?.profile?.country}</div>;
+            },
+          },
+          {
+            label: 'City',
+            key: 'city',
+            className: 'w-2/6',
+            render(data: IStudents) {
+              return <div>{data?.user?.profile?.state}</div>;
+            },
+          },
           {
             label: 'Actions',
             key: 'actions',
@@ -98,16 +120,6 @@ function StudentsTable(props: StudentsTableProps) {
                       </div>
                     }
                     options={[
-                      {
-                        content: (
-                          <Link
-                            className="hover:text-primary-500"
-                            href={`/schools/students/${data['id']}`}
-                          >
-                            View Profile
-                          </Link>
-                        ),
-                      },
                       {
                         content: (
                           <div

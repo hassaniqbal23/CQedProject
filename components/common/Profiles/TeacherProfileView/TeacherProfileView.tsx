@@ -1,51 +1,68 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useQuery } from 'react-query';
 import {
   ProfileBio,
+  ProfileCertificates,
   ProfileContactDetails,
+  ProfileEducation,
   ProfileHeader,
   ProfileSkills,
+  ProfileWorkHistory,
+  UniversityLink,
 } from '@/components/common/Profiles';
 import { Mail, MapPin, Phone } from 'lucide-react';
-import { useParams } from 'next/navigation';
 import { getProfiledata } from '@/app/api/teachers';
 import { TabsComponent } from '@/components/ui/tabs/tabs';
 
-export const TeacherProfileView = () => {
-  const params = useParams();
-  const { data, error, isLoading } = useQuery(['profileData', params?.id], () =>
-    getProfiledata(params?.id as any)
+interface IProps {
+  id: number;
+}
+
+export const TeacherProfileView: FC<IProps> = ({ id }) => {
+  const {
+    data: profileData,
+    error,
+    isLoading,
+  } = useQuery(
+    ['profileData', id],
+    () =>
+      getProfiledata(id as number).then((res) => {
+        return res.data.data;
+      }),
+    {
+      enabled: id ? true : false,
+    }
   );
-  console.log(data);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return <div className="flex justify-center py-8 ">Loading...</div>;
 
-  const bio = JSON.parse(data?.data.data.user.profile[0].meta).bio;
+  const bio =
+    (profileData && JSON.parse(profileData?.user?.profile[0]?.meta)?.bio) || '';
 
-  const interestsArray = data?.data.data.user.interests.split(',');
-  // console.log(interestsArray);
+  const interestsArray = profileData?.user.interests.split(',');
 
   const contactDetails = () => {
-    const detailsData = data?.data.data.user.profile[0];
+    const detailsData = profileData?.user?.profile[0];
     const details: any = [
       {
         title: 'Email',
-        content: data?.data.data.user.email,
+        content: profileData?.email,
         icon: Mail,
       },
       {
         title: 'Phone',
-        content: detailsData.phone_number,
+        content: detailsData?.phone_number,
         icon: Phone,
       },
       {
         title: 'Address',
-        content: `${detailsData.address}, ${detailsData.state}, ${detailsData.zip_code}`,
+        content: `${detailsData?.address}, ${detailsData?.state}, ${detailsData?.zip_code}`,
         icon: MapPin,
       },
     ];
 
-    if (detailsData.skypeId) {
+    if (detailsData?.skypeId) {
       details.push({
         title: 'Skype',
         content: '@leonardcamp',
@@ -59,11 +76,11 @@ export const TeacherProfileView = () => {
   return (
     <div className="space-y-4">
       <ProfileHeader
-        name={data?.data.data.fullname}
+        name={profileData?.fullname}
         role={'N/A'}
         subrole={'N/A'}
-        location={data?.data.data.user.profile[0].state}
-        profileIcon={data?.data.data.user.attachment.file_path}
+        location={profileData?.user?.profile[0]?.state}
+        profileIcon={profileData?.user?.attachment?.file_path}
       />
       <div>
         <TabsComponent
@@ -99,11 +116,13 @@ export const TeacherProfileView = () => {
       </div>
       <ProfileSkills
         title="Skills"
-        skills={interestsArray.map((skill: string) => {
-          return skill;
-        })}
+        skills={
+          interestsArray?.map((skill: string) => {
+            return skill;
+          }) || []
+        }
       />
-      {/* <div className="sm:grid gap-4 grid-cols-5">
+      <div className="sm:grid gap-4 grid-cols-5">
         <div className="w-full space-y-4 col-span-2">
           <UniversityLink />
           <ProfileCertificates
@@ -163,7 +182,7 @@ export const TeacherProfileView = () => {
             />
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer } from 'react-toastify';
@@ -18,7 +18,6 @@ import { EventBusProvider } from '@/components/Chat/EventBus/EventBus';
 import { SocketProvider } from '@/components/Chat/WithSockets/WithSockets';
 import { ChatGuardProvider } from '@/components/Chat/ChatProvider/ChatGuard';
 import NextTopLoader from 'nextjs-toploader';
-import { PhotoProvider } from 'react-photo-view';
 import { ModuleProvider } from '@/components/ModuleProvider/ModuleProvider';
 import { ChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
 

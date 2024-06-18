@@ -5,16 +5,9 @@ import { usePathname } from 'next/navigation';
 import Navbar from '../common/navbar/MainBar';
 import { useRouter } from 'next/navigation';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
-
 import { useResponsive } from '@/lib/hooks';
-import {
-  Bell,
-  CircleHelp,
-  LogOut,
-  MessageCircle,
-  Settings,
-  UserCheck,
-} from 'lucide-react';
+import { Bell, LogOut, MessageCircle, Settings, UserCheck } from 'lucide-react';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 interface IProps {
   children: ReactNode;
   className?: string;
@@ -24,6 +17,7 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
   const pathname = usePathname();
   const router = useRouter();
   const { isTabletMini } = useResponsive();
+  const { userInformation } = useGlobalState();
 
   const showLayout = useMemo(() => {
     if (!pathname) return false;
@@ -116,7 +110,7 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
                 dropdownOption: [
                   {
                     title: 'Profile',
-                    path: '/students/profile',
+                    path: `/students/profile/${userInformation.id}`,
                     icon: <Bell size={15} />,
                   },
                   {

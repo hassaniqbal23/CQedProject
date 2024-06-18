@@ -35,6 +35,7 @@ function ChatInput({ onSendMessage }: any) {
   const emojiPickerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<number>(54);
   const [uploadLoading, setUploadLoading] = useState(false);
+  const [files, setFiles] = useState<any[]>([]);
   const form = useForm<any>({
     defaultValues: {
       message: '',
@@ -52,7 +53,11 @@ function ChatInput({ onSendMessage }: any) {
 
     try {
       const results = await Promise.all(uploadPromises);
-      form.setValue('attachments', [...results]);
+      form.setValue('attachments', [
+        ...form.getValues('attachments'),
+        ...results,
+      ]);
+      setFiles([]);
       console.log('All files uploaded successfully:', results);
     } catch (error) {
       console.error('Error uploading files:', error);
@@ -82,13 +87,13 @@ function ChatInput({ onSendMessage }: any) {
   }, [userInformation, currentConversation]);
 
   useEffect(() => {
-    const files = form.watch('attachments');
-    if (files?.length > 0) {
+    const uploadedFiles = form.watch('attachments');
+    if (files.length > 0 || uploadedFiles?.length > 0) {
       setHeight(150);
     } else {
       setHeight(54);
     }
-  }, [form.watch('attachments')]);
+  }, [form.watch('attachments'), files]);
 
   useEffect(() => {
     if (showEmoji) {
@@ -180,8 +185,9 @@ function ChatInput({ onSendMessage }: any) {
                               files={form.getValues('attachments')}
                               onFileSelect={(data) => {
                                 handleFileSelect(data);
-                                form.setValue('attachments', [
-                                  ...form.getValues('attachments'),
+                                setFiles([
+                                  ...form.watch('attachments'),
+                                  ...files,
                                   ...data,
                                 ]);
                               }}
@@ -215,45 +221,72 @@ function ChatInput({ onSendMessage }: any) {
                         )
                       }
                     />
-                    {form.watch('attachments').length > 0 && (
+                    {files.length > 0 ? (
                       <div className="absolute bottom-4 left-3 grid grid-cols-5 gap-3">
-                        {form
-                          .watch('attachments')
-                          .map((file: any, index: number) => (
-                            <div
-                              key={index}
-                              aria-roledescription={`file ${index + 1} containing ${
-                                file.name
-                              }`}
-                              className="p-0 size-20 group "
-                            >
-                              <AspectRatio className="size-full relative">
-                                <Image
-                                  src={
-                                    file.file_path || URL.createObjectURL(file)
-                                  }
-                                  alt={file.file_path || file.name}
-                                  className="object-cover rounded-md"
-                                  fill
-                                  unoptimized={true}
-                                />
-                                {uploadLoading && (
-                                  <div className=" flex absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 w-full h-full bg-slate-300-opacity-50 rounded items-center justify-center ">
-                                    <Loading />
-                                  </div>
-                                )}
-                                {!uploadLoading && (
-                                  <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 group-hover:flex hidden w-full h-full bg-slate-300-opacity-50 rounded items-center justify-center ">
-                                    <CircleX
-                                      className="cursor-pointer"
-                                      onClick={() => handleRemoveFile(index)}
-                                    />
-                                  </div>
-                                )}
-                              </AspectRatio>
-                            </div>
-                          ))}
+                        {files.map((file: any, index: number) => (
+                          <div
+                            key={index}
+                            aria-roledescription={`file ${index + 1} containing ${
+                              file.name
+                            }`}
+                            className="p-0 size-20 group "
+                          >
+                            <AspectRatio className="size-full relative">
+                              <Image
+                                src={
+                                  file.file_path || URL.createObjectURL(file)
+                                }
+                                alt={file.file_path || file.name}
+                                className="object-cover rounded-md"
+                                fill
+                                unoptimized={true}
+                              />
+                              {uploadLoading && (
+                                <div className=" flex absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 w-full h-full bg-slate-300-opacity-50 rounded items-center justify-center ">
+                                  <Loading />
+                                </div>
+                              )}
+                            </AspectRatio>
+                          </div>
+                        ))}
                       </div>
+                    ) : (
+                      form.watch('attachments').length > 0 && (
+                        <div className="absolute bottom-4 left-3 grid grid-cols-5 gap-3">
+                          {form
+                            .watch('attachments')
+                            .map((file: any, index: number) => (
+                              <div
+                                key={index}
+                                aria-roledescription={`file ${index + 1} containing ${
+                                  file.name
+                                }`}
+                                className="p-0 size-20 group "
+                              >
+                                <AspectRatio className="size-full relative">
+                                  <Image
+                                    src={
+                                      file.file_path ||
+                                      URL.createObjectURL(file)
+                                    }
+                                    alt={file.file_path || file.name}
+                                    className="object-cover rounded-md"
+                                    fill
+                                    unoptimized={true}
+                                  />
+                                  {!uploadLoading && (
+                                    <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 group-hover:flex hidden w-full h-full bg-slate-300-opacity-50 rounded items-center justify-center ">
+                                      <CircleX
+                                        className="cursor-pointer"
+                                        onClick={() => handleRemoveFile(index)}
+                                      />
+                                    </div>
+                                  )}
+                                </AspectRatio>
+                              </div>
+                            ))}
+                        </div>
+                      )
                     )}
                   </div>
                 </FormControl>

@@ -1,8 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ChatHeader } from './ChatHeader/ChatHeader';
-import iconMenu from '@/public/IconsMenu.svg';
 import { v4 as uuidv4 } from 'uuid';
-
 import { ChatInput } from './ChatInput/ChatInput';
 import ChatMessages from './Chatmessages/ChatMessages';
 import { useChatGuard } from '../ChatProvider/ChatGuard';
@@ -101,25 +99,20 @@ const ChatContent: FC = () => {
         <div className="flex flex-col w-full h-[calc(100vh_-_79px)] overflow-hidden bg-white ">
           <div className="sticky top-0 bg-white">
             <ChatHeader
-              userImage={
-                currentConversation.user.attachment?.file_path ||
-                '/assets/profile/profile.svg'
-              }
-              userFullName={currentConversation.user.name}
+              conversation={currentConversation}
               isOnline={realtimeConnectedUsersIds.includes(
                 currentConversation.user.id
               )}
               isTyping={realtimeTypingUsersIds.includes(
                 currentConversation.user.id
               )}
-              userId={currentConversation.user.id}
               onDeleteConversations={() => {
                 handleDeleteConversation(currentConversation.id);
               }}
             />
           </div>
           <div className="flex-grow h-full overflow-auto">
-            <ChatMessages user={currentConversation.user} />
+            <ChatMessages conversation={currentConversation} />
           </div>
           <div className="bottom-0 bg-white py-3 px-6 border-t">
             <ChatInput onSendMessage={onSendMessage} />

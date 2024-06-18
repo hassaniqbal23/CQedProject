@@ -1,3 +1,4 @@
+import axios from 'axios';
 import http from '../utils/http';
 // import { Invite } from './invitations';
 
@@ -34,4 +35,20 @@ export const uploadFile = async (file: Blob) => {
   return await http
     .post('/uploads/upload', formData)
     .then((res) => res.data.data);
+};
+
+export const translateMessage = async (message: string, to: string = 'en') => {
+  return await axios
+    .post(
+      `https://api.apilayer.com/language_translation/translate?target=${to}`,
+      {
+        message,
+      },
+      {
+        headers: {
+          apikey: 'CGORGvz7wYwharq9mB6ZtTYavaFifQtX',
+        },
+      }
+    )
+    .then((res) => res.data);
 };
