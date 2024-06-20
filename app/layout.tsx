@@ -18,6 +18,8 @@ import { EventBusProvider } from '@/components/Chat/EventBus/EventBus';
 import { SocketProvider } from '@/components/Chat/WithSockets/WithSockets';
 import { ChatGuardProvider } from '@/components/Chat/ChatProvider/ChatGuard';
 import NextTopLoader from 'nextjs-toploader';
+import { ModuleProvider } from '@/components/ModuleProvider/ModuleProvider';
+import { ChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
 
 const montserrat = Montserrat({
   weight: ['400', '500', '600', '700'],
@@ -59,26 +61,25 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <NextTopLoader />
 
         <Toaster />
-        <QueryClientProvider client={queryClient}>
-          <EventBusProvider>
-            <GlobalProvider>
-              <SocketProvider>
-                <ChatGuardProvider>
-                  <FormProvider {...methods}>
-                    {/* <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-              > */}
-                    {children}
-                    {/* </ThemeProvider> */}
-                    <ToastContainer autoClose={1000} />
-                  </FormProvider>
-                </ChatGuardProvider>
-              </SocketProvider>
-            </GlobalProvider>
-          </EventBusProvider>
-        </QueryClientProvider>
+        <ModuleProvider>
+          <QueryClientProvider client={queryClient}>
+            <EventBusProvider>
+              <GlobalProvider>
+                <SocketProvider>
+                  <ChatGuardProvider>
+                    <ChatProvider>
+                      <FormProvider {...methods}>
+                        {children}
+                        {/* </ThemeProvider> */}
+                        <ToastContainer autoClose={1000} />
+                      </FormProvider>
+                    </ChatProvider>
+                  </ChatGuardProvider>
+                </SocketProvider>
+              </GlobalProvider>
+            </EventBusProvider>
+          </QueryClientProvider>
+        </ModuleProvider>
         <Sonner richColors />
       </body>
     </html>

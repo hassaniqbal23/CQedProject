@@ -9,7 +9,7 @@ import { getCountry } from '@/app/utils/helpers';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal';
-import { useChatFeatures } from '@/components/Chat/ChatProvider/ChatProvider';
+import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
 import { useMutation, useQueryClient } from 'react-query';
 import { blockUser, reportUser, unblockUser } from '@/app/api/users';
 import { ReportClassDialog } from '../../DeleteClassModal/ReportClassModal';
@@ -29,10 +29,18 @@ interface HeaderProps {
   mutualFriends?: string;
   profileId?: string;
   loggedInUser?: boolean;
+  age?: string;
+  gender?: string;
+  country?: string;
+  mutualFriends?: string;
+  profileId?: string;
+  loggedInUser?: boolean;
   buttonProps?: {
     isVisbile?: boolean;
     onClick?: () => void;
     buttonText?: string;
+    isFriend?: boolean;
+    isLoading?: boolean;
     isFriend?: boolean;
     isLoading?: boolean;
   };
@@ -51,6 +59,12 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   imageSize,
   buttonProps,
   titleClass = 'text-xl',
+  age,
+  gender,
+  country = '',
+  mutualFriends,
+  profileId,
+  loggedInUser,
   age,
   gender,
   country = '',
@@ -155,10 +169,30 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
               {age}, <span className=" ml-1">{gender}</span>
             </p>
           )}
+          {(age || gender) && (
+            <p className="text-white text-base mb-2">
+              {age}, <span className=" ml-1">{gender}</span>
+            </p>
+          )}
           {location && (
             <div className="flex items-center mt-3 md:mt-5">
               <MapPin strokeWidth={'2px'} color="#FFD249" size={16} />
               <p className="text-lg ml-2 ">{location}</p>
+            </div>
+          )}
+          {country && (
+            <div className="flex items-center">
+              <Image
+                src={flag}
+                alt="flag"
+                className="rounded-md"
+                width={38}
+                height={38}
+                unoptimized={true}
+              />
+              <Typography variant="h6" weight="medium" className="ml-2 text-xl">
+                {countryName}
+              </Typography>
             </div>
           )}
           {country && (
@@ -204,7 +238,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   }}
                   trigger={
                     <Button
-                      onClick={() => {}}
+                      onClick={() => { }}
                       icon={<IoChatbubbleOutline size={20} />}
                       iconPosition="left"
                       className={`rounded-full bg-[#ECEDF8] text-primary-500 h-10 text-base mr-2 hover: border border-white`}
@@ -218,7 +252,129 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   trigger={
                     <div>
                       <Button
-                        onClick={() => {}}
+                        onClick={() => { }}
+                        iconPosition="right"
+                        icon={<IoChevronDown />}
+                        className={`rounded-full bg-[#ECEDF8] text-primary-500 w-36 h-10 text-base hover: border border-white`}
+                        variant={'outline'}
+                        type="button"
+                        size={'sm'}
+                      >
+                        Friends
+                      </Button>
+                    </div>
+                  }
+                  options={[
+                    {
+                      content: (
+                        <div className="text-xs" onClick={buttonProps.onClick}>
+                          Unfriend
+                        </div>
+                      ),
+                    },
+                    {
+                      content: (
+                        <div className="text-xs" onClick={handleBlockUnblock}>
+                          {isUserBlocked(Number(profileId))
+                            ? 'Unblock'
+                            : 'Block'}
+                        </div>
+                      ),
+                    },
+                    {
+                      content: (
+                        <div
+                          className="text-xs text-primary-600 font-semibold"
+                          onClick={() => {
+                            setReport(true);
+                          }}
+                        >
+                          Report profile
+                        </div>
+                      ),
+                    },
+                  ]}
+                />
+              </div>
+            ) : (
+              <div>
+                <Button
+                  onClick={buttonProps?.onClick}
+                  className={`rounded-full bg-[#ECEDF8] text-primary-500 w-36 h-10 text-base hover: border border-white`}
+                  variant={'outline'}
+                  type="button"
+                  size={'sm'}
+                  loading={buttonProps?.isLoading}
+                >
+                  {buttonProps.buttonText}
+                </Button>
+                {!loggedInUser && (
+                  <Typography
+                    variant="p"
+                    weight="semibold"
+                    className="mb-1 text-xs pt-2"
+                  >
+                    <Link href="" className="">
+                      {mutualFriends}
+                    </Link>
+                  </Typography>
+                )}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+      <ReportClassDialog
+        title="Report User"
+        description="Are you sure you want to report this user?"
+        ButtonAction="Report"
+        ButtonCancel="Cancel"
+        open={report}
+        okLoading={isReportingUser}
+        onClose={() => setReport(false)}
+        onClickOk={handleReport}
+      />
+      <div className="text-center">
+        {profileId && (
+          <Typography
+            variant="p"
+            weight="semibold"
+            className="mb-10 text-base pt-2 "
+          >
+            Profile Id: {profileId}
+          </Typography>
+        )}
+        {buttonProps?.isVisbile && (
+          <>
+            {buttonProps.isFriend ? (
+              <div className="flex">
+                <CreateChatModal
+                  defaultReceiverId={Number(profileId)}
+                  onChatCreated={(id) => {
+                    setSelectedConversationId(id);
+                    if (pathname?.startsWith('/student')) {
+                      router.push(`/students/chats`);
+                    } else if (pathname?.startsWith('/teacher')) {
+                      router.push(`/teachers/chats`);
+                    }
+                  }}
+                  trigger={
+                    <Button
+                      onClick={() => { }}
+                      icon={<IoChatbubbleOutline size={20} />}
+                      iconPosition="left"
+                      className={`rounded-full bg-[#ECEDF8] text-primary-500 h-10 text-base mr-2 hover: border border-white`}
+                      variant={'outline'}
+                      type="button"
+                      size={'sm'}
+                    ></Button>
+                  }
+                />
+                <Dropdown
+                  trigger={
+                    <div>
+                      <Button
+                        onClick={() => { }}
                         iconPosition="right"
                         icon={<IoChevronDown />}
                         className={`rounded-full bg-[#ECEDF8] text-primary-500 w-36 h-10 text-base hover: border border-white`}

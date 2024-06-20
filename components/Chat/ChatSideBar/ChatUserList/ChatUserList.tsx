@@ -1,10 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui';
 import { ExpandableText } from '@/components/common/ExpandableText/ExpandableText';
 import { Typography } from '@/components/common/Typography/Typography';
 import { useChatGuard } from '../../ChatProvider/ChatGuard';
-import { useChatFeatures } from '../../ChatProvider/ChatProvider';
+import { useChatProvider } from '../../ChatProvider/ChatProvider';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import { useSearchParams } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 
 interface IProps {
@@ -13,6 +15,7 @@ interface IProps {
 
 export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
   const { userInformation } = useGlobalState();
+  const searchParams = useSearchParams();
   const searchParams = useSearchParams();
   const {
     joinConversation,
@@ -23,7 +26,23 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
     currentConversation,
     selectedConversationId,
     setSelectedConversationId,
-  } = useChatFeatures();
+  } = useChatProvider();
+
+  useEffect(() => {
+    const param = new URLSearchParams(searchParams?.toString()).get(
+      'conversation'
+    );
+    if (param) {
+      const conversation = conversations.find(
+        (conversation) => conversation.id === +param
+      );
+      if (conversation && conversation.id === +param) {
+        setSelectedConversationId(conversation.id);
+        return;
+      }
+      joinConversation(+param);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const param = new URLSearchParams(searchParams?.toString()).get(
@@ -43,21 +62,11 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
 
   const handleSelectConversation = (conversationId: string | number) => {
     if (currentConversation && currentConversation.id === conversationId) {
-      setSelectedConversationId(currentConversation.id);
       return;
     }
     setCurrentConversationToParams(conversationId);
     joinConversation(conversationId);
   };
-
-  const sortedConversation = React.useMemo(() => {
-    return conversations.sort((a, b) => {
-      return (
-        new Date(b.lastMessageReceived).getTime() -
-        new Date(a.lastMessageReceived).getTime()
-      );
-    });
-  }, [conversations]);
 
   function setCurrentConversationToParams(conversationId: number | string) {
     if (searchParams) {
@@ -69,8 +78,10 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
 
   return (
     <div className="flex flex-col gap-3">
-      {sortedConversation.map((conversation) => {
-        let lastMessage = conversation.messages[0];
+      {conversations.map((conversation) => {
+        let lastMessage =
+          conversation.messages[conversation.messages.length - 1];
+
         let lastMessageTXT = '';
 
         if (

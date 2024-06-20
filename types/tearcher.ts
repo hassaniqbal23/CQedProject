@@ -1,4 +1,6 @@
+import { extend } from 'lodash';
 import { IStudents } from './students';
+import { IAttachment, IRole, IUserProfile } from '@/app/globalContext/types';
 
 export interface ITeacher {
   id: number;
@@ -11,5 +13,3 @@ export interface ITeacher {
   created_at: string;
   updated_at: string;
 }
-
-export interface ITeachers extends IStudents {}

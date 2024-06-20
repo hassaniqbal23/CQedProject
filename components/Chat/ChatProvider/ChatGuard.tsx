@@ -10,13 +10,13 @@ import { useSocket } from '../WithSockets/WithSockets';
 import { useEventBus } from '../EventBus/EventBus';
 import {
   EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
-  JOIN_TO_CHAT_ROOM,
+  EVENT_BUS_ON_DELETE_MESSAGE,
 } from '../EventBus/constants';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { socket } from '@/lib/socket';
-// import { UserProps, getCurrentUser } from '../../store/User.reducer';
-// import { useSelector } from 'react-redux';
-// import { incomingMessageToast } from '@gilgit-app-nx/ui';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
+import { useRouter } from 'next/navigation';
+import { useQueryClient } from 'react-query';
 
 interface ChatGuardContextProps {
   realtimeConnectedUsersIds: number[];
@@ -50,6 +50,9 @@ export const ChatGuardContext = createContext<ChatGuardContextProps>({
 export const useChatGuard = () => useContext(ChatGuardContext);
 
 export const ChatGuardProvider = ({ children }: any) => {
+  const { module } = useModule();
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const { userInformation, isAuthenticated } = useGlobalState();
   const { dispatchEvent } = useEventBus();
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
@@ -63,6 +66,10 @@ export const ChatGuardProvider = ({ children }: any) => {
     useState<number>(0);
 
   useEffect(() => {
+    const onMessageDelete = (message: any) => {
+      dispatchEvent(EVENT_BUS_ON_DELETE_MESSAGE, message);
+    };
+
     const onMessage = (message: any) => {
       dispatchEvent(
         EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
@@ -90,15 +97,16 @@ export const ChatGuardProvider = ({ children }: any) => {
       socket.on('SOCKET_ONLINE_USERS_LIST', onOnlineUsersList);
       socket.on('SOCKET_USER_IS_NOT_TYPING', onUserIsNotTyping);
       socket.on('MESSAGE', onMessage);
+      socket.on('DELETE_MESSAGE', onMessageDelete);
       socket.on('disconnect', () => {
         setRealtimeConnectedUsersIds([]);
       });
-
       return () => {
         socket.off('SOCKET_USER_IS_TYPING', onUserIsTyping);
         socket.off('SOCKET_ONLINE_USERS_LIST', onOnlineUsersList);
         socket.off('SOCKET_USER_IS_NOT_TYPING', onUserIsNotTyping);
         socket.off('MESSAGE', onMessage);
+        socket.off('DELETE_MESSAGE', onMessageDelete);
       };
     }
   }, [isAuthenticated]);
@@ -130,8 +138,7 @@ export const ChatGuardProvider = ({ children }: any) => {
 
   const joinConversation = (conversationId: string | number) => {
     if (socket) {
-      socket.emit('JOIN_ROOM', { id: conversationId });
-      dispatchEvent(JOIN_TO_CHAT_ROOM, conversationId);
+      router.push(`/${module}/chats/${conversationId}`);
     }
   };
 

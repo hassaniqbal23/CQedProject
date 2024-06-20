@@ -9,26 +9,19 @@ import {
   useMemo,
   useState,
 } from 'react';
-// import get from 'lodash.get';
-// import moment from 'moment';
-// import { useSelector } from 'react-redux';
-// import { UserProps, getCurrentUser } from '../../store/User.reducer';
 import { useEventBus } from '../EventBus/EventBus';
 import {
   EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
-  JOIN_TO_CHAT_ROOM,
+  EVENT_BUS_ON_DELETE_MESSAGE,
 } from '../EventBus/constants';
 import { useChatGuard } from './ChatGuard';
-import { useSocket } from '../WithSockets/WithSockets';
-import {
-  getAllConversations,
-  getConversationMessages,
-  deleteMessage,
-} from '@/app/api/chat';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { getAllConversations, getConversationMessages } from '@/app/api/chat';
+import { useQuery, useQueryClient } from 'react-query';
 import { useGlobalState } from '@/app/globalContext/globalContext';
-import { toast } from 'react-toastify';
+import { useParams } from 'next/navigation';
 import { ChatConversation } from '@/types/chat';
+import { useRouter } from 'next/navigation';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface ChatInterface {
   currentThread?: any;
@@ -37,7 +30,6 @@ interface ChatInterface {
   memorizedMessagesList?: any[];
   setSearchQuery?: Dispatch<SetStateAction<string>>;
   inboxLoading?: boolean;
-  memorizedTotalUnreadMessages?: any[];
   unSendMessage?: (chatId: number) => void;
   currentThreadId?: number | null;
   inboxResponse?: any;
@@ -49,39 +41,45 @@ interface ChatInterface {
   setSelectedConversationId: Dispatch<SetStateAction<any>>;
   currentConversationAttachments: any[];
   setCurrentConversationAttachments: Dispatch<SetStateAction<any[]>>;
+  conversationFromParams: number | null | undefined;
 }
 
 const ChatContext = createContext<ChatInterface>({
   currentThread: null,
-  fetchConversations: () => {},
+  fetchConversations: () => { },
   memorizedConversationsList: [],
   memorizedMessagesList: [],
-  setSearchQuery: () => {},
-  memorizedTotalUnreadMessages: [],
-  unSendMessage: () => {},
+  setSearchQuery: () => { },
+  unSendMessage: () => { },
   currentThreadId: null,
   inboxResponse: null,
   currentConversation: null,
-  memoizedMessagesList: [],
-  onConversationDelete: (id) => {},
-  setInboxResponse: () => {},
+  onConversationDelete: (id) => { },
+  setInboxResponse: () => { },
   selectedConversationId: null,
-  setSelectedConversationId: () => {},
+  setSelectedConversationId: () => { },
   currentConversationAttachments: [],
-  setCurrentConversationAttachments: () => {},
+  setCurrentConversationAttachments: () => { },
+  conversationFromParams: null,
 });
 
-export const useChatFeatures = () => useContext(ChatContext);
+export const useChatProvider = () => useContext(ChatContext);
 
 export const ChatProvider = ({ children }: any) => {
+  const router = useRouter();
+  const { module } = useModule();
   const { joinConversation } = useChatGuard();
   const [searchQuery, setSearchQuery] = useState('');
   const { subscribeEvent, unsubscribeEvent } = useEventBus();
   const [inboxResponse, setInboxResponse] = useState<ChatConversation[]>([]);
+  const [inboxResponse, setInboxResponse] = useState<ChatConversation[]>([]);
   const queryClient = useQueryClient();
-  const { userInformation } = useGlobalState();
+  const { userInformation, isAuthenticated } = useGlobalState();
   const [currentConversationAttachments, setCurrentConversationAttachments] =
     useState<any[]>([]);
+  const [selectedConversationId, setSelectedConversationId] = useState<
+    number | string | null
+  >(null);
   const [selectedConversationId, setSelectedConversationId] = useState<
     number | string | null
   >(null);
@@ -101,79 +99,41 @@ export const ChatProvider = ({ children }: any) => {
           setCurrentConversationAttachments(attachments);
         },
         retry: false,
-        cacheTime: 0,
-        staleTime: 0,
       }
     );
 
+  const params = useParams();
+  const conversationFromParams = useMemo(() => {
+    if (!params) return null;
+    if (params.cid) {
+      return +params.cid;
+    }
+
+    return null;
+  }, [params]);
+
   const { isLoading: inboxLoading, data: allConversationResponse } = useQuery(
+    ['get-all-conversations'],
     ['get-all-conversations'],
     () => getAllConversations(),
     {
       onSuccess(res) {
-        setInboxResponse(res.data.data);
-        setTimeout(() => {
-          if (selectedConversationId) {
-            joinConversation(selectedConversationId);
-          }
-        }, 10);
+        let conversations = res.data.data || [];
+        conversations = conversations.map((conversation: any) => {
+          return {
+            ...conversation,
+            messages: conversation.messages.reverse(),
+          };
+        });
+        setInboxResponse(conversations);
       },
-      retry: 100,
-      retryDelay: 5000,
       cacheTime: 0,
       staleTime: 0,
+      refetchOnMount: false,
+      retryOnMount: false,
+      enabled: isAuthenticated,
     }
   );
-
-  const memoizedMessagesList = useMemo(() => {
-    let list = inboxResponse.flatMap((conversation) => {
-      if (conversation.id === selectedConversationId) {
-        return conversation.messages;
-      }
-      return [];
-    });
-
-    return list.sort((a, b) => {
-      return (
-        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      );
-    });
-  }, [
-    currentConversation,
-    selectedConversationId,
-    messagesLoading,
-    inboxResponse,
-  ]);
-
-  useEffect(() => {
-    if (selectedConversationId) {
-      refetchConversationMessages();
-    }
-  }, [selectedConversationId]);
-
-  useEffect(() => {
-    const handleJoinRoom = (id: number | string | null) => {
-      if (id == selectedConversationId) return;
-      setSelectedConversationId(id);
-      if (!inboxLoading && inboxResponse.length > 0) {
-        const current = inboxResponse.find((item: any) => {
-          return item.id === id;
-        });
-      }
-    };
-
-    subscribeEvent(JOIN_TO_CHAT_ROOM, handleJoinRoom);
-
-    return () => {
-      unsubscribeEvent(JOIN_TO_CHAT_ROOM, handleJoinRoom);
-    };
-  }, [
-    subscribeEvent,
-    unsubscribeEvent,
-    inboxLoading,
-    inboxResponse,
-    selectedConversationId,
-  ]);
 
   useEffect(() => {
     const handleAddMessageToInbox = (message: any) => {
@@ -183,43 +143,63 @@ export const ChatProvider = ({ children }: any) => {
       }
       setInboxResponse(
         inboxResponse.map((conversation) => {
-          if (
-            currentConversation &&
-            conversation.id === currentConversation.id
-          ) {
+          if (conversation.id === message.conversationId) {
+            let messages = conversation.messages;
+            let findMessage = messages.find(
+              (msg) => msg.clientID === message.clientID
+            );
+            if (!findMessage) {
+              messages.push(message);
+            } else {
+              messages = messages.map((msg) => {
+                if (msg.clientID === message.clientID) {
+                  return message;
+                }
+                return msg;
+              });
+            }
             return {
               ...conversation,
-              messages: [...conversation.messages, message],
+              messages: messages,
               lastMessageReceived: message.created_at,
             };
           }
           return conversation;
         })
       );
-      if (userInformation.id === message.senderId) {
-        // do nothing just update the message int id.
-        setInboxResponse(
-          inboxResponse.map((conversation) => {
-            if (
-              currentConversation &&
-              conversation.id === currentConversation.id
-            ) {
-              return {
-                ...conversation,
-                messages: conversation.messages.map((msg: any) => {
-                  if (msg.clientID === message.clientID) {
-                    return message;
-                  }
-                  return msg;
-                }),
-              };
-            }
-            return conversation;
-          })
-        );
-
-        return;
+      const messagesEndRef = document.querySelector('.messagesEndRef');
+      if (messagesEndRef) {
+        setTimeout(() => {
+          messagesEndRef.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
       }
+    };
+
+    const onDeleteMessage = (message: {
+      id: number;
+      conversationId: number;
+      user_id: number;
+    }) => {
+      setInboxResponse(
+        inboxResponse.map((conversation) => {
+          if (conversation.id === message.conversationId) {
+            return {
+              ...conversation,
+              messages: conversation.messages.map((msg) => {
+                if (msg.id === message.id) {
+                  msg.message_deleted_by = [
+                    ...(msg.message_deleted_by || []),
+                    message.user_id,
+                  ];
+                  return msg;
+                }
+                return msg;
+              }),
+            };
+          }
+          return conversation;
+        })
+      );
     };
 
     subscribeEvent(
@@ -227,11 +207,14 @@ export const ChatProvider = ({ children }: any) => {
       handleAddMessageToInbox
     );
 
+    subscribeEvent(EVENT_BUS_ON_DELETE_MESSAGE, onDeleteMessage);
+
     return () => {
       unsubscribeEvent(
         EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
         handleAddMessageToInbox
       );
+      unsubscribeEvent(EVENT_BUS_ON_DELETE_MESSAGE, onDeleteMessage);
     };
   }, [
     subscribeEvent,
@@ -243,6 +226,7 @@ export const ChatProvider = ({ children }: any) => {
 
   const onConversationDelete = (id: number | string) => {
     setSelectedConversationId(null);
+    router.push(`/${module}/chats`);
   };
 
   return (
@@ -252,13 +236,13 @@ export const ChatProvider = ({ children }: any) => {
         inboxLoading,
         inboxResponse,
         currentConversation,
-        memoizedMessagesList,
         onConversationDelete,
         setInboxResponse,
         selectedConversationId,
         setSelectedConversationId,
         currentConversationAttachments,
         setCurrentConversationAttachments,
+        conversationFromParams,
       }}
     >
       {children}

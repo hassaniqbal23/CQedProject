@@ -16,6 +16,7 @@ import { translateMessage } from '@/app/api/chat';
 import Loading from '@/components/ui/button/loading';
 import { IAttachment, IMessage } from '@/app/globalContext/types';
 import { ChatConversation } from '@/types/chat';
+import { Loader } from 'lucide-react';
 
 interface Iprops {
   userImage?: string;
@@ -23,9 +24,9 @@ interface Iprops {
   onDeleteMessage?: (id: string | number) => void;
   showProfile?: boolean;
   showDate?: boolean;
-  hasDeleted?: boolean;
   conversation: ChatConversation;
   messages?: IMessage;
+  isDeletingMessage?: boolean;
 }
 
 dayjs.extend(relativeTime);
@@ -36,9 +37,9 @@ const ChatMessage: FC<Iprops> = ({
   onDeleteMessage,
   showDate,
   showProfile,
-  hasDeleted,
   conversation,
   messages,
+  isDeletingMessage,
 }: Iprops) => {
   const attachments = messages?.attachments ?? [];
   const messageContent = messages?.message ?? '';
@@ -51,7 +52,39 @@ const ChatMessage: FC<Iprops> = ({
     null
   );
   const [showTranslatedMessage, setShowTranslatedMessage] = useState(false);
-  if (hasDeleted) return null;
+
+  const { isLoading, mutate: translate } = useMutation(
+    ['translateMessage', messageContent, 'en'],
+    (message: string, to: string = 'en') => translateMessage(message, to),
+    {
+      onSuccess: (data) => {
+        const rawTranslation = data.translations[0].translation;
+        const validJsonString = rawTranslation.replace(' and more"', '');
+
+        try {
+          const parsedTranslation = JSON.parse(validJsonString);
+          const message = parsedTranslation.message;
+          setTranslatedMessage(message);
+        } catch (e) {
+          console.error('Error parsing JSON:', e);
+        }
+      },
+    }
+  );
+
+  const handleTranslate = () => {
+    if (messageContent) {
+      translate(messageContent);
+      setShowTranslatedMessage(true);
+    }
+  };
+
+  const isMessageDeleted =
+    messages &&
+    messages.message_deleted_by &&
+    messages.message_deleted_by.length > 0;
+
+  console.log(messages);
 
   const { isLoading, mutate: translate } = useMutation(
     ['translateMessage', messageContent, 'en'],
@@ -102,6 +135,7 @@ const ChatMessage: FC<Iprops> = ({
             >
               <ConversationUserSheet
                 conversation={conversation}
+                conversation={conversation}
                 onChatDelete={() => {
                   dispatchEvent(DELETE_CONVERSATION, null);
                 }}
@@ -110,62 +144,68 @@ const ChatMessage: FC<Iprops> = ({
           )
         ) : (
           <div className="w-10 h-10 rounded-full" />
+          <div className="w-10 h-10 rounded-full" />
         )}
         <div
+          className={`flex relative items-center ${isCurrentUser ? 'flex-row-reverse' : 'flex-row'}`}
           className={`flex relative items-center ${isCurrentUser ? 'flex-row-reverse' : 'flex-row'}`}
         >
           <div>
             <Typography
               variant="p"
               weight="semibold"
-              className={`font-medium font-montserrat max-w-lg rounded-sm leading-26 p-3 ${isCurrentUser ? 'text-[#4E5D78] bg-gray-50' : 'text-white bg-[#377DFF]'}`}
+              className={`${isMessageDeleted ? 'text-xs' : ''} font-medium font-montserrat max-w-lg rounded-sm leading-26 p-3 ${isCurrentUser ? 'text-[#4E5D78] bg-gray-50' : 'text-white bg-[#377DFF]'}`}
             >
-              {Array.isArray(attachments) && attachments.length > 0 && (
-                <div
-                  className={`grid mb-6 gap-2 ${attachments.length < 3 ? `grid-cols-${attachments.length}` : 'grid-cols-3'}`}
-                >
-                  {attachments.map((item: IAttachment, index: number) => (
-                    <Image
-                      src={item.file_path}
-                      alt={item.file_path}
-                      width={100}
-                      height={100}
-                      className="w-28 h-28 object-cover rounded-md cursor-pointer "
-                      onClick={() => {
-                        setPhotoIndex(index);
-                        setIsOpen(true);
-                      }}
-                      unoptimized={true}
-                    />
-                  ))}
-                  {isOpen && (
-                    <Lightbox
-                      mainSrc={attachments[photoIndex].file_path}
-                      nextSrc={
-                        attachments[(photoIndex + 1) % attachments.length]
-                          .file_path
-                      }
-                      prevSrc={
-                        attachments[
-                          (photoIndex + attachments.length - 1) %
+              {isMessageDeleted === false &&
+                Array.isArray(attachments) &&
+                attachments.length > 0 && (
+                  <div
+                    className={`grid mb-6 gap-2 ${attachments.length < 3 ? `grid-cols-${attachments.length}` : 'grid-cols-3'}`}
+                  >
+                    {attachments.map((item: IAttachment, index: number) => (
+                      <Image
+                        src={item.file_path}
+                        alt={item.file_path}
+                        width={100}
+                        height={100}
+                        className="w-28 h-28 object-cover rounded-md cursor-pointer "
+                        onClick={() => {
+                          setPhotoIndex(index);
+                          setIsOpen(true);
+                        }}
+                        unoptimized={true}
+                      />
+                    ))}
+                    {isOpen && (
+                      <Lightbox
+                        mainSrc={attachments[photoIndex].file_path}
+                        nextSrc={
+                          attachments[(photoIndex + 1) % attachments.length]
+                            .file_path
+                        }
+                        prevSrc={
+                          attachments[
+                            (photoIndex + attachments.length - 1) %
                             attachments.length
-                        ].file_path
-                      }
-                      onCloseRequest={() => setIsOpen(false)}
-                      onMovePrevRequest={() =>
-                        setPhotoIndex(
-                          (photoIndex + attachments.length - 1) %
+                          ].file_path
+                        }
+                        onCloseRequest={() => setIsOpen(false)}
+                        onMovePrevRequest={() =>
+                          setPhotoIndex(
+                            (photoIndex + attachments.length - 1) %
                             attachments.length
-                        )
-                      }
-                      onMoveNextRequest={() =>
-                        setPhotoIndex((photoIndex + 1) % attachments.length)
-                      }
-                    />
-                  )}
-                </div>
-              )}
-              <span>{messageContent}</span>
+                          )
+                        }
+                        onMoveNextRequest={() =>
+                          setPhotoIndex((photoIndex + 1) % attachments.length)
+                        }
+                      />
+                    )}
+                  </div>
+                )}
+              <span>
+                {isMessageDeleted ? <i>Message deleted</i> : messageContent}
+              </span>
             </Typography>
             {!isCurrentUser && showTranslatedMessage && (
               <Typography
@@ -203,28 +243,34 @@ const ChatMessage: FC<Iprops> = ({
             </div>
           )}
 
-          {isCurrentUser && (
+          {!isMessageDeleted && isCurrentUser && (
             <div className="relative">
-              <Dropdown
-                trigger={
-                  <div className="mr-2 cursor-pointer">
-                    <Ellipsis size={16} />
-                  </div>
-                }
-                options={[
-                  {
-                    content: (
-                      <div
-                        onClick={() =>
-                          onDeleteMessage && onDeleteMessage(messages?.id ?? '')
-                        }
-                      >
-                        Delete Message
-                      </div>
-                    ),
-                  },
-                ]}
-              />
+              {isDeletingMessage && (
+                <Loader height={15} width={15} className="animate-spin" />
+              )}
+              {!isDeletingMessage && (
+                <Dropdown
+                  trigger={
+                    <div className="mr-2 cursor-pointer">
+                      <Ellipsis size={16} />
+                    </div>
+                  }
+                  options={[
+                    {
+                      content: (
+                        <div
+                          onClick={() =>
+                            onDeleteMessage &&
+                            onDeleteMessage(messages?.id ?? '')
+                          }
+                        >
+                          Delete Message
+                        </div>
+                      ),
+                    },
+                  ]}
+                />
+              )}
             </div>
           )}
         </div>
@@ -233,7 +279,9 @@ const ChatMessage: FC<Iprops> = ({
         variant="p"
         weight="medium"
         className={`${isCurrentUser ? 'mr-16' : 'ml-16'} text-[#A1A4B1] !text-[12px] `}
+        className={`${isCurrentUser ? 'mr-16' : 'ml-16'} text-[#A1A4B1] !text-[12px] `}
       >
+        {showDate && dayjs(createdAt).fromNow()}
         {showDate && dayjs(createdAt).fromNow()}
       </Typography>
     </div>

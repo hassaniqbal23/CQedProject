@@ -25,6 +25,7 @@ const user: ChatConversation = {
       id: 1,
       message: 'Hello, how are you?',
       created_at: '2023-06-11T09:00:00Z',
+      message_deleted_by: [],
       attachments: [
         {
           id: 1,
@@ -43,6 +44,7 @@ const message: IMessage = {
     '尽管我们的文化背景和生活方式完全不同，但我们的联系却很深。慢慢地告诉我，我们所有人的共同点比我们想象的要多得多。全不同，但我们的联系却很深。慢慢地告诉我，我们所有人的共同点比我们想象的要多得多同，但我们的联系却很深。慢慢地告诉我，我们所有人的共同点比我们想象的要多得多。全不同同，但我们的联系却很深。慢慢地告诉我，我们所有人的共同点比我们想象的要多得多。全不同',
   created_at: '2021-10-10',
   attachments: [],
+  message_deleted_by: [],
 };
 
 export const ChatMessageItem: Story = {
@@ -58,6 +60,5 @@ export const ChatMessageItem: Story = {
     showProfile: true,
     showDate: true,
     isCurrentUser: false,
-    hasDeleted: false,
   },
 };
