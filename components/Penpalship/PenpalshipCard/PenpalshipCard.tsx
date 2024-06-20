@@ -10,7 +10,7 @@ import { MessageCircle } from 'lucide-react';
 import { LucideUsers } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal'; // Import the CreateChatModal component
-import { useChatFeatures } from '@/components/Chat/ChatProvider/ChatProvider'; // Import the useChatFeatures hook
+import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider'; // Import the useChatProvider hook
 
 interface Countries {
   [key: string]: string;
@@ -51,7 +51,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   id,
 }) => {
   const route = useRouter();
-  const { setSelectedConversationId } = useChatFeatures(); // Get the setSelectedConversationId function
+  const { setSelectedConversationId } = useChatProvider(); // Get the setSelectedConversationId function
 
   const truncatedDescription =
     (description && truncateText(description, 12)) || '';
