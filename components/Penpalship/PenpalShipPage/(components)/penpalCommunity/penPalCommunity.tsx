@@ -152,7 +152,7 @@ export const PenPalCommunity = () => {
             initialValue={getUserStory?.story}
             isFriend={IsStoryUserMyFriend}
             open={viewStoryModal}
-            loading={isCreatingPanpal || isGetingUserStory}
+            loading={isCreatingPenpal || isGettingUserStory}
             onClose={() => {
               setViewUserStoryId(null);
               setViewStoryModal(false);

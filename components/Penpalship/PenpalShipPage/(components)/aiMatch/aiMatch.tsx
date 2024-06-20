@@ -13,7 +13,7 @@ import { Typography } from '@/components/common/Typography/Typography';
 import { useResponsive } from '@/lib/hooks';
 import { CircleIcon } from '@/components/AiMatches/Circle/Circle';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { createPenpal, deletePenpal, penpalsFilters } from '@/app/api/penpals';
+import { deletePenpal, penpalsFilters } from '@/app/api/penpals';
 import { useRouter } from 'next/navigation';
 import { UserProfileMatch } from '@/components/AiMatches/UserProfileMatch/UserProfileMatch';
 import { useGlobalState } from '@/app/globalContext/globalContext';

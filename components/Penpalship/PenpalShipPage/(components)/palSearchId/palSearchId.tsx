@@ -8,7 +8,7 @@ import { FormInput } from '@/components/common/From/FormInput';
 import { PenpalshipCard } from '@/components/Penpalship';
 import Image from 'next/image';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { createPenpal, searchNewPenpal } from '@/app/api/penpals';
+import { searchNewPenpal } from '@/app/api/penpals';
 import SkeletonCard from '@/components/common/SkeletonCard/SkeletonCard';
 import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 
@@ -61,7 +61,6 @@ export const PalSearchId = () => {
   );
   const onSubmit: SubmitHandler<any> = (values: IPalSearchID) => {
     setSearchParams(values);
-    // form.reset();
   };
   return (
     <div>
