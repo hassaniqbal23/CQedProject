@@ -31,6 +31,7 @@ const user: ChatConversation = {
           file_path: '/assets/messages/attachment1.svg',
         },
       ],
+      message_deleted_by: [],
     },
   ],
   schoolId: 1,

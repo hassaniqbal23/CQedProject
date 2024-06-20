@@ -37,7 +37,10 @@ export const PenPalCommunity = () => {
   const [paginationPenpals, setPaginationPenpals] = useState<{
     page: number;
     limit: number;
-  }>({ page: 1, limit: 10 });
+  }>({
+    page: 1,
+    limit: 12,
+  });
 
   const { page, limit } = paginationPenpals;
   const { sendRequest, isCreatingPenpal } = useSendPenpalRequest();
@@ -70,7 +73,7 @@ export const PenPalCommunity = () => {
     }
   );
 
-  const IsgetUserStoryUserMyFriend = useMemo(() => {
+  const IsStoryUserMyFriend = useMemo(() => {
     const getUserStoryUserId = getUserStory?.userId;
     const MyId = userInformation.id;
     if (getUserStoryUserId && MyId) {
@@ -117,7 +120,9 @@ export const PenPalCommunity = () => {
   const suggestions = useMemo(() => {
     if (suggestionsResponse) {
       return suggestionsResponse?.data?.data?.map((c: any) => {
-        return { ...c, profile: c.profile[0] };
+        return {
+          ...c,
+        };
       });
     }
     return [];
@@ -145,9 +150,9 @@ export const PenPalCommunity = () => {
           />
           <PublishStoryViewDialog
             initialValue={getUserStory?.story}
-            isFriend={IsgetUserStoryUserMyFriend}
+            isFriend={IsStoryUserMyFriend}
             open={viewStoryModal}
-            loading={isCreatingPenpal}
+            loading={isCreatingPanpal || isGetingUserStory}
             onClose={() => {
               setViewUserStoryId(null);
               setViewStoryModal(false);
@@ -164,10 +169,7 @@ export const PenPalCommunity = () => {
             userInfo={{
               username: getUserStory?.User?.name,
               userId: getUserStory?.userId,
-              location: {
-                name: getUserStory?.User?.profile?.[0]?.country,
-                flag: getUserStory?.User?.profile?.[0]?.country,
-              },
+              location: getUserStory?.User?.profile?.country,
               imageUrl: getUserStory?.User?.attachment?.file_path,
             }}
           />
@@ -230,8 +232,9 @@ export const PenPalCommunity = () => {
           {suggestions?.map((item: any, index: number) => (
             <PenpalshipCard
               key={index}
+              id={item?.id}
               imgPath={item?.attachment?.file_path}
-              title={item?.profile?.fullname || item.email}
+              title={item?.profile?.full_name || item.email}
               mutualFriends={'5 mutual friends'}
               buttonOnClick={() => {
                 sendRequest({ receiverId: Number(item.id), setCreatingPanpalId });
@@ -240,8 +243,7 @@ export const PenPalCommunity = () => {
               buttonLoading={creatingPanpalId === item.id && isCreatingPenpal}
               buttonText="Connect"
               description={JSON.parse(item?.profile?.meta || '{}').bio}
-              countryFlag={`/country-flags/svg/${item?.profile?.country.toLowerCase()}.svg`}
-              countryName={item?.profile?.country.toUpperCase()}
+              countryName={item?.profile?.country}
               studentAge={item?.profile?.age}
             />
           ))}

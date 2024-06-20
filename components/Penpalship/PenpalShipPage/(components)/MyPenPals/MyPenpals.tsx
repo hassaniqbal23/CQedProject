@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { deletePenpal, myPenpals, searchPenpal } from '@/app/api/penpals';
+import { deletePenpal, searchPenpal } from '@/app/api/penpals';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { PenpalshipCard } from '@/components/Penpalship';
 import SearchBar from '@/components/common/SearchBar';
@@ -11,9 +11,10 @@ import { debounce } from 'lodash';
 
 export const MyPenpals: React.FC = () => {
   const queryClient = useQueryClient();
-  const { userInformation } = useGlobalState();
+  const { userInformation, myPenpals, isFetchingMyPenPals } = useGlobalState();
   const [totalCount, setTotalCount] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [removingItemId, setRemovingItemId] = useState<number | null>(null);
   const [pagination, setPagination] = useState<{ page: number; limit: number }>(
     {
       page: 1,
@@ -27,25 +28,14 @@ export const MyPenpals: React.FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries('getMyPenpals');
       queryClient.invalidateQueries('searchMyPenpal');
+      queryClient.invalidateQueries('MyPenPals');
+      setRemovingItemId(null);
     },
     onError: (error: any) => {
       console.error('Error:', error);
+      setRemovingItemId(null);
     },
   });
-
-  const penpalsQuery = useQuery(
-    ['getMyPenpals', page, limit],
-    () => myPenpals(page, limit),
-    {
-      enabled: !searchTerm,
-      onSuccess: (res) => {
-        setTotalCount(res?.data?.total_count);
-      },
-      onError: (err) => {
-        console.error(err);
-      },
-    }
-  );
 
   const searchPenpalsQuery = useQuery(
     ['searchMyPenpal', searchTerm, page, limit],
@@ -64,25 +54,20 @@ export const MyPenpals: React.FC = () => {
   const penpals = useMemo(() => {
     const list = searchTerm
       ? searchPenpalsQuery.data?.data?.data || []
-      : penpalsQuery.data?.data?.data || [];
+      : myPenpals || [];
     return list.map((c: any) => ({
       ...c,
       user:
         c.sender.id === userInformation.id
-          ? { ...c.receiver, profile: c.receiver.profile?.[0] }
-          : { ...c.sender, profile: c.sender.profile?.[0] },
+          ? { ...c.receiver, profile: c.receiver.profile }
+          : { ...c.sender, profile: c.sender.profile },
     }));
-  }, [
-    penpalsQuery.data,
-    searchPenpalsQuery.data,
-    searchTerm,
-    userInformation.id,
-  ]);
+  }, [myPenpals, searchPenpalsQuery.data, searchTerm, userInformation.id]);
 
   const handleSearchTermChange = useCallback(
     debounce((term: string) => {
       setSearchTerm(term);
-      setPagination({ page: 1, limit: 10 });
+      setPagination({ page: 1, limit: 12 });
     }, 400),
     []
   );
@@ -103,19 +88,26 @@ export const MyPenpals: React.FC = () => {
         {penpals.map((item: any, index: number) => (
           <PenpalshipCard
             key={index}
+            id={item?.user?.id}
             imgPath={item?.user?.attachment?.file_path}
-            title={item?.user?.profile?.fullname || ''}
+            title={item?.user?.profile?.full_name || ''}
             mutualFriends="5 mutual friends"
-            buttonOnClick={() => handleRemove.mutate(item?.id)}
+            buttonOnClick={() => {
+              handleRemove.mutate(item?.id);
+              setRemovingItemId(item?.id);
+            }}
             buttonText="Remove"
             description={JSON.parse(item?.user?.profile?.meta || '{}').bio}
             countryFlag={`/country-flags/svg/${item?.user?.profile?.country.toLowerCase()}.svg`}
             countryName={item?.user?.profile?.country.toUpperCase()}
             studentAge={item?.user?.profile?.age}
+            buttonLoading={
+              removingItemId === item?.id && handleRemove.isLoading
+            }
           />
         ))}
       </div>
-      {penpals.length > 0 && !penpalsQuery.isLoading && (
+      {penpals.length > 0 && !isFetchingMyPenPals && (
         <div className="flex justify-end py-5">
           <Pagination
             currentPage={page}
@@ -131,10 +123,14 @@ export const MyPenpals: React.FC = () => {
           />
         </div>
       )}
-      {penpals.length === 0 && !searchPenpalsQuery.isLoading && (
-        <div>No penpals yet.</div>
-      )}
-      {(penpalsQuery.isLoading || searchPenpalsQuery.isLoading) && (
+      {penpals.length === 0 &&
+        !searchPenpalsQuery.isLoading &&
+        !isFetchingMyPenPals && (
+          <div className="flex justify-center text-center">
+            {searchTerm ? 'No penpal found.' : 'No penpals yet.'}
+          </div>
+        )}
+      {(isFetchingMyPenPals || searchPenpalsQuery.isLoading) && (
         <SkeletonCard />
       )}
     </div>
