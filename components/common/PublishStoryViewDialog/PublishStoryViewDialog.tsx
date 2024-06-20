@@ -123,7 +123,6 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
                       )}
                       <Typography variant="h5" weight="regular">
                         {country}
-                        {country}
                       </Typography>
                     </div>
                   </div>
