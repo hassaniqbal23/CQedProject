@@ -42,7 +42,7 @@ const ImageUpload: FC<IProps> = ({
         </Avatar>
       )}
       <div className="relative">
-        <div className="absolute p-2 bg-white border right-8 bottom-4 rounded-full cursor-pointer">
+        <div className="absolute p-2 bg-white border right-1 bottom-4 rounded-full cursor-pointer">
           {attachmentFilepath ? (
             <Trash onClick={() => deleteProfile(attachmentID)} />
           ) : (
