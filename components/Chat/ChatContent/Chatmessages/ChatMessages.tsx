@@ -16,13 +16,13 @@ const ChatMessages: React.FC<IChatMessages> = ({ conversation }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { userInformation } = useGlobalState();
   const { currentConversation } = useChatProvider();
-  const [deletedMessage, setDeletedMessage] = React.useState<Number[]>([]);
+  const [deletingMessages, setDeletingMessages] = React.useState<number[]>([]);
 
   const { mutate: removeThread, isLoading: isDeletingThread } = useMutation(
     (id: number) => deleteMessage(id),
     {
       onSuccess: (res, message_id) => {
-        setDeletedMessage([...deletedMessage, message_id]);
+        setDeletingMessages((prev) => prev.filter((id) => id !== message_id));
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
@@ -31,6 +31,7 @@ const ChatMessages: React.FC<IChatMessages> = ({ conversation }) => {
   );
 
   const handleDeleteMessage = (id: string | number) => {
+    setDeletingMessages((prev) => [...prev, id as number]);
     const numericId = typeof id === 'string' ? parseInt(id) : id;
     removeThread(numericId);
   };
@@ -98,7 +99,9 @@ const ChatMessages: React.FC<IChatMessages> = ({ conversation }) => {
               }
               onDeleteMessage={handleDeleteMessage}
               isCurrentUser={isMe}
-              hasDeleted={deletedMessage.includes(message.id)}
+              isDeletingMessage={
+                isDeletingThread && deletingMessages.includes(message.id)
+              }
             />
           </>
         );

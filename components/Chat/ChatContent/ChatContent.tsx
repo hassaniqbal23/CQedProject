@@ -74,8 +74,6 @@ const ChatContent: FC = () => {
   } = useMutation((id: number | string) => deleteConversation(id), {
     onSuccess: (res, id) => {
       onConversationDelete(id);
-      setSelectedConversationId(null);
-      queryClient.refetchQueries('get-all-conversations');
     },
     onError: (error: any) => {
       console.log(error, 'Error =====> log');

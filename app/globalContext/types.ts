@@ -73,6 +73,8 @@ export interface IMessage {
   message: string;
   created_at: string;
   attachments?: IAttachment[];
+  clientID?: string;
+  message_deleted_by: number[];
 }
 
 export interface IAttachment {
