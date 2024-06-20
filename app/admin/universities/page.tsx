@@ -85,11 +85,6 @@ const Universities = () => {
     {
       onSuccess: (res) => {
         queryClent.invalidateQueries('getInvites');
-        toast.success(`${res.data.message}`, {
-          position: 'bottom-center',
-          icon: <CircleAlert />,
-          closeButton: true,
-        });
         setTotalCountInviteSchool(res?.data?.totalCount);
         setInviteSchool(false);
       },
@@ -148,7 +143,7 @@ const Universities = () => {
   return (
     <>
       <div className="w-full py-3 mt-7">
-        <div className="w-full flex mb-4 items-center">
+        <div className="w-full flex flex-wrap mb-4 items-center">
           <div>
             <Typography variant="h3" weight="semibold">
               Universities
@@ -157,7 +152,7 @@ const Universities = () => {
               Your universities are listed below
             </Typography>
           </div>
-          <div className={'ml-auto'}>
+          <div className={'md:ml-auto mt-2 md:mt-0'}>
             <Button
               icon={<Plus size={25} />}
               iconPosition="left"

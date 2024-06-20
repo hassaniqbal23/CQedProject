@@ -30,6 +30,8 @@ const createHttpInstance = () => {
         sonnerToast.dismiss(response.data.message);
         sonnerToast.success(response.data.message, {
           id: response.data.message,
+          position : 'bottom-center',
+          closeButton: true,
         });
       }
       return response;
@@ -43,6 +45,8 @@ const createHttpInstance = () => {
 
       sonnerToast.error(message, {
         id: message,
+        position : 'bottom-center',
+        closeButton: true,
       });
 
       if (error.response && error.response.status === 401) {

@@ -23,7 +23,7 @@ export const Sidebar: FC<IProps> = ({
     return (
       <>
         <aside
-          className={`fixed bottom-0  left-0  z-40 h-30  w-full bg-primary-500`}
+          className={`fixed bottom-0 hidden sm:block md:hidden left-0 z-40 h-30  w-full bg-primary-500`}
         >
           <div className="flex justify-between flex-col h-full">
             <ul className="flex justify-between items-center px-16">
@@ -47,7 +47,7 @@ export const Sidebar: FC<IProps> = ({
         <aside
           className={`${
             false ? 'translate-x-0' : '-translate-x-full'
-          } fixed bottom-0 left-0 z-40 md:translate-x-0 h-screen hidden sm:flex flex-col w-60 bg-primary-500 `}
+          } fixed bottom-0 left-0 z-40 md:translate-x-0 h-screen hidden md:flex flex-col w-60 bg-primary-500 `}
         >
           <div className="flex items-center justify-center pt-7">
             <Image
