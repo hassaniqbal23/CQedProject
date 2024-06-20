@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ChatMessage from './ChatMessage';
 import { ChatConversation } from '@/types/chat';
+import { IMessage } from '@/app/globalContext/types';
 
 const meta: Meta<typeof ChatMessage> = {
   title: 'Chat/ChatMessage',

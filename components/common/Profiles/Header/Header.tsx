@@ -29,18 +29,10 @@ interface HeaderProps {
   mutualFriends?: string;
   profileId?: string;
   loggedInUser?: boolean;
-  age?: string;
-  gender?: string;
-  country?: string;
-  mutualFriends?: string;
-  profileId?: string;
-  loggedInUser?: boolean;
   buttonProps?: {
     isVisbile?: boolean;
     onClick?: () => void;
     buttonText?: string;
-    isFriend?: boolean;
-    isLoading?: boolean;
     isFriend?: boolean;
     isLoading?: boolean;
   };
@@ -59,15 +51,9 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   imageSize,
   buttonProps,
   titleClass = 'text-xl',
-  age,
   gender,
   country = '',
-  mutualFriends,
-  profileId,
-  loggedInUser,
   age,
-  gender,
-  country = '',
   mutualFriends,
   profileId,
   loggedInUser,
@@ -169,11 +155,6 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
               {age}, <span className=" ml-1">{gender}</span>
             </p>
           )}
-          {(age || gender) && (
-            <p className="text-white text-base mb-2">
-              {age}, <span className=" ml-1">{gender}</span>
-            </p>
-          )}
           {location && (
             <div className="flex items-center mt-3 md:mt-5">
               <MapPin strokeWidth={'2px'} color="#FFD249" size={16} />
@@ -238,7 +219,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   }}
                   trigger={
                     <Button
-                      onClick={() => { }}
+                      onClick={() => {}}
                       icon={<IoChatbubbleOutline size={20} />}
                       iconPosition="left"
                       className={`rounded-full bg-[#ECEDF8] text-primary-500 h-10 text-base mr-2 hover: border border-white`}
@@ -252,7 +233,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   trigger={
                     <div>
                       <Button
-                        onClick={() => { }}
+                        onClick={() => {}}
                         iconPosition="right"
                         icon={<IoChevronDown />}
                         className={`rounded-full bg-[#ECEDF8] text-primary-500 w-36 h-10 text-base hover: border border-white`}
@@ -360,7 +341,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   }}
                   trigger={
                     <Button
-                      onClick={() => { }}
+                      onClick={() => {}}
                       icon={<IoChatbubbleOutline size={20} />}
                       iconPosition="left"
                       className={`rounded-full bg-[#ECEDF8] text-primary-500 h-10 text-base mr-2 hover: border border-white`}
@@ -374,7 +355,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   trigger={
                     <div>
                       <Button
-                        onClick={() => { }}
+                        onClick={() => {}}
                         iconPosition="right"
                         icon={<IoChevronDown />}
                         className={`rounded-full bg-[#ECEDF8] text-primary-500 w-36 h-10 text-base hover: border border-white`}
@@ -461,3 +442,6 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
 };
 
 ProfileHeader.displayName = 'ProfileHeader';
+function useChatFeatures(): { setSelectedConversationId: any } {
+  throw new Error('Function not implemented.');
+}

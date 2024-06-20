@@ -27,7 +27,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useChatGuard } from '@/components/Chat/ChatProvider/ChatGuard';
 import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
 import { getCountry } from '@/app/utils/helpers';
-import countriesData from '@/public/countries/countries.json'; import { getCountry } from '@/app/utils/helpers';
+import countriesData from '@/public/countries/countries.json';
 
 const formSchema = z.object({
   story: z
@@ -84,7 +84,6 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
 
   const { userInformation } = useGlobalState();
   const { country = '', flag = '' } = getCountry(userInfo?.location || '');
-  const { country = '', flag = '' } = getCountry(userInfo?.location || '');
   const router = useRouter();
   const pathname = usePathname();
   const { setSelectedConversationId } = useChatProvider();
@@ -113,17 +112,15 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
                     </Typography>
                     <div className="flex items-center">
                       {userInfo?.location && (
-                        { userInfo?.location && (
-                          <Image
-                            className="mr-2"
-                            src={flag}
-                            src={flag}
-                            height={30}
-                            width={30}
-                            alt="view-Story"
-                            unoptimized={true}
-                          />
-                        )}
+                        <Image
+                          className="mr-2"
+                          src={flag}
+                          height={30}
+                          width={30}
+                          alt="view-Story"
+                          unoptimized={true}
+                        />
+                      )}
                       <Typography variant="h5" weight="regular">
                         {country}
                         {country}

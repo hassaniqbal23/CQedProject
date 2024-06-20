@@ -33,8 +33,7 @@ interface ChatInterface {
   unSendMessage?: (chatId: number) => void;
   currentThreadId?: number | null;
   inboxResponse?: any;
-  currentConversation: ChatConversation | null | undefined;
-  memoizedMessagesList: any[];
+  currentConversation: any;
   onConversationDelete: (id: number | string) => void;
   setInboxResponse: Dispatch<SetStateAction<any[]>>;
   selectedConversationId: any;
@@ -46,20 +45,20 @@ interface ChatInterface {
 
 const ChatContext = createContext<ChatInterface>({
   currentThread: null,
-  fetchConversations: () => { },
+  fetchConversations: () => {},
   memorizedConversationsList: [],
   memorizedMessagesList: [],
-  setSearchQuery: () => { },
-  unSendMessage: () => { },
+  setSearchQuery: () => {},
+  unSendMessage: () => {},
   currentThreadId: null,
   inboxResponse: null,
   currentConversation: null,
-  onConversationDelete: (id) => { },
-  setInboxResponse: () => { },
+  onConversationDelete: (id) => {},
+  setInboxResponse: () => {},
   selectedConversationId: null,
-  setSelectedConversationId: () => { },
+  setSelectedConversationId: () => {},
   currentConversationAttachments: [],
-  setCurrentConversationAttachments: () => { },
+  setCurrentConversationAttachments: () => {},
   conversationFromParams: null,
 });
 
@@ -72,7 +71,6 @@ export const ChatProvider = ({ children }: any) => {
   const [searchQuery, setSearchQuery] = useState('');
   const { subscribeEvent, unsubscribeEvent } = useEventBus();
   const [inboxResponse, setInboxResponse] = useState<ChatConversation[]>([]);
-  const [inboxResponse, setInboxResponse] = useState<ChatConversation[]>([]);
   const queryClient = useQueryClient();
   const { userInformation, isAuthenticated } = useGlobalState();
   const [currentConversationAttachments, setCurrentConversationAttachments] =
@@ -80,13 +78,10 @@ export const ChatProvider = ({ children }: any) => {
   const [selectedConversationId, setSelectedConversationId] = useState<
     number | string | null
   >(null);
-  const [selectedConversationId, setSelectedConversationId] = useState<
-    number | string | null
-  >(null);
 
-  const currentConversation: ChatConversation | undefined = useMemo(() => {
-    return inboxResponse.find((item) => item.id === selectedConversationId);
-  }, [selectedConversationId, inboxResponse]);
+  const currentConversation = inboxResponse.find(
+    (item) => item.id === selectedConversationId
+  );
 
   const { isLoading: messagesLoading, refetch: refetchConversationMessages } =
     useQuery(
@@ -113,7 +108,6 @@ export const ChatProvider = ({ children }: any) => {
   }, [params]);
 
   const { isLoading: inboxLoading, data: allConversationResponse } = useQuery(
-    ['get-all-conversations'],
     ['get-all-conversations'],
     () => getAllConversations(),
     {

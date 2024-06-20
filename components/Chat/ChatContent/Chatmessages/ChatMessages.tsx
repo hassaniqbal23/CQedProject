@@ -4,48 +4,45 @@ import { useGlobalState } from '@/app/globalContext/globalContext';
 import { useChatProvider } from '../../ChatProvider/ChatProvider';
 import { useMutation } from 'react-query';
 import { deleteMessage } from '@/app/api/chat';
-import dayjs from 'dayjs';
 import { format, isSameDay, parseISO, differenceInMinutes } from 'date-fns';
-import { ChatConversation } from '@/types/chat';
 import { ChatConversation } from '@/types/chat';
 
 interface IChatMessages {
   conversation: ChatConversation;
-  conversation: ChatConversation;
 }
 
 const ChatMessages: React.FC<IChatMessages> = ({ conversation }) => {
-  const ChatMessages: React.FC<IChatMessages> = ({ conversation }) => {
-    const messagesEndRef = useRef<HTMLDivElement>(null);
-    const { userInformation } = useGlobalState();
-    const { currentConversation } = useChatProvider();
-    const [deletingMessages, setDeletingMessages] = React.useState<number[]>([]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { userInformation } = useGlobalState();
+  const { currentConversation } = useChatProvider();
+  const [deletingMessages, setDeletingMessages] = React.useState<number[]>([]);
 
-    const { mutate: removeThread, isLoading: isDeletingThread } = useMutation(
-      (id: number) => deleteMessage(id),
-      {
-        onSuccess: (res, message_id) => {
-          setDeletingMessages((prev) => prev.filter((id) => id !== message_id));
-        },
-        onError: (error: any) => {
-          console.log(error, 'Error =====> log');
-        },
-      }
-    );
+  const { mutate: removeThread, isLoading: isDeletingThread } = useMutation(
+    (id: number) => deleteMessage(id),
+    {
+      onSuccess: (res, message_id) => {
+        setDeletingMessages((prev) => prev.filter((id) => id !== message_id));
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
 
-    const handleDeleteMessage = (id: string | number) => {
-      setDeletingMessages((prev) => [...prev, id as number]);
-      const numericId = typeof id === 'string' ? parseInt(id) : id;
-      removeThread(numericId);
-    };
+  const handleDeleteMessage = (id: string | number) => {
+    setDeletingMessages((prev) => [...prev, id as number]);
+    const numericId = typeof id === 'string' ? parseInt(id) : id;
+    removeThread(numericId);
+  };
 
-    useEffect(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, []);
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
-    return (
-      <div className="p-3">
-        {currentConversation.messages.map((message: any, index: number) => {
+  return (
+    <div className="p-3">
+      {currentConversation &&
+        currentConversation.messages.map((message: any, index: number) => {
           const isMe = [message.senderId].includes(userInformation.id);
           const sender = message.senderId;
           const nextMessage = currentConversation.messages[index + 1];
@@ -90,33 +87,29 @@ const ChatMessages: React.FC<IChatMessages> = ({ conversation }) => {
               <ChatMessage
                 key={index}
                 messages={message}
-                messages={message}
                 showProfile={showProfile}
                 showDate={showDate}
-                conversation={conversation}
                 conversation={conversation}
                 userImage={
                   isMe
                     ? userInformation.attachment?.file_path
-                    : user.attachment?.file_path
+                    : conversation.user.attachment
+                      ? conversation.user.attachment?.file_path
+                      : ''
                 }
                 onDeleteMessage={handleDeleteMessage}
                 isCurrentUser={isMe}
-<<<<<<< HEAD
-                hasDeleted={deletedMessage.includes(message.id)}
-=======
-              isDeletingMessage={
-                isDeletingThread && deletingMessages.includes(message.id)
-              }
->>>>>>> 9d18f1fd82d20b8204ecb92403a5d1d21ac1389d
+                isDeletingMessage={
+                  isDeletingThread && deletingMessages.includes(message.id)
+                }
               />
             </>
           );
         })}
 
-        <div className="messagesEndRef" ref={messagesEndRef}></div>
-      </div>
-    );
-  };
+      <div className="messagesEndRef" ref={messagesEndRef}></div>
+    </div>
+  );
+};
 
-  export default ChatMessages;
+export default ChatMessages;

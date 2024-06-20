@@ -53,32 +53,6 @@ const ChatMessage: FC<Iprops> = ({
   );
   const [showTranslatedMessage, setShowTranslatedMessage] = useState(false);
 
-  const { isLoading, mutate: translate } = useMutation(
-    ['translateMessage', messageContent, 'en'],
-    (message: string, to: string = 'en') => translateMessage(message, to),
-    {
-      onSuccess: (data) => {
-        const rawTranslation = data.translations[0].translation;
-        const validJsonString = rawTranslation.replace(' and more"', '');
-
-        try {
-          const parsedTranslation = JSON.parse(validJsonString);
-          const message = parsedTranslation.message;
-          setTranslatedMessage(message);
-        } catch (e) {
-          console.error('Error parsing JSON:', e);
-        }
-      },
-    }
-  );
-
-  const handleTranslate = () => {
-    if (messageContent) {
-      translate(messageContent);
-      setShowTranslatedMessage(true);
-    }
-  };
-
   const isMessageDeleted =
     messages &&
     messages.message_deleted_by &&
@@ -112,7 +86,6 @@ const ChatMessage: FC<Iprops> = ({
     }
   };
 
-  if (hasDeleted) return null;
   return (
     <div
       className={`flex flex-col group gap-1 mb-5 ${isCurrentUser ? 'items-end' : 'items-start'}`}
@@ -135,7 +108,6 @@ const ChatMessage: FC<Iprops> = ({
             >
               <ConversationUserSheet
                 conversation={conversation}
-                conversation={conversation}
                 onChatDelete={() => {
                   dispatchEvent(DELETE_CONVERSATION, null);
                 }}
@@ -144,10 +116,8 @@ const ChatMessage: FC<Iprops> = ({
           )
         ) : (
           <div className="w-10 h-10 rounded-full" />
-          <div className="w-10 h-10 rounded-full" />
         )}
         <div
-          className={`flex relative items-center ${isCurrentUser ? 'flex-row-reverse' : 'flex-row'}`}
           className={`flex relative items-center ${isCurrentUser ? 'flex-row-reverse' : 'flex-row'}`}
         >
           <div>
@@ -186,14 +156,14 @@ const ChatMessage: FC<Iprops> = ({
                         prevSrc={
                           attachments[
                             (photoIndex + attachments.length - 1) %
-                            attachments.length
+                              attachments.length
                           ].file_path
                         }
                         onCloseRequest={() => setIsOpen(false)}
                         onMovePrevRequest={() =>
                           setPhotoIndex(
                             (photoIndex + attachments.length - 1) %
-                            attachments.length
+                              attachments.length
                           )
                         }
                         onMoveNextRequest={() =>
@@ -278,7 +248,6 @@ const ChatMessage: FC<Iprops> = ({
       <Typography
         variant="p"
         weight="medium"
-        className={`${isCurrentUser ? 'mr-16' : 'ml-16'} text-[#A1A4B1] !text-[12px] `}
         className={`${isCurrentUser ? 'mr-16' : 'ml-16'} text-[#A1A4B1] !text-[12px] `}
       >
         {showDate && dayjs(createdAt).fromNow()}

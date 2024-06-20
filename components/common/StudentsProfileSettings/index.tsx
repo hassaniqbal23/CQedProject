@@ -27,7 +27,6 @@ import { userUpdateProfile } from '@/app/api/users';
 import { IUserInformation } from '@/app/globalContext/types';
 import { getCountry } from '@/app/utils/helpers';
 
-
 const formSchema = z.object({
   full_name: z.string().min(2, {
     message: 'Name must be at least 2 characters',
@@ -40,7 +39,9 @@ const formSchema = z.object({
 
 const StudentProfileSettings = () => {
   const { userInformation, isUserGetInfo } = useGlobalState();
-  const { flag = '', country: countryName = '' } = getCountry(userInformation?.profile?.country);
+  const { flag = '', country: countryName = '' } = getCountry(
+    userInformation?.profile?.country
+  );
   const refetch = useQueryClient();
 
   const form = useForm<any>({
@@ -55,13 +56,12 @@ const StudentProfileSettings = () => {
       language: userInformation?.profile?.languages || [],
       interests: userInformation?.profile?.interests || [],
       bio: userInformation?.profile?.bio || '',
-      culture_information: userInformation?.profile?.culture_information?.[0] || '',
-      amazingThing: '',
-      shareExploreLearn: '',
+      culture_information:
+        userInformation?.profile?.culture_information?.[0] || '',
+      amazingThing: userInformation.profile?.meta?.amazingThing || '',
+      shareExploreLearn: userInformation.profile?.meta?.shareExploreLearn || '',
     },
   });
-
-
 
   const { mutate: deleteProfile, isLoading: isDeletingProfile } = useMutation(
     (id: number) => deleteProfileImage(id),
@@ -106,9 +106,15 @@ const StudentProfileSettings = () => {
 
   useEffect(() => {
     if (userInformation) {
-      form.setValue('full_name', userInformation.profile?.full_name || userInformation.name);
+      form.setValue(
+        'full_name',
+        userInformation.profile?.full_name || userInformation.name
+      );
       form.setValue('nick_name', userInformation.profile?.nick_name);
-      form.setValue('country', countryName ? { value: countryName, label: countryName } : '');
+      form.setValue(
+        'country',
+        countryName ? { value: countryName, label: countryName } : ''
+      );
       form.setValue('dob', formatDOB(userInformation.profile?.dob));
       form.setValue('gender', userInformation.profile?.gender);
       form.setValue(
@@ -126,9 +132,18 @@ const StudentProfileSettings = () => {
         }))
       );
       form.setValue('bio', userInformation.profile?.bio);
-      form.setValue('culture_information', userInformation.profile?.culture_information?.[0]);
-      form.setValue('amazingThing', userInformation.profile?.meta?.amazingThing);
-      form.setValue('shareExploreLearn', userInformation.profile?.meta?.shareExploreLearn);
+      form.setValue(
+        'culture_information',
+        userInformation.profile?.culture_information?.[0]
+      );
+      form.setValue(
+        'amazingThing',
+        userInformation.profile?.meta?.amazingThing
+      );
+      form.setValue(
+        'shareExploreLearn',
+        userInformation.profile?.meta?.shareExploreLearn
+      );
     }
   }, [userInformation, countryName]);
 
@@ -150,13 +165,26 @@ const StudentProfileSettings = () => {
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = () => {
     const formData = form.getValues();
-    const { interests, language, shareExploreLearn, amazingThing, culture_information, dob, country } = formData;
-    const transformedInterests = interests.map((interest: { value: string }) => interest.value);
-    const transformedLanguages = language.map((language: { value: string }) => language.value);
+    const {
+      interests,
+      language,
+      shareExploreLearn,
+      amazingThing,
+      culture_information,
+      dob,
+      country,
+    } = formData;
+    const transformedInterests = interests.map(
+      (interest: { value: string }) => interest.value
+    );
+    const transformedLanguages = language.map(
+      (language: { value: string }) => language.value
+    );
 
-    const transformedCultureInformation = typeof culture_information === 'string'
-      ? culture_information.split(',').map(item => item.trim())
-      : [];
+    const transformedCultureInformation =
+      typeof culture_information === 'string'
+        ? culture_information.split(',').map((item) => item.trim())
+        : [];
 
     const payload = {
       ...formData,
@@ -175,7 +203,6 @@ const StudentProfileSettings = () => {
       updateProfile({ profileId: userInformation.profile.id, payload });
     }
   };
-
 
   return (
     <Card className="w-full p-4 mt-6">
@@ -215,9 +242,11 @@ const StudentProfileSettings = () => {
                     <FormLabel className="!text-sm">Birthday</FormLabel>
                     <FormControl>
                       <DatePickerDemo
-                        // defaultValue={field.value ? new Date(field.value) : undefined}
+                        defaultValue={
+                          field.value ? new Date(field.value) : undefined
+                        }
                         selectDate={(data: any) => {
-                          field.onChange(data)
+                          field.onChange(data);
                         }}
                       />
                     </FormControl>
@@ -229,7 +258,9 @@ const StudentProfileSettings = () => {
                 control={form.control}
                 name="country"
                 render={({ field }) => {
-                  const selectedCountry = field.value ? { value: field.value, label: field.value } : null;
+                  const selectedCountry = field.value
+                    ? { value: field.value, label: field.value }
+                    : null;
                   return (
                     <FormItem>
                       <FormLabel className="!text-sm">Country</FormLabel>
@@ -251,7 +282,6 @@ const StudentProfileSettings = () => {
                   );
                 }}
               />
-
             </div>
             <div className="grid md:grid-cols-2 md:gap-9 my-4 items-center">
               <FormField
@@ -440,4 +470,3 @@ const StudentProfileSettings = () => {
 };
 
 export default StudentProfileSettings;
-

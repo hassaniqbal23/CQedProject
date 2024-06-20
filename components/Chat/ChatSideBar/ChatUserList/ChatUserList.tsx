@@ -1,12 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
-import React, { FC, useEffect, useState } from 'react';
 import { Avatar, AvatarImage } from '@/components/ui';
 import { ExpandableText } from '@/components/common/ExpandableText/ExpandableText';
 import { Typography } from '@/components/common/Typography/Typography';
 import { useChatGuard } from '../../ChatProvider/ChatGuard';
 import { useChatProvider } from '../../ChatProvider/ChatProvider';
 import { useGlobalState } from '@/app/globalContext/globalContext';
-import { useSearchParams } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 
 interface IProps {
@@ -15,7 +13,6 @@ interface IProps {
 
 export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
   const { userInformation } = useGlobalState();
-  const searchParams = useSearchParams();
   const searchParams = useSearchParams();
   const {
     joinConversation,

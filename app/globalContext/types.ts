@@ -86,6 +86,7 @@ export interface ICommunityJoin {
 }
 
 export interface IMessage {
+  senderId?: number;
   id: string | number;
   message: string;
   created_at: string;

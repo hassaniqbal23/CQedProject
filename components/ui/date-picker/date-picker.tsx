@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { addDays, format } from 'date-fns';
+import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 
 import { cn } from '../../../lib/utils';
@@ -19,26 +19,31 @@ const DatePickerDemo: React.FC<IProps> = ({
   defaultValue,
   selectDate,
 }) => {
-  const [date, setDate] = React.useState<Date>();
-  const [rangeDate, setRangeDate] = React.useState<DateRange | undefined>();
+  const [date, setDate] = React.useState<Date | undefined>(() => {
+    if (defaultValue && mode !== 'range') {
+      return defaultValue as Date;
+    }
+    return undefined;
+  });
 
-  React.useEffect(() => {
-    if (defaultValue) {
-      if (mode === 'range') {
-        setRangeDate(defaultValue as DateRange);
-      } else {
-        setDate(defaultValue as Date);
+  const [rangeDate, setRangeDate] = React.useState<DateRange | undefined>(
+    () => {
+      if (defaultValue && mode === 'range') {
+        return defaultValue as DateRange;
       }
+      return undefined;
     }
-  }, [defaultValue]);
+  );
 
-  React.useEffect(() => {
-    if (mode === 'range') {
-      selectDate && selectDate(rangeDate);
-    } else {
-      selectDate && selectDate(date);
-    }
-  }, [date, rangeDate]);
+  const handleDateChange = (selectedDate: Date | undefined) => {
+    setDate(selectedDate);
+    selectDate?.(selectedDate);
+  };
+
+  const handleRangeChange = (selectedRange: DateRange | undefined) => {
+    setRangeDate(selectedRange);
+    selectDate?.(selectedRange);
+  };
 
   return (
     <Popover>
@@ -76,7 +81,7 @@ const DatePickerDemo: React.FC<IProps> = ({
           <Calendar
             mode="range"
             selected={rangeDate}
-            onSelect={setRangeDate}
+            onSelect={handleRangeChange}
             numberOfMonths={2}
             initialFocus
           />
@@ -84,7 +89,7 @@ const DatePickerDemo: React.FC<IProps> = ({
           <Calendar
             mode="single"
             selected={date}
-            onSelect={setDate}
+            onSelect={handleDateChange}
             initialFocus
           />
         )}
