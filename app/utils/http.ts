@@ -18,6 +18,7 @@ const createHttpInstance = () => {
   }
 
   const redirectToLoginPage = () => {
+    if (window.location.pathname.includes('/sign-in')) return;
     window.location.href = '/login';
     removeUserId();
     removeToken();

@@ -8,7 +8,10 @@ import {
 } from 'react';
 import { useSocket } from '../WithSockets/WithSockets';
 import { useEventBus } from '../EventBus/EventBus';
-import { EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE } from '../EventBus/constants';
+import {
+  EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
+  EVENT_BUS_ON_DELETE_MESSAGE,
+} from '../EventBus/constants';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { socket } from '@/lib/socket';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
@@ -63,6 +66,10 @@ export const ChatGuardProvider = ({ children }: any) => {
     useState<number>(0);
 
   useEffect(() => {
+    const onMessageDelete = (message: any) => {
+      dispatchEvent(EVENT_BUS_ON_DELETE_MESSAGE, message);
+    };
+
     const onMessage = (message: any) => {
       dispatchEvent(
         EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
@@ -90,6 +97,7 @@ export const ChatGuardProvider = ({ children }: any) => {
       socket.on('SOCKET_ONLINE_USERS_LIST', onOnlineUsersList);
       socket.on('SOCKET_USER_IS_NOT_TYPING', onUserIsNotTyping);
       socket.on('MESSAGE', onMessage);
+      socket.on('DELETE_MESSAGE', onMessageDelete);
       socket.on('disconnect', () => {
         setRealtimeConnectedUsersIds([]);
       });
@@ -98,6 +106,7 @@ export const ChatGuardProvider = ({ children }: any) => {
         socket.off('SOCKET_ONLINE_USERS_LIST', onOnlineUsersList);
         socket.off('SOCKET_USER_IS_NOT_TYPING', onUserIsNotTyping);
         socket.off('MESSAGE', onMessage);
+        socket.off('DELETE_MESSAGE', onMessageDelete);
       };
     }
   }, [isAuthenticated]);

@@ -10,13 +10,18 @@ import {
   useState,
 } from 'react';
 import { useEventBus } from '../EventBus/EventBus';
-import { EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE } from '../EventBus/constants';
+import {
+  EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
+  EVENT_BUS_ON_DELETE_MESSAGE,
+} from '../EventBus/constants';
 import { useChatGuard } from './ChatGuard';
 import { getAllConversations, getConversationMessages } from '@/app/api/chat';
 import { useQuery, useQueryClient } from 'react-query';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { useParams } from 'next/navigation';
 import { ChatConversation } from '@/types/chat';
+import { useRouter } from 'next/navigation';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface ChatInterface {
   currentThread?: any;
@@ -60,6 +65,8 @@ const ChatContext = createContext<ChatInterface>({
 export const useChatProvider = () => useContext(ChatContext);
 
 export const ChatProvider = ({ children }: any) => {
+  const router = useRouter();
+  const { module } = useModule();
   const { joinConversation } = useChatGuard();
   const [searchQuery, setSearchQuery] = useState('');
   const { subscribeEvent, unsubscribeEvent } = useEventBus();
@@ -131,17 +138,23 @@ export const ChatProvider = ({ children }: any) => {
       setInboxResponse(
         inboxResponse.map((conversation) => {
           if (conversation.id === message.conversationId) {
+            let messages = conversation.messages;
+            let findMessage = messages.find(
+              (msg) => msg.clientID === message.clientID
+            );
+            if (!findMessage) {
+              messages.push(message);
+            } else {
+              messages = messages.map((msg) => {
+                if (msg.clientID === message.clientID) {
+                  return message;
+                }
+                return msg;
+              });
+            }
             return {
               ...conversation,
-              messages: [...conversation.messages, message].map((messageC) => {
-                return {
-                  id:
-                    message.clientID == messageC.clientID
-                      ? message.id
-                      : messageC.id,
-                  ...messageC,
-                };
-              }),
+              messages: messages,
               lastMessageReceived: message.created_at,
             };
           }
@@ -156,16 +169,46 @@ export const ChatProvider = ({ children }: any) => {
       }
     };
 
+    const onDeleteMessage = (message: {
+      id: number;
+      conversationId: number;
+      user_id: number;
+    }) => {
+      setInboxResponse(
+        inboxResponse.map((conversation) => {
+          if (conversation.id === message.conversationId) {
+            return {
+              ...conversation,
+              messages: conversation.messages.map((msg) => {
+                if (msg.id === message.id) {
+                  msg.message_deleted_by = [
+                    ...(msg.message_deleted_by || []),
+                    message.user_id,
+                  ];
+                  return msg;
+                }
+                return msg;
+              }),
+            };
+          }
+          return conversation;
+        })
+      );
+    };
+
     subscribeEvent(
       EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
       handleAddMessageToInbox
     );
+
+    subscribeEvent(EVENT_BUS_ON_DELETE_MESSAGE, onDeleteMessage);
 
     return () => {
       unsubscribeEvent(
         EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
         handleAddMessageToInbox
       );
+      unsubscribeEvent(EVENT_BUS_ON_DELETE_MESSAGE, onDeleteMessage);
     };
   }, [
     subscribeEvent,
@@ -177,6 +220,7 @@ export const ChatProvider = ({ children }: any) => {
 
   const onConversationDelete = (id: number | string) => {
     setSelectedConversationId(null);
+    router.push(`/${module}/chats`);
   };
 
   return (
