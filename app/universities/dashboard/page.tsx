@@ -29,12 +29,7 @@ export default function UniversityDashboard() {
 
   const { data: teachersData, isLoading: isFetchingInvitedSchools } = useQuery(
     ['getInvitedSchools'],
-    () => getInvitedTeachers(),
-    {
-      onSuccess(data) {
-        console.log(data, 'data');
-      },
-    }
+    () => getInvitedTeachers()
   );
 
   const { data: dashboardData } = useQuery(['getSchoolDashboard'], () =>
