@@ -251,7 +251,6 @@ const ChatMessage: FC<Iprops> = ({
         className={`${isCurrentUser ? 'mr-16' : 'ml-16'} text-[#A1A4B1] !text-[12px] `}
       >
         {showDate && dayjs(createdAt).fromNow()}
-        {showDate && dayjs(createdAt).fromNow()}
       </Typography>
     </div>
   );
