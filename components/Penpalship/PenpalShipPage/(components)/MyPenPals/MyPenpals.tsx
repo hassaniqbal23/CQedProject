@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { deletePenpal, myPenpals, searchPenpal } from '@/app/api/penpals';
+import { deletePenpal, searchPenpal } from '@/app/api/penpals';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { PenpalshipCard } from '@/components/Penpalship';
 import SearchBar from '@/components/common/SearchBar';
@@ -11,7 +11,7 @@ import { debounce } from 'lodash';
 
 export const MyPenpals: React.FC = () => {
   const queryClient = useQueryClient();
-  const { userInformation } = useGlobalState();
+  const { userInformation, myPenpals, isFetchingMyPenPals } = useGlobalState();
   const [totalCount, setTotalCount] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
@@ -28,6 +28,7 @@ export const MyPenpals: React.FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries('getMyPenpals');
       queryClient.invalidateQueries('searchMyPenpal');
+      queryClient.invalidateQueries('MyPenPals');
       setRemovingItemId(null);
     },
     onError: (error: any) => {
@@ -35,19 +36,6 @@ export const MyPenpals: React.FC = () => {
       setRemovingItemId(null);
     },
   });
-  const penpalsQuery = useQuery(
-    ['getMyPenpals', page, limit],
-    () => myPenpals(page, limit),
-    {
-      enabled: !searchTerm,
-      onSuccess: (res) => {
-        setTotalCount(res?.data?.total_count);
-      },
-      onError: (err) => {
-        console.error(err);
-      },
-    }
-  );
 
   const searchPenpalsQuery = useQuery(
     ['searchMyPenpal', searchTerm, page, limit],
@@ -66,7 +54,7 @@ export const MyPenpals: React.FC = () => {
   const penpals = useMemo(() => {
     const list = searchTerm
       ? searchPenpalsQuery.data?.data?.data || []
-      : penpalsQuery.data?.data?.data || [];
+      : myPenpals || [];
     return list.map((c: any) => ({
       ...c,
       user:
@@ -74,12 +62,7 @@ export const MyPenpals: React.FC = () => {
           ? { ...c.receiver, profile: c.receiver.profile }
           : { ...c.sender, profile: c.sender.profile },
     }));
-  }, [
-    penpalsQuery.data,
-    searchPenpalsQuery.data,
-    searchTerm,
-    userInformation.id,
-  ]);
+  }, [myPenpals, searchPenpalsQuery.data, searchTerm, userInformation.id]);
 
   const handleSearchTermChange = useCallback(
     debounce((term: string) => {
@@ -124,7 +107,7 @@ export const MyPenpals: React.FC = () => {
           />
         ))}
       </div>
-      {penpals.length > 0 && !penpalsQuery.isLoading && (
+      {penpals.length > 0 && !isFetchingMyPenPals && (
         <div className="flex justify-end py-5">
           <Pagination
             currentPage={page}
@@ -142,12 +125,12 @@ export const MyPenpals: React.FC = () => {
       )}
       {penpals.length === 0 &&
         !searchPenpalsQuery.isLoading &&
-        !penpalsQuery.isLoading && (
+        !isFetchingMyPenPals && (
           <div className="flex justify-center text-center">
             {searchTerm ? 'No penpal found.' : 'No penpals yet.'}
           </div>
         )}
-      {(penpalsQuery.isLoading || searchPenpalsQuery.isLoading) && (
+      {(isFetchingMyPenPals || searchPenpalsQuery.isLoading) && (
         <SkeletonCard />
       )}
     </div>
