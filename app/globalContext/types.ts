@@ -12,7 +12,24 @@ export interface BlockedFrom {
   userId: number;
   id: number;
 }
+
 export interface IUserInformation {
+  profile: {
+    meta: {
+      amazingThing: string;
+      shareExploreLearn: string;
+    };
+    id: number;
+    full_name: string;
+    nick_name: string;
+    country: string;
+    dob: string;
+    gender: string;
+    languages: string[];
+    culture_information: string[];
+    interests: string[];
+    bio: string;
+  };
   id: number;
   name: string;
   email: string;
@@ -23,17 +40,6 @@ export interface IUserInformation {
     file_path: string;
     id: number;
   };
-  fullName: string;
-  username: string;
-  country: string;
-  birthday: string;
-  gender: string;
-  language: string[];
-  interests: string[];
-  aboutMe: string;
-  aboutMyCulture: string;
-  amazingThing: string;
-  shareExploreLearn: string;
   BlockedFrom: BlockedFrom[];
 }
 

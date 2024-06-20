@@ -9,9 +9,10 @@ import { IoEllipsisVertical } from 'react-icons/io5';
 import { DeleteClassDialog } from '../DeleteClassModal/DeleteClassModal';
 import { deleteTeacher } from '@/app/api/teachers';
 import { useMutation, useQueryClient } from 'react-query';
+import { ITeachers } from '@/types/tearcher';
 
 export interface TeachersTableProps {
-  data: any;
+  data: ITeachers[];
   noDataMessage?: string;
   loading?: boolean;
 }
@@ -52,55 +53,49 @@ function TeachersTable(props: TeachersTableProps) {
         loading={props.loading}
         columns={[
           {
-            label: 'Teacher Name',
-            key: 'fullname',
-            render: (data) => {
+            label: 'Name',
+            key: 'name',
+            render: (data: ITeachers) => {
+              console.log(data, 'checmklmsdsd');
               return (
-                <Link
-                  className="hover:text-primary-500"
-                  href={`/schools/teachers/${data['id']}`}
-                >
-                  <div className="flex items-center gap-2 w-full">
-                    <img
-                      src={
-                        data.user.attachment.file_path ||
-                        '/assets/profile/profile.svg'
-                      }
-                      alt={data.user.attachment.file_path}
-                      className="rounded-full w-[30px] h-[30px] object-cover"
-                    />
-                    <h2>{data['fullname']}</h2>
-                  </div>
-                </Link>
+                // <Link
+                //   className="hover:text-primary-500"
+                //   href={`/universities/teachers/${data['id']}`}
+                // >
+                <div className="flex items-center gap-2 w-full">
+                  <img
+                    src={
+                      data?.user?.attachment?.file_path ||
+                      '/assets/profile/profile.svg'
+                    }
+                    alt={data.user.attachment?.file_path}
+                    className="rounded-full w-[30px] h-[30px] object-cover"
+                  />
+                  <h2>{data.user['name']}</h2>
+                </div>
+                // </Link>
               );
-            },
-          },
-          {
-            label: 'Subject',
-            key: 'subject',
-            render: (data) => {
-              return data['subject'] || 'N/A';
-            },
-          },
-          {
-            label: 'Class',
-            key: 'class',
-            render: (data) => {
-              return data['class'] || 'N/A';
             },
           },
           {
             label: 'Email Address',
             key: 'email',
-            render: (data) => {
-              return data['email'] || 'N/A';
+            render: (data: ITeachers) => {
+              return data.user['email'] || 'N/A';
             },
           },
           {
-            label: 'Years of Experience',
-            key: 'yearsOfExperience',
-            render: (data) => {
-              return data['yearsOfExperience'] || 'N/A';
+            label: 'Country',
+            key: 'country',
+            render: (data: ITeachers) => {
+              return <span>{data?.user?.profile['country'] || 'N/A'}</span>;
+            },
+          },
+          {
+            label: 'City',
+            key: 'city',
+            render: (data: ITeachers) => {
+              return data.user.profile['state'] || 'N/A';
             },
           },
           {
@@ -116,16 +111,16 @@ function TeachersTable(props: TeachersTableProps) {
                       </div>
                     }
                     options={[
-                      {
-                        content: (
-                          <Link
-                            className="hover:text-primary-500"
-                            href={`/schools/teachers/${data['id']}`}
-                          >
-                            View Profile
-                          </Link>
-                        ),
-                      },
+                      // {
+                      //   content: (
+                      //     <Link
+                      //       className="hover:text-primary-500"
+                      //       href={`/universities/teachers/${data['id']}`}
+                      //     >
+                      //       View Profile
+                      //     </Link>
+                      //   ),
+                      // },
                       {
                         content: (
                           <div

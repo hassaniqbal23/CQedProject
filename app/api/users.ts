@@ -1,3 +1,4 @@
+import { IUserInformation } from '../globalContext/types';
 import http from '../utils/http';
 
 export const UserCreateStories = (payload: { story: string }) =>
@@ -23,3 +24,10 @@ export const reportUser = (userId: number, report: string) =>
     reporterId: userId,
     report,
   });
+
+export const userUpdateProfile = (
+  profileId: number,
+  payload: IUserInformation
+): Promise<any> => {
+  return http.patch(`/users/${profileId}/update-profile`, payload);
+};

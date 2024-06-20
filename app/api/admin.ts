@@ -42,3 +42,7 @@ export const changePassword = (payload: {
   oldPassword: string;
   newPassword: string;
 }) => http.patch(`/password/change-password`, payload);
+
+export const deactivateSchool = (id: number, payload: { status: number }) => {
+  return http.patch(`/schools/${id}/deactive-school`, payload);
+};

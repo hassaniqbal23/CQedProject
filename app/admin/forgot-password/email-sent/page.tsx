@@ -11,7 +11,7 @@ export default function SchoolForgetPassword() {
         <div className="flex justify-center items-center h-[80vh] p-5">
           <ForgetPasswordSuccess
             email={'jonhn@gmail.com'}
-            backLink={'/schools/sign-in'}
+            backLink={'/universities/sign-in'}
           ></ForgetPasswordSuccess>
         </div>
       </div>

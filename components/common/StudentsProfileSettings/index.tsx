@@ -20,42 +20,48 @@ import { toast } from 'sonner';
 import { FormInput } from '../From/FormInput';
 import ImageUpload from '../ImageUpload/ImageUpload';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
-import DatePicker from '@/components/ui/date-picker/date-picker';
 import { SelectCountry } from '@/components/ui/select-v2/select-v2-components';
 import MultipleSelector from '../From/MultiSelect';
 import DatePickerDemo from '@/components/ui/date-picker/date-picker';
+import { userUpdateProfile } from '@/app/api/users';
+import { IUserInformation } from '@/app/globalContext/types';
+import { getCountry } from '@/app/utils/helpers';
+
 
 const formSchema = z.object({
-  name: z.string().min(2, {
+  full_name: z.string().min(2, {
     message: 'Name must be at least 2 characters',
   }),
-  username: z.string().min(5, {
-    message: 'username must be at least 5 characters',
+  nick_name: z.string().min(5, {
+    message: 'nick name must be at least 5 characters',
   }),
   photo: z.string(),
 });
 
 const StudentProfileSettings = () => {
   const { userInformation, isUserGetInfo } = useGlobalState();
+  const { flag = '', country: countryName = '' } = getCountry(userInformation?.profile?.country);
   const refetch = useQueryClient();
 
   const form = useForm<any>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: userInformation?.profile?.full_name || '',
-      username: userInformation?.profile?.nick_name || '',
+      full_name: userInformation?.profile?.full_name || '',
+      nick_name: userInformation?.profile?.nick_name || '',
       photo: userInformation?.attachment?.file_path || '',
-      birthday: userInformation?.profile?.dob || '',
-      country: userInformation?.profile?.state || '',
+      dob: userInformation?.profile?.dob || '',
+      country: countryName ? { value: countryName, label: countryName } : '',
       gender: userInformation?.profile?.gender || '',
       language: userInformation?.profile?.languages || [],
       interests: userInformation?.profile?.interests || [],
-      aboutMe: userInformation?.profile?.bio || '',
-      aboutMyCulture: userInformation?.profile?.culture_information?.[0] || '',
+      bio: userInformation?.profile?.bio || '',
+      culture_information: userInformation?.profile?.culture_information?.[0] || '',
       amazingThing: '',
       shareExploreLearn: '',
     },
   });
+
+
 
   const { mutate: deleteProfile, isLoading: isDeletingProfile } = useMutation(
     (id: number) => deleteProfileImage(id),
@@ -97,15 +103,13 @@ const StudentProfileSettings = () => {
 
     return formattedDOB;
   };
+
   useEffect(() => {
     if (userInformation) {
-      form.setValue(
-        'name',
-        userInformation.profile?.full_name || userInformation.name
-      );
-      form.setValue('username', userInformation.profile?.nick_name);
-      form.setValue('country', userInformation.profile?.state);
-      form.setValue('birthday', formatDOB(userInformation.profile?.dob));
+      form.setValue('full_name', userInformation.profile?.full_name || userInformation.name);
+      form.setValue('nick_name', userInformation.profile?.nick_name);
+      form.setValue('country', countryName ? { value: countryName, label: countryName } : '');
+      form.setValue('dob', formatDOB(userInformation.profile?.dob));
       form.setValue('gender', userInformation.profile?.gender);
       form.setValue(
         'language',
@@ -121,26 +125,57 @@ const StudentProfileSettings = () => {
           value: label,
         }))
       );
-      form.setValue('aboutMe', userInformation.profile?.bio);
-      form.setValue(
-        'aboutMyCulture',
-        userInformation.profile?.culture_information?.[0]
-      );
-      form.setValue('amazingThing', userInformation.profile?.amazingThing);
-      form.setValue(
-        'shareExploreLearn',
-        userInformation.profile?.shareExploreLearn
-      );
+      form.setValue('bio', userInformation.profile?.bio);
+      form.setValue('culture_information', userInformation.profile?.culture_information?.[0]);
+      form.setValue('amazingThing', userInformation.profile?.meta?.amazingThing);
+      form.setValue('shareExploreLearn', userInformation.profile?.meta?.shareExploreLearn);
     }
-  }, [userInformation]);
+  }, [userInformation, countryName]);
 
-  // console.log(userInformation.profile, 'userInformation..profile.hobbies.interests')
+  const { mutate: updateProfile } = useMutation(
+    (profileData: { profileId: number; payload: IUserInformation }) =>
+      userUpdateProfile(profileData.profileId, profileData.payload),
+    {
+      onSuccess: (res) => {
+        toast.success(`${res.data.message}`, {
+          position: 'bottom-center',
+        });
+        refetch.invalidateQueries('userInformation');
+      },
+      onError: (error) => {
+        console.error('Error updating user profile', error);
+      },
+    }
+  );
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = () => {
     const formData = form.getValues();
-    console.log('Form submitted with values:', formData);
-    form.reset();
+    const { interests, language, shareExploreLearn, amazingThing, culture_information, dob, country } = formData;
+    const transformedInterests = interests.map((interest: { value: string }) => interest.value);
+    const transformedLanguages = language.map((language: { value: string }) => language.value);
+
+    const transformedCultureInformation = typeof culture_information === 'string'
+      ? culture_information.split(',').map(item => item.trim())
+      : [];
+
+    const payload = {
+      ...formData,
+      country: country.value,
+      meta: {
+        shareExploreLearn: shareExploreLearn,
+        amazingThing: amazingThing,
+      },
+      interests: transformedInterests,
+      dob: new Date(dob),
+      language: transformedLanguages,
+      culture_information: transformedCultureInformation,
+    };
+
+    if (userInformation?.profile?.id) {
+      updateProfile({ profileId: userInformation.profile.id, payload });
+    }
   };
+
 
   return (
     <Card className="w-full p-4 mt-6">
@@ -161,62 +196,62 @@ const StudentProfileSettings = () => {
               <FormInput
                 label="Full Name"
                 form={form}
-                name="name"
-                placeholder={'admin'}
+                name="full_name"
+                placeholder={'Full Name'}
               />
               <FormInput
                 label="Set a Nickname"
                 form={form}
-                name="username"
-                placeholder={'admin'}
+                name="nick_name"
+                placeholder={'Nick Name'}
               />
             </div>
             <div className="grid md:grid-cols-2 md:gap-9 my-4 items-center">
               <FormField
                 control={form.control}
-                name="birthday"
+                name="dob"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel className="!text-sm">Birthday</FormLabel>
                     <FormControl>
                       <DatePickerDemo
                         // defaultValue={field.value ? new Date(field.value) : undefined}
-                        selectDate={(data: any) => field.onChange(data)}
+                        selectDate={(data: any) => {
+                          field.onChange(data)
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="country"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="!text-sm">Country</FormLabel>
-                    <FormControl>
-                      <SelectCountry
-                        menuPosition={'fixed'}
-                        value={
-                          field.value
-                            ? { value: field.value, label: field.value }
-                            : null
-                        }
-                        onChange={(e: any) => {
-                          if (!e) {
-                            form.setValue('country', '');
-                            return;
-                          }
-                          form.setValue('country', e.value);
-                        }}
-                        label=""
-                      ></SelectCountry>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                render={({ field }) => {
+                  const selectedCountry = field.value ? { value: field.value, label: field.value } : null;
+                  return (
+                    <FormItem>
+                      <FormLabel className="!text-sm">Country</FormLabel>
+                      <FormControl>
+                        <SelectCountry
+                          {...selectedCountry}
+                          onChange={(e: any) => {
+                            if (!e) {
+                              form.setValue('country', '');
+                              return;
+                            }
+                            form.setValue('country', e);
+                          }}
+                          label=""
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
+
             </div>
             <div className="grid md:grid-cols-2 md:gap-9 my-4 items-center">
               <FormField
@@ -319,7 +354,7 @@ const StudentProfileSettings = () => {
             <div className="grid grid-rows gap-2">
               <FormField
                 control={form.control}
-                name="aboutMe"
+                name="bio"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="!text-sm">About Me</FormLabel>
@@ -336,7 +371,7 @@ const StudentProfileSettings = () => {
               />
               <FormField
                 control={form.control}
-                name="aboutMyCulture"
+                name="culture_information"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="!text-sm">
@@ -405,3 +440,4 @@ const StudentProfileSettings = () => {
 };
 
 export default StudentProfileSettings;
+

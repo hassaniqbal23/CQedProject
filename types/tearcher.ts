@@ -1,3 +1,5 @@
+import { IStudents } from './students';
+
 export interface ITeacher {
   id: number;
   fullname: string;
@@ -9,3 +11,5 @@ export interface ITeacher {
   created_at: string;
   updated_at: string;
 }
+
+export interface ITeachers extends IStudents {}
