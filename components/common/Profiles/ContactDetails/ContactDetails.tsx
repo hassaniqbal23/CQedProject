@@ -27,14 +27,14 @@ export const ProfileContactDetails: React.FC<ContactDetailsProps> = ({
           return (
             <div
               key={index}
-              className="flex items-center my-1 rounded-2xl break-all"
+              className={`flex items-center my-1 rounded-2xl break-all ${index === 0 ? 'border-b rounded-none' : ''}`}
             >
               <div className="bg-[#ECEDF8] p-2 rounded-full">
                 <item.icon strokeWidth={1.2} />
               </div>
-              <div className="p-2 text-left ml-2 ">
+              <div className="p-2 text-left ml-2">
                 <h2 className="font-semibold text-sm">{item.title}</h2>
-                <h3 className="font-sm text-sm lg:text-base text-[#393939] flex flex-wrap ">
+                <h3 className="font-sm text-sm lg:text-base text-[#393939] flex flex-wrap">
                   {item.content}
                 </h3>
               </div>

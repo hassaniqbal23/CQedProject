@@ -2,12 +2,33 @@ import React, { FC, useEffect } from 'react';
 import { ChatSideBar } from './ChatSideBar/ChatSideBar';
 import ChatContent from './ChatContent/ChatContent';
 import { useQueryClient } from 'react-query';
-import { useChatFeatures } from './ChatProvider/ChatProvider';
-import { useChatGuard } from './ChatProvider/ChatGuard';
+import { useChatProvider } from './ChatProvider/ChatProvider';
+import { Suspense } from 'react';
 
-export const Chat: FC = () => {
+export interface ChatPageProps {}
+
+export const Chat: FC<ChatPageProps> = (props) => {
   const queryClient = useQueryClient();
-  const { selectedConversationId } = useChatFeatures();
+  const {
+    selectedConversationId,
+    conversationFromParams,
+    setSelectedConversationId,
+    currentConversation,
+  } = useChatProvider();
+
+  useEffect(() => {
+    setTimeout(() => {
+      queryClient.refetchQueries('get-all-conversations');
+    });
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (conversationFromParams) {
+      setSelectedConversationId(conversationFromParams);
+    }
+    return () => {};
+  }, [conversationFromParams]);
 
   useEffect(() => {
     const handleOnline = () => {
@@ -28,9 +49,11 @@ export const Chat: FC = () => {
   }, [selectedConversationId]);
 
   return (
-    <div className="flex w-full">
-      <ChatSideBar chat={'Chats'} />
-      <ChatContent />
-    </div>
+    <Suspense>
+      <div className="flex w-full">
+        <ChatSideBar chat={'Chats'} />
+        <ChatContent />
+      </div>
+    </Suspense>
   );
 };

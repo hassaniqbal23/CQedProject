@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { blockUser, unblockUser, reportUser } from '@/app/api/users';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { ReportClassDialog } from '@/components/common/DeleteClassModal/ReportClassModal';
-import { useChatFeatures } from '../../ChatProvider/ChatProvider';
+import { useChatProvider } from '../../ChatProvider/ChatProvider';
 import Image from 'next/image';
 import { ChatConversation } from '@/types/chat';
 import { useRouter, usePathname } from 'next/navigation';
@@ -22,9 +22,9 @@ export const ConversationUserSheet: FC<IProps> = ({
 }) => {
   const { usersIBlocked } = useGlobalState();
   const queryClient = useQueryClient();
+  const { currentConversationAttachments } = useChatProvider();
   const route = useRouter();
   const pathname = usePathname();
-  const { currentConversationAttachments } = useChatFeatures();
 
   const [report, setReport] = useState(false);
 

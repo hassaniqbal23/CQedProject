@@ -9,7 +9,7 @@ import { getCountry } from '@/app/utils/helpers';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal';
-import { useChatFeatures } from '@/components/Chat/ChatProvider/ChatProvider';
+import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
 import { useMutation, useQueryClient } from 'react-query';
 import { blockUser, reportUser, unblockUser } from '@/app/api/users';
 import { ReportClassDialog } from '../../DeleteClassModal/ReportClassModal';
@@ -64,7 +64,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   const { usersIBlocked } = useGlobalState();
 
   const { flag = '', country: countryName = '' } = getCountry(country);
-  const { setSelectedConversationId } = useChatFeatures();
+  const { setSelectedConversationId } = useChatProvider();
   const [report, setReport] = useState(false);
 
   const { mutate: reportUserMutation, isLoading: isReportingUser } =

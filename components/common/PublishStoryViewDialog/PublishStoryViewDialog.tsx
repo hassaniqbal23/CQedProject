@@ -25,8 +25,14 @@ import { useGlobalState } from '@/app/globalContext/globalContext';
 import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal';
 import { useRouter, usePathname } from 'next/navigation';
 import { useChatGuard } from '@/components/Chat/ChatProvider/ChatGuard';
-import { useChatFeatures } from '@/components/Chat/ChatProvider/ChatProvider';
+import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
 import { getCountry } from '@/app/utils/helpers';
+import countriesData from '@/public/countries/countries.json';
+interface Countries {
+  [key: string]: string;
+}
+
+const countries: Countries = countriesData;
 
 const formSchema = z.object({
   story: z
@@ -85,7 +91,8 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
   const { country = '', flag = '' } = getCountry(userInfo?.location || '');
   const router = useRouter();
   const pathname = usePathname();
-  const { setSelectedConversationId } = useChatFeatures();
+  const { setSelectedConversationId } = useChatProvider();
+  const { joinConversation } = useChatGuard();
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -150,43 +157,45 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
             />
             <AlertDialogFooter className="gap-4 px-5 py-6">
               <div className="flex items-center">
-                <>
-                  {userInformation?.id !== userInfo?.userId && !isFriend && (
-                    <Button
-                      className="rounded-full h-12"
-                      size={'md'}
-                      variant={'info'}
-                      loading={loading}
-                      onClick={onAddFriend}
-                      type="button"
-                    >
-                      Add Friend
-                    </Button>
-                  )}
-                  {isFriend && (
-                    <CreateChatModal
-                      defaultReceiverId={userInfo?.userId}
-                      onChatCreated={(id) => {
-                        setSelectedConversationId(id);
-                        if (pathname?.startsWith('/student')) {
-                          router.push(`/students/chats`);
-                        } else if (pathname?.startsWith('/teacher')) {
-                          router.push(`/teachers/chats`);
+                {initialValue && (
+                  <>
+                    {userInformation?.id !== userInfo?.userId && !isFriend && (
+                      <Button
+                        className="rounded-full h-12"
+                        size={'md'}
+                        variant={'info'}
+                        loading={loading}
+                        onClick={onAddFriend}
+                        type="button"
+                      >
+                        Add Friend
+                      </Button>
+                    )}
+                    {isFriend && (
+                      <CreateChatModal
+                        defaultReceiverId={userInfo?.userId}
+                        onChatCreated={(id) => {
+                          joinConversation(id);
+                          if (pathname?.startsWith('/student')) {
+                            router.push(`/students/chats`);
+                          } else if (pathname?.startsWith('/teacher')) {
+                            router.push(`/teachers/chats`);
+                          }
+                        }}
+                        trigger={
+                          <Button
+                            className="ml-5 rounded-full h-12"
+                            size={'md'}
+                            variant={'outline'}
+                            type="button"
+                          >
+                            Reply
+                          </Button>
                         }
-                      }}
-                      trigger={
-                        <Button
-                          className="ml-5 rounded-full h-12"
-                          size={'md'}
-                          variant={'outline'}
-                          type="button"
-                        >
-                          Reply
-                        </Button>
-                      }
-                    />
-                  )}
-                </>
+                      />
+                    )}
+                  </>
+                )}
               </div>
             </AlertDialogFooter>
           </form>

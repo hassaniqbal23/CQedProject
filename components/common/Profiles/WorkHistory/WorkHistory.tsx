@@ -38,13 +38,15 @@ export const ProfileWorkHistory: React.FC<WorkHistoryProps> = ({
               <div key={index}>
                 <AccordionItem
                   value={job.id}
-                  className={`${isLast ? 'border-b-0' : ''}`}
+                  className={`${isLast ? 'border-b-0' : ''} `}
                 >
+                  {' '}
                   <AccordionTrigger>
                     <div className="flex items-center">
                       <div className="bg-primary-50 p-2 rounded-md">
                         <Gift color="#4146B8" size={25} />
                       </div>
+
                       <div key={job.id} className="p-4 text-left ">
                         <h3 className="font-semibold text-base text-[#393939]">
                           {job.company}

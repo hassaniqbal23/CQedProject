@@ -122,7 +122,7 @@ const CreateChatModal = (props: ICreateChatModalProps) => {
                       isDisabled={props.defaultReceiverId ? true : false}
                       options={
                         myPenpals?.map((penpal: any) => ({
-                          label: penpal.friend?.profile[0]?.fullname,
+                          label: penpal.friend?.profile?.full_name,
                           image: penpal.friend?.attachment?.file_path,
                           value: penpal?.friend?.id,
                         })) || []
