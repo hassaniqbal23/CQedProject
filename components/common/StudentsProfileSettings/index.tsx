@@ -195,7 +195,7 @@ const StudentProfileSettings = () => {
       },
       interests: transformedInterests,
       dob: new Date(dob),
-      language: transformedLanguages,
+      languages: transformedLanguages,
       culture_information: transformedCultureInformation,
     };
 
