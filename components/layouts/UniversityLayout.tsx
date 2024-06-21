@@ -80,6 +80,9 @@ export const UniversityLayout: FC<IProps> = ({ children }) => {
             sidebarLinks={sidebarLinks}
           />
           <Navbar
+            sidebarLinks={sidebarLinks}
+            pathname={pathname as string}
+            isVerticalIcon={false}
             horizontalLinks={[
               {
                 href: '/universities/notifications',
