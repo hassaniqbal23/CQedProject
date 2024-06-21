@@ -49,7 +49,6 @@ function StudentsTable(props: StudentsTableProps) {
     <div className="w-full">
       <DataTable
         data={data}
-        selection={true}
         noDataMessage={noDataMessage || 'No Students'}
         loading={loading}
         columns={[
