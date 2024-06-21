@@ -70,6 +70,11 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
       title: 'CQ Courses',
       path: '/students/cq-courses',
     },
+    {
+      icon: '/assets/sidebaricons/settings.svg',
+      title: 'Settings',
+      path: '/students/settings',
+    },
   ];
 
   if (showLayout) {
