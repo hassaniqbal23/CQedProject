@@ -37,6 +37,7 @@ const UniversitySettings = () => {
           },
         ]}
         tabContent={tabsComponent}
+        variant={'secondary'}
       />
     </div>
   );

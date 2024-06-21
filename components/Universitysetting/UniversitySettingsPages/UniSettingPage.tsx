@@ -11,7 +11,7 @@ export const UniversitySettingPage: React.FC<UniversitySettingProps> = ({
   buttonClick,
 }) => {
   return (
-    <div className="grid gap-10 items-center">
+    <div className="grid gap-10 items-center px-10">
       <div className="flex flex-col  gap-3">
         <label htmlFor="" className="text-lg font-semibold  mt-10">
           University name

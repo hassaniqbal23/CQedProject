@@ -13,8 +13,8 @@ export const UniversityIntegrationPage: React.FC<
   UniversityIntegrationProps
 > = ({ buttonClick }) => {
   return (
-    <div>
-      <div className="">
+    <div className="px-10">
+      <div>
         <Typography variant="h3" weight="semibold" className="my-8">
           SSO Provider
         </Typography>
