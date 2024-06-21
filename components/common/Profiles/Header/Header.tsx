@@ -64,7 +64,6 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   const { usersIBlocked } = useGlobalState();
 
   const { flag = '', country: countryName = '' } = getCountry(country);
-  console.log({ country })
   const { setSelectedConversationId } = useChatProvider();
   const [report, setReport] = useState(false);
 
