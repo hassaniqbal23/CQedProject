@@ -6,12 +6,17 @@ import {
   PopoverContent,
   PopoverTrigger,
   Separator,
+  SheetDemo,
 } from '@/components/ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { IUserInformation } from '@/app/globalContext/types';
+import Sidebar from '../sidebar/sidebar';
+import { ISidebar } from '../sidebar/types';
+import SidebarMobile from '../sidebar/SidebarMobile/SidebarMobile';
+import { useResponsive } from '@/lib/hooks';
 
 interface IDropDownOption {
   title: string;
@@ -114,17 +119,47 @@ const ProfileLink = ({
 
 interface IProps {
   horizontalLinks?: IHorizontalLinks[];
+  sidebarLinks: ISidebar[];
+  pathname: string;
+  isVerticalIcon: boolean;
 }
-export const Navbar: FC<IProps> = ({ horizontalLinks }) => {
+export const Navbar: FC<IProps> = ({
+  horizontalLinks,
+  isVerticalIcon,
+  pathname,
+  sidebarLinks,
+}) => {
   const { userInformation } = useGlobalState();
+  const { isMobile , isTabletMini } = useResponsive();
   return (
-    <nav className="w-full fixed top-0 flex items-center justify-between bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 z-10">
-      <Image
-        src={'/assets/logos/navbarlogo.svg'}
-        alt="navbar logo"
-        width={30}
-        height={30}
-      />
+    <nav className="w-full fixed top-0 flex items-center justify-between bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 z-10 pl-2">
+      {isMobile && !isTabletMini ? (
+        <SheetDemo
+          side="left"
+          className="bg-primary-500 dark:bg-primary-700 h-full"
+          trigger={
+            <Image
+              src={'/assets/logos/navbarlogo.svg'}
+              alt="navbar logo"
+              width={30}
+              height={30}
+            />
+          }
+        >
+          <SidebarMobile
+            isVerticalIcon={isVerticalIcon}
+            pathname={pathname}
+            sidebarLinks={sidebarLinks}
+          />
+        </SheetDemo>
+      ) : (
+        <Image
+          src={'/assets/logos/navbarlogo.svg'}
+          alt="navbar logo"
+          width={30}
+          height={30}
+        />
+      )}
       <div className="flex items-center justify-end">
         <div className="flex justify-around sm:justify-between gap-2 items-center py-2 pr-4">
           {horizontalLinks && horizontalLinks?.length > 0 ? (

@@ -21,7 +21,7 @@ export const useResponsive: () => {
     query: '(max-width: 1224px)',
   });
   const isTabletMini = useMediaQuery({
-    query: '(max-width: 1024px)',
+    query: '(max-width: 1024px, min-width: 767px)',
   });
   const isMobile = useMediaQuery({
     query: '(max-width: 767px)',
