@@ -102,7 +102,6 @@ function ProfileSettings() {
             className="grid grid-cols-2 gap-5 mt-10"
           >
             <FormInput
-              disabled
               label="Full Name"
               required={true}
               form={form}
@@ -110,7 +109,6 @@ function ProfileSettings() {
               placeholder={'admin'}
             />
             <FormInput
-              disabled
               label="Username"
               required={true}
               form={form}
@@ -119,7 +117,7 @@ function ProfileSettings() {
             />
           </form>
           <Textarea
-            disabled
+            className="bg-gray-50"
             label="write about yourself"
             required={true}
             name="fullName"
