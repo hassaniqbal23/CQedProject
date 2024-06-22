@@ -6,6 +6,7 @@ import { Card } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import { getCountry, truncateText } from '@/app/utils/helpers';
 import { useRouter } from 'next/navigation';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface PenpalshipCardProps {
   title?: string;
@@ -36,13 +37,14 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   id,
 }) => {
   const route = useRouter();
+  const { module } = useModule();
 
   const truncatedDescription =
     (description && truncateText(description, 12)) || '';
   const { flag = '', country = '' } = getCountry(countryName);
 
   const handleClick = () => {
-    route.push(`/students/profile/${id}`);
+    route.push(`/${module}/profile/${id}`);
   };
   return (
     <Card className="flex flex-col h-full">

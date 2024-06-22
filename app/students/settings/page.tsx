@@ -1,27 +1,31 @@
 'use client';
+
 import React from 'react';
-import ProfileSettings from '@/components/common/ProfileSettings';
 import SecuritySettings from '@/components/common/SecuritySettings';
 import { TabsComponent } from '@/components/ui';
+import StudentProfileSettings from '@/components/common/StudentsProfileSettings';
 
 const tabContents = [
-  { value: 'profile', content: <ProfileSettings></ProfileSettings> },
-  { value: 'security', content: <SecuritySettings></SecuritySettings> },
+  {
+    value: 'studetn-profile',
+    content: <StudentProfileSettings></StudentProfileSettings>,
+  },
+  { value: 'student-security', content: <SecuritySettings></SecuritySettings> },
 ];
 
 const Profile = () => {
   return (
-    <div className="!bg-white">
+    <div>
       <TabsComponent
-        defaultValue="profile"
+        defaultValue="studetn-profile"
         tabs={[
           {
             label: 'Profile',
-            value: 'profile',
+            value: 'studetn-profile',
           },
           {
             label: 'Security',
-            value: 'security',
+            value: 'student-security',
           },
         ]}
         tabContent={tabContents}

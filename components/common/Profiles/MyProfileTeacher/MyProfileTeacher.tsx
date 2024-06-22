@@ -173,5 +173,3 @@ export const MyProfileTeacher: FC = () => {
     </div>
   );
 };
-
-export default MyProfileTeacher;

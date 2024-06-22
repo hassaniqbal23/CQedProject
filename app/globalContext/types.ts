@@ -12,7 +12,24 @@ export interface BlockedFrom {
   userId: number;
   id: number;
 }
+
 export interface IUserInformation {
+  profile: {
+    meta: {
+      amazingThing: string;
+      shareExploreLearn: string;
+    };
+    id: number;
+    full_name: string;
+    nick_name: string;
+    country: string;
+    dob: string;
+    gender: string;
+    languages: string[];
+    culture_information: string[];
+    interests: string[];
+    bio: string;
+  };
   id: number;
   name: string;
   email: string;
@@ -48,6 +65,7 @@ export interface IUser {
 }
 
 export interface IPenpal {
+  friend: IUser;
   id: number;
   senderId: number;
   receiverId: number;
@@ -69,6 +87,7 @@ export interface ICommunityJoin {
 }
 
 export interface IMessage {
+  senderId?: number;
   id: string | number;
   message: string;
   created_at: string;
