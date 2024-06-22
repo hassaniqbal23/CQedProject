@@ -34,7 +34,6 @@ export const getTeachersBySearch = (
   );
 };
 
-
-export const getDashboardData= () => {
+export const getDashboardData = () => {
   return http.get('/dashboard/dashboard');
-}
+};
