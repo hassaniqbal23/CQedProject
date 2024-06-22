@@ -180,3 +180,8 @@ export const getMyCommunityMembers = (
     )
     .then((res) => res.data);
 };
+
+
+export const pendingCommunities = () => {
+  return http.get(`/community-user/pending-communities`).then((res) => res.data);
+}

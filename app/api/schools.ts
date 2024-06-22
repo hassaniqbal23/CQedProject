@@ -15,7 +15,7 @@ export const AcceptInvite = (payload: AcceptInvite) =>
 
 export const getAllSubject = () => http.get('/subject/get-all');
 
-export const getSchoolDashboard = () => http.get('/dashbord/school-dashbord');
+export const getSchoolDashboard = () => http.get('/dashboard/school-dashboard');
 
 export const getSchoolByID = (id: number) =>
   http.get(`/schools/${id}/get-school`);

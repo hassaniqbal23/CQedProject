@@ -33,3 +33,8 @@ export const getTeachersBySearch = (
     `/teachers/search?page=${page}&limit=${pageSize}&name=${search}`
   );
 };
+
+
+export const getDashboardData= () => {
+  return http.get('/dashboard/dashboard');
+}
