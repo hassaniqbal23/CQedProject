@@ -204,7 +204,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   }}
                   trigger={
                     <Button
-                      onClick={() => { }}
+                      onClick={() => {}}
                       icon={<IoChatbubbleOutline size={20} />}
                       iconPosition="left"
                       className={`rounded-full bg-[#ECEDF8] text-primary-500 h-10 text-base mr-2 hover: border border-white`}
@@ -218,7 +218,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   trigger={
                     <div>
                       <Button
-                        onClick={() => { }}
+                        onClick={() => {}}
                         iconPosition="right"
                         icon={<IoChevronDown />}
                         className={`rounded-full bg-[#ECEDF8] text-primary-500 w-36 h-10 text-base hover: border border-white`}
