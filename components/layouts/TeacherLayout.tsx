@@ -15,11 +15,13 @@ import {
   Settings,
   UserCheck,
 } from 'lucide-react';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 interface IProps {
   children: ReactNode;
 }
 
 export const TeacherLayout: FC<IProps> = ({ children }) => {
+  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isMobile, isTabletMini, isTabletOrMobile } = useResponsive();
@@ -143,9 +145,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
                     title: 'Logout',
                     icon: <LogOut size={15} />,
                     onClick: () => {
-                      removeToken();
-                      removeUserId();
-                      router.push('/teachers/sign-in');
+                      logout();
                     },
                   },
                 ],

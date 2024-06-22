@@ -60,6 +60,7 @@ export const SocketProvider = ({ children }: any) => {
   }, []);
 
   useEffect(() => {
+    console.log('isAuthenticated', isAuthenticated);
     if (isAuthenticated) {
       connect();
 
