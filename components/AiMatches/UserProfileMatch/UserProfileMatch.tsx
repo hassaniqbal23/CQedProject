@@ -12,7 +12,8 @@ interface Iprops {
     user?: any;
     id: string;
     attachment: { file_path: string };
-    fullname: string;
+    full_name: string;
+    age: number;
     country: string;
     countryFlag: string;
     state: string;
@@ -34,13 +35,13 @@ export const UserProfileMatch: FC<Iprops> = ({
   interestsMatched,
   screenType,
 }: Iprops) => {
-  const { fullname, country } = user;
+  const { full_name, country } = user;
   const countryFlag = `/country-flags/svg/${user.country.toLowerCase()}.svg`;
   const notification = 'Hello';
   const userImage = user.user.attachment.file_path;
   const heading = 'We have a match for you.';
-  const userBio = `Hi, I am ${user.fullname}, a 24-year-old from ${user.state} with a love for drawing and a passion for adventure`;
-  const caption = `Did you know ${user.fullname} has read 20 books last year 📖 🙂`;
+  const userBio = `Hi, I am ${user.full_name}, a ${user.age}-year-old from ${user.state} with a love for drawing and a passion for adventure`;
+  const caption = `Did you know ${user.full_name} has read 20 books last year 📖 🙂`;
 
   console.log(buttonText, 'buttonTextbuttonTextbuttonText');
   return (
@@ -97,7 +98,7 @@ export const UserProfileMatch: FC<Iprops> = ({
                 </div>
                 <div className="lg:flex lg:flex-col lg:items-center lg:justify-center sm:flex sm:flex-col sm:items-start sm:justify-center">
                   <h1 className="lg:text-center text-left text-[18px] font-semibold">
-                    {fullname}
+                    {full_name}
                   </h1>
                   <div className="lg:flex gap-2 sm:items-center  lg:items-center lg:justify-center lg:mt-2 flex justify-start items-center">
                     <Image
@@ -199,7 +200,7 @@ export const UserProfileMatch: FC<Iprops> = ({
                 </div>
                 <div className="lg:flex lg:flex-col lg:items-center lg:justify-center sm:flex sm:flex-col sm:items-start sm:justify-center">
                   <h1 className="lg:text-center text-left text-[18px] font-semibold">
-                    {fullname}
+                    {full_name}
                   </h1>
                   <div className="lg:flex gap-2 sm:items-center  lg:items-center lg:justify-center lg:mt-2 flex justify-start items-start ">
                     <Image
@@ -295,7 +296,7 @@ export const UserProfileMatch: FC<Iprops> = ({
                   weight={'semibold'}
                   className="lg:text-center text-left  "
                 >
-                  {fullname}
+                  {full_name}
                 </Typography>
 
                 <div className="lg:flex gap-2 lg:items-center lg:justify-center lg:mt-2 flex justify-start items-start">
