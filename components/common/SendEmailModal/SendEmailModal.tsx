@@ -88,7 +88,7 @@ export const SendEmail: FC<SendEmailProps> = ({
               name="emails"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>University Email</FormLabel>
                   <FormControl>
                     <EmailInput
                       initialValue={field.value}
@@ -96,7 +96,7 @@ export const SendEmail: FC<SendEmailProps> = ({
                       onChange={(value: string[]) => {
                         field.onChange(value);
                       }}
-                      placeholder={'Enter emails address'}
+                      placeholder={'Enter university email address'}
                     />
                   </FormControl>
                   <FormMessage />
