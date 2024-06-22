@@ -16,9 +16,6 @@ export const ProfileBio: React.FC<BioProps> = ({ bio, title }) => {
       <CardContent>
         <p className="[word-spacing:11px] font-medium italic leading-7 text-sm text-justify whitespace-pre-line ">
           {bio}
-          <Link className="text-blue-800 ml-2" href={'#/'}>
-            see more
-          </Link>
         </p>
       </CardContent>
     </Card>

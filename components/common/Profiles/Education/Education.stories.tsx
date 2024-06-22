@@ -18,19 +18,26 @@ export const ProfileEducationComponents: Story = {
     return <ProfileEducation {...args} />;
   },
   args: {
-    title: 'Education',
+    title: 'My Education',
     jobs: [
       {
         id: '1',
-        company: 'Mater’s degree in information Technolog',
-        role: 'Simply Design',
-        duration: 'Dec 2019 - Present',
+        educationLevel: "Master's",
+        fieldOfStudy: 'Information Techonology',
+        countryCode: 'United Kingdom',
+        institution: 'Stanford University',
+        startDate: 'Dec 2019 ',
+        endDate: 'Present',
       },
       {
         id: '2',
-        company: 'Mater’s degree in information Technologyy',
-        role: 'Simply Design',
-        duration: 'Dec 2019 - Present',
+        educationLevel: "Master's",
+        fieldOfStudy: 'Information Techonology',
+        countryCode: 'United Kingdom',
+
+        institution: 'Stanford University',
+        startDate: 'Dec 2019 ',
+        endDate: 'Present',
       },
     ],
   },
