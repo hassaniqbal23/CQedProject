@@ -19,7 +19,6 @@ const useSendPenpalRequest = () => {
                 const { searchParams, setCreatingPenpalId } = context || {};
 
                 if (searchParams) {
-                    alert('searchParams')
                     queryClient.refetchQueries([
                         'penpalSearchData',
                         searchParams.memberId,
