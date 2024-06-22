@@ -248,7 +248,7 @@ export const PenPalCommunity = () => {
               }}
               buttonLoading={creatingPanpalId === item.id && isCreatingPanpal}
               buttonText="Connect"
-              description={JSON.parse(item?.profile?.meta || '{}').bio}
+              description={item?.profile?.bio}
               countryName={item?.profile?.country}
               studentAge={item?.profile?.age}
             />

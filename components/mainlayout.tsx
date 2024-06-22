@@ -17,7 +17,7 @@ export const MainLayout: FC<IProps> = ({ children }) => {
   const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
-  const { isMobile, isTabletMini ,isTabletOrMobile } = useResponsive();
+  const { isMobile, isTabletMini, isTabletOrMobile } = useResponsive();
 
   const sidebarLinks = [
     {
