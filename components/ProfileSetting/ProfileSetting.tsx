@@ -111,18 +111,19 @@ const ProfileSettings = () => {
   }, [userInformation, form]);
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
-    const formData = form.getValues();
+    console.log('Form Submitted:', data); // Debugging log
+    // const formData = form.getValues();
 
-    const transformedSkills = formData.skills.map((skill: { value: string }) => skill.value);
+    // const transformedSkills = formData.skills.map((skill: { value: string }) => skill.value);
 
-    const payload: IUserInformation = {
-      ...formData,
-      skills: transformedSkills,
-    };
+    // const payload: IUserInformation = {
+    //   ...formData,
+    //   skills: transformedSkills,
+    // };
 
-    if (userInformation?.profile?.id) {
-      updateTeacherProfile({ profileId: userInformation.profile.id, payload });
-    }
+    // if (userInformation?.profile?.id) {
+    //   updateTeacherProfile({ profileId: userInformation.profile.id, payload });
+    // }
   };
 
   return (
@@ -193,12 +194,12 @@ const ProfileSettings = () => {
               />
             </FormItem>
             <div className="col-span-2 flex justify-start mt-4">
-              <Button
-                type="submit"
+              <button
+                onSubmit={onSubmit}
                 className="bg-primary text-white py-3 px-5 rounded-sm hover:bg-primary-600 transition duration-300"
               >
                 Save Changes
-              </Button>
+              </button>
             </div>
           </form>
         </Form>
