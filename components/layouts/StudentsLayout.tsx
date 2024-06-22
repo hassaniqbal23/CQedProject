@@ -16,7 +16,7 @@ interface IProps {
 export const StudentsLayout: FC<IProps> = ({ children, className }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const { isTabletMini } = useResponsive();
+  const { isMobile, isTabletMini, isTabletOrMobile } = useResponsive();
   const { userInformation } = useGlobalState();
 
   const showLayout = useMemo(() => {
@@ -70,6 +70,11 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
       title: 'CQ Courses',
       path: '/students/cq-courses',
     },
+    {
+      icon: '/assets/sidebaricons/settings.svg',
+      title: 'Settings',
+      path: '/students/settings',
+    },
   ];
 
   if (showLayout) {
@@ -87,12 +92,15 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
       >
         <div className="flex">
           <Sidebar
-            isMobileSidebar={isTabletMini}
+            isMobileSidebar={isTabletMini || isTabletOrMobile}
             isVerticalIcon={true}
             pathname={pathname as string}
             sidebarLinks={sidebarLinks}
           />
           <Navbar
+            sidebarLinks={sidebarLinks}
+            pathname={pathname as string}
+            isVerticalIcon={true}
             horizontalLinks={[
               {
                 href: '/students/chats',

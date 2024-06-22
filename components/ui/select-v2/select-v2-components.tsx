@@ -53,6 +53,7 @@ const SelectCountry = (props: SelectCountryProps) => {
           setSearchValue(e);
         }}
         inputValue={searchValue}
+        value=""
         options={options}
         label="Select a Country"
         id=""

@@ -28,11 +28,6 @@ import { useChatGuard } from '@/components/Chat/ChatProvider/ChatGuard';
 import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
 import { getCountry } from '@/app/utils/helpers';
 import countriesData from '@/public/countries/countries.json';
-interface Countries {
-  [key: string]: string;
-}
-
-const countries: Countries = countriesData;
 
 const formSchema = z.object({
   story: z
@@ -69,7 +64,6 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
   onOpenChange,
   onClose,
   onAddFriend,
-  onReply,
   initialValue,
   userInfo,
   isFriend,
@@ -92,7 +86,6 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
   const router = useRouter();
   const pathname = usePathname();
   const { setSelectedConversationId } = useChatProvider();
-  const { joinConversation } = useChatGuard();
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -175,7 +168,7 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
                       <CreateChatModal
                         defaultReceiverId={userInfo?.userId}
                         onChatCreated={(id) => {
-                          joinConversation(id);
+                          setSelectedConversationId(id);
                           if (pathname?.startsWith('/student')) {
                             router.push(`/students/chats`);
                           } else if (pathname?.startsWith('/teacher')) {

@@ -28,34 +28,36 @@ const ChatContent: FC = () => {
   const queryClient = useQueryClient();
 
   const onSendMessage = (data: any) => {
-    const messageData = {
-      clientID: uuidv4(),
-      message: data.message,
-      conversationId: currentConversation.id,
-      attachments: data.attachments.map((file: any) => {
-        return { file_path: file.file_path, id: file.id };
-      }),
-      receiverId: currentConversation.user.id,
-      users: currentConversation.users,
-      senderId: userInformation.id,
-      created_at: new Date().toISOString(),
-    };
-    setInboxResponse(
-      inboxResponse.map((conversation: any) => {
-        if (conversation.id === currentConversation.id) {
-          return {
-            ...conversation,
-            messages: [
-              ...conversation.messages,
-              JSON.parse(JSON.stringify(messageData)),
-            ],
-            lastMessageReceived: messageData.created_at,
-          };
-        }
-        return conversation;
-      })
-    );
-    sendMessage(messageData);
+    if (currentConversation) {
+      const messageData = {
+        clientID: uuidv4(),
+        message: data.message,
+        conversationId: currentConversation.id,
+        attachments: data.attachments.map((file: any) => {
+          return { file_path: file.file_path, id: file.id };
+        }),
+        receiverId: currentConversation.user.id,
+        users: currentConversation.users,
+        senderId: userInformation.id,
+        created_at: new Date().toISOString(),
+      };
+      setInboxResponse(
+        inboxResponse.map((conversation: any) => {
+          if (conversation.id === currentConversation.id) {
+            return {
+              ...conversation,
+              messages: [
+                ...conversation.messages,
+                JSON.parse(JSON.stringify(messageData)),
+              ],
+              lastMessageReceived: messageData.created_at,
+            };
+          }
+          return conversation;
+        })
+      );
+      sendMessage(messageData);
+    }
     const messagesEndRef = document.querySelector('.messagesEndRef');
     if (messagesEndRef) {
       setTimeout(() => {

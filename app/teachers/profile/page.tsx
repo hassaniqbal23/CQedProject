@@ -1,7 +1,7 @@
 'use client';
 
-import MyProfileTeacher from '@/components/common/Profiles/MyProfileTeacher/MyProfileTeacher';
 import React from 'react';
+import { MyProfileTeacher } from '@/components/common/Profiles';
 export default function TeacherProfilePage() {
   return (
     <>

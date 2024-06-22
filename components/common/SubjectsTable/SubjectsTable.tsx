@@ -18,7 +18,6 @@ function SubjectTable(props: SubjectTableProps) {
     <div className="w-full">
       <DataTable
         data={props.data}
-        selection={false}
         noDataMessage={props.noDataMessage || 'No Subjects'}
         loading={props.loading}
         columns={[

@@ -15,7 +15,7 @@ interface IProps {
 export const AdminLayout: FC<IProps> = ({ children }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const { isTabletMini } = useResponsive();
+  const { isMobile, isTabletMini, isTabletOrMobile } = useResponsive();
 
   const showLayout = useMemo(() => {
     if (!pathname) return false;
@@ -67,6 +67,9 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
             sidebarLinks={sidebarLinks}
           />
           <Navbar
+            sidebarLinks={sidebarLinks}
+            pathname={pathname as string}
+            isVerticalIcon={false}
             horizontalLinks={[
               {
                 href: '/admin/notifications',

@@ -97,7 +97,7 @@ export const MyPenpals: React.FC = () => {
               setRemovingItemId(item?.id);
             }}
             buttonText="Remove"
-            description={JSON.parse(item?.user?.profile?.meta || '{}').bio}
+            description={item?.user?.profile?.bio}
             countryFlag={`/country-flags/svg/${item?.user?.profile?.country.toLowerCase()}.svg`}
             countryName={item?.user?.profile?.country.toUpperCase()}
             studentAge={item?.user?.profile?.age}
