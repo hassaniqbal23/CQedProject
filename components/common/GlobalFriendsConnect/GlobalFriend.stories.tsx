@@ -11,7 +11,7 @@ type Story = StoryObj<typeof GlobalFriendConnect>;
 
 export const Default: Story = {
   args: {
-    name: 'William Johnson',
+    name: 'William Johnsondn',
     username: 'williamjohnson',
     imageUrl: '/teacherIcon.svg',
   },
