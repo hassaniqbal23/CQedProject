@@ -65,6 +65,7 @@ export interface IUser {
 }
 
 export interface IPenpal {
+  friend: IUser;
   id: number;
   senderId: number;
   receiverId: number;
