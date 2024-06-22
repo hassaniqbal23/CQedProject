@@ -20,7 +20,6 @@ const useSendPenpalRequest = () => {
 
                 if (searchParams) {
                     alert('searchParams')
-                    console.log(searchParams, 'searchParamssearchParamssearchParams')
                     queryClient.refetchQueries([
                         'penpalSearchData',
                         searchParams.memberId,
