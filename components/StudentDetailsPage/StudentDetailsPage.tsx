@@ -19,7 +19,7 @@ import {
 } from '@/components/common/Profiles';
 import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 
-const PersonalProfilePage = () => {
+const StudentDetailsPage = () => {
   const queryClient = useQueryClient();
   const { sendRequest, isCreatingPenpal } = useSendPenpalRequest();
   const params = useParams();
@@ -216,4 +216,4 @@ const PersonalProfilePage = () => {
   );
 };
 
-export default PersonalProfilePage;
+export default StudentDetailsPage;
