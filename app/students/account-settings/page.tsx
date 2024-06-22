@@ -11,24 +11,7 @@ const tabContents = [
 ];
 
 const AccountSettings = () => {
-  return (
-    <div>
-      <TabsComponent
-        defaultValue="profile"
-        tabs={[
-          {
-            label: 'Profile',
-            value: 'profile',
-          },
-          {
-            label: 'Security',
-            value: 'security',
-          },
-        ]}
-        tabContent={tabContents}
-      />
-    </div>
-  );
+  return <div>comming soon</div>;
 };
 
 export default AccountSettings;
