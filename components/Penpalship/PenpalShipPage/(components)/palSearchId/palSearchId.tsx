@@ -120,7 +120,6 @@ export const PalSearchId = () => {
           penpalSearchResult?.data?.data.length !== 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {penpalSearchResult?.data?.data.map((item: any, index: number) => {
-              console.log(item, 'item')
               return (
                 <div key={index}>
                   <PenpalshipCard

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useQuery } from 'react-query';
 import {
+  Gallery,
   ProfileBio,
   ProfileCertificates,
   ProfileContactDetails,
@@ -10,40 +11,40 @@ import {
   ProfileWorkHistory,
   UniversityLink,
 } from '@/components/common/Profiles';
+import { useParams } from 'next/navigation';
 import { Mail, MapPin, Phone } from 'lucide-react';
-import { getProfiledata } from '@/app/api/teachers';
 import { TabsComponent } from '@/components/ui/tabs/tabs';
+import { getProfile } from '@/app/api/students';
+import Loading from '@/components/ui/button/loading';
+import TeacherProfileFeeds from './Feeds/page';
 
-interface IProps {
-  id: number;
-}
-
-export const TeacherProfileView: FC<IProps> = ({ id }) => {
+export const TeacherProfileView: FC = ({}) => {
+  const params = useParams();
+  const currentProfileId = Number(params?.id);
   const {
     data: profileData,
     error,
     isLoading,
   } = useQuery(
-    ['profileData', id],
+    ['profileData', currentProfileId],
     () =>
-      getProfiledata(id as number).then((res) => {
+      getProfile(currentProfileId as number).then((res) => {
         return res.data.data;
       }),
     {
-      enabled: id ? true : false,
+      enabled: currentProfileId ? true : false,
     }
   );
-
+  console.log({ profileData });
   if (isLoading)
     return <div className="flex justify-center py-8 ">Loading...</div>;
 
-  const bio =
-    (profileData && JSON.parse(profileData?.user?.profile[0]?.meta)?.bio) || '';
+  const bio = (profileData && profileData?.profile?.bio) || '';
 
-  const interestsArray = profileData?.user.interests.split(',');
+  const interestsArray = profileData?.profile?.interests;
 
   const contactDetails = () => {
-    const detailsData = profileData?.user?.profile[0];
+    const detailsData = profileData?.profile;
     const details: any = [
       {
         title: 'Email',
@@ -73,115 +74,113 @@ export const TeacherProfileView: FC<IProps> = ({ id }) => {
     return details;
   };
 
-  return (
-    <div className="space-y-4">
-      <ProfileHeader
-        name={profileData?.fullname}
-        role={'N/A'}
-        subrole={'N/A'}
-        location={profileData?.user?.profile[0]?.state}
-        profileIcon={profileData?.user?.attachment?.file_path}
-      />
-      <div>
-        <TabsComponent
-          defaultValue="profile"
-          isSeparator={true}
-          tabs={[
-            {
-              label: 'Profile',
-              value: 'profile',
-            },
-            {
-              label: 'Feeds',
-              value: 'Feeds',
-            },
-            {
-              label: 'Photos',
-              value: 'Photos',
-            },
-          ]}
-          tabContent={[]}
-        />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
-        <div className="sm:col-span-3 h-full">
-          <ProfileBio title="About The Teacher" bio={bio} />
-        </div>
-        <div className="sm:col-span-2">
-          <ProfileContactDetails
-            title="Contact Details"
-            details={contactDetails()}
-          />
-        </div>
-      </div>
-      <ProfileSkills
-        title="Skills"
-        skills={
-          interestsArray?.map((skill: string) => {
-            return skill;
-          }) || []
-        }
-      />
-      <div className="sm:grid gap-4 grid-cols-5">
-        <div className="w-full space-y-4 col-span-2">
-          <UniversityLink />
-          <ProfileCertificates
-            title="Certificates"
-            certificates={[
-              {
-                id: '1',
-                name: 'Teaching Certificate',
-                date: '02/04 2024',
-                issueName: 'Certificate issuer',
-              },
-              {
-                id: '2',
-                name: 'Professional Development',
-                date: '02/04 2024',
-                issueName: 'Certificate issuer',
-              },
-            ]}
-          />
-        </div>
-        <div className="col-span-3">
+  const tabContents = [
+    {
+      label: 'Profile',
+      value: 'profile',
+      content: profileData ? (
+        <div>
+          {' '}
+          <div className="mb-3 mt-4">
+            <ProfileBio title="About Me" bio={bio} />
+          </div>
+          <div className="mb-3 mt-3">
+            <ProfileContactDetails
+              title="Contact Details"
+              details={contactDetails()}
+            />
+          </div>
           <div className="w-full grid grid-cols-1 gap-4">
+            <ProfileEducation
+              title="My Education"
+              jobs={profileData.education}
+            />
             <ProfileWorkHistory
               title="Work History"
-              jobs={[
-                {
-                  id: '1',
-                  company: 'Massachusetts Institute of Technology (MIT)',
-                  role: 'Simply Design',
-                  duration: 'Dec 2019 - Present',
-                },
-                {
-                  id: '2',
-                  company: 'Harvard University',
-                  role: 'Simply Design',
-                  duration: 'Dec 2019 - Present',
-                },
-              ]}
+              jobs={profileData.workExperience}
             />
-
-            <ProfileEducation
-              title="Education"
-              jobs={[
+          </div>
+          <div className="mb-3 mt-3">
+            <ProfileSkills
+              title="Skills"
+              skills={
+                interestsArray?.map((skill: string) => {
+                  return skill;
+                }) || []
+              }
+            />
+          </div>
+          <div className="w-full space-y-4 col-span-2">
+            <UniversityLink />
+            <ProfileCertificates
+              title="Certificates"
+              certificates={[
                 {
                   id: '1',
-                  company: 'Mater’s degree in information Technolog',
-                  role: 'Simply Design',
-                  duration: 'Dec 2019 - Present',
+                  name: 'Teaching Certificate',
+                  date: '02/04 2024',
+                  issueName: 'Certificate issuer',
                 },
                 {
                   id: '2',
-                  company: 'Mater’s degree in information Technologyy',
-                  role: 'Simply Design',
-                  duration: 'Dec 2019 - Present',
+                  name: 'Professional Development',
+                  date: '02/04 2024',
+                  issueName: 'Certificate issuer',
                 },
               ]}
             />
           </div>
         </div>
+      ) : (
+        <div className="flex items-center justify-center h-[500px] w-full">
+          <Loading />
+        </div>
+      ),
+    },
+    {
+      label: 'Feeds',
+      value: 'Feeds',
+      content: <TeacherProfileFeeds />,
+    },
+    {
+      label: 'Photos',
+      value: 'Photos',
+      content: (
+        <div className="space-y-4 mt-4">
+          <Gallery
+            title="Gallery"
+            className="border-0 shadow-0"
+            images={[
+              '/assets/images/LoginPage.png',
+              '/assets/images/LoginPage.png',
+              '/assets/images/LoginPage.png',
+              '/assets/images/LoginPage.png',
+            ]}
+          />
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <div className="space-y-4">
+      <ProfileHeader
+        name={profileData?.profile?.full_name}
+        role={profileData?.role?.name}
+        subrole={'N/A'}
+        location={profileData?.profile?.state}
+        profileIcon={profileData?.attachment?.file_path}
+      />
+      <div>
+        <TabsComponent
+          defaultValue="profile"
+          isSeparator={true}
+          tabs={tabContents.map((tab) => ({
+            label: tab.label,
+            value: tab.value,
+          }))}
+          tabContent={tabContents}
+        />
       </div>
     </div>
   );
