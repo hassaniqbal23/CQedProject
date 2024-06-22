@@ -1,5 +1,6 @@
 import { ITeacherCreate } from '@/components/common/teacherProfile/type';
 import http from '../utils/http';
+import { IUserInformation } from '../globalContext/types';
 
 export const TeacherCreate = (payload: ITeacherCreate) =>
   http.post('/teachers/create', payload);
@@ -32,4 +33,11 @@ export const getTeachersBySearch = (
   return http.get(
     `/teachers/search?page=${page}&limit=${pageSize}&name=${search}`
   );
+};
+
+export const teacherUpdateProfile = (
+  profileId: number,
+  payload: IUserInformation
+) => {
+  return http.patch(`/teachers/${profileId}/update-teacher`, payload);
 };
