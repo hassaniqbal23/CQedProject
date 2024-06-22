@@ -130,7 +130,7 @@ export const Navbar: FC<IProps> = ({
   sidebarLinks,
 }) => {
   const { userInformation } = useGlobalState();
-  const { isMobile , isTabletMini } = useResponsive();
+  const { isMobile, isTabletMini } = useResponsive();
   return (
     <nav className="w-full fixed top-0 flex items-center justify-between bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 z-10 pl-2">
       {isMobile && !isTabletMini ? (

@@ -9,7 +9,8 @@ import { ReportClassDialog } from '@/components/common/DeleteClassModal/ReportCl
 import { useChatProvider } from '../../ChatProvider/ChatProvider';
 import Image from 'next/image';
 import { ChatConversation } from '@/types/chat';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface IProps {
   conversation: ChatConversation;
@@ -24,7 +25,7 @@ export const ConversationUserSheet: FC<IProps> = ({
   const queryClient = useQueryClient();
   const { currentConversationAttachments } = useChatProvider();
   const route = useRouter();
-  const pathname = usePathname();
+  const { module } = useModule();
 
   const [report, setReport] = useState(false);
 
@@ -145,11 +146,7 @@ export const ConversationUserSheet: FC<IProps> = ({
         </Typography>
         <Button
           onClick={() => {
-            if (pathname?.startsWith('/student')) {
-              route.push(`/students/profile/${conversation.user.id}`);
-            } else if (pathname?.startsWith('/teacher')) {
-              route.push(`/teachers/profile/${conversation.user.id}`);
-            }
+            route.push(`/${module}/profile/${conversation.user.id}`);
           }}
           className="rounded-full bg-[#2183C4] text-[#F5FBFF] text-sm w-32 h-10 mt-3"
         >

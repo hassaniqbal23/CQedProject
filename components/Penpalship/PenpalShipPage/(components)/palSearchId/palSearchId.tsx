@@ -120,6 +120,7 @@ export const PalSearchId = () => {
           penpalSearchResult?.data?.data.length !== 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {penpalSearchResult?.data?.data.map((item: any, index: number) => {
+              console.log(item, 'item')
               return (
                 <div key={index}>
                   <PenpalshipCard
@@ -136,8 +137,8 @@ export const PalSearchId = () => {
                     description="Even though our cultural backgrounds and lifestyles were completely different..."
                     mutualFriends="5 mutual friends"
                     countryFlag={`/country-flags/svg/${item?.profile?.[0]?.country?.toLowerCase()}.svg`}
-                    countryName={item?.profile?.[0]?.country?.toUpperCase()}
-                    studentAge={item?.profile?.[0]?.age}
+                    countryName={item?.profile?.country?.toUpperCase()}
+                    studentAge={item?.profile?.age}
                   />
                 </div>
               );
