@@ -88,6 +88,7 @@ function SecuritySettings() {
                     <FormControl className="mb-6">
                       <Input
                         placeholder="Enter Current Password"
+                        className="place"
                         {...field}
                         {...register('currentPassword')}
                       />

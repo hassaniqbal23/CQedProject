@@ -162,14 +162,10 @@ export const PenPalCommunity = () => {
             initialValue={getUserStory?.story}
             isFriend={IsStoryUserMyFriend}
             open={viewStoryModal}
-            loading={isCreatingPanpal || isGetingUserStory}
+            loading={{ isCreatingPanpal, isGetingUserStory }}
             onClose={() => {
               setViewUserStoryId(null);
               setViewStoryModal(false);
-            }}
-            onReply={() => {
-              setViewUserStoryId(null);
-              route.push('/students/chats');
             }}
             onAddFriend={() => {
               if (getUserStory && typeof getUserStory?.userId === 'number') {
@@ -252,7 +248,7 @@ export const PenPalCommunity = () => {
               }}
               buttonLoading={creatingPanpalId === item.id && isCreatingPanpal}
               buttonText="Connect"
-              description={JSON.parse(item?.profile?.meta || '{}').bio}
+              description={item?.profile?.bio}
               countryName={item?.profile?.country}
               studentAge={item?.profile?.age}
             />

@@ -35,8 +35,6 @@ const StudentProfilePage = () => {
       enabled: params?.id ? true : false,
     }
   );
-  console.log(studentProfile, 'getStudentProfile');
-
   const { mutate } = useMutation(
     ['startConversation'],
     (params: { id: number | string }) => startConversation(params.id),

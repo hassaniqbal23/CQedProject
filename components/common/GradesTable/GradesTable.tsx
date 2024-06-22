@@ -33,7 +33,6 @@ function GradesTable(props: GradesTableProps) {
     <div className="w-full">
       <DataTable
         data={props.data}
-        selection={false}
         noDataMessage={props.noDataMessage || 'No Grades'}
         loading={props.loading}
         columns={[

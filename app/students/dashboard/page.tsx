@@ -92,7 +92,7 @@ export default function StudentDashboard() {
               Suggested Global Friends
             </Typography>
             {[1, 2, 3].map((_, index) => (
-              <div key={index} className="mb-4">
+              <div key={index} className="mb-4 ">
                 <GlobalFriendConnect
                   name={'William Johnson'}
                   username={'williamjohnson'}

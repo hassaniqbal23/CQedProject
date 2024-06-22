@@ -2,18 +2,16 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Calendar, Gift } from 'lucide-react';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui';
+import { Accordion, AccordionItem } from '@/components/ui';
+import { Typography } from '../../Typography/Typography';
 
 interface Job {
   id: string;
-  company: string;
-  role: string;
-  duration: string;
+  title: string;
+  institution: string;
+  location: string;
+  startDate: string;
+  endDate: string;
 }
 
 interface WorkHistoryProps {
@@ -41,30 +39,36 @@ export const ProfileWorkHistory: React.FC<WorkHistoryProps> = ({
                   className={`${isLast ? 'border-b-0' : ''} `}
                 >
                   {' '}
-                  <AccordionTrigger>
-                    <div className="flex items-center">
-                      <div className="bg-primary-50 p-2 rounded-md">
-                        <Gift color="#4146B8" size={25} />
-                      </div>
+                  <div className="flex items-center">
+                    <div className="bg-primary-50 p-2 rounded-md">
+                      <div className="bg-primary-50 p-2 rounded-md"></div>
+                      <Gift color="#4146B8" size={25} />
+                    </div>
 
-                      <div key={job.id} className="p-4 text-left ">
-                        <h3 className="font-semibold text-base text-[#393939]">
-                          {job.company}
-                        </h3>
-                        <div className="flex items-center mt-1">
-                          <p className="text-sm">{job.role}</p>
-                          <p className="text-sm flex items-center ml-5">
-                            <Calendar size={15} className="mr-2" />
-                            {job.duration}
-                          </p>
-                        </div>
+                    <div key={job.id} className="p-4 text-left ">
+                      <h3 className="font-semibold text-base text-[#393939]">
+                        {job.title}
+                      </h3>
+                      <div>
+                        <Typography
+                          variant={'h6'}
+                          weight={'semibold'}
+                          className="text-[#393939]"
+                        >
+                          {job.institution}
+                        </Typography>
+                      </div>
+                      <div className="flex items-center mt-1">
+                        <p className="text-sm font-medium">{job.location}</p>
+                        <p className="text-sm flex items-center ml-5">
+                          <Calendar size={15} className="mr-2 font-medium" />
+                          {job.startDate} - {job.endDate}
+                        </p>
                       </div>
                     </div>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    Yes. It adheres to the WAI-ARIA design pattern.
-                  </AccordionContent>
+                  </div>
                 </AccordionItem>
+                educationLevel
               </div>
             );
           })}

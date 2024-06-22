@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import ProfileSettings from '@/components/common/ProfileSettings';
 import SecuritySettings from '@/components/common/SecuritySettings';
@@ -12,7 +11,7 @@ const tabContents = [
 
 const Profile = () => {
   return (
-    <div>
+    <div className="!bg-white">
       <TabsComponent
         defaultValue="profile"
         tabs={[

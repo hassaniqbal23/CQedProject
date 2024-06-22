@@ -1,10 +1,16 @@
-import { Skeleton } from '@/components/ui';
 import React from 'react';
+import { cn } from '@/lib/utils';
+import { Skeleton } from '@/components/ui';
 
-const SkeletonCard = ({ noOfCards = 4 }) => {
+const SkeletonCard = ({ noOfCards = 4, className = '' }) => {
   let array = Array.from({ length: noOfCards }, (_, i) => i + 1);
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div
+      className={cn(
+        'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6',
+        className
+      )}
+    >
       {array.map((_, index) => (
         <div
           key={index}

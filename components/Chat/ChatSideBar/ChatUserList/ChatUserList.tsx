@@ -41,12 +41,37 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    const param = new URLSearchParams(searchParams?.toString()).get(
+      'conversation'
+    );
+    if (param) {
+      const conversation = conversations.find(
+        (conversation) => conversation.id === +param
+      );
+      if (conversation && conversation.id === +param) {
+        setSelectedConversationId(conversation.id);
+        return;
+      }
+      joinConversation(+param);
+    }
+  }, [searchParams]);
+
   const handleSelectConversation = (conversationId: string | number) => {
     if (currentConversation && currentConversation.id === conversationId) {
       return;
     }
+    setCurrentConversationToParams(conversationId);
     joinConversation(conversationId);
   };
+
+  function setCurrentConversationToParams(conversationId: number | string) {
+    if (searchParams) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('conversation', conversationId as string);
+      window.history.pushState(null, '', `?${params.toString()}`);
+    }
+  }
 
   return (
     <div className="flex flex-col gap-3">

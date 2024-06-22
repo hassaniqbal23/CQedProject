@@ -136,8 +136,8 @@ export const PalSearchId = () => {
                     description="Even though our cultural backgrounds and lifestyles were completely different..."
                     mutualFriends="5 mutual friends"
                     countryFlag={`/country-flags/svg/${item?.profile?.[0]?.country?.toLowerCase()}.svg`}
-                    countryName={item?.profile?.[0]?.country?.toUpperCase()}
-                    studentAge={item?.profile?.[0]?.age}
+                    countryName={item?.profile?.country?.toUpperCase()}
+                    studentAge={item?.profile?.age}
                   />
                 </div>
               );

@@ -51,7 +51,6 @@ export default function TeacherStudents() {
 
         <DataTable
           data={data?.data.data || []}
-          selection={true}
           loading={isLoading}
           noDataMessage={'No Students'}
           columns={[

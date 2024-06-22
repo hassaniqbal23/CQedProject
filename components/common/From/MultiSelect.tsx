@@ -27,6 +27,7 @@ interface GroupOption {
 
 interface MultipleSelectorProps {
   value?: Option[];
+
   defaultOptions?: Option[];
   /** manually controlled options */
   options?: Option[];
