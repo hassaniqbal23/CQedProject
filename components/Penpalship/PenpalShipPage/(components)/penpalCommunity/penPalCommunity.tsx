@@ -167,10 +167,6 @@ export const PenPalCommunity = () => {
               setViewUserStoryId(null);
               setViewStoryModal(false);
             }}
-            onReply={() => {
-              setViewUserStoryId(null);
-              route.push('/students/chats');
-            }}
             onAddFriend={() => {
               if (getUserStory && typeof getUserStory?.userId === 'number') {
                 sendPanpalRequest(getUserStory?.userId);
