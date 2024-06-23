@@ -18,7 +18,8 @@ import { IPenpal } from '@/app/globalContext/types';
 import { createPenpal } from '@/app/api/penpals';
 
 function DashboardFeeds() {
-  const { userInformation, myPenpals } = useGlobalState();
+  const { userInformation, myPenpals, pendingGlobalFriendsList } =
+    useGlobalState();
   const queryClient = useQueryClient();
   const [creatingPanpalId, setCreatingPanpalId] = useState<number | null>(null);
   const [commentSection, setCommentSection] = useState<{
@@ -77,7 +78,7 @@ function DashboardFeeds() {
   const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
     useMutation((id: number) => createPenpal({ receiverId: id }), {
       onSuccess: (res) => {
-        queryClient.refetchQueries('MyPenPals');
+        queryClient.refetchQueries('pending-friends');
         setCreatingPanpalId(null);
         refetch();
       },
@@ -118,6 +119,10 @@ function DashboardFeeds() {
                   myPenpals.find((i: IPenpal) => i.id === item?.User?.id) ||
                   item.User.id === userInformation?.id;
 
+                const isPending = pendingGlobalFriendsList.find(
+                  (i: IPenpal) => i.id === item?.User?.id
+                );
+
                 return (
                   <div key={index}>
                     <Post
@@ -147,12 +152,13 @@ function DashboardFeeds() {
                       onUnlike={() => unLikePost(item?.id)}
                       onLike={() => likePost(item?.id)}
                       isFriend={isFriend ? true : false}
+                      addFriendText={isPending ? 'Pending' : 'Add Friend'}
                       onAddFriend={() => {
-                        setCreatingPanpalId(item?.User?.id);
+                        setCreatingPanpalId(index);
                         sendPanpalRequest(item?.User?.id);
                       }}
                       addFriendLoading={
-                        isCreatingPanpal && creatingPanpalId === item?.User?.id
+                        isCreatingPanpal && creatingPanpalId === index
                       }
                     />
                     <Separator className="w-12/12" />

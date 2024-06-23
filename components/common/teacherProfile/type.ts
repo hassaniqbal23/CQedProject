@@ -3,5 +3,8 @@ export interface ITeacherCreate {
   email: string;
   country: string;
   gender: string;
-  language: string;
+  nickname: string;
+  university?: string;
+  dob: string;
+  language: { label: string; value: string }[] | any;
 }

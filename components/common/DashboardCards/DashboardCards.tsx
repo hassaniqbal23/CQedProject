@@ -37,6 +37,7 @@ function DashboardCards() {
         onSuccess: (res) => {
           setCommunityId(null);
           refetch();
+          queryClient.refetchQueries('pending-communities');
         },
       }
     );
@@ -44,7 +45,7 @@ function DashboardCards() {
   const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
     useMutation((id: number) => createPenpal({ receiverId: id }), {
       onSuccess: (res) => {
-        queryClient.refetchQueries('MyPenPals');
+        queryClient.refetchQueries('pending-friends');
         refetch();
         setCreatingPanpalId(null);
       },
@@ -86,11 +87,11 @@ function DashboardCards() {
                           totalMembers={item.member_count}
                           totalDiscussions={14000}
                           title={item.name}
-                          imageSrc={item.profile_picture.file_path}
+                          imageSrc={item?.profile_picture?.file_path}
                           buttonProps={{
                             size: 'sm',
                             children: isPending ? 'Pending' : 'Join',
-                            disabled: isJoiningCommunity || isPending,
+                            disabled: isPending,
                             onClick: () => {
                               joinCommunityAsMember(item.id);
                               setCommunityId(item.id);
@@ -128,7 +129,7 @@ function DashboardCards() {
                       <GlobalFriendConnect
                         name={item.name}
                         username={item.name}
-                        imageUrl={item.attachment.file_path}
+                        imageUrl={item?.attachment?.file_path}
                         onConnect={() => {
                           sendPanpalRequest(item.id);
                           setCreatingPanpalId(item.id);
