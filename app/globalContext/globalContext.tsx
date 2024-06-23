@@ -9,6 +9,8 @@ import {
 } from '../utils/encryption';
 import { myPenpals as getMyPenpals } from '../api/penpals';
 import { getBlockedUsers } from '../api/users';
+import { pendingCommunities } from '../api/communities';
+import { useRouter } from 'next/navigation';
 
 type IGlobalState = {
   isUserGetInfo: boolean;
@@ -23,6 +25,7 @@ type IGlobalState = {
   isAuthenticated?: boolean;
   logout: () => void;
   setIsFetchingMyPenPals: (value: boolean) => void;
+  pendingCommunitiesList: any[];
 };
 
 export const GlobalState = createContext<IGlobalState>({
@@ -38,9 +41,11 @@ export const GlobalState = createContext<IGlobalState>({
   isAuthenticated: false,
   logout: () => {},
   setIsFetchingMyPenPals: () => {},
+  pendingCommunitiesList: [],
 });
 
 export const GlobalProvider: FC<any> = ({ children }) => {
+  const router = useRouter();
   const [isUserGetInfo, setIsUserGetInfo] = useState<boolean>(true);
   const [isFetchingMyPenPals, setIsFetchingMyPenPals] = useState<boolean>(true);
   const [userInformation, setUserInformation] = useState<IUserInformation>(
@@ -52,9 +57,13 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   const [joinedCommunities, setJoinedCommunities] = useState<ICommunityJoin[]>(
     []
   );
+  const [pendingCommunitiesList, setPendingCommunitiesList] = useState<any[]>(
+    []
+  );
   const userId = getUserIdLocalStorage();
 
   const logout = () => {
+    const clonedUserInfo = JSON.parse(JSON.stringify(userInformation));
     setUserInformation({} as IUserInformation);
     setIsAuthenticated(false);
     setJoinedCommunities([]);
@@ -62,6 +71,21 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     removeToken();
     removeUserId();
     setUsersIBlocked([]);
+    setPendingCommunitiesList([]);
+
+    const roleName = clonedUserInfo?.role?.name;
+
+    if (roleName === 'student') {
+      router.push('/students/sign-in');
+    } else if (roleName === 'university') {
+      router.push('/universities/sign-in');
+    } else if (roleName === 'school') {
+      router.push('/schools/sign-in');
+    } else if (roleName === 'teacher') {
+      router.push('/teachers/sign-in');
+    } else if (roleName === '*') {
+      router.push('/login');
+    }
   };
 
   useQuery(
@@ -138,6 +162,17 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     retryDelay: 5000,
   });
 
+  useQuery(['pending-communities'], () => pendingCommunities(), {
+    onSuccess: (res) => {
+      setPendingCommunitiesList(res.data);
+    },
+    onError: (err) => {
+      console.log(err, '======> ERROR');
+    },
+    retry: 100,
+    retryDelay: 5000,
+  });
+
   return (
     <GlobalState.Provider
       value={{
@@ -153,6 +188,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         setIsUserGetInfo,
         setUserInformation,
         setIsFetchingMyPenPals,
+        pendingCommunitiesList,
       }}
     >
       {children}

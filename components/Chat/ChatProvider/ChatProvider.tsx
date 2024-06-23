@@ -13,6 +13,7 @@ import { useEventBus } from '../EventBus/EventBus';
 import {
   EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
   EVENT_BUS_ON_DELETE_MESSAGE,
+  USERS_DISCONNECTED,
 } from '../EventBus/constants';
 import { useChatGuard } from './ChatGuard';
 import { getAllConversations, getConversationMessages } from '@/app/api/chat';
@@ -196,12 +197,24 @@ export const ChatProvider = ({ children }: any) => {
       );
     };
 
+    const onUsersDisconnect = (users: number[]) => {
+      setInboxResponse(
+        inboxResponse.map((conversation) => {
+          if (users.includes(conversation.user.id)) {
+            conversation.user.last_active = new Date().toISOString();
+          }
+          return conversation;
+        })
+      );
+    };
+
     subscribeEvent(
       EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
       handleAddMessageToInbox
     );
 
     subscribeEvent(EVENT_BUS_ON_DELETE_MESSAGE, onDeleteMessage);
+    subscribeEvent(USERS_DISCONNECTED, onUsersDisconnect);
 
     return () => {
       unsubscribeEvent(
@@ -209,6 +222,7 @@ export const ChatProvider = ({ children }: any) => {
         handleAddMessageToInbox
       );
       unsubscribeEvent(EVENT_BUS_ON_DELETE_MESSAGE, onDeleteMessage);
+      unsubscribeEvent(USERS_DISCONNECTED, onUsersDisconnect);
     };
   }, [
     subscribeEvent,

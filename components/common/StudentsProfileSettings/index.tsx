@@ -147,7 +147,7 @@ const StudentProfileSettings = () => {
     }
   }, [userInformation, countryName]);
 
-  const { mutate: updateProfile } = useMutation(
+  const { mutate: updateProfile, isLoading: isUpdatingProfile } = useMutation(
     (profileData: { profileId: number; payload: IUserInformation }) =>
       userUpdateProfile(profileData.profileId, profileData.payload),
     {
@@ -459,7 +459,11 @@ const StudentProfileSettings = () => {
                 )}
               />
             </div>
-            <Button className="text-md my-4 hover:bg-primary-600" type="submit">
+            <Button
+              loading={isUpdatingProfile}
+              className="text-md my-4 rounded-md px-7 hover:bg-primary-600"
+              type="submit"
+            >
               Save Settings
             </Button>
           </form>

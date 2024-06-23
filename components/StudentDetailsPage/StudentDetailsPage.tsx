@@ -18,7 +18,7 @@ import {
   Languages,
 } from '@/components/common/Profiles';
 
-const PersonalProfilePage = () => {
+const StudentDetailsPage = () => {
   const queryClient = useQueryClient();
   const params = useParams();
   const router = useRouter();
@@ -224,4 +224,4 @@ const PersonalProfilePage = () => {
   );
 };
 
-export default PersonalProfilePage;
+export default StudentDetailsPage;

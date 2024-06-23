@@ -1,11 +1,17 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui';
+import { Button, Dropdown } from '@/components/ui';
 import { Card } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import { getCountry, truncateText } from '@/app/utils/helpers';
+import countriesData from '@/public/countries/countries.json';
+import { MessageCircle } from 'lucide-react';
+import { LucideUsers } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal';
+import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
+import { PenpalShipButtonRequest } from '../PenpalShipButtonRequest/PenpalShipButtonRequest';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface PenpalshipCardProps {
@@ -14,12 +20,14 @@ interface PenpalshipCardProps {
   imgPath: string;
   buttonText?: string;
   description?: string;
-  buttonOnClick: () => void;
+  buttonOnClick?: () => void;
   buttonLoading?: boolean;
   countryFlag?: string;
   countryName?: string;
   studentAge: string | number;
   mutualFriends?: string | number;
+  showRemoveButton?: boolean;
+  showIcons?: boolean;
   id?: string | number;
 }
 
@@ -34,18 +42,27 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   countryName = '',
   studentAge,
   buttonLoading,
+  showRemoveButton = true,
+  showIcons = false,
   id,
 }) => {
   const route = useRouter();
+  const { setSelectedConversationId } = useChatProvider();
   const { module } = useModule();
 
   const truncatedDescription =
     (description && truncateText(description, 12)) || '';
+
   const { flag = '', country = '' } = getCountry(countryName);
 
   const handleClick = () => {
     route.push(`/${module}/profile/${id}`);
   };
+
+  function setIsSelectTeacher(arg0: { isOpenModal: boolean }): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <Card className="flex flex-col h-full">
       <div className="flex flex-col flex-grow p-2 rounded-sm">
@@ -58,16 +75,43 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
             height={70}
             unoptimized={true}
           />
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              buttonOnClick();
-            }}
-            className={`rounded-full ${buttonText?.toLocaleLowerCase() === 'remove' ? 'bg-red-100 text-red-600' : 'bg-[#ECEDF8] text-primary-500'} w-32 h-10`}
-            loading={buttonLoading}
-          >
-            {buttonText}
-          </Button>
+          {showRemoveButton && (
+            <PenpalShipButtonRequest user_id={id}></PenpalShipButtonRequest>
+          )}
+          {showIcons && (
+            <div className="flex gap-2 text-primary-500">
+              <CreateChatModal
+                defaultReceiverId={Number(id)}
+                onChatCreated={(chatId) => {
+                  setSelectedConversationId(chatId);
+                  route.push(`/students/chats`);
+                }}
+                trigger={
+                  <button className="bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center">
+                    <MessageCircle />
+                  </button>
+                }
+              />
+              <Dropdown
+                trigger={
+                  <div>
+                    <button className="bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center">
+                      <LucideUsers />
+                    </button>
+                  </div>
+                }
+                options={[
+                  {
+                    content: (
+                      <PenpalShipButtonRequest
+                        user_id={id}
+                      ></PenpalShipButtonRequest>
+                    ),
+                  },
+                ]}
+              />
+            </div>
+          )}
         </div>
         <div className="ml-2">
           <Typography
@@ -101,7 +145,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
               <Image
                 src={flag}
                 alt="flag"
-                className=""
+                className="shadow rounded"
                 width={38}
                 height={38}
                 unoptimized={true}

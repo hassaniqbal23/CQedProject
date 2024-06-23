@@ -47,6 +47,7 @@ export const PalSearchId = () => {
     useMutation((id: number) => createPenpal({ receiverId: id }), {
       onSuccess: (res) => {
         if (searchParams) {
+          queryClient.refetchQueries('MyPenPals');
           queryClient.refetchQueries([
             'penpalSearchData',
             searchParams.memberId,
@@ -61,7 +62,7 @@ export const PalSearchId = () => {
     });
 
   const { data: penpalSearchResult, isLoading } = useQuery(
-    ['penpalSearchData', searchParams?.memberId, searchParams?.userName],
+    ['penpalSearchData', searchParams],
     () => searchNewPenpal(searchParams?.memberId, searchParams?.userName),
     {
       enabled: !!searchParams,
@@ -75,7 +76,6 @@ export const PalSearchId = () => {
   );
   const onSubmit: SubmitHandler<any> = (values: IPalSearchID) => {
     setSearchParams(values);
-    // form.reset();
   };
   return (
     <div>
@@ -85,8 +85,8 @@ export const PalSearchId = () => {
       <div className="pt-5">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 ">
-            <div className="flex items-center flex-wrap ">
-              <div className="mb-3 px-5 flex-1">
+            <div className="flex gap-4 items-center flex-wrap ">
+              <div className="mb-3 flex-1">
                 <Label>Member ID</Label>
                 <FormInput
                   type="text"
@@ -95,7 +95,7 @@ export const PalSearchId = () => {
                   placeholder={'search by member id'}
                 />
               </div>
-              <div className="mb-3 px-5 flex-1">
+              <div className="mb-3 flex-1">
                 <Label>User Name</Label>
                 <FormInput
                   type="text"
@@ -136,8 +136,8 @@ export const PalSearchId = () => {
                     description="Even though our cultural backgrounds and lifestyles were completely different..."
                     mutualFriends="5 mutual friends"
                     countryFlag={`/country-flags/svg/${item?.profile?.[0]?.country?.toLowerCase()}.svg`}
-                    countryName={item?.profile?.[0]?.country?.toUpperCase()}
-                    studentAge={item?.profile?.[0]?.age}
+                    countryName={item?.profile.country?.toUpperCase()}
+                    studentAge={item?.profile.age}
                   />
                 </div>
               );
