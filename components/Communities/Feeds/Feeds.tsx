@@ -18,13 +18,14 @@ import { useGlobalState } from '@/app/globalContext/globalContext';
 import { CommentInput } from '@/components/Comment/CommentInput';
 import { Separator } from '@/components/ui';
 import { IComment, ICommunityPost, ILike } from '@/types/global';
+import { IPenpal } from '@/app/globalContext/types';
 
 interface FeedsProps {
   communityId: string | number;
 }
 
 export const Feeds = ({ communityId }: FeedsProps) => {
-  const { userInformation } = useGlobalState();
+  const { userInformation, myPenpals } = useGlobalState();
   const [commentSection, setCommentSection] = useState<{
     commentId: number | null;
     openCommentSection: boolean;
@@ -130,9 +131,14 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                     )
                       ? true
                       : false;
+
+                    const isFriend = myPenpals.find(
+                      (i: IPenpal) => i.id === item?.User?.id
+                    );
                     return (
                       <div key={index}>
                         <Post
+                          userId={item?.User?.id || 0}
                           key={index}
                           userFullName={item?.User?.name}
                           username={item?.User?.name}
@@ -159,6 +165,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                           }}
                           onUnlike={() => unLikePost(item.id)}
                           onLike={() => likePost(item.id)}
+                          isFriend={isFriend ? true : false}
                         />
                         <Separator className="w-12/12" />
                         {commentId === item.id && openCommentSection ? (

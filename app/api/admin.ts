@@ -24,7 +24,7 @@ export const getInvites = (
   );
 };
 
-export const getAdminDashboard = () => http.get('/dashbord/admin-dashbord');
+export const getAdminDashboard = () => http.get('/dashboard/admin-dashboard');
 
 export const deleteProfileImage = (id: number) =>
   http.delete(`/uploads/${id}/delete`);
