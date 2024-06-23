@@ -18,15 +18,10 @@ export const NewilyJoinedCard: Story = {
         {...args}
         imgPath={'/Emily1.png'}
         title="Moominmadness"
-        buttonText="Connect"
-        buttonOnClick={() => {
-          console.log('clicked');
-        }}
         description="Even though our cultural backgrounds and lifestyles were completely different..."
-        mutualFriends="5 mutual friends"
+        mutualFriends={0}
         countryName="Pakistan"
         studentAge="8 years old"
-        countryFlag="/country-flags/svg/pk.svg"
       />
     </div>
   ),

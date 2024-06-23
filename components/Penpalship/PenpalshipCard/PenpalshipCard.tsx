@@ -4,8 +4,11 @@ import Link from 'next/link';
 import { Button, Dropdown } from '@/components/ui';
 import { Card } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
-import { getCountry, truncateText } from '@/app/utils/helpers';
-import countriesData from '@/public/countries/countries.json';
+import {
+  getCountry,
+  getMutualFriendsText,
+  truncateText,
+} from '@/app/utils/helpers';
 import { MessageCircle } from 'lucide-react';
 import { LucideUsers } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -16,16 +19,13 @@ import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface PenpalshipCardProps {
   title?: string;
+  searchParams?: string;
   label?: string;
   imgPath: string;
-  buttonText?: string;
   description?: string;
-  buttonOnClick?: () => void;
-  buttonLoading?: boolean;
-  countryFlag?: string;
   countryName?: string;
   studentAge: string | number;
-  mutualFriends?: string | number;
+  mutualFriends?: number;
   showRemoveButton?: boolean;
   showIcons?: boolean;
   id?: string | number;
@@ -34,14 +34,10 @@ interface PenpalshipCardProps {
 const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   title,
   imgPath,
-  buttonText,
   description,
-  buttonOnClick,
-  mutualFriends,
-  countryFlag,
+  mutualFriends = 0,
   countryName = '',
   studentAge,
-  buttonLoading,
   showRemoveButton = true,
   showIcons = false,
   id,
@@ -49,6 +45,8 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   const route = useRouter();
   const { setSelectedConversationId } = useChatProvider();
   const { module } = useModule();
+
+  const mutualFriend = getMutualFriendsText(mutualFriends);
 
   const truncatedDescription =
     (description && truncateText(description, 12)) || '';
@@ -58,10 +56,6 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   const handleClick = () => {
     route.push(`/${module}/profile/${id}`);
   };
-
-  function setIsSelectTeacher(arg0: { isOpenModal: boolean }): void {
-    throw new Error('Function not implemented.');
-  }
 
   return (
     <Card className="flex flex-col h-full">
@@ -84,7 +78,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                 defaultReceiverId={Number(id)}
                 onChatCreated={(chatId) => {
                   setSelectedConversationId(chatId);
-                  route.push(`/students/chats`);
+                  route.push(`/${module}/chats`);
                 }}
                 trigger={
                   <button className="bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center">
@@ -128,7 +122,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
           </Typography>
           <Typography variant="p" weight="semibold" className="mb-1 text-xs">
             <Link href="" className="text-primary-500">
-              {mutualFriends}
+              {mutualFriend || '\u00A0'}
             </Link>
           </Typography>
           <Typography
