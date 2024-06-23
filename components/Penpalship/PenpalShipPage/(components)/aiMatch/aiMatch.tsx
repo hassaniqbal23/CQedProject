@@ -56,7 +56,6 @@ export const AiMatch = ({ module }: AiMatchProps) => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-
   const { sendRequest } = useSendPenpalRequest();
 
   const {
