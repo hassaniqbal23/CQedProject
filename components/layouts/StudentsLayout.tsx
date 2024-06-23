@@ -4,7 +4,6 @@ import Sidebar from '../common/sidebar/sidebar';
 import { usePathname } from 'next/navigation';
 import Navbar from '../common/navbar/MainBar';
 import { useRouter } from 'next/navigation';
-import { removeToken, removeUserId } from '@/app/utils/encryption';
 import { useResponsive } from '@/lib/hooks';
 import { Bell, LogOut, MessageCircle, Settings, UserCheck } from 'lucide-react';
 import { useGlobalState } from '@/app/globalContext/globalContext';
@@ -59,7 +58,7 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
     {
       icon: '/assets/sidebaricons/penpalship.svg',
       title: 'Global Friends',
-      path: '/students/penpalship',
+      path: '/students/globalfriends',
     },
     {
       icon: '/assets/sidebaricons/CQCommunities.svg',
@@ -74,7 +73,7 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
     {
       icon: '/assets/sidebaricons/settings.svg',
       title: 'Settings',
-      path: '/students/settings',
+      path: '/students/account-settings',
     },
   ];
 

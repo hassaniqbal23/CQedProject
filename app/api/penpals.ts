@@ -28,3 +28,7 @@ export const searchPenpal = (name: string, page?: number, limit?: number) =>
   http.get(
     `/penpal/search?name=${name}&${page && limit ? `?page=${page}&limit=${limit}` : ``}`
   );
+
+export const pendingGlobalFriends = () => {
+  return http.get(`/penpal/pending-penpals`).then((res) => res.data);
+};

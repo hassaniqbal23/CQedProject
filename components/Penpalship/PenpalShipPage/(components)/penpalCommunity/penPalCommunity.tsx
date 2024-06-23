@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { createPenpal, getSuggestions } from '@/app/api/penpals';
+import { getSuggestions } from '@/app/api/penpals';
 import {
   PenpalshipCard,
   PenpalshipPublishStoryCard,
@@ -22,14 +22,16 @@ import { settings } from '@/app/utils/sliderSettings';
 import Pagination from '@/components/common/pagination/pagination';
 import SkeletonCard from '@/components/common/SkeletonCard/SkeletonCard';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 
 export const PenPalCommunity = () => {
-  const queryCLient = useQueryClient();
+  const queryClient = useQueryClient();
   const { myPenpals, userInformation } = useGlobalState();
   const route = useRouter();
+
   const [viewUserStoryId, setViewUserStoryId] = useState<number | null>(null);
   const [creatingPanpalId, setCreatingPanpalId] = useState<number | null>(null);
-  const [openStoryModal, setOpenStroyModal] = useState<boolean>(false);
+  const [openStoryModal, setOpenStoryModal] = useState<boolean>(false);
   const [viewStoryModal, setViewStoryModal] = useState<boolean>(false);
   const [totalCount, setTotalCount] = useState<number>(1);
   const [paginationPenpals, setPaginationPenpals] = useState<{
@@ -41,31 +43,20 @@ export const PenPalCommunity = () => {
   });
 
   const { page, limit } = paginationPenpals;
-
-  const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
-    useMutation((id: number) => createPenpal({ receiverId: id }), {
-      onSuccess: (res) => {
-        queryCLient.refetchQueries('penpalSuggestions');
-        queryCLient.refetchQueries('MyPenPals');
-        setCreatingPanpalId(null);
-      },
-      onError: (error) => {
-        console.error(error, 'Error =====> log');
-      },
-    });
+  const { sendRequest, isCreatingPenpal } = useSendPenpalRequest();
 
   const { mutate: createUserStories, isLoading: isCreatingStories } =
     useMutation((story: string) => UserCreateStories({ story: story }), {
       onSuccess: (res) => {
-        queryCLient.refetchQueries('getAllUserStories');
-        setOpenStroyModal(false);
+        queryClient.refetchQueries('getAllUserStories');
+        setOpenStoryModal(false);
       },
       onError: (error) => {
         console.error(error, 'Error =====> log');
       },
     });
 
-  const { data: getUserStory, isLoading: isGetingUserStory } = useQuery(
+  const { data: getUserStory, isLoading: isGettingUserStory } = useQuery(
     ['getUserStoriesById', viewUserStoryId],
     (viewUserStoryId: any) =>
       getUserStoriesById(Number(viewUserStoryId.queryKey[1])).then((res) => {
@@ -83,7 +74,6 @@ export const PenPalCommunity = () => {
   const IsStoryUserMyFriend = useMemo(() => {
     const getUserStoryUserId = getUserStory?.userId;
     const MyId = userInformation.id;
-
     if (getUserStoryUserId && MyId) {
       const getPenpal = myPenpals.find((c) => {
         return (
@@ -91,13 +81,12 @@ export const PenPalCommunity = () => {
           (c.senderId == getUserStoryUserId && c.receiverId == MyId)
         );
       });
-
       if (getPenpal) return true;
     }
     return false;
   }, [getUserStory, myPenpals]);
 
-  const { data: AllUserStories, isLoading: isGetingUserStories } = useQuery(
+  const { data: AllUserStories, isLoading: isGettingUserStories } = useQuery(
     ['getAllUserStories'],
     () =>
       getAllUserStories().then((res) => {
@@ -148,28 +137,27 @@ export const PenPalCommunity = () => {
             loading={isCreatingStories}
             open={openStoryModal}
             onClose={() => {
-              setOpenStroyModal(false);
+              setOpenStoryModal(false);
             }}
             onOpenChange={() => {
-              setOpenStroyModal(false);
+              setOpenStoryModal(false);
             }}
             onPublish={(story) => {
               createUserStories(story);
             }}
           />
-
           <PublishStoryViewDialog
             initialValue={getUserStory?.story}
             isFriend={IsStoryUserMyFriend}
             open={viewStoryModal}
-            loading={{ isCreatingPanpal, isGetingUserStory }}
+            loading={{ isCreatingPenpal, isGettingUserStory }}
             onClose={() => {
               setViewUserStoryId(null);
               setViewStoryModal(false);
             }}
             onAddFriend={() => {
               if (getUserStory && typeof getUserStory?.userId === 'number') {
-                sendPanpalRequest(getUserStory?.userId);
+                sendRequest({ receiverId: Number(getUserStory?.userId) });
               }
             }}
             userInfo={{
@@ -179,22 +167,22 @@ export const PenPalCommunity = () => {
               imageUrl: getUserStory?.User?.attachment?.file_path,
             }}
           />
-          {AllUserStories?.length === 0 && !isGetingUserStories ? (
+          {AllUserStories?.length === 0 && !isGettingUserStories ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 min-h-96">
               <PenpalshipPublishStoryCard
                 title={'Publish your story'}
                 iconOnClick={() => {
-                  setOpenStroyModal(!openStoryModal);
+                  setOpenStoryModal(!openStoryModal);
                 }}
               />
             </div>
-          ) : isGetingUserStories ? (
+          ) : isGettingUserStories ? (
             <div className="flex min-h-96">
               <div className="w-96">
                 <PenpalshipPublishStoryCard
                   title={'Publish your story'}
                   iconOnClick={() => {
-                    setOpenStroyModal(!openStoryModal);
+                    setOpenStoryModal(!openStoryModal);
                   }}
                 />
               </div>
@@ -208,7 +196,7 @@ export const PenPalCommunity = () => {
                 <PenpalshipPublishStoryCard
                   title={'Publish your story'}
                   iconOnClick={() => {
-                    setOpenStroyModal(!openStoryModal);
+                    setOpenStoryModal(!openStoryModal);
                   }}
                 />
               </div>
@@ -242,15 +230,10 @@ export const PenPalCommunity = () => {
               imgPath={item?.attachment?.file_path}
               title={item?.profile?.full_name || item.email}
               mutualFriends={'5 mutual friends'}
-              buttonOnClick={() => {
-                sendPanpalRequest(item.id);
-                setCreatingPanpalId(item.id);
-              }}
-              buttonLoading={creatingPanpalId === item.id && isCreatingPanpal}
-              buttonText="Connect"
               description={item?.profile?.bio}
               countryName={item?.profile?.country}
               studentAge={item?.profile?.age}
+              showIcons={false}
             />
           ))}
         </div>
@@ -261,10 +244,7 @@ export const PenPalCommunity = () => {
               totalPages={Math.ceil(totalCount / limit)}
               pageSize={limit}
               onPageChange={(value: number) => {
-                setPaginationPenpals((prev) => ({
-                  ...prev,
-                  page: value,
-                }));
+                setPaginationPenpals((prev) => ({ ...prev, page: value }));
               }}
               totalCount={totalCount}
               setPageSize={(pageSize) => console.log(pageSize, 'pagesize')}
@@ -272,7 +252,7 @@ export const PenPalCommunity = () => {
           </div>
         )}
         {suggestions?.length === 0 && isLoading === false ? (
-          <div> No suggestions found, Please come back later </div>
+          <div>No suggestions found, Please come back later</div>
         ) : (
           <></>
         )}

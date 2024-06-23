@@ -17,24 +17,19 @@ export interface ITeacher {
 export interface ITeachers extends IStudents {}
 export interface IEducation {
   countryCode: string;
-  degree: string;
   educationLevel: string;
   endDate: string;
   fieldOfStudy: string;
-  id: number;
+  id?: number;
   institution: string;
   startDate: string;
-  userId: number;
 }
-export interface IWorkExperience {
+
+export interface IWorkExperience extends IEducation {
   companyName: string;
   employmentType: string;
-  endDate: string;
-  id: number;
   location: string;
-  startDate: string;
   title: string;
-  userId: number;
 }
 export interface ITeacherProfile {
   attachment: IAttachment;

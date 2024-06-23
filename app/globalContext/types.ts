@@ -42,6 +42,7 @@ export interface IUserInformation {
     id: number;
   };
   BlockedFrom: BlockedFrom[];
+  school: { id: number; name: string };
 }
 
 interface IProfile {

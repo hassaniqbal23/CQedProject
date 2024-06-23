@@ -1,13 +1,9 @@
 'use client';
-import React, { useEffect, useMemo, useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import React, { useEffect, useMemo, FC } from 'react';
 import { useGlobalState } from '@/app/globalContext/globalContext';
-import { createPenpal, deletePenpal } from '@/app/api/penpals';
 import { Card, TabsComponent } from '@/components/ui';
-import { getProfile } from '@/app/api/students';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import Loading from '../ui/button/loading';
 import dynamic from 'next/dynamic';
 import {
   ProfileHeader,
@@ -17,14 +13,20 @@ import {
   Gallery,
   Languages,
 } from '@/components/common/Profiles';
+import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
+import { ProfilesDetailPageProps } from '@/app/api/types';
 
-const StudentDetailsPage = () => {
-  const queryClient = useQueryClient();
+const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
+  isFriend,
+  data,
+  setIsFriend,
+}) => {
+  const { sendRequest, isCreatingPenpal, deleteRequest, isDeletingPenpal } =
+    useSendPenpalRequest();
   const params = useParams();
   const router = useRouter();
   const currentProfileId = Number(params?.id);
   const { userInformation, myPenpals } = useGlobalState();
-  const [isFriend, setIsFriend] = useState<boolean>(false);
   const buttonText =
     userInformation?.id === currentProfileId ? 'Edit Profile' : 'Add Friend';
   const Map = useMemo(
@@ -41,68 +43,25 @@ const StudentDetailsPage = () => {
     return { isPenpal: !!penpal, penpal };
   };
 
-  const { data, isLoading, error } = useQuery(
-    ['getProfile', currentProfileId],
-    () => getProfile(currentProfileId as any),
-    {
-      enabled: true,
-      onSuccess: (data) => {
-        let { isPenpal } = getPenpalInfo(currentProfileId);
-        setIsFriend(userInformation?.id !== currentProfileId && isPenpal);
-      },
-    }
-  );
-
-  const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
-    useMutation((id: number) => createPenpal({ receiverId: id }), {
-      onSuccess: (res) => {
-        queryClient.invalidateQueries('MyPenPals');
-      },
-      onError: (error) => {
-        console.error(error, 'Error =====> log');
-      },
-    });
-
   const studentProfile = data?.data?.data;
   const location = [
     studentProfile?.profile?.latitude,
     studentProfile?.profile?.longitude,
   ];
-
-  const handleRemove = useMutation((id: number) => deletePenpal(id), {
-    onSuccess: () => {
-      queryClient.invalidateQueries('MyPenPals');
-    },
-    onError: (error: any) => {
-      console.error('Error:', error);
-    },
-  });
   const handleClick = () => {
     const { penpal } = getPenpalInfo(studentProfile?.id);
 
     userInformation?.id === currentProfileId
-      ? router.push('/students/settings')
+      ? router.push('/students/account-settings')
       : isFriend
-        ? penpal && handleRemove.mutate(penpal?.id)
-        : sendPanpalRequest(studentProfile?.id);
+        ? penpal && deleteRequest(penpal?.id)
+        : sendRequest({ receiverId: Number(studentProfile?.id) });
   };
 
   useEffect(() => {
     let { isPenpal } = getPenpalInfo(currentProfileId);
-    setIsFriend(isPenpal);
+    setIsFriend && setIsFriend(isPenpal);
   }, [myPenpals, currentProfileId]);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-[500px] w-full">
-        <Loading />
-      </div>
-    );
-  }
-
-  if (error) {
-    return <div>Error loading profile</div>;
-  }
 
   const tabContents = [
     {
@@ -184,7 +143,7 @@ const StudentDetailsPage = () => {
           profileId={studentProfile?.id}
           buttonProps={{
             isVisbile: true,
-            isLoading: isCreatingPanpal,
+            isLoading: isCreatingPenpal || isDeletingPenpal,
             onClick: handleClick,
             buttonText,
             isFriend,

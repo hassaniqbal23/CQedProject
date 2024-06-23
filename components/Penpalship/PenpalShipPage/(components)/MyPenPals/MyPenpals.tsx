@@ -1,20 +1,18 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { deletePenpal, searchPenpal } from '@/app/api/penpals';
+import { searchPenpal } from '@/app/api/penpals';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { PenpalshipCard } from '@/components/Penpalship';
 import SearchBar from '@/components/common/SearchBar';
 import { Typography } from '@/components/common/Typography/Typography';
 import Pagination from '@/components/common/pagination/pagination';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import SkeletonCard from '@/components/common/SkeletonCard/SkeletonCard';
 import { debounce } from 'lodash';
 
 export const MyPenpals: React.FC = () => {
-  const queryClient = useQueryClient();
   const { userInformation, myPenpals, isFetchingMyPenPals } = useGlobalState();
   const [totalCount, setTotalCount] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [removingItemId, setRemovingItemId] = useState<number | null>(null);
   const [pagination, setPagination] = useState<{ page: number; limit: number }>(
     {
       page: 1,
@@ -23,19 +21,6 @@ export const MyPenpals: React.FC = () => {
   );
 
   const { page, limit } = pagination;
-
-  const handleRemove = useMutation((id: number) => deletePenpal(id), {
-    onSuccess: () => {
-      queryClient.invalidateQueries('getMyPenpals');
-      queryClient.invalidateQueries('searchMyPenpal');
-      queryClient.invalidateQueries('MyPenPals');
-      setRemovingItemId(null);
-    },
-    onError: (error: any) => {
-      console.error('Error:', error);
-      setRemovingItemId(null);
-    },
-  });
 
   const searchPenpalsQuery = useQuery(
     ['searchMyPenpal', searchTerm, page, limit],
@@ -75,8 +60,8 @@ export const MyPenpals: React.FC = () => {
   return (
     <div>
       <div className="flex py-5 justify-between flex-wrap items-end">
-        <Typography variant="h3" weight="semibold" className="mb-4">
-          My Penpals
+        <Typography variant="h2" weight="semibold" className="mb-4">
+          My Global Friends
         </Typography>
         <SearchBar
           inputClassName="w-full rounded-full"
@@ -92,18 +77,11 @@ export const MyPenpals: React.FC = () => {
             imgPath={item?.user?.attachment?.file_path}
             title={item?.user?.profile?.full_name || ''}
             mutualFriends="5 mutual friends"
-            buttonOnClick={() => {
-              handleRemove.mutate(item?.id);
-              setRemovingItemId(item?.id);
-            }}
-            buttonText="Remove"
             description={item?.user?.profile?.bio}
-            countryFlag={`/country-flags/svg/${item?.user?.profile?.country.toLowerCase()}.svg`}
             countryName={item?.user?.profile?.country.toUpperCase()}
             studentAge={item?.user?.profile?.age}
-            buttonLoading={
-              removingItemId === item?.id && handleRemove.isLoading
-            }
+            showRemoveButton={false}
+            showIcons={true}
           />
         ))}
       </div>

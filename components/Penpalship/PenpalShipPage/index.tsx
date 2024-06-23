@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { Typography } from '@/components/common/Typography/Typography';
 import { Info } from 'lucide-react';
@@ -11,31 +9,27 @@ import {
   PenPalCommunity,
 } from './(components)';
 
-interface PenpalshipPageProps {
-  module?: 'student' | 'teacher';
-}
-
-const PenpalshipPage = ({ module }: PenpalshipPageProps) => {
+const PenpalshipPage = () => {
   return (
     <div>
       <div className="flex flex-row items-center mb-4">
-        <Typography variant={'h1'} weight={'bold'}>
+        <Typography variant={'h2'} weight={'bold'}>
           Global Friends
         </Typography>
         <Info className="ml-2 text-[#5D5E68] stroke-slate-500" size={26} />
       </div>
       <div className="mt-2 mb-3">
         <Tabs
-          defaultValue="penpalCommunity"
+          defaultValue="GlobalCommunity"
           tabs={[
-            { label: 'PenPal Community', value: 'penpalCommunity' },
+            { label: 'Global Community', value: 'GlobalCommunity' },
             { label: 'AI Matches', value: 'aiMatches' },
             { label: 'Pal ID Search', value: 'palIDSearch' },
-            { label: 'My Penpals', value: 'myPenpals' },
+            { label: 'My Global Friends', value: 'MyGlobalFriends' },
           ]}
           tabContent={[
             {
-              value: 'penpalCommunity',
+              value: 'GlobalCommunity',
               content: (
                 <div className="mt-5">
                   <PenPalCommunity />
@@ -46,7 +40,7 @@ const PenpalshipPage = ({ module }: PenpalshipPageProps) => {
               value: 'aiMatches',
               content: (
                 <div className="mt-5">
-                  <AiMatch module={module} />
+                  <AiMatch />
                 </div>
               ),
             },
@@ -59,7 +53,7 @@ const PenpalshipPage = ({ module }: PenpalshipPageProps) => {
               ),
             },
             {
-              value: 'myPenpals',
+              value: 'MyGlobalFriends',
               content: <MyPenpals />,
             },
           ]}
