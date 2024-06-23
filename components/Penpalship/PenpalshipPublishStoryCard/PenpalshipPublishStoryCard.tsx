@@ -20,7 +20,7 @@ const PenpalshipPublishStoryCard: React.FC<PenpalshipPublishStoryCardProps> = ({
         <Plus size={50} className="text-primary-500  cursor-pointer" />
       </div>
       <div className="p-3 pb-1">
-        <Typography variant="h3" weight="bold" className="text-primary-500   ">
+        <Typography variant="h3" weight="semibold" className="text-primary-500">
           {title}
         </Typography>
       </div>

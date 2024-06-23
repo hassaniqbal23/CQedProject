@@ -251,6 +251,7 @@ export const PenPalCommunity = () => {
               description={item?.profile?.bio}
               countryName={item?.profile?.country}
               studentAge={item?.profile?.age}
+              showIcons={false}
             />
           ))}
         </div>
