@@ -40,8 +40,8 @@ const formSchema = z.object({
 });
 
 interface IFriend {
-  isTrue: boolean;
-  isPending: boolean;
+  isTrue?: boolean;
+  isPending?: boolean;
 }
 
 export interface IPublishStoryViewDialogProps {

@@ -87,7 +87,10 @@ export const PenPalCommunity = () => {
           isPending: getPenpal.status == 'PENDING' ? true : false,
         };
     }
-    return false;
+    return {
+      isTrue: false,
+      isPending: false,
+    };
   }, [getUserStory, myPenpals]);
 
   const { data: AllUserStories, isLoading: isGettingUserStories } = useQuery(
