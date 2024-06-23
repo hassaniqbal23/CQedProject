@@ -10,8 +10,6 @@ interface ProfileCardProps {
   imageUrl: string;
   onConnect?: () => void;
   isConnecting?: boolean;
-  onRemove?: () => void;
-  isRemoving?: boolean;
 }
 
 export const GlobalFriendConnect: FC<ProfileCardProps> = ({
@@ -19,13 +17,11 @@ export const GlobalFriendConnect: FC<ProfileCardProps> = ({
   username,
   imageUrl,
   onConnect,
-  onRemove,
   isConnecting,
-  isRemoving,
 }) => {
   return (
     <Card className="p-4 flex  items-center bg-primary-50 bg-gray-100">
-      <div className="flex gap-4 w-[100px]">
+      <div className="flex gap-4 w-full items-center">
         <Image
           src={imageUrl}
           alt={name}
@@ -50,14 +46,6 @@ export const GlobalFriendConnect: FC<ProfileCardProps> = ({
               className="bg-[#ECEDF8] text-[#2183C4] px-4 py-2 h-7 rounded-full"
             >
               Connect
-            </Button>
-            <Button
-              size={'sm'}
-              onClick={onRemove}
-              loading={isRemoving}
-              className="text-[#2183C4] px-4 py-2 h-7 bg-white border-[1px] border-[#2183C4] rounded-full"
-            >
-              Remove
             </Button>
           </div>
         </div>

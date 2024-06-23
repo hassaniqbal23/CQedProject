@@ -141,6 +141,13 @@ function DashboardCards() {
                     </div>
                   )
                 )}
+              <Link
+                href={`/${module}/globalfriends`}
+                className="flex justify-center items-center text-primary-500 py-6"
+              >
+                Explore more communities
+                <MoveRight className="ml-3" />
+              </Link>
             </div>
           </Card>
         </>
