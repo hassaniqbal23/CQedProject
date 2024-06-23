@@ -9,11 +9,8 @@ import {
   PenPalCommunity,
 } from './(components)';
 
-interface PenpalshipPageProps {
-  module?: 'student' | 'teacher';
-}
 
-const PenpalshipPage = ({ module }: PenpalshipPageProps) => {
+const PenpalshipPage = () => {
   return (
     <div>
       <div className="flex flex-row items-center mb-4">
@@ -44,7 +41,7 @@ const PenpalshipPage = ({ module }: PenpalshipPageProps) => {
               value: 'aiMatches',
               content: (
                 <div className="mt-5">
-                  <AiMatch module={module} />
+                  <AiMatch />
                 </div>
               ),
             },
