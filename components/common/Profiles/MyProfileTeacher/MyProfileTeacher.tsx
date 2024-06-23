@@ -67,7 +67,7 @@ export const MyProfileTeacher: FC = () => {
       <ProfileHeader
         name={profileData?.data?.name}
         role={profileData?.data?.profile?.address}
-        subrole={'N/A'}
+        subrole={profileData?.data?.school?.name}
         location={profileData?.data?.profile?.state}
         profileIcon={profileData?.data?.attachment?.file_path}
       />
