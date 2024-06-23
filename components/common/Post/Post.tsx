@@ -29,6 +29,7 @@ interface IProps {
   isFriend?: boolean;
   onAddFriend?: () => void;
   addFriendLoading?: boolean;
+  addFriendText?: string;
 }
 
 export const Post: FC<IProps> = ({
@@ -50,6 +51,7 @@ export const Post: FC<IProps> = ({
   isFriend = true,
   onAddFriend,
   addFriendLoading,
+  addFriendText,
 }: IProps) => {
   const { module } = useModule();
   const [liked, setLiked] = useState(false);
@@ -102,7 +104,7 @@ export const Post: FC<IProps> = ({
                 onClick={() => onAddFriend && onAddFriend()}
                 loading={addFriendLoading}
               >
-                Add Friend
+                {addFriendText}
               </Button>
             </div>
           )}

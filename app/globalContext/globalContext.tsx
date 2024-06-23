@@ -7,7 +7,10 @@ import {
   removeToken,
   removeUserId,
 } from '../utils/encryption';
-import { myPenpals as getMyPenpals } from '../api/penpals';
+import {
+  myPenpals as getMyPenpals,
+  pendingGlobalFriends,
+} from '../api/penpals';
 import { getBlockedUsers } from '../api/users';
 import { pendingCommunities } from '../api/communities';
 import { useRouter } from 'next/navigation';
@@ -26,6 +29,7 @@ type IGlobalState = {
   logout: () => void;
   setIsFetchingMyPenPals: (value: boolean) => void;
   pendingCommunitiesList: any[];
+  pendingGlobalFriendsList: any[];
 };
 
 export const GlobalState = createContext<IGlobalState>({
@@ -42,6 +46,7 @@ export const GlobalState = createContext<IGlobalState>({
   logout: () => {},
   setIsFetchingMyPenPals: () => {},
   pendingCommunitiesList: [],
+  pendingGlobalFriendsList: [],
 });
 
 export const GlobalProvider: FC<any> = ({ children }) => {
@@ -60,6 +65,9 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   const [pendingCommunitiesList, setPendingCommunitiesList] = useState<any[]>(
     []
   );
+  const [pendingGlobalFriendsList, setPendingGlobalFriendsList] = useState<
+    any[]
+  >([]);
   const userId = getUserIdLocalStorage();
 
   const logout = () => {
@@ -173,6 +181,17 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     retryDelay: 5000,
   });
 
+  useQuery(['pending-friends'], () => pendingGlobalFriends(), {
+    onSuccess: (res) => {
+      setPendingGlobalFriendsList(res.data);
+    },
+    onError: (err) => {
+      console.log(err, '======> ERROR');
+    },
+    retry: 100,
+    retryDelay: 5000,
+  });
+
   return (
     <GlobalState.Provider
       value={{
@@ -189,6 +208,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         setUserInformation,
         setIsFetchingMyPenPals,
         pendingCommunitiesList,
+        pendingGlobalFriendsList,
       }}
     >
       {children}
