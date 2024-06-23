@@ -170,7 +170,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     retryDelay: 5000,
   });
 
-  useQuery(['pending-communities'], () => pendingCommunities(), {
+  useQuery(['pending-communities', userId], () => pendingCommunities(), {
     onSuccess: (res) => {
       setPendingCommunitiesList(res.data);
     },
@@ -181,7 +181,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     retryDelay: 5000,
   });
 
-  useQuery(['pending-friends'], () => pendingGlobalFriends(), {
+  useQuery(['pending-friends', userId], () => pendingGlobalFriends(), {
     onSuccess: (res) => {
       setPendingGlobalFriendsList(res.data);
     },
