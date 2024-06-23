@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 
@@ -35,6 +35,13 @@ const DatePickerDemo: React.FC<IProps> = ({
     }
   );
 
+  useEffect(() => {
+    if (defaultValue && mode !== 'range') {
+      setDate(defaultValue as Date);
+    } else {
+      setDate(undefined);
+    }
+  }, [defaultValue]);
   const handleDateChange = (selectedDate: Date | undefined) => {
     setDate(selectedDate);
     selectDate?.(selectedDate);
