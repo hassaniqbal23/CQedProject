@@ -7,8 +7,8 @@ import { Button, Form, Label } from '@/components/ui';
 import { FormInput } from '@/components/common/From/FormInput';
 import { PenpalshipCard } from '@/components/Penpalship';
 import Image from 'next/image';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { createPenpal, searchNewPenpal } from '@/app/api/penpals';
+import { useQuery } from 'react-query';
+import { searchNewPenpal } from '@/app/api/penpals';
 import SkeletonCard from '@/components/common/SkeletonCard/SkeletonCard';
 
 const formSchema = z.object({
@@ -22,13 +22,11 @@ const formSchema = z.object({
 
 interface IPalSearchID {
   userName?: string;
-  memberId?: number;
+  memberId?: string;
 }
 
 export const PalSearchId = () => {
-  const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useState<IPalSearchID | null>(null);
-  const [creatingPanpalId, setCreatingPenpalId] = useState<number | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,33 +35,20 @@ export const PalSearchId = () => {
       userName: '',
     },
   });
+
   const {
     reset,
     handleSubmit,
     formState: { errors, isValid },
   } = form;
 
-  const { mutate: sendPenpalRequest, isLoading: isCreatingPanpal } =
-    useMutation((id: number) => createPenpal({ receiverId: id }), {
-      onSuccess: (res) => {
-        if (searchParams) {
-          queryClient.refetchQueries('MyPenPals');
-          queryClient.refetchQueries([
-            'penpalSearchData',
-            searchParams.memberId,
-            searchParams.userName,
-          ]);
-        }
-        setCreatingPenpalId(null);
-      },
-      onError: (error) => {
-        console.error(error, 'Error =====> log');
-      },
-    });
-
   const { data: penpalSearchResult, isLoading } = useQuery(
     ['penpalSearchData', searchParams],
-    () => searchNewPenpal(searchParams?.memberId, searchParams?.userName),
+    () =>
+      searchNewPenpal(
+        searchParams?.memberId ? Number(searchParams.memberId) : undefined,
+        searchParams?.userName
+      ),
     {
       enabled: !!searchParams,
       onSuccess: (data) => {
@@ -74,9 +59,11 @@ export const PalSearchId = () => {
       },
     }
   );
-  const onSubmit: SubmitHandler<any> = (values: IPalSearchID) => {
+
+  const onSubmit: SubmitHandler<IPalSearchID> = (values) => {
     setSearchParams(values);
   };
+
   return (
     <div>
       <Typography variant={'h3'} weight={'semibold'} className="mb-4">
@@ -84,8 +71,8 @@ export const PalSearchId = () => {
       </Typography>
       <div className="pt-5">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 ">
-            <div className="flex gap-4 items-center flex-wrap ">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <div className="flex gap-4 items-center flex-wrap">
               <div className="mb-3 flex-1">
                 <Label>Member ID</Label>
                 <FormInput
@@ -119,29 +106,19 @@ export const PalSearchId = () => {
         ) : penpalSearchResult &&
           penpalSearchResult?.data?.data.length !== 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {penpalSearchResult?.data?.data.map((item: any, index: number) => {
-              return (
-                <div key={index}>
-                  <PenpalshipCard
-                    imgPath={item?.attachment?.file_path}
-                    title={item?.name}
-                    buttonText="Connect"
-                    buttonOnClick={() => {
-                      sendPenpalRequest(item.id);
-                      setCreatingPenpalId(item.id);
-                    }}
-                    buttonLoading={
-                      creatingPanpalId === item.id && isCreatingPanpal
-                    }
-                    description="Even though our cultural backgrounds and lifestyles were completely different..."
-                    mutualFriends="5 mutual friends"
-                    countryFlag={`/country-flags/svg/${item?.profile?.[0]?.country?.toLowerCase()}.svg`}
-                    countryName={item?.profile.country?.toUpperCase()}
-                    studentAge={item?.profile.age}
-                  />
-                </div>
-              );
-            })}
+            {penpalSearchResult?.data?.data.map((item: any, index: number) => (
+              <div key={index}>
+                <PenpalshipCard
+                  imgPath={item?.attachment?.file_path}
+                  id={item?.profile.id}
+                  title={item?.name}
+                  description="Even though our cultural backgrounds and lifestyles were completely different..."
+                  mutualFriends="5 mutual friends"
+                  countryName={item?.profile.country?.toUpperCase()}
+                  studentAge={item?.profile.age}
+                />
+              </div>
+            ))}
           </div>
         ) : (
           <div className="flex items-center justify-center w-full col-span-3 h-96">
