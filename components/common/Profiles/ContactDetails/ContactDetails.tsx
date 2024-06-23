@@ -1,6 +1,7 @@
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Typography } from '../../Typography/Typography';
 
 interface ContactDetails {
   title: string;
@@ -19,9 +20,12 @@ export const ProfileContactDetails: React.FC<ContactDetailsProps> = ({
 }) => {
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="font-semibold text-xl">{title}</CardTitle>
-      </CardHeader>
+      <div className="ml-5 mt-3">
+        <Typography variant={'h3'} weight={'semibold'}>
+          {title}
+        </Typography>
+      </div>
+
       <CardContent>
         {details?.map((item: ContactDetails, index: number) => {
           return (
@@ -30,7 +34,7 @@ export const ProfileContactDetails: React.FC<ContactDetailsProps> = ({
               className={`flex items-center my-1 rounded-2xl break-all ${index === 0 ? 'border-b rounded-none' : ''}`}
             >
               <div className="bg-[#ECEDF8] p-2 rounded-full">
-                <item.icon strokeWidth={1.2} />
+                <item.icon strokeWidth={1.2} className="text-[#2183C4]" />
               </div>
               <div className="p-2 text-left ml-2">
                 <h2 className="font-semibold text-sm">{item.title}</h2>

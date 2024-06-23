@@ -15,7 +15,7 @@ export interface BlockedFrom {
 
 export interface IUserInformation {
   profile: {
-    meta: {
+    meta?: {
       amazingThing: string;
       shareExploreLearn: string;
     };
@@ -28,6 +28,7 @@ export interface IUserInformation {
     languages: string[];
     culture_information: string[];
     interests: string[];
+    skills: string[];
     bio: string;
   };
   id: number;

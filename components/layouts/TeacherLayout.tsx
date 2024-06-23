@@ -71,6 +71,11 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
       title: 'CQ Courses',
       path: '/teachers/cq-courses',
     },
+    {
+      icon: '/assets/sidebaricons/settings.svg',
+      title: 'Settings',
+      path: '/teachers/account-settings',
+    },
   ];
 
   const isChatPage = useMemo(() => {
