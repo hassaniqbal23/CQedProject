@@ -26,9 +26,11 @@ export const ProfileEducation: React.FC<WorkHistoryProps> = ({
 }) => {
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
+      <div className="ml-5 mt-3">
+        <Typography variant={'h3'} weight={'semibold'}>
+          {title}
+        </Typography>
+      </div>
       <CardContent>
         {jobs.map((job, index: number, array) => {
           const isLast = index === array.length - 1;
