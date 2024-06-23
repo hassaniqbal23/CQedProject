@@ -39,8 +39,6 @@ function SharePost({
   const { joinedCommunities } = useGlobalState();
   const [textAreaValue, setTextAreaValue] = useState('');
 
-  console.log('post', post);
-
   return (
     <Modal
       openModalButton={openModalButton}

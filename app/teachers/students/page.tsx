@@ -58,7 +58,6 @@ export default function TeacherStudents() {
               label: 'Full Name',
               key: 'fullname',
               render: (row) => {
-                console.log(row);
                 return (
                   <Link
                     className="text-primary-500 flex gap-2 items-center"
