@@ -5,7 +5,6 @@ import { Button, Dropdown } from '@/components/ui';
 import { Card } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import { getCountry, truncateText } from '@/app/utils/helpers';
-import countriesData from '@/public/countries/countries.json';
 import { MessageCircle } from 'lucide-react';
 import { LucideUsers } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -59,10 +58,6 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
     route.push(`/${module}/profile/${id}`);
   };
 
-  function setIsSelectTeacher(arg0: { isOpenModal: boolean }): void {
-    throw new Error('Function not implemented.');
-  }
-
   return (
     <Card className="flex flex-col h-full">
       <div className="flex flex-col flex-grow p-2 rounded-sm">
@@ -84,7 +79,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                 defaultReceiverId={Number(id)}
                 onChatCreated={(chatId) => {
                   setSelectedConversationId(chatId);
-                  route.push(`/students/chats`);
+                  route.push(`/${module}/chats`);
                 }}
                 trigger={
                   <button className="bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center">

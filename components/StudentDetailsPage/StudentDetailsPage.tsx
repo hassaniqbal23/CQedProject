@@ -1,13 +1,11 @@
 'use client';
-import React, { useEffect, useMemo, useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import React, { useEffect, useMemo, FC } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { createPenpal, deletePenpal } from '@/app/api/penpals';
 import { Card, TabsComponent } from '@/components/ui';
-import { getProfile } from '@/app/api/students';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import Loading from '../ui/button/loading';
 import dynamic from 'next/dynamic';
 import {
   ProfileHeader,
@@ -17,14 +15,18 @@ import {
   Gallery,
   Languages,
 } from '@/components/common/Profiles';
+import { ProfilesDetailPageProps } from '@/app/api/types';
 
-const StudentDetailsPage = () => {
+const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
+  isFriend,
+  data,
+  setIsFriend,
+}) => {
   const queryClient = useQueryClient();
   const params = useParams();
   const router = useRouter();
   const currentProfileId = Number(params?.id);
   const { userInformation, myPenpals } = useGlobalState();
-  const [isFriend, setIsFriend] = useState<boolean>(false);
   const buttonText =
     userInformation?.id === currentProfileId ? 'Edit Profile' : 'Add Friend';
   const Map = useMemo(
@@ -40,18 +42,6 @@ const StudentDetailsPage = () => {
     const penpal = myPenpals.find((penpal) => penpal.friend.id === id);
     return { isPenpal: !!penpal, penpal };
   };
-
-  const { data, isLoading, error } = useQuery(
-    ['getProfile', currentProfileId],
-    () => getProfile(currentProfileId as any),
-    {
-      enabled: true,
-      onSuccess: (data) => {
-        let { isPenpal } = getPenpalInfo(currentProfileId);
-        setIsFriend(userInformation?.id !== currentProfileId && isPenpal);
-      },
-    }
-  );
 
   const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
     useMutation((id: number) => createPenpal({ receiverId: id }), {
@@ -89,20 +79,8 @@ const StudentDetailsPage = () => {
 
   useEffect(() => {
     let { isPenpal } = getPenpalInfo(currentProfileId);
-    setIsFriend(isPenpal);
+    setIsFriend && setIsFriend(isPenpal);
   }, [myPenpals, currentProfileId]);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-[500px] w-full">
-        <Loading />
-      </div>
-    );
-  }
-
-  if (error) {
-    return <div>Error loading profile</div>;
-  }
 
   const tabContents = [
     {
