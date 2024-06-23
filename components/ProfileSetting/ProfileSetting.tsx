@@ -139,7 +139,7 @@ const ProfileSettings = () => {
   return (
     <Card className="w-full p-4 mt-6">
       <h1 className="text-xl font-semibold">Basic Information</h1>
-      <div className="grid gap-9 mt-8 items-center w-1/5">
+      <div className="mt-8 flex flex-col items-center w-1/5">
         <ImageUpload
           loading={isDeletingProfile || isUploadingProfile || isUserGetInfo}
           attachmentFilepath={userInformation?.attachment?.file_path}
