@@ -7,12 +7,14 @@ import { useResponsive } from '@/lib/hooks';
 import Sidebar from '../common/sidebar/sidebar';
 import Navbar from '../common/navbar/MainBar';
 import { Bell, CircleHelp, LogOut, Settings } from 'lucide-react';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
 interface IProps {
   children: ReactNode;
 }
 
 export const AdminLayout: FC<IProps> = ({ children }) => {
+  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isMobile, isTabletMini, isTabletOrMobile } = useResponsive();
@@ -100,9 +102,7 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
                     title: 'Logout',
                     icon: <LogOut size={15} />,
                     onClick: () => {
-                      removeToken();
-                      removeUserId();
-                      router.push('/login');
+                      logout();
                     },
                   },
                 ],

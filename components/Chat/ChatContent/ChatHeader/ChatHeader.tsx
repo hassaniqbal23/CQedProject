@@ -9,6 +9,7 @@ import { Typography } from '@/components/common/Typography/Typography';
 import { EllipsisVertical } from 'lucide-react';
 import { ConversationUserSheet } from '../ConversationUserSheet/ConversationUserSheet';
 import { ChatConversation } from '@/types/chat';
+import { format, isValid } from 'date-fns';
 
 interface IProps {
   isOnline: boolean;
@@ -23,6 +24,15 @@ export const ChatHeader: FC<IProps> = ({
   conversation,
   onDeleteConversations,
 }: IProps) => {
+  let lastOnlineDate = 'last active unknown';
+  if (isValid(new Date(conversation.user.last_active))) {
+    lastOnlineDate =
+      'last active at ' +
+      format(
+        new Date(conversation.user.last_active),
+        "MMMM dd yyyy 'at' hh:mm a"
+      ).toLowerCase();
+  }
   return (
     <div className="flex justify-between bg-[#F4F4F4] items-center px-10 mx-0 py-2 w-full">
       <div className="flex gap-3 items-center">
@@ -51,7 +61,11 @@ export const ChatHeader: FC<IProps> = ({
                   weight="medium"
                   className={`text-sm  ${isOnline && !isTyping ? 'text-[#70C670]' : 'text-gray-400'}`}
                 >
-                  {isTyping ? 'Typing....' : isOnline ? 'Online' : 'Offline'}
+                  {isTyping
+                    ? 'Typing....'
+                    : isOnline
+                      ? 'Online'
+                      : lastOnlineDate}
                 </Typography>
               </div>
             </div>

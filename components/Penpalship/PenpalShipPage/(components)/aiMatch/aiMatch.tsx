@@ -142,7 +142,6 @@ export const AiMatch = ({ module }: AiMatchProps) => {
     };
     SearchPenpal(formattedValues);
     setUserInterests(formattedValues.interests);
-
   };
 
   useEffect(() => {
