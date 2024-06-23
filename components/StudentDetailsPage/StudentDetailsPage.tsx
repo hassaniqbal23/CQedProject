@@ -149,7 +149,7 @@ const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
             isFriend,
           }}
           profileIcon={studentProfile?.attachment?.file_path}
-          mutualFriends={'5 Mutual Friends'}
+          mutualFriends={studentProfile?.mutualFriends || 0}
         />
         <div className="mt-4">
           <TabsComponent

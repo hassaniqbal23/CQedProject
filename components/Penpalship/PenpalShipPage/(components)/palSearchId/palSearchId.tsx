@@ -113,7 +113,7 @@ export const PalSearchId = () => {
                   id={item?.profile.id}
                   title={item?.name}
                   description="Even though our cultural backgrounds and lifestyles were completely different..."
-                  mutualFriends="5 mutual friends"
+                  mutualFriends={item?.mutualFriends || 0}
                   countryName={item?.profile.country?.toUpperCase()}
                   studentAge={item?.profile.age}
                 />
