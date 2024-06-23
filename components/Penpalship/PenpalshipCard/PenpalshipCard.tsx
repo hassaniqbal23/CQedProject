@@ -4,7 +4,11 @@ import Link from 'next/link';
 import { Button, Dropdown } from '@/components/ui';
 import { Card } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
-import { getCountry, truncateText } from '@/app/utils/helpers';
+import {
+  getCountry,
+  getMutualFriendsText,
+  truncateText,
+} from '@/app/utils/helpers';
 import { MessageCircle } from 'lucide-react';
 import { LucideUsers } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -24,7 +28,7 @@ interface PenpalshipCardProps {
   countryFlag?: string;
   countryName?: string;
   studentAge: string | number;
-  mutualFriends?: string | number;
+  mutualFriends?: number;
   showRemoveButton?: boolean;
   showIcons?: boolean;
   id?: string | number;
@@ -36,7 +40,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   buttonText,
   description,
   buttonOnClick,
-  mutualFriends,
+  mutualFriends = 0,
   countryFlag,
   countryName = '',
   studentAge,
@@ -48,6 +52,8 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   const route = useRouter();
   const { setSelectedConversationId } = useChatProvider();
   const { module } = useModule();
+
+  const mutualFriend = getMutualFriendsText(mutualFriends);
 
   const truncatedDescription =
     (description && truncateText(description, 12)) || '';
@@ -123,7 +129,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
           </Typography>
           <Typography variant="p" weight="semibold" className="mb-1 text-xs">
             <Link href="" className="text-primary-500">
-              {mutualFriends}
+              {mutualFriend || '\u00A0'}
             </Link>
           </Typography>
           <Typography

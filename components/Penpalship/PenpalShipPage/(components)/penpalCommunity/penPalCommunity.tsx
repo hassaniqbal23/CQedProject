@@ -46,7 +46,7 @@ export const PenPalCommunity = () => {
     useMutation((id: number) => createPenpal({ receiverId: id }), {
       onSuccess: (res) => {
         queryCLient.refetchQueries('penpalSuggestions');
-        queryCLient.refetchQueries('MyPenPals');
+        // queryCLient.refetchQueries('MyPenPals');
         setCreatingPanpalId(null);
       },
       onError: (error) => {
@@ -113,7 +113,7 @@ export const PenPalCommunity = () => {
   );
 
   const { data: suggestionsResponse, isLoading } = useQuery(
-    ['penpalSuggestions', page, limit],
+    ['penpalSuggestions'],
     () => getSuggestions(page, limit),
     {
       enabled: true,
@@ -241,7 +241,7 @@ export const PenPalCommunity = () => {
               id={item?.id}
               imgPath={item?.attachment?.file_path}
               title={item?.profile?.full_name || item.email}
-              mutualFriends={'5 mutual friends'}
+              mutualFriends={item?.mutualFriends}
               buttonOnClick={() => {
                 sendPanpalRequest(item.id);
                 setCreatingPanpalId(item.id);
