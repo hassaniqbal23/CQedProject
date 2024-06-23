@@ -42,8 +42,8 @@ const formSchema = z.object({
 export interface IPublishStoryViewDialogProps {
   isFriend?: boolean;
   loading?: {
-    isCreatingPanpal: boolean;
-    isGetingUserStory: boolean;
+    isCreatingPenpal: boolean;
+    isGettingUserStory: boolean;
   };
   children?: React.ReactNode;
   open: boolean;
@@ -63,8 +63,8 @@ export interface IPublishStoryViewDialogProps {
 export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
   children,
   loading = {
-    isCreatingPanpal: false,
-    isGetingUserStory: false,
+    isCreatingPenpal: false,
+    isGettingUserStory: false,
   },
   open,
   onOpenChange,
@@ -97,7 +97,7 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent className="max-w-[600px] max-h-[800] p-0">
-        {loading?.isGetingUserStory ? (
+        {loading?.isGettingUserStory ? (
           <div>
             <SkeletonCard
               noOfCards={1}
@@ -172,7 +172,7 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
                             className="rounded-full h-12"
                             size={'md'}
                             variant={'info'}
-                            loading={loading?.isCreatingPanpal}
+                            loading={loading?.isCreatingPenpal}
                             onClick={onAddFriend}
                             type="button"
                           >
