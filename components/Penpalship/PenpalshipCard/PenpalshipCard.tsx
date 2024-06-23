@@ -77,7 +77,6 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
           />
           {showRemoveButton && (
             <PenpalShipButtonRequest user_id={id}></PenpalShipButtonRequest>
-
           )}
           {showIcons && (
             <div className="flex gap-2 text-primary-500">
@@ -104,7 +103,9 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                 options={[
                   {
                     content: (
-                      <PenpalShipButtonRequest user_id={id}></PenpalShipButtonRequest>
+                      <PenpalShipButtonRequest
+                        user_id={id}
+                      ></PenpalShipButtonRequest>
                     ),
                   },
                 ]}
