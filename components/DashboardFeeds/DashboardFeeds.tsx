@@ -179,7 +179,7 @@ function DashboardFeeds() {
                     />
                     <Separator className="w-12/12" />
                     {commentId === item.id && openCommentSection ? (
-                      <div className="py-3">
+                      <div className="py-3 px-3">
                         <CommentInput
                           loading={isCreatingComments}
                           onValueChange={(value) => {
@@ -205,7 +205,7 @@ function DashboardFeeds() {
                           item?.comments?.map(
                             (comment: IComment, index: number) => {
                               return (
-                                <div className="mb-3 ml-5 " key={index}>
+                                <div className="mb-3 ml-5 px-3" key={index}>
                                   <Comment
                                     avatarUrl={
                                       comment.User?.attachment?.file_path ||
