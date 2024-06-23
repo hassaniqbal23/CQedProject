@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Chip from './Chip'; // Assuming Chip component is in the same directory
 
 export interface ChipItem<T> {
@@ -11,6 +11,7 @@ interface ChipSelectorProps<T> {
   options: ChipItem<T>[];
   defaultValue?: any[];
   value?: T;
+  field?: string;
   rounded?: boolean;
   variant?:
     | 'primary'
@@ -28,14 +29,15 @@ function ChipSelector<T>({
   defaultValue,
   onChange,
   rounded,
+  field,
   variant,
   multiSelect,
   value,
   size,
 }: ChipSelectorProps<T>) {
-  const [selectedValue, setSelectedValue] = useState(defaultValue || []);
+  const [selectedValue, setSelectedValue] = useState<T[]>(defaultValue || []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (value) {
       if (Array.isArray(value)) {
         setSelectedValue(value);
@@ -45,16 +47,21 @@ function ChipSelector<T>({
     }
   }, [value]);
 
+  useEffect(() => {
+    if (field) {
+      setSelectedValue([field as unknown as T]);
+    }
+  }, [field]);
+
   const handleChipClick = (value: T) => {
     const isSelected = selectedValue.includes(value);
 
     if (multiSelect) {
-      setSelectedValue(
-        isSelected
-          ? selectedValue.filter((v) => v !== value)
-          : [...selectedValue, value]
-      ); // Toggle selection
-      if (onChange) onChange(selectedValue);
+      const newSelectedValue = isSelected
+        ? selectedValue.filter((v) => v !== value)
+        : [...selectedValue, value];
+      setSelectedValue(newSelectedValue);
+      if (onChange) onChange(newSelectedValue);
     } else {
       setSelectedValue([value]);
       if (onChange) onChange(value);
@@ -63,9 +70,7 @@ function ChipSelector<T>({
 
   return (
     <div
-      className={`flex gap-2 items-start ${
-        multiSelect && 'flex-wrap justify-center'
-      } 
+      className={`flex gap-2 items-start ${multiSelect && 'flex-wrap justify-center'}
         ${size === 'sm' ? 'gap-2' : ''}  {/* Added size specific class */}
         ${size === 'md' ? 'gap-4' : ''}  {/* Added size specific class */}
         ${size === 'lg' && 'flex-wrap gap-8 '}  {/* Added size specific class */}
@@ -75,11 +80,8 @@ function ChipSelector<T>({
         <Chip
           key={index}
           value={chip.value}
-          active={
-            selectedValue.length > 0 && selectedValue.includes(chip.value)
-              ? true
-              : false
-          }
+          className="!bg-red-900"
+          active={selectedValue.includes(chip.value)}
           rounded={rounded}
           variant={variant}
           onClick={() => handleChipClick(chip.value)}

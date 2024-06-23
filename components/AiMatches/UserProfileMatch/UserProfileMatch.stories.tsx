@@ -17,9 +17,10 @@ export const ViewNotification: Story = {
     user: {
       id: '123',
       attachment: { file_path: '/John.jpeg' },
-      fullname: 'John Doe',
+      full_name: 'John Doe',
       country: 'United States',
       countryFlag: locationIcon,
+      age: 16,
       state: 'California',
     },
   },

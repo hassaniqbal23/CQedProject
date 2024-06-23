@@ -11,3 +11,4 @@ export * from './StudentProfile/Interests/ProfileInterests';
 export * from './StudentProfile/WishCountries/WishCountries';
 export * from './StudentProfile/Gallery/Gallery';
 export * from './StudentProfile/Languages/Languages';
+export * from './MyProfileTeacher/MyProfileTeacher';

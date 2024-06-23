@@ -18,7 +18,7 @@ import {
   Languages,
 } from '@/components/common/Profiles';
 
-const PersonalProfilePage = () => {
+const StudentDetailsPage = () => {
   const queryClient = useQueryClient();
   const params = useParams();
   const router = useRouter();
@@ -37,9 +37,7 @@ const PersonalProfilePage = () => {
   );
 
   const getPenpalInfo = (id: number | string) => {
-    const penpal = myPenpals.find(
-      (penpal: { receiverId: string | number }) => penpal.receiverId === id
-    );
+    const penpal = myPenpals.find((penpal) => penpal.friend.id === id);
     return { isPenpal: !!penpal, penpal };
   };
 
@@ -226,4 +224,4 @@ const PersonalProfilePage = () => {
   );
 };
 
-export default PersonalProfilePage;
+export default StudentDetailsPage;

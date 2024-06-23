@@ -9,14 +9,10 @@ import countriesData from '@/public/countries/countries.json';
 import { MessageCircle } from 'lucide-react';
 import { LucideUsers } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal'; // Import the CreateChatModal component
-import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider'; // Import the useChatProvider hook
-
-interface Countries {
-  [key: string]: string;
-}
-
-const countries: Countries = countriesData;
+import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal';
+import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
+import { PenpalShipButtonRequest } from '../PenpalShipButtonRequest/PenpalShipButtonRequest';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface PenpalshipCardProps {
   title?: string;
@@ -51,7 +47,8 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   id,
 }) => {
   const route = useRouter();
-  const { setSelectedConversationId } = useChatProvider(); // Get the setSelectedConversationId function
+  const { setSelectedConversationId } = useChatProvider();
+  const { module } = useModule();
 
   const truncatedDescription =
     (description && truncateText(description, 12)) || '';
@@ -59,7 +56,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   const { flag = '', country = '' } = getCountry(countryName);
 
   const handleClick = () => {
-    route.push(`/students/profile/${id}`);
+    route.push(`/${module}/profile/${id}`);
   };
 
   function setIsSelectTeacher(arg0: { isOpenModal: boolean }): void {
@@ -79,17 +76,8 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
             unoptimized={true}
           />
           {showRemoveButton && (
-            <Button
-              onClick={buttonOnClick}
-              className={`rounded-full ${
-                buttonText?.toLocaleLowerCase() === 'remove'
-                  ? 'bg-red-100 text-red-600'
-                  : 'bg-[#ECEDF8] text-primary-500'
-              } w-32 h-10`}
-              loading={buttonLoading}
-            >
-              {buttonText}
-            </Button>
+            <PenpalShipButtonRequest user_id={id}></PenpalShipButtonRequest>
+
           )}
           {showIcons && (
             <div className="flex gap-2 text-primary-500">
@@ -116,15 +104,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                 options={[
                   {
                     content: (
-                      <div
-                        onClick={() =>
-                          setIsSelectTeacher({
-                            isOpenModal: true,
-                          })
-                        }
-                      >
-                        disconnect
-                      </div>
+                      <PenpalShipButtonRequest user_id={id}></PenpalShipButtonRequest>
                     ),
                   },
                 ]}
@@ -164,7 +144,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
               <Image
                 src={flag}
                 alt="flag"
-                className=""
+                className="shadow rounded"
                 width={38}
                 height={38}
                 unoptimized={true}

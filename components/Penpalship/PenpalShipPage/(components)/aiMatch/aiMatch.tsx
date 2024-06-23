@@ -57,7 +57,7 @@ export const AiMatch = ({ module }: AiMatchProps) => {
 
   const {
     mutate: SearchPenpal,
-    data,
+    data: FiltersData,
     isLoading,
   } = useMutation(['search-penpals'], (data: any) => penpalsFilters(data), {
     onSuccess(data) {
@@ -68,17 +68,16 @@ export const AiMatch = ({ module }: AiMatchProps) => {
       console.log(err);
     },
   });
-
   useEffect(() => {
-    if (data?.data?.data?.user?.interests && userInterests.length > 0) {
-      const penpalInterests = data.data.data.user.interests.split(',');
+    if (FiltersData?.data?.data?.interests && userInterests.length > 0) {
+      const penpalInterests = FiltersData?.data.data.interests;
       const matchingInterests = userInterests.filter((interest) =>
         penpalInterests.includes(interest)
       );
       const score = matchingInterests.length;
       setInterestsScore(score);
     }
-  }, [data, userInterests]);
+  }, [FiltersData, userInterests]);
 
   const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
     useMutation((id: number) => createPenpal({ receiverId: id }), {
@@ -146,10 +145,10 @@ export const AiMatch = ({ module }: AiMatchProps) => {
   };
 
   useEffect(() => {
-    if (data?.data) {
+    if (FiltersData?.data) {
       setShowUserProfile(true);
     }
-  }, [data?.data]);
+  }, [FiltersData?.data]);
 
   const interestsMatch =
     interestsScore !== null
@@ -158,9 +157,9 @@ export const AiMatch = ({ module }: AiMatchProps) => {
 
   const handleViewProfile = () => {
     if (module === 'teacher') {
-      router.push(`/schools/teachers/${data?.data.data.user.id}`);
+      router.push(`/schools/teachers/${FiltersData?.data.data.user.id}`);
     } else {
-      router.push(`/teachers/students/${data?.data.data.user.id}`);
+      router.push(`/teachers/students/${FiltersData?.data.data.user.id}`);
     }
   };
   return (
@@ -328,11 +327,11 @@ export const AiMatch = ({ module }: AiMatchProps) => {
         {showUserProfile ? (
           <div className={`order-1`}>
             <UserProfileMatch
-              user={data?.data?.data}
+              user={FiltersData?.data?.data}
               onButtonClick={() =>
-                handleRemovePaypals(data?.data?.data?.user?.id)
+                handleRemovePaypals(FiltersData?.data?.data?.user?.id)
               }
-              buttonText={isUserPanpals(data?.data?.data?.user?.id)}
+              buttonText={isUserPanpals(FiltersData?.data?.data?.user?.id)}
               screenType={
                 isMobile ? 'mobile' : isTabletMini ? 'tablet' : 'desktop'
               }

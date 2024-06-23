@@ -15,11 +15,13 @@ import {
   Settings,
   UserCheck,
 } from 'lucide-react';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 interface IProps {
   children: ReactNode;
 }
 
 export const UniversityLayout: FC<IProps> = ({ children }) => {
+  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isTabletMini } = useResponsive();
@@ -80,6 +82,9 @@ export const UniversityLayout: FC<IProps> = ({ children }) => {
             sidebarLinks={sidebarLinks}
           />
           <Navbar
+            sidebarLinks={sidebarLinks}
+            pathname={pathname as string}
+            isVerticalIcon={false}
             horizontalLinks={[
               {
                 href: '/universities/notifications',
@@ -109,9 +114,7 @@ export const UniversityLayout: FC<IProps> = ({ children }) => {
                     title: 'Logout',
                     icon: <LogOut size={15} />,
                     onClick: () => {
-                      removeToken();
-                      removeUserId();
-                      router.push('/universities/sign-in');
+                      logout();
                     },
                   },
                 ],

@@ -127,12 +127,15 @@ const SheetDescription = forwardRef<
 ));
 SheetDescription.displayName = SheetPrimitive.Description.displayName;
 
-interface SheetDemoProps {
+interface ISheetProps {
   title?: string;
   className?: string;
   buttonTitle?: string;
   description?: string;
   children?: React.ReactNode;
+  trigger?: React.ReactNode;
+  header?: React.ReactNode | boolean;
+  side?: 'top' | 'bottom' | 'left' | 'right';
 }
 
 export function SheetDemo({
@@ -140,30 +143,31 @@ export function SheetDemo({
   description,
   buttonTitle,
   children,
-}: SheetDemoProps) {
+  trigger,
+  header,
+  className,
+  side,
+}: ISheetProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline">{buttonTitle}</Button>
+        {trigger ? trigger : <Button variant="outline">{buttonTitle}</Button>}
       </SheetTrigger>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>{title}</SheetTitle>
-          <SheetDescription>{description}</SheetDescription>
-        </SheetHeader>
+      <SheetContent className={className} side={side}>
+        {typeof header === 'boolean' && header ? (
+          <>
+            <SheetHeader>
+              <SheetTitle>{title}</SheetTitle>
+              <SheetDescription>{description}</SheetDescription>
+            </SheetHeader>
+          </>
+        ) : (
+          <SheetHeader>{header}</SheetHeader>
+        )}
         {children}
       </SheetContent>
     </Sheet>
   );
-}
-
-interface ChatSheetDemoProps {
-  title?: string;
-  className?: string;
-  buttonTitle?: string;
-  description?: string;
-  children?: React.ReactNode;
-  trigger?: React.ReactNode;
 }
 
 export function ChatSidebarSheetDemo({
@@ -172,7 +176,7 @@ export function ChatSidebarSheetDemo({
   buttonTitle,
   children,
   trigger,
-}: ChatSheetDemoProps) {
+}: ISheetProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>

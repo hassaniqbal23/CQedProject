@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ChatMessage from './ChatMessage';
-import { IMessage } from '@/app/globalContext/types';
 import { ChatConversation } from '@/types/chat';
+import { IMessage } from '@/app/globalContext/types';
 
 const meta: Meta<typeof ChatMessage> = {
   title: 'Chat/ChatMessage',
@@ -18,6 +18,7 @@ const user: ChatConversation = {
     schoolId: 0,
     status: 0,
     name: 'ayaz',
+    last_active: '2023-06-11T10:00:00Z',
   },
   id: 1,
   lastMessageReceived: '2023-06-11T10:00:00Z',
