@@ -111,7 +111,7 @@ export const PalSearchId = () => {
                 <PenpalshipCard
                   imgPath={item?.attachment?.file_path}
                   id={item?.profile.id}
-                  title={item?.profile?.full_name}
+                  title={item?.name}
                   description={item?.profile?.bio}
                   mutualFriends={item?.mutualFriends || 0}
                   countryName={item?.profile.country?.toUpperCase()}
