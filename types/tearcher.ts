@@ -45,6 +45,9 @@ export interface ITeacherProfile {
   name: string;
   profile: IUserProfile;
   role: IRole;
+  school: {
+    name: string;
+  };
 }
 
 export interface ITeacherProfileResponse {
