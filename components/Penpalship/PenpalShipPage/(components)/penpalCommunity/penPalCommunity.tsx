@@ -46,7 +46,7 @@ export const PenPalCommunity = () => {
     useMutation((id: number) => createPenpal({ receiverId: id }), {
       onSuccess: (res) => {
         queryCLient.refetchQueries('penpalSuggestions');
-        // queryCLient.refetchQueries('MyPenPals');
+        queryCLient.refetchQueries('MyPenPals');
         setCreatingPanpalId(null);
       },
       onError: (error) => {
