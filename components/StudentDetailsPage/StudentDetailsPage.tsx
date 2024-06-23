@@ -81,7 +81,7 @@ const StudentDetailsPage = () => {
     const { penpal } = getPenpalInfo(studentProfile?.id);
 
     userInformation?.id === currentProfileId
-      ? router.push('/students/settings')
+      ? router.push('/students/account-settings')
       : isFriend
         ? penpal && handleRemove.mutate(penpal?.id)
         : sendPanpalRequest(studentProfile?.id);
