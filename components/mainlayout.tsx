@@ -90,9 +90,7 @@ export const MainLayout: FC<IProps> = ({ children }) => {
                     title: 'Logout',
                     icon: <LogOut size={15} />,
                     onClick: () => {
-                      removeToken();
-                      removeUserId();
-                      router.push('/login');
+                      logout();
                     },
                   },
                 ],

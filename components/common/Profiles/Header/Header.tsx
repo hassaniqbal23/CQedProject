@@ -146,8 +146,8 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
         <div className="ml-6">
           {name && <h1 className={`font-bold mb-2 ${titleClass}`}>{name}</h1>}
           {role && (
-            <p className="text-gray-400 text-sm">
-              {role} <span className="text-white ml-1">{subrole}</span>
+            <p className="text-[#F1F1F1CC] text-sm">
+              {role} at <span className="text-white ml-1">{subrole}</span>
             </p>
           )}
           {(age || gender) && (

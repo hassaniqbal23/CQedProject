@@ -2,12 +2,17 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Calendar, GraduationCap } from 'lucide-react';
+import { Typography } from '../../Typography/Typography';
+import Image from 'next/image';
 
 interface Job {
   id: string;
-  company: string;
-  role: string;
-  duration: string;
+  educationLevel: string;
+  fieldOfStudy: string;
+  countryCode: string;
+  institution: string;
+  startDate: string;
+  endDate: string;
 }
 
 interface WorkHistoryProps {
@@ -34,17 +39,33 @@ export const ProfileEducation: React.FC<WorkHistoryProps> = ({
             >
               <div className="flex items-center">
                 <div className="bg-primary-50 p-2 rounded-md">
-                  <GraduationCap color="#1D1E1E" size={25} />
+                  <Image
+                    src={'/graduate.svg'}
+                    alt={'icon'}
+                    width={28}
+                    height={28}
+                  ></Image>
                 </div>
                 <div key={job.id} className="p-3 text-left ">
                   <h3 className="font-semibold text-base text-[#393939]">
-                    {job.company}
+                    {job.educationLevel} degree in {job.fieldOfStudy}
                   </h3>
+                  <div>
+                    <Typography
+                      variant={'h6'}
+                      weight={'semibold'}
+                      className="text-[#393939]"
+                    >
+                      {job.institution}
+                    </Typography>
+                  </div>
                   <div className="flex items-center mt-1">
-                    <p className="text-sm">{job.role}</p>
+                    <p className="text-sm text-[#393939] font-medium">
+                      {job.countryCode}
+                    </p>
                     <p className="text-sm flex items-center ml-5">
-                      <Calendar size={15} className="mr-2" />
-                      {job.duration}
+                      <Calendar size={15} className="mr-2 font-medium" />
+                      {job.startDate} - {job.endDate}
                     </p>
                   </div>
                 </div>

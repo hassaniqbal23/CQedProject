@@ -9,6 +9,7 @@ import {
 } from '../utils/encryption';
 import { myPenpals as getMyPenpals } from '../api/penpals';
 import { getBlockedUsers } from '../api/users';
+import { useRouter } from 'next/navigation';
 
 type IGlobalState = {
   isUserGetInfo: boolean;
@@ -41,6 +42,7 @@ export const GlobalState = createContext<IGlobalState>({
 });
 
 export const GlobalProvider: FC<any> = ({ children }) => {
+  const router = useRouter();
   const [isUserGetInfo, setIsUserGetInfo] = useState<boolean>(true);
   const [isFetchingMyPenPals, setIsFetchingMyPenPals] = useState<boolean>(true);
   const [userInformation, setUserInformation] = useState<IUserInformation>(
@@ -55,6 +57,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   const userId = getUserIdLocalStorage();
 
   const logout = () => {
+    const clonedUserInfo = JSON.parse(JSON.stringify(userInformation));
     setUserInformation({} as IUserInformation);
     setIsAuthenticated(false);
     setJoinedCommunities([]);
@@ -62,6 +65,20 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     removeToken();
     removeUserId();
     setUsersIBlocked([]);
+
+    const roleName = clonedUserInfo?.role?.name;
+
+    if (roleName === 'student') {
+      router.push('/students/sign-in');
+    } else if (roleName === 'university') {
+      router.push('/universities/sign-in');
+    } else if (roleName === 'school') {
+      router.push('/schools/sign-in');
+    } else if (roleName === 'teacher') {
+      router.push('/teachers/sign-in');
+    } else if (roleName === '*') {
+      router.push('/login');
+    }
   };
 
   useQuery(

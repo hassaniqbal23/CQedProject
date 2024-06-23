@@ -45,9 +45,8 @@ export const PenPalCommunity = () => {
   const { page, limit } = paginationPenpals;
   const { sendRequest, isCreatingPenpal } = useSendPenpalRequest();
 
-  const { mutate: createUserStories, isLoading: isCreatingStories } = useMutation(
-    (story: string) => UserCreateStories({ story: story }),
-    {
+  const { mutate: createUserStories, isLoading: isCreatingStories } =
+    useMutation((story: string) => UserCreateStories({ story: story }), {
       onSuccess: (res) => {
         queryClient.refetchQueries('getAllUserStories');
         setOpenStoryModal(false);
@@ -55,8 +54,7 @@ export const PenPalCommunity = () => {
       onError: (error) => {
         console.error(error, 'Error =====> log');
       },
-    }
-  );
+    });
 
   const { data: getUserStory, isLoading: isGettingUserStory } = useQuery(
     ['getUserStoriesById', viewUserStoryId],
@@ -66,7 +64,7 @@ export const PenPalCommunity = () => {
       }),
     {
       enabled: typeof viewUserStoryId === 'number' ? true : false,
-      onSuccess: (res) => { },
+      onSuccess: (res) => {},
       onError(err) {
         console.log(err);
       },
@@ -96,7 +94,7 @@ export const PenPalCommunity = () => {
       }),
     {
       enabled: true,
-      onSuccess: (res) => { },
+      onSuccess: (res) => {},
       onError(err) {
         console.log(err);
       },
@@ -233,7 +231,10 @@ export const PenPalCommunity = () => {
               title={item?.profile?.full_name || item.email}
               mutualFriends={'5 mutual friends'}
               buttonOnClick={() => {
-                sendRequest({ receiverId: Number(item.id), setCreatingPanpalId });
+                sendRequest({
+                  receiverId: Number(item.id),
+                  setCreatingPanpalId,
+                });
                 setCreatingPanpalId(item.id);
               }}
               buttonLoading={creatingPanpalId === item.id && isCreatingPenpal}

@@ -58,8 +58,6 @@ const ChatMessage: FC<Iprops> = ({
     messages.message_deleted_by &&
     messages.message_deleted_by.length > 0;
 
-  console.log(messages);
-
   const { isLoading, mutate: translate } = useMutation(
     ['translateMessage', messageContent, 'en'],
     (message: string, to: string = 'en') => translateMessage(message, to),

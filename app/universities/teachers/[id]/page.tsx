@@ -5,7 +5,7 @@ import { TeacherProfileView } from '@/components/common/Profiles/TeacherProfileV
 
 const UniversityTeachersProfile = () => {
   const params = useParams();
-  return <TeacherProfileView id={Number(params && params.id)} />;
+  return <TeacherProfileView />;
 };
 
 export default UniversityTeachersProfile;
