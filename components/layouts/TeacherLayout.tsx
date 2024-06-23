@@ -4,6 +4,7 @@ import Sidebar from '../common/sidebar/sidebar';
 import { usePathname } from 'next/navigation';
 import Navbar from '../common/navbar/MainBar';
 import { useRouter } from 'next/navigation';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
 
 import { useResponsive } from '@/lib/hooks';
@@ -15,14 +16,17 @@ import {
   Settings,
   UserCheck,
 } from 'lucide-react';
+
 interface IProps {
   children: ReactNode;
 }
 
 export const TeacherLayout: FC<IProps> = ({ children }) => {
+  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isMobile, isTabletMini, isTabletOrMobile } = useResponsive();
+  const { userInformation } = useGlobalState();
 
   const showLayout = useMemo(() => {
     if (!pathname) return false;
@@ -121,7 +125,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
                 dropdownOption: [
                   {
                     title: 'Profile',
-                    path: '/teachers/profile',
+                    path: `/teachers/profile/${userInformation.id}`,
                     icon: <Bell size={15} />,
                   },
                   {
@@ -143,9 +147,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
                     title: 'Logout',
                     icon: <LogOut size={15} />,
                     onClick: () => {
-                      removeToken();
-                      removeUserId();
-                      router.push('/teachers/sign-in');
+                      logout();
                     },
                   },
                 ],

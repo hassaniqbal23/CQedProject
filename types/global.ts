@@ -31,6 +31,7 @@ export interface IUser {
   name: string;
   status: number;
   attachment?: IAttachments;
+  last_active: string;
 }
 
 export interface IComment {

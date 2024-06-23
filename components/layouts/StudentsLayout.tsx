@@ -14,6 +14,7 @@ interface IProps {
 }
 
 export const StudentsLayout: FC<IProps> = ({ children, className }) => {
+  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isMobile, isTabletMini, isTabletOrMobile } = useResponsive();
@@ -140,9 +141,7 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
                     title: 'Logout',
                     icon: <LogOut size={15} />,
                     onClick: () => {
-                      removeToken();
-                      removeUserId();
-                      router.push('/students/sign-in');
+                      logout();
                     },
                   },
                 ],

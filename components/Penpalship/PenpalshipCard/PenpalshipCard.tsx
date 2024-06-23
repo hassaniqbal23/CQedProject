@@ -6,6 +6,7 @@ import { Card } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import { getCountry, truncateText } from '@/app/utils/helpers';
 import { useRouter } from 'next/navigation';
+import { PenpalShipButtonRequest } from '../PenpalShipButtonRequest/PenpalShipButtonRequest';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface PenpalshipCardProps {
@@ -58,16 +59,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
             height={70}
             unoptimized={true}
           />
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              buttonOnClick();
-            }}
-            className={`rounded-full ${buttonText?.toLocaleLowerCase() === 'remove' ? 'bg-red-100 text-red-600' : 'bg-[#ECEDF8] text-primary-500'} w-32 h-10`}
-            loading={buttonLoading}
-          >
-            {buttonText}
-          </Button>
+          <PenpalShipButtonRequest user_id={id}></PenpalShipButtonRequest>
         </div>
         <div className="ml-2">
           <Typography
@@ -101,7 +93,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
               <Image
                 src={flag}
                 alt="flag"
-                className=""
+                className="shadow rounded"
                 width={38}
                 height={38}
                 unoptimized={true}
