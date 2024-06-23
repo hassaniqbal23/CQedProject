@@ -15,8 +15,9 @@ export const AiMatches: FC<IProps> = ({ showNotification }) => {
           user={{
             id: '123',
             attachment: { file_path: '/John.jpeg' },
-            fullname: 'John Doe',
+            full_name: 'John Doe',
             country: 'United States',
+            age: 12,
             countryFlag: locationIcon,
             state: 'California',
           }}

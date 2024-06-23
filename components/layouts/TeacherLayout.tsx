@@ -4,6 +4,7 @@ import Sidebar from '../common/sidebar/sidebar';
 import { usePathname } from 'next/navigation';
 import Navbar from '../common/navbar/MainBar';
 import { useRouter } from 'next/navigation';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 import { removeToken, removeUserId } from '@/app/utils/encryption';
 
 import { useResponsive } from '@/lib/hooks';
@@ -25,6 +26,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
   const pathname = usePathname();
   const router = useRouter();
   const { isMobile, isTabletMini, isTabletOrMobile } = useResponsive();
+  const { userInformation } = useGlobalState();
 
   const showLayout = useMemo(() => {
     if (!pathname) return false;
@@ -123,7 +125,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
                 dropdownOption: [
                   {
                     title: 'Profile',
-                    path: '/teachers/profile',
+                    path: `/teachers/profile/${userInformation.id}`,
                     icon: <Bell size={15} />,
                   },
                   {

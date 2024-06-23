@@ -1,9 +1,9 @@
 import React from 'react';
-import PersonalProfilePage from '@/components/PersonalProfilePage/PersonalProfilePage';
+import StudentDetailsPage from '@/components/StudentDetailsPage/StudentDetailsPage';
 export default function StudentProfile() {
   return (
     <div>
-      <PersonalProfilePage />
+      <StudentDetailsPage />
     </div>
   );
 }
