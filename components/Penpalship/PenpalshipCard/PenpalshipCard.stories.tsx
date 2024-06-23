@@ -19,7 +19,7 @@ export const NewilyJoinedCard: Story = {
         imgPath={'/Emily1.png'}
         title="Moominmadness"
         description="Even though our cultural backgrounds and lifestyles were completely different..."
-        mutualFriends="5 mutual friends"
+        mutualFriends={0}
         countryName="Pakistan"
         studentAge="8 years old"
       />

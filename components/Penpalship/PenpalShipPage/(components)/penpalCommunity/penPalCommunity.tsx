@@ -102,7 +102,7 @@ export const PenPalCommunity = () => {
   );
 
   const { data: suggestionsResponse, isLoading } = useQuery(
-    ['penpalSuggestions', page, limit],
+    ['penpalSuggestions'],
     () => getSuggestions(page, limit),
     {
       enabled: true,
@@ -229,7 +229,7 @@ export const PenPalCommunity = () => {
               id={item?.id}
               imgPath={item?.attachment?.file_path}
               title={item?.profile?.full_name || item.email}
-              mutualFriends={'5 mutual friends'}
+              mutualFriends={item?.mutualFriends}
               description={item?.profile?.bio}
               countryName={item?.profile?.country}
               studentAge={item?.profile?.age}

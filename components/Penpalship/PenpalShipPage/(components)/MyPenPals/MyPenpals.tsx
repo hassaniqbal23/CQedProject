@@ -76,7 +76,7 @@ export const MyPenpals: React.FC = () => {
             id={item?.user?.id}
             imgPath={item?.user?.attachment?.file_path}
             title={item?.user?.profile?.full_name || ''}
-            mutualFriends="5 mutual friends"
+            mutualFriends={item?.user?.mutualFriends || 0}
             description={item?.user?.profile?.bio}
             countryName={item?.user?.profile?.country.toUpperCase()}
             studentAge={item?.user?.profile?.age}
