@@ -9,6 +9,7 @@ import {
 } from '../utils/encryption';
 import { myPenpals as getMyPenpals } from '../api/penpals';
 import { getBlockedUsers } from '../api/users';
+import { pendingCommunities } from '../api/communities';
 import { useRouter } from 'next/navigation';
 
 type IGlobalState = {
@@ -24,6 +25,7 @@ type IGlobalState = {
   isAuthenticated?: boolean;
   logout: () => void;
   setIsFetchingMyPenPals: (value: boolean) => void;
+  pendingCommunitiesList: any[];
 };
 
 export const GlobalState = createContext<IGlobalState>({
@@ -39,6 +41,7 @@ export const GlobalState = createContext<IGlobalState>({
   isAuthenticated: false,
   logout: () => {},
   setIsFetchingMyPenPals: () => {},
+  pendingCommunitiesList: [],
 });
 
 export const GlobalProvider: FC<any> = ({ children }) => {
@@ -54,6 +57,9 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   const [joinedCommunities, setJoinedCommunities] = useState<ICommunityJoin[]>(
     []
   );
+  const [pendingCommunitiesList, setPendingCommunitiesList] = useState<any[]>(
+    []
+  );
   const userId = getUserIdLocalStorage();
 
   const logout = () => {
@@ -65,6 +71,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     removeToken();
     removeUserId();
     setUsersIBlocked([]);
+    setPendingCommunitiesList([]);
 
     const roleName = clonedUserInfo?.role?.name;
 
@@ -155,6 +162,17 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     retryDelay: 5000,
   });
 
+  useQuery(['pending-communities'], () => pendingCommunities(), {
+    onSuccess: (res) => {
+      setPendingCommunitiesList(res.data);
+    },
+    onError: (err) => {
+      console.log(err, '======> ERROR');
+    },
+    retry: 100,
+    retryDelay: 5000,
+  });
+
   return (
     <GlobalState.Provider
       value={{
@@ -170,6 +188,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         setIsUserGetInfo,
         setUserInformation,
         setIsFetchingMyPenPals,
+        pendingCommunitiesList,
       }}
     >
       {children}

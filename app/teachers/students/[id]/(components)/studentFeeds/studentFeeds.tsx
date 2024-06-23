@@ -110,6 +110,7 @@ export const StudentFeeds = ({ userName }: IStudentsFeed) => {
                     userFullName={post.User.name}
                     userImage={post.User.attachment.file_path}
                     username={post.username}
+                    isFriend={false}
                   />
                 </div>
               );

@@ -99,7 +99,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
       <div className="block w-[70px] md:w-[240px] bg-[#F6F8F9] dark:bg-slate-900">
         <div className="flex">
           <Sidebar
-            isMobileSidebar={isTabletMini || isTabletOrMobile}
+            isMobileSidebar={isTabletMini}
             isVerticalIcon={true}
             pathname={pathname as string}
             sidebarLinks={sidebarLinks}

@@ -93,7 +93,7 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
       >
         <div className="flex">
           <Sidebar
-            isMobileSidebar={isTabletMini || isTabletOrMobile}
+            isMobileSidebar={isTabletMini}
             isVerticalIcon={true}
             pathname={pathname as string}
             sidebarLinks={sidebarLinks}
