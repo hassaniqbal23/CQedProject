@@ -17,6 +17,7 @@ import { useGlobalState } from '@/app/globalContext/globalContext';
 import { useMutation, useQueryClient } from 'react-query';
 import { deleteProfileImage, uploadProfileImage } from '@/app/api/admin';
 import { toast } from 'sonner';
+import { getSingleCountry } from '@/lib/utils';
 import { FormInput } from '../From/FormInput';
 import ImageUpload from '../ImageUpload/ImageUpload';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
@@ -39,25 +40,21 @@ const formSchema = z.object({
 
 const StudentProfileSettings = () => {
   const { userInformation, isUserGetInfo } = useGlobalState();
-  const { flag = '', country: countryName = '' } = getCountry(
-    userInformation?.profile?.country
-  );
   const refetch = useQueryClient();
-
+  const userInfo = userInformation?.profile;
   const form = useForm<any>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      full_name: userInformation?.profile?.full_name || '',
-      nick_name: userInformation?.profile?.nick_name || '',
+      full_name: userInfo?.full_name || '',
+      nick_name: userInfo?.nick_name || '',
       photo: userInformation?.attachment?.file_path || '',
-      dob: userInformation?.profile?.dob || '',
-      country: countryName ? { value: countryName, label: countryName } : '',
-      gender: userInformation?.profile?.gender || '',
-      language: userInformation?.profile?.languages || [],
-      interests: userInformation?.profile?.interests || [],
-      bio: userInformation?.profile?.bio || '',
-      culture_information:
-        userInformation?.profile?.culture_information?.[0] || '',
+      dob: userInfo?.dob || '',
+      country: userInfo?.country || '',
+      gender: userInfo?.gender || '',
+      language: userInfo?.languages || [],
+      interests: userInfo?.interests || [],
+      bio: userInfo?.bio || '',
+      culture_information: userInfo?.culture_information?.[0] || '',
       amazingThing: userInformation.profile?.meta?.amazingThing || '',
       shareExploreLearn: userInformation.profile?.meta?.shareExploreLearn || '',
     },
@@ -103,49 +100,34 @@ const StudentProfileSettings = () => {
 
     return formattedDOB;
   };
-
+  const { setValue } = form;
   useEffect(() => {
     if (userInformation) {
-      form.setValue(
-        'full_name',
-        userInformation.profile?.full_name || userInformation.name
-      );
-      form.setValue('nick_name', userInformation.profile?.nick_name);
-      form.setValue(
-        'country',
-        countryName ? { value: countryName, label: countryName } : ''
-      );
-      form.setValue('dob', formatDOB(userInformation.profile?.dob));
-      form.setValue('gender', userInformation.profile?.gender);
-      form.setValue(
+      setValue('full_name', userInfo?.full_name || userInformation.name);
+      setValue('nick_name', userInfo?.nick_name);
+      setValue('country', userInfo?.country);
+      setValue('dob', formatDOB(userInfo?.dob));
+      setValue('gender', userInfo?.gender);
+      setValue(
         'language',
-        userInformation.profile?.languages.map((label: string) => ({
+        userInfo?.languages.map((label: string) => ({
           label: label,
           value: label,
         }))
       );
-      form.setValue(
+      setValue(
         'interests',
-        userInformation.profile?.interests.map((label: string) => ({
+        userInfo?.interests.map((label: string) => ({
           label: label,
           value: label,
         }))
       );
-      form.setValue('bio', userInformation.profile?.bio);
-      form.setValue(
-        'culture_information',
-        userInformation.profile?.culture_information?.[0]
-      );
-      form.setValue(
-        'amazingThing',
-        userInformation.profile?.meta?.amazingThing
-      );
-      form.setValue(
-        'shareExploreLearn',
-        userInformation.profile?.meta?.shareExploreLearn
-      );
+      setValue('bio', userInfo?.bio);
+      setValue('culture_information', userInfo?.culture_information?.[0]);
+      setValue('amazingThing', userInfo?.meta?.amazingThing);
+      setValue('shareExploreLearn', userInfo?.meta?.shareExploreLearn);
     }
-  }, [userInformation, countryName]);
+  }, [userInformation]);
 
   const { mutate: updateProfile, isLoading: isUpdatingProfile } = useMutation(
     (profileData: { profileId: number; payload: IUserInformation }) =>
@@ -172,7 +154,6 @@ const StudentProfileSettings = () => {
       amazingThing,
       culture_information,
       dob,
-      country,
     } = formData;
     const transformedInterests = interests.map(
       (interest: { value: string }) => interest.value
@@ -188,7 +169,6 @@ const StudentProfileSettings = () => {
 
     const payload = {
       ...formData,
-      country: country.value,
       meta: {
         shareExploreLearn: shareExploreLearn,
         amazingThing: amazingThing,
@@ -258,21 +238,21 @@ const StudentProfileSettings = () => {
                 control={form.control}
                 name="country"
                 render={({ field }) => {
-                  const selectedCountry = field.value
-                    ? { value: field.value, label: field.value }
-                    : null;
                   return (
                     <FormItem>
-                      <FormLabel className="!text-sm">Country</FormLabel>
+                      <FormLabel>Country</FormLabel>
                       <FormControl>
                         <SelectCountry
-                          {...selectedCountry}
-                          onChange={(e: any) => {
-                            if (!e) {
-                              form.setValue('country', '');
-                              return;
-                            }
-                            form.setValue('country', e);
+                          value={
+                            field.value
+                              ? {
+                                  label: getSingleCountry(field?.value)?.label,
+                                  value: field.value,
+                                }
+                              : undefined
+                          }
+                          onChange={(newValue: any) => {
+                            field.onChange(newValue?.value);
                           }}
                           label=""
                         />
