@@ -6,7 +6,7 @@ import PenpalshipPage from '@/components/Penpalship/PenpalShipPage';
 const Penpalship = () => {
   return (
     <div>
-      <PenpalshipPage module="teacher" />
+      <PenpalshipPage />
     </div>
   );
 };
