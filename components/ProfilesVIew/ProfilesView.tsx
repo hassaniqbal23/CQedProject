@@ -15,6 +15,7 @@ const ProfilesView = () => {
   const { userInformation, myPenpals } = useGlobalState();
 
   const [isFriend, setIsFriend] = useState<boolean>(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
 
   const getPenpalInfo = (id: number | string) => {
     const penpal = myPenpals.find((penpal) => penpal.friend.id === id);
@@ -54,6 +55,8 @@ const ProfilesView = () => {
           isFriend={isFriend}
           data={data}
           setIsFriend={setIsFriend}
+          setIsPending={setIsPending}
+          isPending={isPending}
         />
       ) : role === 'teacher' ? (
         <TeacherProfileView data={data?.data?.data} />

@@ -20,6 +20,8 @@ const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
   isFriend,
   data,
   setIsFriend,
+  isPending,
+  setIsPending,
 }) => {
   const { sendRequest, isCreatingPenpal, deleteRequest, isDeletingPenpal } =
     useSendPenpalRequest();
@@ -27,8 +29,11 @@ const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
   const router = useRouter();
   const currentProfileId = Number(params?.id);
   const { userInformation, myPenpals } = useGlobalState();
-  const buttonText =
-    userInformation?.id === currentProfileId ? 'Edit Profile' : 'Add Friend';
+  const buttonText = isPending
+    ? 'Pending'
+    : userInformation?.id === currentProfileId
+      ? 'Edit Profile'
+      : 'Add Friend';
   const Map = useMemo(
     () =>
       dynamic(() => import('@/components/ui/MapComponent/Map'), {
@@ -59,8 +64,9 @@ const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
   };
 
   useEffect(() => {
-    let { isPenpal } = getPenpalInfo(currentProfileId);
+    let { isPenpal, penpal } = getPenpalInfo(currentProfileId);
     setIsFriend && setIsFriend(isPenpal);
+    setIsPending && penpal?.status === 'PENDING' && setIsPending(true);
   }, [myPenpals, currentProfileId]);
 
   const tabContents = [
@@ -146,10 +152,10 @@ const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
             isLoading: isCreatingPenpal || isDeletingPenpal,
             onClick: handleClick,
             buttonText,
-            isFriend,
+            isFriend: isPending ? false : isFriend,
           }}
           profileIcon={studentProfile?.attachment?.file_path}
-          mutualFriends={studentProfile?.mutualFriends || 0}
+          mutualFriends={studentProfile?.mutualFriends}
         />
         <div className="mt-4">
           <TabsComponent

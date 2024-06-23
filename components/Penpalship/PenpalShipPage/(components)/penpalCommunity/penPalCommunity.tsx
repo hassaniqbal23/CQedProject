@@ -81,9 +81,16 @@ export const PenPalCommunity = () => {
           (c.senderId == getUserStoryUserId && c.receiverId == MyId)
         );
       });
-      if (getPenpal) return true;
+      if (getPenpal)
+        return {
+          isTrue: true,
+          isPending: getPenpal.status == 'PENDING' ? true : false,
+        };
     }
-    return false;
+    return {
+      isTrue: false,
+      isPending: false,
+    };
   }, [getUserStory, myPenpals]);
 
   const { data: AllUserStories, isLoading: isGettingUserStories } = useQuery(

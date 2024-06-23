@@ -112,7 +112,7 @@ export const PalSearchId = () => {
                   imgPath={item?.attachment?.file_path}
                   id={item?.profile.id}
                   title={item?.name}
-                  description="Even though our cultural backgrounds and lifestyles were completely different..."
+                  description={item?.profile?.bio}
                   mutualFriends={item?.mutualFriends || 0}
                   countryName={item?.profile.country?.toUpperCase()}
                   studentAge={item?.profile.age}
