@@ -20,7 +20,7 @@ import {
   resendInvitation,
 } from '@/app/api/admin';
 import { toast } from 'sonner';
-import { CircleAlert, Plus } from 'lucide-react';
+import { CircleAlert, Plus, Search } from 'lucide-react';
 import { Typography } from '@/components/common/Typography/Typography';
 import { IoEllipsisVertical } from 'react-icons/io5';
 import Delete from '@/components/common/DeleteAlert/DeleteAlert';
@@ -181,12 +181,15 @@ const Universities = () => {
               value: 'universities',
               content: (
                 <>
-                  <div className="py-8">
+                  <div className="py-8 relative ">
                     <Input
-                      placeholder="Search universities here..."
                       type="search"
-                      className=" max-w-sm  text-black rounded-full text"
+                      placeholder="Search Universities"
+                      className="max-w-sm rounded-full border bg-gray-100 text-[#464343] py-5"
                     />
+                    <div className="absolute top-0 bottom-0 flex items-center pl-3">
+                      <Search className="text-[#464343] " />
+                    </div>
                   </div>
                   <div>
                     <SchoolTable
@@ -221,12 +224,15 @@ const Universities = () => {
               value: 'invited',
               content: (
                 <>
-                  <div className="py-8">
+                  <div className="py-8 relative ">
                     <Input
-                      placeholder="Search universities here..."
                       type="search"
-                      className=" max-w-sm  text-black rounded-full text"
+                      placeholder="Search Universities"
+                      className="max-w-sm rounded-full border bg-gray-100 text-[#464343] py-5"
                     />
+                    <div className="absolute top-0 bottom-0 flex items-center pl-3">
+                      <Search className="text-[#464343] " />
+                    </div>
                   </div>
                   <div>
                     <DataTable
@@ -336,7 +342,7 @@ const Universities = () => {
         setOpen={setInviteSchool}
         open={inviteSchool}
         onSubmit={onSubmit}
-        inviteButtonTitle={'Invite University'}
+        inviteButtonTitle={'Send Invitation'}
       />
     </>
   );

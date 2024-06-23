@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import countriesJSON from 'public/countries/countries.json';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -134,3 +135,14 @@ export function getPieChartOptions(data: any) {
     ],
   };
 }
+
+export const getSingleCountry = (name: string) => {
+  const options = Object.keys(countriesJSON).map((c) => {
+    return {
+      value: c,
+      label: countriesJSON[c as keyof typeof countriesJSON],
+    };
+  });
+  let currentCountry = options?.filter((country) => country.value === name)[0];
+  return currentCountry;
+};

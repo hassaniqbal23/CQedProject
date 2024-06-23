@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation';
 import { UserProfileMatch } from '@/components/AiMatches/UserProfileMatch/UserProfileMatch';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 const formSchema = z.object({
   country: z.object({
@@ -43,11 +44,7 @@ const formSchema = z.object({
     .nonempty({ message: 'At least one language is required.' }),
 });
 
-interface AiMatchProps {
-  module?: 'student' | 'teacher';
-}
-
-export const AiMatch = ({ module }: AiMatchProps) => {
+export const AiMatch = () => {
   const { isMobile, isTabletMini, isDesktopOrLaptop } = useResponsive();
   const [interestsScore, setInterestsScore] = useState<number | null>(null);
   const { myPenpals } = useGlobalState();
@@ -55,6 +52,7 @@ export const AiMatch = ({ module }: AiMatchProps) => {
   const [showUserProfile, setShowUserProfile] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const router = useRouter();
+  const { module } = useModule();
 
   const { sendRequest, deleteRequest } = useSendPenpalRequest();
 
@@ -138,11 +136,7 @@ export const AiMatch = ({ module }: AiMatchProps) => {
       : '';
 
   const handleViewProfile = () => {
-    if (module === 'teacher') {
-      router.push(`/schools/teachers/${FiltersData?.data.data.user.id}`);
-    } else {
-      router.push(`/teachers/students/${FiltersData?.data.data.user.id}`);
-    }
+    router.push(`/${module}/profile/${FiltersData?.data.data.user.id}`);
   };
   return (
     <>

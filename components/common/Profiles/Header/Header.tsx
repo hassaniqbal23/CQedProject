@@ -14,6 +14,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { blockUser, reportUser, unblockUser } from '@/app/api/users';
 import { ReportClassDialog } from '../../DeleteClassModal/ReportClassModal';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface HeaderProps {
   name?: string;
@@ -60,6 +61,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
 }) => {
   const pathname = usePathname();
   const router = useRouter();
+  const { module } = useModule();
   const queryClient = useQueryClient();
   const { usersIBlocked } = useGlobalState();
 
@@ -196,11 +198,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   defaultReceiverId={Number(profileId)}
                   onChatCreated={(id) => {
                     setSelectedConversationId(id);
-                    if (pathname?.startsWith('/student')) {
-                      router.push(`/students/chats`);
-                    } else if (pathname?.startsWith('/teacher')) {
-                      router.push(`/teachers/chats`);
-                    }
+                    router.push(`/${module}/chats`);
                   }}
                   trigger={
                     <Button

@@ -38,9 +38,9 @@ const PenpalShipButtonRequest: React.FC<PenpalShipButtonRequestProps> = ({
           : () => sendRequest({ receiverId: user_id })
       }
       disabled={isDeletingPenpal || isCreatingPenpal}
-      className={`ml-auto py-2 px-8 rounded-full ${isFriend ? 'bg-red-100 text-red-600' : 'bg-primary-50 text-primary-500'}`}
+      className={`ml-auto px-8 h-10 rounded-full ${isFriend ? 'bg-red-100 text-red-600' : 'bg-primary-50 text-primary-500'}`}
     >
-      {isFriend ? 'Remove' : 'Add'}
+      {isFriend ? 'Remove' : 'Connect'}
     </Button>
   );
 };

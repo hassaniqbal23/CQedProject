@@ -5,7 +5,7 @@ import { PenpalshipCard } from '@/components/Penpalship';
 import SearchBar from '@/components/common/SearchBar';
 import { Typography } from '@/components/common/Typography/Typography';
 import Pagination from '@/components/common/pagination/pagination';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import SkeletonCard from '@/components/common/SkeletonCard/SkeletonCard';
 import { debounce } from 'lodash';
 
@@ -60,8 +60,8 @@ export const MyPenpals: React.FC = () => {
   return (
     <div>
       <div className="flex py-5 justify-between flex-wrap items-end">
-        <Typography variant="h3" weight="semibold" className="mb-4">
-          My Penpals
+        <Typography variant="h2" weight="semibold" className="mb-4">
+          My Global Friends
         </Typography>
         <SearchBar
           inputClassName="w-full rounded-full"
@@ -80,6 +80,8 @@ export const MyPenpals: React.FC = () => {
             description={item?.user?.profile?.bio}
             countryName={item?.user?.profile?.country.toUpperCase()}
             studentAge={item?.user?.profile?.age}
+            showRemoveButton={false}
+            showIcons={true}
           />
         ))}
       </div>

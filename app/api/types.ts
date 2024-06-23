@@ -64,3 +64,9 @@ export interface IUserProfile {
   interests?: string[];
   dob: string;
 }
+
+export interface ProfilesDetailPageProps {
+  isFriend?: boolean;
+  data?: any;
+  setIsFriend?: (isFriend: boolean) => void;
+}
