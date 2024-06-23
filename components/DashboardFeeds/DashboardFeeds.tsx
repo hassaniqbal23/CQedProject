@@ -3,7 +3,7 @@ import {
   likeCommunityPost,
   unlikeCommunityPost,
 } from '@/app/api/communities';
-import { createPost, getFeeds } from '@/app/api/feeds';
+import { createPost, deletePost, getFeeds } from '@/app/api/feeds';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -16,6 +16,7 @@ import { Comment } from '../Comment/Comment';
 import { CreatePostModal } from '../common/CreatePostModal/CreatePostModal';
 import { IPenpal } from '@/app/globalContext/types';
 import { createPenpal } from '@/app/api/penpals';
+import FeedsSkeleton from '../common/FeedsSkeleton/FeedsSkeleton';
 
 function DashboardFeeds() {
   const { userInformation, myPenpals, pendingGlobalFriendsList } =
@@ -87,9 +88,19 @@ function DashboardFeeds() {
       },
     });
 
+  //deleted post mutatio
+  const { mutate: deleteFeeds, isLoading: isDeletingPost } = useMutation(
+    (id: number) => deletePost(id),
+    {
+      onSuccess() {
+        refetch();
+      },
+    }
+  );
+
   return (
     <div className="w-full px-2 gap-10 ">
-      <div className="mb-4">
+      <div className="mb-4 flex flex-col gap-4">
         <CreatePostModal
           icon="/uplode.svg"
           title="Create a post"
@@ -100,10 +111,14 @@ function DashboardFeeds() {
         />
       </div>
 
-      <div>
+      <div className="flex flex-col gap-4">
         {isLoading ? (
-          <div className="w-full h-[400px] flex items-center justify-center">
-            <Loading />
+          <div className="w-full flex flex-col gap-3 ">
+            {[1, 2, 3, 4].map((_, index) => (
+              <div key={index}>
+                <FeedsSkeleton />
+              </div>
+            ))}
           </div>
         ) : (
           <>
@@ -124,7 +139,10 @@ function DashboardFeeds() {
                 );
 
                 return (
-                  <div key={index}>
+                  <div
+                    key={index}
+                    className="rounded-lg border bg-card  shadow-sm w-full"
+                  >
                     <Post
                       userId={item?.User?.id || 0}
                       key={index}
@@ -160,10 +178,13 @@ function DashboardFeeds() {
                       addFriendLoading={
                         isCreatingPanpal && creatingPanpalId === index
                       }
+                      isMyPost={item?.User?.id === userInformation?.id}
+                      onDeletePost={() => deleteFeeds(item?.id)}
+                      showShareButton={item?.User?.id !== userInformation?.id}
                     />
                     <Separator className="w-12/12" />
                     {commentId === item.id && openCommentSection ? (
-                      <div className="py-3">
+                      <div className="py-3 px-3">
                         <CommentInput
                           loading={isCreatingComments}
                           onValueChange={(value) => {
@@ -189,7 +210,7 @@ function DashboardFeeds() {
                           item?.comments?.map(
                             (comment: IComment, index: number) => {
                               return (
-                                <div className="mb-3 ml-5 " key={index}>
+                                <div className="mb-3 ml-5 px-3" key={index}>
                                   <Comment
                                     avatarUrl={
                                       comment.User?.attachment?.file_path ||
