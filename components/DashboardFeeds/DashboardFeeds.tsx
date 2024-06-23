@@ -16,6 +16,7 @@ import { Comment } from '../Comment/Comment';
 import { CreatePostModal } from '../common/CreatePostModal/CreatePostModal';
 import { IPenpal } from '@/app/globalContext/types';
 import { createPenpal } from '@/app/api/penpals';
+import FeedsSkeleton from '../common/FeedsSkeleton/FeedsSkeleton';
 
 function DashboardFeeds() {
   const { userInformation, myPenpals, pendingGlobalFriendsList } =
@@ -112,8 +113,12 @@ function DashboardFeeds() {
 
       <div className="flex flex-col gap-4">
         {isLoading ? (
-          <div className="w-full h-[400px] flex items-center justify-center">
-            <Loading />
+          <div className="w-full flex flex-col gap-3 ">
+            {[1, 2, 3, 4].map((_, index) => (
+              <div key={index}>
+                <FeedsSkeleton />
+              </div>
+            ))}
           </div>
         ) : (
           <>

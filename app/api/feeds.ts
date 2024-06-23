@@ -13,6 +13,12 @@ export const deletePost = (id: number) => {
   return http.delete(`/community-post/${id}/delete-community-post`);
 };
 
-export const getUserFeed = (id: number , limit: number = 10, pageParam: number = 1 ) => {
-    return http.get(`/community-post/view-feeds?id=${id}&page=${pageParam}&limit=${limit}`);
-}
+export const getUserFeed = (
+  id: number | string,
+  limit: number = 10,
+  pageParam: number = 1
+) => {
+  return http.get(
+    `/community-post/view-feeds?id=${id}&page=${pageParam}&limit=${limit}`
+  );
+};

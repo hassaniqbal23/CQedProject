@@ -12,6 +12,8 @@ import Loading from '@/components/ui/button/loading';
 import { joinCommunity } from '@/app/api/communities';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { createPenpal } from '@/app/api/penpals';
+import SuggestedCommunitySkeleton from '../SuggestedCommunitiesSkeleton/SuggestedCommunitySkeleton';
+import SuggestedGlobalFriendsSkeleton from '../SuggestedGlobalFriendsSkeleton/SuggestedGlobalFriendsSkeleton';
 
 function DashboardCards() {
   const queryClient = useQueryClient();
@@ -57,8 +59,9 @@ function DashboardCards() {
   return (
     <div className="sticky">
       {isLoading ? (
-        <div>
-          <Loading />
+        <div className="flex flex-col gap-2 ">
+          <SuggestedCommunitySkeleton />
+          <SuggestedGlobalFriendsSkeleton />
         </div>
       ) : (
         <>
