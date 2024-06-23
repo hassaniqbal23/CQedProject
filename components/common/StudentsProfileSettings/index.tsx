@@ -459,7 +459,11 @@ const StudentProfileSettings = () => {
                 )}
               />
             </div>
-            <Button loading={isUpdatingProfile} className="text-md my-4 rounded-md px-7 hover:bg-primary-600" type="submit">
+            <Button
+              loading={isUpdatingProfile}
+              className="text-md my-4 rounded-md px-7 hover:bg-primary-600"
+              type="submit"
+            >
               Save Settings
             </Button>
           </form>
