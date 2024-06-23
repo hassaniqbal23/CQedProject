@@ -18,6 +18,7 @@ const user: ChatConversation = {
     schoolId: 0,
     status: 0,
     name: 'ayaz',
+    last_active: '2023-06-11T10:00:00Z',
   },
   id: 1,
   lastMessageReceived: '2023-06-11T10:00:00Z',
