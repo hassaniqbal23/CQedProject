@@ -1,6 +1,7 @@
 import { ITeacherCreate } from '@/components/common/teacherProfile/type';
 import http from '../utils/http';
 import { IEducation, IWorkExperience } from '@/types/tearcher';
+import { IUserInformation } from '../globalContext/types';
 
 export const TeacherCreate = (payload: ITeacherCreate) =>
   http.post('/teachers/create', payload);
@@ -42,8 +43,8 @@ export const teacherUpdateProfile = (
   profileId: number,
   payload: IUserInformation
 ) => {
-  return http.patch(`/teachers/${profileId}/update-teacher`, payload);
-}
+  return http.patch(`/users/${profileId}/update-profile`, payload);
+};
 
 export const getDashboardData = () => {
   return http.get('/dashboard/dashboard');

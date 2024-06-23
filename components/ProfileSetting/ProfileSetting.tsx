@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from '@/components/ui';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { useGlobalState } from '@/app/globalContext/globalContext';
@@ -22,13 +22,16 @@ import { IUserInformation } from '@/app/globalContext/types';
 import { FormInput } from '../common/From/FormInput';
 import ImageUpload from '../common/ImageUpload/ImageUpload';
 import MultipleSelector from '../common/From/MultiSelect';
+import { Typography } from '../common/Typography/Typography';
+import { AddEducation } from '../common/teacherProfile/AddEducation/AddEducation';
+import { AddWorkExperience } from '../common/teacherProfile/AddEducation/AddWorkExperience';
 
 const formSchema = z.object({
-  fullname: z.string().min(2, {
+  full_name: z.string().min(2, {
     message: 'Name must be at least 2 characters',
   }),
   nick_name: z.string().min(5, {
-    message: 'nick must be at least 5 characters',
+    message: 'Nick name must be at least 5 characters',
   }),
   photo: z.string().optional(),
   bio: z.string().optional(),
@@ -36,19 +39,22 @@ const formSchema = z.object({
 
 const ProfileSettings = () => {
   const { userInformation, isUserGetInfo } = useGlobalState();
+  const [skills, setSkills] = useState<{ label: string; value: string }[]>(
+    userInformation?.profile?.skills.map((skill: string) => ({
+      value: skill,
+      label: skill,
+    })) || []
+  );
+
   const queryClient = useQueryClient();
   const form = useForm<any>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullname: userInformation?.profile?.full_name || '',
+      full_name: userInformation?.profile?.full_name || '',
       nick_name: userInformation?.profile?.nick_name || '',
       photo: userInformation?.attachment?.file_path || '',
       bio: userInformation?.profile?.bio || '',
-      skills:
-        userInformation.profile?.skills.map((skill: string) => ({
-          value: skill,
-          label: skill,
-        })) || [],
+      skills: userInformation.profile?.skills || [],
     },
   });
 
@@ -102,7 +108,7 @@ const ProfileSettings = () => {
   useEffect(() => {
     if (userInformation) {
       form.setValue(
-        'fullname',
+        'full_name',
         userInformation.profile?.full_name || userInformation.name
       );
       form.setValue('nick_name', userInformation.profile?.nick_name);
@@ -117,15 +123,12 @@ const ProfileSettings = () => {
     }
   }, [userInformation, form]);
 
-  const onSubmitt: SubmitHandler<any> = () => {
+  const onSubmit: SubmitHandler<any> = () => {
     const formData = form.getValues();
-    const transformedSkills = formData.skills.map(
-      (skill: { value: string }) => skill.value
-    );
-
+    const skill = skills?.map((a) => a.value);
     const payload: IUserInformation = {
       ...formData,
-      skills: transformedSkills,
+      skills: skill,
     };
 
     if (userInformation?.profile?.id) {
@@ -136,7 +139,7 @@ const ProfileSettings = () => {
   return (
     <Card className="w-full p-4 mt-6">
       <h1 className="text-xl font-semibold">Basic Information</h1>
-      <div className="mt-8 flex flex-col items-center w-1/5">
+      <div className="grid gap-9 mt-8 items-center w-1/5">
         <ImageUpload
           loading={isDeletingProfile || isUploadingProfile || isUserGetInfo}
           attachmentFilepath={userInformation?.attachment?.file_path}
@@ -147,16 +150,16 @@ const ProfileSettings = () => {
       </div>
       <div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmitt)}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="grid grid-cols-2 gap-9 mt-10">
               <FormInput
                 label="Full Name"
                 form={form}
-                name="fullname"
+                name="full_name"
                 placeholder={'john doe'}
               />
               <FormInput
-                label="nick_name"
+                label="Nick Name"
                 form={form}
                 name="nick_name"
                 placeholder={'johndoe'}
@@ -182,45 +185,72 @@ const ProfileSettings = () => {
                   </FormItem>
                 )}
               />
-              <FormItem className="col-span-2 mt-4">
-                <FormLabel className="mb-2 text-[#2183C4]">
-                  Add Skills
-                </FormLabel>
-                <FormField
-                  control={form.control}
-                  name="skills"
-                  render={({ field }) => (
-                    <FormControl>
-                      <MultipleSelector
-                        value={field.value}
-                        onChange={field.onChange}
-                        options={[
-                          {
-                            value: 'communication-skills',
-                            label: 'Communication Skills',
-                          },
-                          {
-                            value: 'problem-solving',
-                            label: 'Problem-Solving',
-                          },
-                          { value: 'teamwork', label: 'Teamwork' },
-                        ]}
-                        placeholder="Add Skills"
-                      />
-                    </FormControl>
-                  )}
-                />
-              </FormItem>
             </div>
-            <Button
-              loading={isUpdatingProfile}
-              className="text-md my-4 rounded-md px-7 hover:bg-primary-600"
-              type="submit"
-            >
-              Save Changes
-            </Button>
           </form>
         </Form>
+        <div className="grid gap-9 mt-10">
+          <Typography
+            variant={'h4'}
+            weight={'bold'}
+            className="text-left mb-3 text-primary-500"
+          >
+            Add Education
+          </Typography>
+
+          <AddEducation />
+        </div>
+        <div className="grid gap-9 mt-10">
+          <Typography
+            variant={'h4'}
+            weight={'bold'}
+            className="text-left text-primary-500"
+          >
+            Add Work Experience
+          </Typography>
+
+          <AddWorkExperience />
+        </div>
+        <div className="grid gap-9 mt-10">
+          <Typography
+            variant={'h4'}
+            weight={'bold'}
+            className="text-primary-500 mb-6"
+          >
+            Add Skills
+          </Typography>
+
+          <MultipleSelector
+            value={skills}
+            onChange={(e) => setSkills(e)}
+            options={[
+              {
+                value: 'Communication Skills',
+                label: 'Communication Skills',
+              },
+              {
+                value: 'Cultural Competence',
+                label: 'Cultural Competence',
+              },
+            ]}
+            placeholder="Add Skills"
+          />
+        </div>
+        <div>
+          <Button
+            loading={isUpdatingProfile}
+            className="text-md my-4 rounded-md px-9 hover:bg-primary-600"
+            onClick={async () => {
+              const isValid = await form.trigger();
+              if (isValid) {
+                form.handleSubmit(onSubmit)();
+              } else {
+                console.error('Validation failed');
+              }
+            }}
+          >
+            Save Changes
+          </Button>
+        </div>
       </div>
     </Card>
   );

@@ -34,7 +34,7 @@ export const FormInput: FC<InputProps> = ({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-sm">{label}</FormLabel>
+          <FormLabel className="!text-lg">{label}</FormLabel>
           <FormControl>
             <Input
               placeholder={placeholder}
