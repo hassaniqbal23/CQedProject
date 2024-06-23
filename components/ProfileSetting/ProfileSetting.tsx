@@ -17,7 +17,6 @@ import { useGlobalState } from '@/app/globalContext/globalContext';
 import { useMutation, useQueryClient } from 'react-query';
 import { deleteProfileImage, uploadProfileImage } from '@/app/api/admin';
 import { toast } from 'sonner';
-import { teacherUpdateProfile } from '@/app/api/teachers';
 import { IUserInformation } from '@/app/globalContext/types';
 import { FormInput } from '../common/From/FormInput';
 import ImageUpload from '../common/ImageUpload/ImageUpload';
@@ -25,6 +24,7 @@ import MultipleSelector from '../common/From/MultiSelect';
 import { Typography } from '../common/Typography/Typography';
 import { AddEducation } from '../common/teacherProfile/AddEducation/AddEducation';
 import { AddWorkExperience } from '../common/teacherProfile/AddEducation/AddWorkExperience';
+import { userUpdateProfile } from '@/app/api/users';
 
 const formSchema = z.object({
   full_name: z.string().min(2, {
@@ -91,7 +91,7 @@ const ProfileSettings = () => {
   const { mutate: updateTeacherProfile, isLoading: isUpdatingProfile } =
     useMutation(
       (data: { profileId: number; payload: IUserInformation }) =>
-        teacherUpdateProfile(data.profileId, data.payload),
+        userUpdateProfile(data.profileId, data.payload),
       {
         onSuccess: (res) => {
           toast.success('Profile updated successfully', {

@@ -39,13 +39,6 @@ export const getTeachersBySearch = (
   );
 };
 
-export const teacherUpdateProfile = (
-  profileId: number,
-  payload: IUserInformation
-) => {
-  return http.patch(`/users/${profileId}/update-profile`, payload);
-};
-
 export const getDashboardData = () => {
   return http.get('/dashboard/dashboard');
 };
