@@ -13,7 +13,7 @@ import { Typography } from '@/components/common/Typography/Typography';
 import { useResponsive } from '@/lib/hooks';
 import { CircleIcon } from '@/components/AiMatches/Circle/Circle';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { deletePenpal, penpalsFilters } from '@/app/api/penpals';
+import { penpalsFilters } from '@/app/api/penpals';
 import { useRouter } from 'next/navigation';
 import { UserProfileMatch } from '@/components/AiMatches/UserProfileMatch/UserProfileMatch';
 import { useGlobalState } from '@/app/globalContext/globalContext';
@@ -56,7 +56,7 @@ export const AiMatch = ({ module }: AiMatchProps) => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { sendRequest } = useSendPenpalRequest();
+  const { sendRequest, deleteRequest } = useSendPenpalRequest();
 
   const {
     mutate: SearchPenpal,
@@ -82,16 +82,6 @@ export const AiMatch = ({ module }: AiMatchProps) => {
     }
   }, [FiltersData, userInterests]);
 
-  const { mutate: removePanpalRequest, isLoading: isDeletingPanpalRequest } =
-    useMutation((id: number) => deletePenpal(id), {
-      onSuccess: () => {
-        queryClient.refetchQueries('MyPenPals');
-      },
-      onError: (error) => {
-        console.log('Error unblocking user', error);
-      },
-    });
-
   const isUserPanpals = (id: number | string): any => {
     return myPenpals.find(
       (panpal: { receiverId: string | number; id: number | string }) =>
@@ -102,7 +92,7 @@ export const AiMatch = ({ module }: AiMatchProps) => {
   const handleRemovePaypals = (id: number | string) => {
     const myPenpal = isUserPanpals(id);
     if (myPenpal) {
-      removePanpalRequest && removePanpalRequest(Number(myPenpal.id));
+      deleteRequest(Number(myPenpal.id));
       setTimeout(() => {
         setShowUserProfile(false);
         form.reset();

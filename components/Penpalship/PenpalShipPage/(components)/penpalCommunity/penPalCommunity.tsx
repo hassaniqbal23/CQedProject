@@ -230,15 +230,6 @@ export const PenPalCommunity = () => {
               imgPath={item?.attachment?.file_path}
               title={item?.profile?.full_name || item.email}
               mutualFriends={'5 mutual friends'}
-              buttonOnClick={() => {
-                sendRequest({
-                  receiverId: Number(item.id),
-                  setCreatingPanpalId,
-                });
-                setCreatingPanpalId(item.id);
-              }}
-              buttonLoading={creatingPanpalId === item.id && isCreatingPenpal}
-              buttonText="Connect"
               description={item?.profile?.bio}
               countryName={item?.profile?.country}
               studentAge={item?.profile?.age}
