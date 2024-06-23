@@ -52,7 +52,7 @@ const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
     const { penpal } = getPenpalInfo(studentProfile?.id);
 
     userInformation?.id === currentProfileId
-      ? router.push('/students/settings')
+      ? router.push('/students/account-settings')
       : isFriend
         ? penpal && deleteRequest(penpal?.id)
         : sendRequest({ receiverId: Number(studentProfile?.id) });
