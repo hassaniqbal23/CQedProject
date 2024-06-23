@@ -147,7 +147,7 @@ export const TeacherProfileView: FC<ProfilesDetailPageProps> = ({
       <ProfileHeader
         name={profileData?.profile?.full_name}
         role={profileData?.role?.name}
-        subrole={'N/A'}
+        subrole={profileData?.school?.name}
         location={profileData?.profile?.state}
         profileIcon={profileData?.attachment?.file_path}
       />
