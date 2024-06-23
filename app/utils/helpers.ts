@@ -28,3 +28,12 @@ export const getCountry = (countryCode: string): CountryInfo => {
 
   return { flag, country };
 };
+
+export const getMutualFriendsText = (mutualFriends: number) => {
+  if (mutualFriends > 1) {
+    return `${mutualFriends} mutual friends`;
+  } else if (mutualFriends === 1) {
+    return `${mutualFriends} mutual friend`;
+  }
+  return '';
+};

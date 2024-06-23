@@ -13,10 +13,12 @@ import { Typography } from '@/components/common/Typography/Typography';
 import { useResponsive } from '@/lib/hooks';
 import { CircleIcon } from '@/components/AiMatches/Circle/Circle';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { createPenpal, deletePenpal, penpalsFilters } from '@/app/api/penpals';
+import { penpalsFilters } from '@/app/api/penpals';
 import { useRouter } from 'next/navigation';
 import { UserProfileMatch } from '@/components/AiMatches/UserProfileMatch/UserProfileMatch';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 const formSchema = z.object({
   country: z.object({
@@ -42,11 +44,7 @@ const formSchema = z.object({
     .nonempty({ message: 'At least one language is required.' }),
 });
 
-interface AiMatchProps {
-  module?: 'student' | 'teacher';
-}
-
-export const AiMatch = ({ module }: AiMatchProps) => {
+export const AiMatch = () => {
   const { isMobile, isTabletMini, isDesktopOrLaptop } = useResponsive();
   const [interestsScore, setInterestsScore] = useState<number | null>(null);
   const { myPenpals } = useGlobalState();
@@ -54,6 +52,9 @@ export const AiMatch = ({ module }: AiMatchProps) => {
   const [showUserProfile, setShowUserProfile] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const router = useRouter();
+  const { module } = useModule();
+
+  const { sendRequest, deleteRequest } = useSendPenpalRequest();
 
   const {
     mutate: SearchPenpal,
@@ -79,27 +80,6 @@ export const AiMatch = ({ module }: AiMatchProps) => {
     }
   }, [FiltersData, userInterests]);
 
-  const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
-    useMutation((id: number) => createPenpal({ receiverId: id }), {
-      onSuccess: (res) => {
-        queryClient.refetchQueries('penpalSuggestions');
-        queryClient.refetchQueries('MyPenPals');
-      },
-      onError: (error) => {
-        console.error(error, 'Error =====> log');
-      },
-    });
-
-  const { mutate: removePanpalRequest, isLoading: isDeletingPanpalRequest } =
-    useMutation((id: number) => deletePenpal(id), {
-      onSuccess: () => {
-        queryClient.refetchQueries('MyPenPals');
-      },
-      onError: (error) => {
-        console.log('Error unblocking user', error);
-      },
-    });
-
   const isUserPanpals = (id: number | string): any => {
     return myPenpals.find(
       (panpal: { receiverId: string | number; id: number | string }) =>
@@ -110,13 +90,13 @@ export const AiMatch = ({ module }: AiMatchProps) => {
   const handleRemovePaypals = (id: number | string) => {
     const myPenpal = isUserPanpals(id);
     if (myPenpal) {
-      removePanpalRequest && removePanpalRequest(Number(myPenpal.id));
+      deleteRequest(Number(myPenpal.id));
       setTimeout(() => {
         setShowUserProfile(false);
         form.reset();
       }, 1000);
     } else {
-      sendPanpalRequest && sendPanpalRequest(Number(id));
+      sendRequest({ receiverId: Number(id) });
     }
   };
 
@@ -156,12 +136,9 @@ export const AiMatch = ({ module }: AiMatchProps) => {
       : '';
 
   const handleViewProfile = () => {
-    if (module === 'teacher') {
-      router.push(`/schools/teachers/${FiltersData?.data.data.user.id}`);
-    } else {
-      router.push(`/teachers/students/${FiltersData?.data.data.user.id}`);
-    }
+    router.push(`/${module}/profile/${FiltersData?.data.data.user.id}`);
   };
+
   return (
     <>
       <div className="mt-4">

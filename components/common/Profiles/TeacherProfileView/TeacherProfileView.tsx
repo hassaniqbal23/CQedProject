@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useQuery } from 'react-query';
 import {
   Gallery,
   ProfileBio,
@@ -11,34 +10,15 @@ import {
   ProfileWorkHistory,
   UniversityLink,
 } from '@/components/common/Profiles';
-import { useParams } from 'next/navigation';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { TabsComponent } from '@/components/ui/tabs/tabs';
-import { getProfile } from '@/app/api/students';
 import Loading from '@/components/ui/button/loading';
 import TeacherProfileFeeds from './Feeds/page';
+import { ProfilesDetailPageProps } from '@/app/api/types';
 
-export const TeacherProfileView: FC = ({}) => {
-  const params = useParams();
-  const currentProfileId = Number(params?.id);
-  const {
-    data: profileData,
-    error,
-    isLoading,
-  } = useQuery(
-    ['profileData', currentProfileId],
-    () =>
-      getProfile(currentProfileId as number).then((res) => {
-        return res.data.data;
-      }),
-    {
-      enabled: currentProfileId ? true : false,
-    }
-  );
-  console.log({ profileData });
-  if (isLoading)
-    return <div className="flex justify-center py-8 ">Loading...</div>;
-
+export const TeacherProfileView: FC<ProfilesDetailPageProps> = ({
+  data: profileData,
+}) => {
   const bio = (profileData && profileData?.profile?.bio) || '';
 
   const interestsArray = profileData?.profile?.interests;
@@ -167,7 +147,7 @@ export const TeacherProfileView: FC = ({}) => {
       <ProfileHeader
         name={profileData?.profile?.full_name}
         role={profileData?.role?.name}
-        subrole={'N/A'}
+        subrole={profileData?.school?.name}
         location={profileData?.profile?.state}
         profileIcon={profileData?.attachment?.file_path}
       />
