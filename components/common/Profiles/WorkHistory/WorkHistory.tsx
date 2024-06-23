@@ -25,9 +25,11 @@ export const ProfileWorkHistory: React.FC<WorkHistoryProps> = ({
 }) => {
   return (
     <Card>
-      <CardHeader className="pb-0">
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
+      <div className="ml-5 mt-3 ">
+        <Typography variant={'h3'} weight={'semibold'}>
+          {title}
+        </Typography>
+      </div>
       <CardContent>
         <Accordion type="single" collapsible className="w-full">
           {jobs.map((job, index: number, array) => {
@@ -41,8 +43,7 @@ export const ProfileWorkHistory: React.FC<WorkHistoryProps> = ({
                   {' '}
                   <div className="flex items-center">
                     <div className="bg-primary-50 p-2 rounded-md">
-                      <div className="bg-primary-50 p-2 rounded-md"></div>
-                      <Gift color="#4146B8" size={25} />
+                      <Gift color="#4146B8" size={28} height={28} />
                     </div>
 
                     <div key={job.id} className="p-4 text-left ">
@@ -68,7 +69,6 @@ export const ProfileWorkHistory: React.FC<WorkHistoryProps> = ({
                     </div>
                   </div>
                 </AccordionItem>
-                educationLevel
               </div>
             );
           })}
