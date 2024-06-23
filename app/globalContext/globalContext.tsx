@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import { GetUserInformation, GetUserJoinedCommunities } from '../api/auth';
 import {
   getUserIdLocalStorage,
+  removeFcmToken,
   removeToken,
   removeUserId,
 } from '../utils/encryption';
@@ -78,6 +79,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     setMyPenpals([]);
     removeToken();
     removeUserId();
+    removeFcmToken();
     setUsersIBlocked([]);
     setPendingCommunitiesList([]);
 

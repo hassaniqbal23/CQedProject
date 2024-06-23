@@ -1,3 +1,4 @@
+import { IFcmToken } from '@/types/auth';
 import http from '../utils/http';
 import {
   IAcceptInvitation,
@@ -35,3 +36,6 @@ export const getProfileInfo = async (id: number) => {
     return res.data;
   });
 };
+
+export const createNotifications = (payload: IFcmToken) =>
+  http.post(`/notifications/create`, payload);
