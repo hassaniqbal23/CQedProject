@@ -138,6 +138,7 @@ export const AiMatch = () => {
   const handleViewProfile = () => {
     router.push(`/${module}/profile/${FiltersData?.data.data.user.id}`);
   };
+
   return (
     <>
       <div className="mt-4">
