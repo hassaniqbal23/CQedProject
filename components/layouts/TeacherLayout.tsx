@@ -16,7 +16,7 @@ import {
   Settings,
   UserCheck,
 } from 'lucide-react';
-import { useGlobalState } from '@/app/globalContext/globalContext';
+
 interface IProps {
   children: ReactNode;
 }
