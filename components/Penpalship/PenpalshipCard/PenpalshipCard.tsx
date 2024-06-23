@@ -15,13 +15,10 @@ import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface PenpalshipCardProps {
   title?: string;
+  searchParams?: string;
   label?: string;
   imgPath: string;
-  buttonText?: string;
   description?: string;
-  buttonOnClick?: () => void;
-  buttonLoading?: boolean;
-  countryFlag?: string;
   countryName?: string;
   studentAge: string | number;
   mutualFriends?: string | number;
@@ -33,14 +30,10 @@ interface PenpalshipCardProps {
 const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   title,
   imgPath,
-  buttonText,
   description,
-  buttonOnClick,
   mutualFriends,
-  countryFlag,
   countryName = '',
   studentAge,
-  buttonLoading,
   showRemoveButton = true,
   showIcons = false,
   id,

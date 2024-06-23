@@ -1,8 +1,6 @@
 'use client';
 import React, { useEffect, useMemo, FC } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
 import { useGlobalState } from '@/app/globalContext/globalContext';
-import { createPenpal, deletePenpal } from '@/app/api/penpals';
 import { Card, TabsComponent } from '@/components/ui';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
@@ -15,6 +13,7 @@ import {
   Gallery,
   Languages,
 } from '@/components/common/Profiles';
+import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 import { ProfilesDetailPageProps } from '@/app/api/types';
 
 const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
@@ -22,7 +21,8 @@ const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
   data,
   setIsFriend,
 }) => {
-  const queryClient = useQueryClient();
+  const { sendRequest, isCreatingPenpal, deleteRequest, isDeletingPenpal } =
+    useSendPenpalRequest();
   const params = useParams();
   const router = useRouter();
   const currentProfileId = Number(params?.id);
@@ -43,38 +43,19 @@ const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
     return { isPenpal: !!penpal, penpal };
   };
 
-  const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
-    useMutation((id: number) => createPenpal({ receiverId: id }), {
-      onSuccess: (res) => {
-        queryClient.invalidateQueries('MyPenPals');
-      },
-      onError: (error) => {
-        console.error(error, 'Error =====> log');
-      },
-    });
-
   const studentProfile = data?.data?.data;
   const location = [
     studentProfile?.profile?.latitude,
     studentProfile?.profile?.longitude,
   ];
-
-  const handleRemove = useMutation((id: number) => deletePenpal(id), {
-    onSuccess: () => {
-      queryClient.invalidateQueries('MyPenPals');
-    },
-    onError: (error: any) => {
-      console.error('Error:', error);
-    },
-  });
   const handleClick = () => {
     const { penpal } = getPenpalInfo(studentProfile?.id);
 
     userInformation?.id === currentProfileId
       ? router.push('/students/settings')
       : isFriend
-        ? penpal && handleRemove.mutate(penpal?.id)
-        : sendPanpalRequest(studentProfile?.id);
+        ? penpal && deleteRequest(penpal?.id)
+        : sendRequest({ receiverId: Number(studentProfile?.id) });
   };
 
   useEffect(() => {
@@ -162,7 +143,7 @@ const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
           profileId={studentProfile?.id}
           buttonProps={{
             isVisbile: true,
-            isLoading: isCreatingPanpal,
+            isLoading: isCreatingPenpal || isDeletingPenpal,
             onClick: handleClick,
             buttonText,
             isFriend,

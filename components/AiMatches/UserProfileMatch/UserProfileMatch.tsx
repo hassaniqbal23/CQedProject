@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Avatar, AvatarImage, Button } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import countriesData from '@/public/countries/countries.json';
+import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 interface Countries {
   [key: string]: string;
 }
@@ -35,6 +36,8 @@ export const UserProfileMatch: FC<Iprops> = ({
   interestsMatched,
   screenType,
 }: Iprops) => {
+  const { isCreatingPenpal, isDeletingPenpal } = useSendPenpalRequest();
+
   const { full_name, country } = user;
   const countryFlag = `/country-flags/svg/${user.country.toLowerCase()}.svg`;
   const notification = 'Hello';
@@ -126,6 +129,7 @@ export const UserProfileMatch: FC<Iprops> = ({
           <div className="flex justify-center gap-4 mt-4 mb-1">
             <Button
               size={'md'}
+              loading={isDeletingPenpal || isCreatingPenpal}
               className={
                 buttonText ? 'bg-red-100 text-red-600' : 'bg-primary-500'
               }
@@ -157,6 +161,7 @@ export const UserProfileMatch: FC<Iprops> = ({
             <div className="">
               <Button
                 size={'md'}
+                loading={isDeletingPenpal || isCreatingPenpal}
                 className={
                   buttonText ? 'bg-red-100 text-red-600' : 'bg-primary-500'
                 }
@@ -326,6 +331,7 @@ export const UserProfileMatch: FC<Iprops> = ({
           <div className="lg:flex lg:flex-row lg:gap-4 lg:mt-8 sm:flex sm:flex-col sm:justify-between sm:gap-32 flex justify-center items-center  gap-4 ">
             <Button
               size={'md'}
+              loading={isDeletingPenpal || isCreatingPenpal}
               className={
                 buttonText ? 'bg-red-100 text-red-600' : 'bg-primary-500'
               }

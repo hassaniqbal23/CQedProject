@@ -9,7 +9,6 @@ import {
   PenPalCommunity,
 } from './(components)';
 
-
 const PenpalshipPage = () => {
   return (
     <div>
