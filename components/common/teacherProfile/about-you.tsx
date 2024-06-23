@@ -1,8 +1,6 @@
 'use client';
-import React from 'react';
-import TopNavbar from '../navbar/TopNavbar';
+import React, { useState } from 'react';
 import Progressbar from '../Progressbar/Progressbar';
-
 import {
   Form,
   FormControl,
@@ -11,6 +9,8 @@ import {
   FormLabel,
   FormMessage,
   Textarea,
+  Input,
+  Button,
 } from '@/components/ui';
 import BottomNavbar from '../navbar/bottomNavbar';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -23,21 +23,28 @@ import { updateProfile } from '@/app/api/teachers';
 import { deleteProfileImage, uploadProfileImage } from '@/app/api/admin';
 import ImageUpload from '../ImageUpload/ImageUpload';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import { Typography } from '../Typography/Typography';
+import MultipleSelector from '../From/MultiSelect';
+import { AddEducation } from './AddEducation/AddEducation';
+import { AddWorkExperience } from './AddEducation/AddWorkExperience';
 
 interface IAboutYouProps {
   avatar: string;
   bio: string;
+  skills?: string[];
 }
 
 const formSchema = z.object({
-  bio: z.string().min(10).nonempty('Bio is required'),
+  bio: z.string().min(150, { message: 'At least 150 characters' }),
   avatar: z.string().optional(),
 });
 
 export const AboutYou: React.FC = () => {
+  const [skills, setSkills] = useState<{ label: string; value: string }[]>();
   const { userInformation, isUserGetInfo } = useGlobalState();
   const refetch = useQueryClient();
   const router = useRouter();
+
   const form = useForm<IAboutYouProps>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,7 +52,11 @@ export const AboutYou: React.FC = () => {
       bio: '',
     },
   });
-  const { handleSubmit } = form;
+  const {
+    handleSubmit,
+    trigger,
+    formState: { errors, isValid },
+  } = form;
 
   const { mutate: uploadProfile, isLoading: isUploadingProfile } = useMutation(
     (file: FormData) => uploadProfileImage(file),
@@ -77,8 +88,12 @@ export const AboutYou: React.FC = () => {
     }
   );
 
-  const { mutate: createTeacher, isLoading: isCreating } = useMutation(
-    (userData: IAboutYouProps) => updateProfile({ bio: userData.bio }),
+  const { mutate: updateTeacher, isLoading: isCreating } = useMutation(
+    (userData: IAboutYouProps) =>
+      updateProfile(
+        { bio: userData.bio, skills: userData?.skills as string[] },
+        userInformation?.id
+      ),
     {
       onSuccess: (res) => {
         toast.success(res.data.message);
@@ -89,31 +104,45 @@ export const AboutYou: React.FC = () => {
       },
     }
   );
-
   const onSubmit: SubmitHandler<IAboutYouProps> = async (
     data: IAboutYouProps
   ) => {
-    createTeacher(data);
+    const skill = skills?.map((c) => c.value);
+    const submitvalue = {
+      ...data,
+      skills: skill,
+    };
+    updateTeacher(submitvalue);
   };
 
   return (
     <div className="overflow-x-hidden overflow-y-hidden">
-      <div className=" p-4 mx-auto ">
+      <div className=" mx-auto">
         <div className="">
           <div className="mx-auto mt-4 md:w-96">
-            <Progressbar heading={'We are almost there'} percentage={75} />
+            <Progressbar heading={'Doing great!'} percentage={40} />
           </div>
           <div className="mx-auto w-max mt-4">
-            <h1 className="text-primary-500 text-2xl font-mono text-center pt-3 not-italic font-bold leading-10">
+            <Typography
+              variant={'h3'}
+              weight={'bold'}
+              className="text-center text-primary-500 pt-3"
+            >
               About You
-            </h1>
-            <p>Tell us about yourself!</p>
+            </Typography>
+            <Typography
+              variant={'body'}
+              weight={'regular'}
+              className="text-center pt-1"
+            >
+              Tell us about yourself.
+            </Typography>
           </div>
         </div>
 
-        <div className="px-10 md:px20 mt-8">
-          <Form {...form}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+        <Form {...form}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="px-10 md:px-32 mt-8">
               <FormField
                 control={form.control}
                 name="avatar"
@@ -138,7 +167,7 @@ export const AboutYou: React.FC = () => {
                   </FormItem>
                 )}
               />
-              <div className="pt-20 w-9/12 mx-auto pb-24">
+              <div className="pt-4">
                 <FormField
                   control={form.control}
                   name="bio"
@@ -148,7 +177,7 @@ export const AboutYou: React.FC = () => {
                       <FormControl>
                         <Textarea
                           rows={8}
-                          placeholder="Tell us about you. What makes you smile! What is unique about you?"
+                          placeholder="Tell us about you. What makes you smile? What is unique about you?"
                           {...field}
                         />
                       </FormControl>
@@ -158,19 +187,78 @@ export const AboutYou: React.FC = () => {
                 />
               </div>
 
-              <div className="fixed bottom-0 w-full z-50 left-0">
-                <BottomNavbar
-                  buttonType="submit"
-                  buttonLoading={isCreating}
-                  onBackButton={function (): void {
-                    throw new Error('Function not implemented.');
-                  }}
-                />
-              </div>
-            </form>
-          </Form>
+              {/* Add Education*/}
+            </div>
+          </form>
+        </Form>
+
+        <div className="px-10 md:px-32 mt-16 mb-10 ">
+          <Typography
+            variant={'h4'}
+            weight={'bold'}
+            className="text-left mb-3 text-primary-500"
+          >
+            Add Education
+          </Typography>
+
+          <AddEducation />
         </div>
+        {/*  Add Work Experience */}
+
+        <div className="px-10 md:px-32 mt-16 mb-10 ">
+          <Typography
+            variant={'h4'}
+            weight={'bold'}
+            className="text-left  text-primary-500"
+          >
+            Add Work Experience
+          </Typography>
+
+          <AddWorkExperience />
+        </div>
+
+        <div className="mt-8 mb-14 px-10 md:px-32">
+          <Typography
+            variant={'h4'}
+            weight={'bold'}
+            className="text-primary-500 mb-6"
+          >
+            Add Skills
+          </Typography>
+
+          <MultipleSelector
+            value={skills}
+            onChange={(e) => setSkills(e)}
+            options={[
+              {
+                value: 'Communication Skills',
+                label: 'Communication Skills',
+              },
+              {
+                value: 'Cultural Competence',
+                label: 'Cultural Competence',
+              },
+            ]}
+            placeholder="Add Skills"
+          />
+        </div>
+        <BottomNavbar
+          onContinue={async () => {
+            const isValid = await trigger();
+            if (isValid) {
+              handleSubmit(onSubmit)();
+            } else {
+              console.log('Validation failed');
+            }
+          }}
+          buttonLoading={isCreating}
+          onBackButton={function (): void {
+            throw new Error('Function not implemented.');
+          }}
+        />
       </div>
     </div>
   );
 };
+
+export default AboutYou;
