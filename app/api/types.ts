@@ -67,6 +67,8 @@ export interface IUserProfile {
 
 export interface ProfilesDetailPageProps {
   isFriend?: boolean;
+  isPending?: boolean;
   data?: any;
   setIsFriend?: (isFriend: boolean) => void;
+  setIsPending?: (isPending: boolean) => void;
 }

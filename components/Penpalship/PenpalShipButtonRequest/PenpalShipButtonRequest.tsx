@@ -37,10 +37,18 @@ const PenpalShipButtonRequest: React.FC<PenpalShipButtonRequestProps> = ({
           ? () => deleteRequest(penpalInstance?.id)
           : () => sendRequest({ receiverId: user_id })
       }
-      disabled={isDeletingPenpal || isCreatingPenpal}
-      className={`ml-auto px-8 h-10 rounded-full ${isFriend ? 'bg-red-100 text-red-600' : 'bg-primary-50 text-primary-500'}`}
+      disabled={
+        isDeletingPenpal ||
+        isCreatingPenpal ||
+        penpalInstance?.status === 'PENDING'
+      }
+      className={`ml-auto px-8 h-10 rounded-full ${isFriend && penpalInstance?.status !== 'PENDING' ? 'bg-red-100 text-red-600' : 'bg-primary-50 text-primary-500'}`}
     >
-      {isFriend ? 'Remove' : 'Connect'}
+      {penpalInstance?.status === 'PENDING'
+        ? 'Pending'
+        : isFriend
+          ? 'Remove'
+          : 'Connect'}
     </Button>
   );
 };

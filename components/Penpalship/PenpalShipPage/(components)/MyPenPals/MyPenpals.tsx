@@ -80,8 +80,8 @@ export const MyPenpals: React.FC = () => {
             description={item?.user?.profile?.bio}
             countryName={item?.user?.profile?.country.toUpperCase()}
             studentAge={item?.user?.profile?.age}
-            showRemoveButton={false}
-            showIcons={true}
+            showRemoveButton={item?.status === 'PENDING' ? true : false}
+            showIcons={item?.status === 'PENDING' ? false : true}
           />
         ))}
       </div>

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Avatar, AvatarImage } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import { IoChevronDown, IoChatbubbleOutline } from 'react-icons/io5';
-import { getCountry } from '@/app/utils/helpers';
+import { getCountry, getMutualFriendsText } from '@/app/utils/helpers';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal';
@@ -27,7 +27,7 @@ interface HeaderProps {
   age?: string;
   gender?: string;
   country?: string;
-  mutualFriends?: string;
+  mutualFriends?: number;
   profileId?: string;
   loggedInUser?: boolean;
   buttonProps?: {
@@ -55,7 +55,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   age,
   gender,
   country = '',
-  mutualFriends,
+  mutualFriends = 0,
   profileId,
   loggedInUser,
 }) => {
@@ -64,6 +64,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   const { module } = useModule();
   const queryClient = useQueryClient();
   const { usersIBlocked } = useGlobalState();
+  const mutualFriend = getMutualFriendsText(mutualFriends);
 
   const { flag = '', country: countryName = '' } = getCountry(country);
   const { setSelectedConversationId } = useChatProvider();
@@ -269,6 +270,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   type="button"
                   size={'sm'}
                   loading={buttonProps?.isLoading}
+                  disabled={!buttonProps?.isFriend}
                 >
                   {buttonProps.buttonText}
                 </Button>
@@ -279,7 +281,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                     className="mb-1 text-xs pt-2"
                   >
                     <Link href="" className="">
-                      {mutualFriends}
+                      {mutualFriend}
                     </Link>
                   </Typography>
                 )}

@@ -39,8 +39,13 @@ const formSchema = z.object({
     }),
 });
 
+ interface IFriend {
+   isTrue: boolean;
+   isPending: boolean;
+ }
+
 export interface IPublishStoryViewDialogProps {
-  isFriend?: boolean;
+  isFriend?: IFriend;
   loading?: {
     isCreatingPenpal: boolean;
     isGettingUserStory: boolean;
@@ -166,41 +171,53 @@ export const PublishStoryViewDialog: React.FC<IPublishStoryViewDialogProps> = ({
                 <div className="flex items-center">
                   {initialValue && (
                     <>
-                      {userInformation?.id !== userInfo?.userId &&
-                        !isFriend && (
-                          <Button
-                            className="rounded-full h-12"
-                            size={'md'}
-                            variant={'info'}
-                            loading={loading?.isCreatingPenpal}
-                            onClick={onAddFriend}
-                            type="button"
-                          >
-                            Add Friend
-                          </Button>
-                        )}
-                      {isFriend && (
-                        <CreateChatModal
-                          defaultReceiverId={userInfo?.userId}
-                          onChatCreated={(id) => {
-                            setSelectedConversationId(id);
-                            if (pathname?.startsWith('/student')) {
-                              router.push(`/students/chats`);
-                            } else if (pathname?.startsWith('/teacher')) {
-                              router.push(`/teachers/chats`);
-                            }
-                          }}
-                          trigger={
+                      {userInformation?.id !== userInfo?.userId && (
+                        <>
+                          {!isFriend?.isTrue ? (
                             <Button
-                              className="ml-5 rounded-full h-12"
-                              size={'md'}
-                              variant={'outline'}
+                              className="rounded-full h-12"
+                              size="md"
+                              variant="info"
+                              loading={loading?.isCreatingPenpal}
+                              onClick={onAddFriend}
                               type="button"
                             >
-                              Reply
+                              Add Friend
                             </Button>
-                          }
-                        />
+                          ) : isFriend?.isTrue && !isFriend.isPending ? (
+                            <CreateChatModal
+                              defaultReceiverId={userInfo?.userId}
+                              onChatCreated={(id) => {
+                                setSelectedConversationId(id);
+                                if (pathname?.startsWith('/student')) {
+                                  router.push(`/students/chats`);
+                                } else if (pathname?.startsWith('/teacher')) {
+                                  router.push(`/teachers/chats`);
+                                }
+                              }}
+                              trigger={
+                                <Button
+                                  className="ml-5 rounded-full h-12"
+                                  size="md"
+                                  variant="outline"
+                                  type="button"
+                                >
+                                  Reply
+                                </Button>
+                              }
+                            />
+                          ) : (
+                            <Button
+                              className="rounded-full h-12"
+                              size="md"
+                              variant="info"
+                              disabled
+                              type="button"
+                            >
+                              Request Pending
+                            </Button>
+                          )}
+                        </>
                       )}
                     </>
                   )}

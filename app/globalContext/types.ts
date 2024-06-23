@@ -46,7 +46,7 @@ export interface IUserInformation {
 
 interface IProfile {
   id: number;
-  fullname: string;
+  full_name: string;
   address: string;
   state: string;
   meta: string;
@@ -61,7 +61,7 @@ export interface IAttachment {
 export interface IUser {
   id: number;
   email: string;
-  profile: IProfile[];
+  profile?: IProfile;
   attachment?: IAttachment;
 }
 

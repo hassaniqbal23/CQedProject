@@ -29,6 +29,7 @@ interface PenpalshipCardProps {
   showRemoveButton?: boolean;
   showIcons?: boolean;
   id?: string | number;
+  pendingReq?: boolean;
 }
 
 const PenpalshipCard: React.FC<PenpalshipCardProps> = ({

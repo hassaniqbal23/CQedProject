@@ -19,7 +19,7 @@ interface Iprops {
     countryFlag: string;
     state: string;
   };
-  buttonText?: string;
+  buttonText?: any;
   interestsMatched?: string;
   screenType?: string;
   onButtonClick?: () => void;
@@ -37,7 +37,7 @@ export const UserProfileMatch: FC<Iprops> = ({
   screenType,
 }: Iprops) => {
   const { isCreatingPenpal, isDeletingPenpal } = useSendPenpalRequest();
-
+  const isPending = buttonText.status === 'PENDING' ? true : false;
   const { full_name, country } = user;
   const countryFlag = `/country-flags/svg/${user.country.toLowerCase()}.svg`;
   const notification = 'Hello';
@@ -46,7 +46,6 @@ export const UserProfileMatch: FC<Iprops> = ({
   const userBio = `Hi, I am ${user.full_name}, a ${user.age}-year-old from ${user.state} with a love for drawing and a passion for adventure`;
   const caption = `Did you know ${user.full_name} has read 20 books last year 📖 🙂`;
 
-  console.log(buttonText, 'buttonTextbuttonTextbuttonText');
   return (
     <>
       {screenType === 'mobile' && (
@@ -131,11 +130,14 @@ export const UserProfileMatch: FC<Iprops> = ({
               size={'md'}
               loading={isDeletingPenpal || isCreatingPenpal}
               className={
-                buttonText ? 'bg-red-100 text-red-600' : 'bg-primary-500'
+                buttonText && !isPending
+                  ? 'bg-red-100 text-red-600'
+                  : 'bg-primary-500'
               }
               onClick={onButtonClick}
+              disabled={isPending}
             >
-              {buttonText ? 'Remove' : 'Connect'}
+              {isPending ? 'Pending' : buttonText ? 'Remove' : 'Connect'}
             </Button>
             <Button
               size={'sm'}
@@ -163,11 +165,14 @@ export const UserProfileMatch: FC<Iprops> = ({
                 size={'md'}
                 loading={isDeletingPenpal || isCreatingPenpal}
                 className={
-                  buttonText ? 'bg-red-100 text-red-600' : 'bg-primary-500'
+                  buttonText && !isPending
+                    ? 'bg-red-100 text-red-600'
+                    : 'bg-primary-500'
                 }
                 onClick={onButtonClick}
+                disabled={isPending}
               >
-                {buttonText ? 'Remove' : 'Connect'}
+                {isPending ? 'Pending' : buttonText ? 'Remove' : 'Connect'}
               </Button>
             </div>
           </div>
@@ -333,11 +338,14 @@ export const UserProfileMatch: FC<Iprops> = ({
               size={'md'}
               loading={isDeletingPenpal || isCreatingPenpal}
               className={
-                buttonText ? 'bg-red-100 text-red-600' : 'bg-primary-500'
+                buttonText && !isPending
+                  ? 'bg-red-100 text-red-600'
+                  : 'bg-primary-500'
               }
               onClick={onButtonClick}
+              disabled={isPending}
             >
-              {buttonText ? 'Remove' : 'Connect'}
+              {isPending ? 'Pending' : buttonText ? 'Remove' : 'Connect'}
             </Button>
             <Button
               size={'md'}

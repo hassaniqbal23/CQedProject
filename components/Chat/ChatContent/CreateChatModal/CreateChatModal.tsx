@@ -1,5 +1,6 @@
 import { startConversation } from '@/app/api/chat';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import { IPenpal } from '@/app/globalContext/types';
 import Modal from '@/components/common/Modal/Modal';
 import { Typography } from '@/components/common/Typography/Typography';
 import {
@@ -121,11 +122,13 @@ const CreateChatModal = (props: ICreateChatModalProps) => {
                     <SelectV2
                       isDisabled={props.defaultReceiverId ? true : false}
                       options={
-                        myPenpals?.map((penpal: any) => ({
-                          label: penpal.friend?.profile?.full_name,
-                          image: penpal.friend?.attachment?.file_path,
-                          value: penpal?.friend?.id,
-                        })) || []
+                        myPenpals
+                          ?.filter((penpal) => penpal.status !== 'PENDING')
+                          .map((penpal: IPenpal) => ({
+                            label: penpal.friend?.profile?.full_name,
+                            image: penpal.friend?.attachment?.file_path,
+                            value: penpal?.friend?.id,
+                          })) || []
                       }
                       formatOptionLabel={(option: any) => {
                         return (
