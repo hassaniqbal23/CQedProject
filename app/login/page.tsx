@@ -15,6 +15,7 @@ import { updateToken } from '../utils/http';
 import { LoginAPI } from '../api/auth';
 import { useMutation } from 'react-query';
 import Link from 'next/link';
+import { Typography } from '@/components/common/Typography/Typography';
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -91,12 +92,20 @@ export default function Login() {
             />
           </div>
           <div className="text-center mb-0">
-            <h1 className="font-semibold text-center text-lg mb-1 md:text-xl ">
-              Login
-            </h1>
-            <p className="text-center text-[#282931] text-sm font-normal">
-              Login to your admin account
-            </p>
+            <Typography
+              className=" text-center text-lg mb-1 md:text-xl "
+              variant={'h1'}
+              weight={'semibold'}
+            >
+              Admin Login
+            </Typography>
+            <Typography
+              variant={'p'}
+              weight={'regular'}
+              className="text-center text-[#282931] "
+            >
+              Log in to manage your GCEd admin panel
+            </Typography>
           </div>
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -106,7 +115,7 @@ export default function Login() {
                   required={true}
                   form={form}
                   name="name"
-                  placeholder={'admin'}
+                  placeholder={'Enter your username'}
                 />
               </div>
               <div className="mb-3">
@@ -116,7 +125,7 @@ export default function Login() {
                     type="password"
                     form={form}
                     name="password"
-                    placeholder={'enter your password'}
+                    placeholder={'Enter your password'}
                   />
                 </div>
               </div>
@@ -135,7 +144,7 @@ export default function Login() {
                   disabled={isLoading || !isValid}
                   variant={'primary500'}
                 >
-                  Login
+                  Log in
                 </Button>
               </div>
             </form>
