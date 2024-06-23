@@ -195,7 +195,7 @@ const ProfileSettings = () => {
             </FormItem>
             <div className="col-span-2 flex justify-start mt-4">
               <button
-                onSubmit={onSubmit}
+                type='submit'
                 className="bg-primary text-white py-3 px-5 rounded-sm hover:bg-primary-600 transition duration-300"
               >
                 Save Changes
