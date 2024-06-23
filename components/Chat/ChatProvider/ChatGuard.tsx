@@ -11,6 +11,7 @@ import { useEventBus } from '../EventBus/EventBus';
 import {
   EVENT_BUS_ADD_NEW_INCOMING_MESSAGE_TO_INBOX_RESPONSE,
   EVENT_BUS_ON_DELETE_MESSAGE,
+  USERS_DISCONNECTED,
 } from '../EventBus/constants';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { socket } from '@/lib/socket';
@@ -83,7 +84,20 @@ export const ChatGuardProvider = ({ children }: any) => {
     };
 
     const onOnlineUsersList = (users: number[]) => {
-      setRealtimeConnectedUsersIds(users);
+      let disconnectedUsers: number[] = [];
+      setRealtimeConnectedUsersIds((prevUsers) => {
+        prevUsers.forEach((element) => {
+          if (!users.includes(element)) {
+            disconnectedUsers.push(element);
+          }
+        });
+
+        if (disconnectedUsers.length > 0) {
+          dispatchEvent(USERS_DISCONNECTED, disconnectedUsers);
+        }
+
+        return users;
+      });
     };
 
     const onUserIsNotTyping = ({ userId }: { userId: number }) => {

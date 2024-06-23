@@ -40,4 +40,6 @@ export const teacherUpdateProfile = (
   payload: IUserInformation
 ) => {
   return http.patch(`/teachers/${profileId}/update-teacher`, payload);
-};
+  export const getDashboardData = () => {
+    return http.get('/dashboard/dashboard');
+  };

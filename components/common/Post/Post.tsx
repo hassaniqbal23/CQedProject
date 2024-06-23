@@ -1,14 +1,17 @@
 import { useState } from 'react';
-import { Avatar, AvatarImage } from '@/components/ui';
+import { Avatar, AvatarImage, Button } from '@/components/ui';
 import { Send, MessageCircle, Heart } from 'lucide-react';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { FC, useEffect } from 'react';
+import Link from 'next/link';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 dayjs.extend(relativeTime);
 
 interface IProps {
+  userId?: string | number;
   userImage: string;
   userFullName: string;
   username: string;
@@ -23,9 +26,13 @@ interface IProps {
   hasUserLiked?: boolean;
   showLikeButton?: boolean;
   showCommentButton?: boolean;
+  isFriend?: boolean;
+  onAddFriend?: () => void;
+  addFriendLoading?: boolean;
 }
 
 export const Post: FC<IProps> = ({
+  userId,
   userImage,
   userFullName,
   username,
@@ -40,7 +47,11 @@ export const Post: FC<IProps> = ({
   onUnlike,
   showLikeButton = true,
   showCommentButton = true,
+  isFriend = true,
+  onAddFriend,
+  addFriendLoading,
 }: IProps) => {
+  const { module } = useModule();
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikedCount] = useState(likes);
 
@@ -65,21 +76,36 @@ export const Post: FC<IProps> = ({
   return (
     <div>
       <div className="p-3 m-1 w-full ">
-        <div className="flex gap-2 items-center w-full md:w-auto md:mr-4 mb-4">
-          <div>
-            <Avatar className="w-14 h-14 md:w-54 md:h-54 rounded-full bg-lightgray mb-3">
-              <AvatarImage src={userImage} alt="Profile Picture" />
-            </Avatar>
-          </div>
+        <div className="flex gap-2 w-full items-center justify-between ">
+          <Link href={`/${module}/profile/${userId}`}>
+            <div className="flex gap-2 items-center w-3/4 md:w-auto md:mr-4 mb-4">
+              <div>
+                <Avatar className="w-14 h-14 md:w-54 md:h-54 rounded-full bg-lightgray mb-3">
+                  <AvatarImage src={userImage} alt="Profile Picture" />
+                </Avatar>
+              </div>
 
-          <div className="flex flex-col mb-4 ">
-            <div className="text-xl font-semibold ml-3">{userFullName}</div>
-            <div className="text-gray-600 text-sm ml-3 mt-[7px]">
-              <span>@{username}</span>
-              <span className="mx-1">•</span>
-              <span>{dayjs(created_at).fromNow()}</span>
+              <div className="flex flex-col mb-4 ">
+                <div className="text-xl font-semibold ml-3">{userFullName}</div>
+                <div className="text-gray-600 text-sm ml-3 mt-[7px]">
+                  <span>@{username}</span>
+                  <span className="mx-1">•</span>
+                  <span>{dayjs(created_at).fromNow()}</span>
+                </div>
+              </div>
             </div>
-          </div>
+          </Link>
+          {!isFriend && (
+            <div>
+              <Button
+                className="bg-[#ECEDF8] text-[#2183C4]  px-4 py-2 rounded-full"
+                onClick={() => onAddFriend && onAddFriend()}
+                loading={addFriendLoading}
+              >
+                Add Friend
+              </Button>
+            </div>
+          )}
         </div>
         <div className="flex flex-col flex-grow">
           <div className="text-gray-600 mb-2">{description}</div>{' '}

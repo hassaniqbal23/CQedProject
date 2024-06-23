@@ -63,9 +63,7 @@ const Coummuntiycard: FC<IProps> = ({
             <Button
               {...buttonProps}
               className=" h-[30px] max-w-[222px] p-4  rounded-full "
-            >
-              Join
-            </Button>
+            ></Button>
           </div>
         </div>
       </Card>

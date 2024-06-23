@@ -16,11 +16,13 @@ import {
   Settings,
   UserCheck,
 } from 'lucide-react';
+
 interface IProps {
   children: ReactNode;
 }
 
 export const TeacherLayout: FC<IProps> = ({ children }) => {
+  const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
   const { isMobile, isTabletMini, isTabletOrMobile } = useResponsive();
@@ -102,7 +104,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
       <div className="block w-[70px] md:w-[240px] bg-[#F6F8F9] dark:bg-slate-900">
         <div className="flex">
           <Sidebar
-            isMobileSidebar={isTabletMini || isTabletOrMobile}
+            isMobileSidebar={isTabletMini}
             isVerticalIcon={true}
             pathname={pathname as string}
             sidebarLinks={sidebarLinks}
@@ -150,9 +152,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
                     title: 'Logout',
                     icon: <LogOut size={15} />,
                     onClick: () => {
-                      removeToken();
-                      removeUserId();
-                      router.push('/teachers/sign-in');
+                      logout();
                     },
                   },
                 ],
