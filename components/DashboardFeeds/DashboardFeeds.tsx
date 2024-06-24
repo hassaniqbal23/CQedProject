@@ -99,7 +99,7 @@ function DashboardFeeds() {
   );
 
   return (
-    <div className="w-full px-2 gap-10 ">
+    <div className="max-w-full px-2 gap-10 ">
       <div className="mb-4 flex flex-col gap-4">
         <CreatePostModal
           icon="/uplode.svg"

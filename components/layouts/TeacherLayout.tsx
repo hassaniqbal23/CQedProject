@@ -25,7 +25,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
   const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
-  const { isMobile, isTabletMini, isTabletOrMobile } = useResponsive();
+  const { isTabletMini } = useResponsive();
   const { userInformation } = useGlobalState();
 
   const showLayout = useMemo(() => {

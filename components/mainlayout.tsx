@@ -17,7 +17,7 @@ export const MainLayout: FC<IProps> = ({ children }) => {
   const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
-  const { isMobile, isTabletMini, isTabletOrMobile } = useResponsive();
+  const { isTabletMini } = useResponsive();
 
   const sidebarLinks = [
     {
@@ -51,7 +51,7 @@ export const MainLayout: FC<IProps> = ({ children }) => {
       <div className=" block w-[70px] md:w-[240px] bg-[#D1D5DB] dark:bg-slate-900">
         <div className="flex ">
           <Sidebar
-            isMobileSidebar={isTabletMini || isTabletOrMobile}
+            isMobileSidebar={isTabletMini}
             isVerticalIcon={false}
             pathname={pathname as string}
             sidebarLinks={sidebarLinks}

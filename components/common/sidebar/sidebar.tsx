@@ -20,10 +20,11 @@ export const Sidebar: FC<IProps> = ({
   isMobileSidebar,
 }) => {
   if (isMobileSidebar) {
+    console.log(isMobileSidebar);
     return (
       <>
         <aside
-          className={`fixed bottom-0 hidden sm:block md:hidden left-0 z-40 h-30  w-full bg-primary-500`}
+          className={`fixed bottom-0  sm:block left-0 z-40 h-30  w-full bg-primary-500`}
         >
           <div className="flex justify-between flex-col h-full">
             <ul className="flex justify-between items-center px-16">
