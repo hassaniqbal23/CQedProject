@@ -30,7 +30,7 @@ export const GlobalFriendConnect: FC<ProfileCardProps> = ({
           className="w-[100px] h-[100px] rounded-full object-cover"
           unoptimized={true}
         />
-        <div className="flex flex-col">
+        <div className="flex flex-col ">
           <div>
             <Typography variant="h4" weight="semibold">
               {name}

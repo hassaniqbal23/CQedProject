@@ -6,7 +6,7 @@ import DashboardCards from '@/components/common/DashboardCards/DashboardCards';
 
 const Dashboard = () => {
   return (
-    <div className="grid grid-cols-2">
+    <div className="flex">
       <DashboardFeeds />
       <DashboardCards />
     </div>
