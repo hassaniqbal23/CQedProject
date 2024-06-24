@@ -102,10 +102,10 @@ export const Post: FC<IProps> = ({
     <div>
       <div className="p-3 m-1 w-full ">
         <div
-          className={`flex gap-2 w-full ${isMyPost ? 'items-start' : 'items-center'} justify-between mb-4"`}
+          className={`flex gap-0 md:gap-2 w-full ${isMyPost ? 'items-start' : 'items-center'} justify-between mb-4"`}
         >
           <Link href={`/${module}/profile/${userId}`}>
-            <div className="flex gap-2 items-center w-3/4 md:w-auto md:mr-4">
+            <div className="flex gap-0 md:gap-2 items-center w-3/4 md:w-auto md:mr-4">
               <div>
                 <Avatar
                   className={`${isSharedPost ? 'w-12 h-12' : 'w-14 h-14'} md:w-54 md:h-54 rounded-full bg-lightgray mb-3`}

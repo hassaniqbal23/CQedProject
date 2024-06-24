@@ -6,5 +6,5 @@ export interface ITeacherCreate {
   nickname: string;
   university?: string;
   dob: string;
-  language: { label: string; value: string }[] | any;
+  languages: { label: string; value: string }[] | any;
 }

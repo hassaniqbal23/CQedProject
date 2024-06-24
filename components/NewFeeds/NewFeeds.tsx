@@ -26,12 +26,12 @@ export const NewFeeds: React.FC<NewFeedsProps> = ({
             className="rounded-full h-10 w-10"
             unoptimized={true}
           />
-          <div className="w-7/12 md:w-full ">
+          <div className="w-4/5 md:w-full ">
             <Input
               iconColor="#5D5E68"
               iconPosition="right"
               onClick={onClick}
-              type="search"
+              type="text"
               placeholder="What’s happening?"
               className="bg-[#F3F3F3] text-[#5D5E68] w-full p-2 rounded-lg border-0 h-12"
             />

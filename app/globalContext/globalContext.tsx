@@ -1,9 +1,14 @@
 import { FC, createContext, useContext, useState } from 'react';
 import { IUserInformation, IPenpal, ICommunityJoin } from './types';
 import { useQuery } from 'react-query';
-import { GetUserInformation, GetUserJoinedCommunities } from '../api/auth';
+import {
+  GetUserInformation,
+  GetUserJoinedCommunities,
+  getNotifications,
+} from '../api/auth';
 import {
   getUserIdLocalStorage,
+  removeFcmToken,
   removeToken,
   removeUserId,
 } from '../utils/encryption';
@@ -14,10 +19,13 @@ import {
 import { getBlockedUsers } from '../api/users';
 import { pendingCommunities } from '../api/communities';
 import { useRouter } from 'next/navigation';
+import { INotifications } from '@/types/auth';
+import { number } from 'echarts';
 
 type IGlobalState = {
   isUserGetInfo: boolean;
   isFetchingMyPenPals: boolean;
+  isGettingNotifications: boolean;
   userInformation: IUserInformation;
   joinedCommunities: ICommunityJoin[];
   myPenpals: IPenpal[];
@@ -28,20 +36,29 @@ type IGlobalState = {
   isAuthenticated?: boolean;
   logout: () => void;
   setIsFetchingMyPenPals: (value: boolean) => void;
+  setCountUnreadNotifications: (value: number) => void;
+  setNotifications: (value: INotifications[]) => void;
   pendingCommunitiesList: any[];
   pendingGlobalFriendsList: any[];
+  notifications: INotifications[];
+  countUnreadNotifications: number;
 };
 
 export const GlobalState = createContext<IGlobalState>({
   isUserGetInfo: false as boolean,
+  isGettingNotifications: false as boolean,
   isFetchingMyPenPals: false as boolean,
   userInformation: {} as IUserInformation,
   joinedCommunities: [] as ICommunityJoin[],
+  notifications: [] as INotifications[],
+  countUnreadNotifications: 0 as number,
   myPenpals: [] as IPenpal[],
   setIsUserGetInfo: () => {},
   setUserInformation: () => {},
   usersIBlocked: [] as any[],
   setIsAuthenticated: () => {},
+  setCountUnreadNotifications: () => {},
+  setNotifications: () => {},
   isAuthenticated: false,
   logout: () => {},
   setIsFetchingMyPenPals: () => {},
@@ -68,6 +85,12 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   const [pendingGlobalFriendsList, setPendingGlobalFriendsList] = useState<
     any[]
   >([]);
+  const [countUnreadNotifications, setCountUnreadNotifications] =
+    useState<number>(0);
+  const [notifications, setNotifications] = useState<INotifications[]>(
+    [] as INotifications[]
+  );
+
   const userId = getUserIdLocalStorage();
 
   const logout = () => {
@@ -78,6 +101,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     setMyPenpals([]);
     removeToken();
     removeUserId();
+    removeFcmToken();
     setUsersIBlocked([]);
     setPendingCommunitiesList([]);
 
@@ -88,7 +112,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     } else if (roleName === 'university') {
       router.push('/universities/sign-in');
     } else if (roleName === 'school') {
-      router.push('/schools/sign-in');
+      router.push('/universities/sign-in');
     } else if (roleName === 'teacher') {
       router.push('/teachers/sign-in');
     } else if (roleName === '*') {
@@ -195,23 +219,45 @@ export const GlobalProvider: FC<any> = ({ children }) => {
     retryDelay: 5000,
   });
 
+  const { isLoading: isGettingNotifications } = useQuery(
+    ['getNotifications'],
+    () => getNotifications(Number(userId)),
+    {
+      onSuccess: (res) => {
+        setNotifications(res?.notifications);
+        setCountUnreadNotifications(res?.countUnreadNotifications);
+      },
+      onError: (err) => {
+        console.log(err, '======> ERROR');
+      },
+      enabled: userId !== 'undefined' && userId !== null ? true : false,
+      retry: 100,
+      retryDelay: 5000,
+    }
+  );
+
   return (
     <GlobalState.Provider
       value={{
+        countUnreadNotifications,
+        notifications,
         isUserGetInfo,
         isFetchingMyPenPals,
         userInformation,
         joinedCommunities,
         myPenpals,
         isAuthenticated,
-        setIsAuthenticated,
+        pendingCommunitiesList,
+        pendingGlobalFriendsList,
         usersIBlocked,
+        isGettingNotifications,
+        setNotifications,
+        setIsAuthenticated,
+        setCountUnreadNotifications,
         logout,
         setIsUserGetInfo,
         setUserInformation,
         setIsFetchingMyPenPals,
-        pendingCommunitiesList,
-        pendingGlobalFriendsList,
       }}
     >
       {children}

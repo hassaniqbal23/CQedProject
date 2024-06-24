@@ -2,9 +2,11 @@ import React from 'react';
 import { MoreHorizontal } from 'lucide-react';
 import { Typography } from '../common/Typography/Typography';
 import { Button, Dropdown } from '../ui';
+import Image from 'next/image';
 
 export interface NotificationV2Props {
   avatar: string;
+  isRead?: boolean;
   message: React.ReactNode;
   actions?: (notification: any) => React.ReactNode;
   onMarkAsRead?: () => void;
@@ -17,17 +19,21 @@ export const Notification: React.FC<NotificationV2Props> = ({
   actions,
   onMarkAsRead,
   onDelete,
+  isRead,
 }) => {
   return (
-    <div className={`w-full px-4 py-3 rounded-lg`}>
+    <div
+      className={`w-full px-4 py-3 rounded-lg ${isRead ? '' : 'bg-primary-50'} mb-2`}
+    >
       <div className="flex justify-between items-center gap-5 rounded-md">
         <div className="flex items-center gap-5">
-          <img
-            className="rounded-full object-cover self-start "
+          <Image
+            className="rounded-full object-cover self-start h-10 w-10 "
             src={avatar}
             alt="Avatar"
             width={48}
             height={48}
+            unoptimized
           />
           <div>
             {message}
@@ -59,9 +65,9 @@ export const Notification: React.FC<NotificationV2Props> = ({
               },
             ]}
             trigger={
-              <Button variant={'outline'} className="border-none">
+              <div className="border-none cursor-pointer">
                 <MoreHorizontal width={24} height={24} />
-              </Button>
+              </div>
             }
           />
         </div>

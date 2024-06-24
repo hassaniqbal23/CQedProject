@@ -24,7 +24,7 @@ const formSchema = z.object({
   nickname: z.string().min(2).max(50).nonempty('Nickname is required'),
   country: z.string().nonempty('Country is required'),
   dob: z.string().nonempty('Birthday is required'),
-  language: z
+  languages: z
     .array(
       z.object({
         label: z.string(),
@@ -45,7 +45,7 @@ export const CreateProfile: React.FC = () => {
       country: '',
       gender: '',
       dob: '',
-      language: [],
+      languages: [],
     },
   });
 
@@ -79,13 +79,13 @@ export const CreateProfile: React.FC = () => {
   const onSubmit: SubmitHandler<ITeacherCreate> = async (
     data: ITeacherCreate
   ) => {
-    const language = data.language.map(
+    const language = data.languages.map(
       (c: { label: string; value: string }) => c.value
     );
     const { university, email, ...payload } = data;
     const submitdata: ITeacherCreate = {
       ...payload,
-      language: language,
+      languages: language,
       email: userInformation.email,
     };
     createTeacher(submitdata);
@@ -125,7 +125,7 @@ export const CreateProfile: React.FC = () => {
                     required={true}
                     form={form}
                     name="fullname"
-                    placeholder="e.g John, Emma"
+                    placeholder="e.g., John Smith, Emma Jones"
                     label="Full Name"
                   />
                 </div>
@@ -255,12 +255,7 @@ export const CreateProfile: React.FC = () => {
                                   : undefined
                               }
                               onChange={(e: any) => {
-                                console.log(e, 'checking');
-                                if (!e) {
-                                  form.setValue('country', '');
-                                  return;
-                                }
-                                form.setValue('country', e.value);
+                                field.onChange(e.value);
                               }}
                               label=""
                             ></SelectCountry>
@@ -275,9 +270,8 @@ export const CreateProfile: React.FC = () => {
                 <div className="mb-4">
                   <FormField
                     control={form.control}
-                    name="language"
-                    render={({ field, formState }) => {
-                      const values = form.watch();
+                    name="languages"
+                    render={({ field }) => {
                       return (
                         <>
                           <FormLabel className="text-sm">Languages</FormLabel>

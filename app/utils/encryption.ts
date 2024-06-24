@@ -3,6 +3,7 @@ import { AES, enc } from 'crypto-js';
 const SECRET_KEY = 'secretKey123';
 const TOKEN_KEY = 'token';
 const NEXT_AUTH_USERID = 'userId';
+const FCM_TOKEN_KEY = 'firebaseToken';
 
 const obfuscate = (str: string): string => {
   return str
@@ -73,4 +74,10 @@ export const getUserIdLocalStorage = (): string | null => {
     return localStorage.getItem('userId');
   }
   return null;
+};
+
+export const removeFcmToken = (): void => {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem(FCM_TOKEN_KEY);
+  }
 };

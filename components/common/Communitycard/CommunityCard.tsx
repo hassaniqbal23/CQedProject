@@ -31,8 +31,8 @@ const Coummuntiycard: FC<IProps> = ({
 }) => {
   return (
     <div>
-      <Card className={` w-full mb-2 ${className}`}>
-        <div className="flex items-center justify-between ">
+      <Card className={`max-w-full mb-2 ${className}`}>
+        <div className="flex items-center justify-between flex-col lg:flex-row ">
           <div className="flex flex-row p-3">
             <div>
               <Avatar className="w-16 h-16 md:w-54 md:h-54 mr-2 rounded-full bg-lightgray  ">
@@ -43,7 +43,7 @@ const Coummuntiycard: FC<IProps> = ({
               <div className="flex flex-col">
                 <div>
                   <Typography variant="h5" weight={'semibold'}>
-                    {title}
+                    {title.length > 14 ? `${title.substr(0, 14)}...` : title}
                   </Typography>
                 </div>
                 <div className="flex flex-row items-center">

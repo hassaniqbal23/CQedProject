@@ -6,13 +6,9 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './globals.css';
 import { FormProvider, useForm } from 'react-hook-form';
-import { ThemeProvider } from '@/components/theme-provider';
-import { getAccessToken } from './utils/encryption';
-import { updateToken } from './utils/http';
 import { GlobalProvider } from './globalContext/globalContext';
 import { Toaster } from '@/components/ui/toaster/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner/sonner';
-import localFont from 'next/font/local';
 import { Montserrat } from 'next/font/google';
 import { EventBusProvider } from '@/components/Chat/EventBus/EventBus';
 import { SocketProvider } from '@/components/Chat/WithSockets/WithSockets';
@@ -20,6 +16,8 @@ import { ChatGuardProvider } from '@/components/Chat/ChatProvider/ChatGuard';
 import NextTopLoader from 'nextjs-toploader';
 import { ModuleProvider } from '@/components/ModuleProvider/ModuleProvider';
 import { ChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
+import { ClientOnly } from '@/components/GqedNotifications/ClientOnly';
+import { GqedNotifications } from '@/components/GqedNotifications/GqedNotifications';
 
 const montserrat = Montserrat({
   weight: ['400', '500', '600', '700'],
@@ -72,6 +70,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                         {children}
                         {/* </ThemeProvider> */}
                         <ToastContainer autoClose={1000} />
+                        <ClientOnly>
+                          <GqedNotifications />
+                        </ClientOnly>
                       </FormProvider>
                     </ChatProvider>
                   </ChatGuardProvider>

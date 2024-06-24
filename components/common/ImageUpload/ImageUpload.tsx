@@ -17,7 +17,7 @@ const ImageUpload: FC<IProps> = ({
   uploadProfile,
   attachmentID,
   attachmentFilepath,
-  title = 'Choose your avatar',
+  title = 'Upload your picture',
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 

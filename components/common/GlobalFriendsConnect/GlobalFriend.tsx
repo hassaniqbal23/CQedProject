@@ -20,7 +20,7 @@ export const GlobalFriendConnect: FC<ProfileCardProps> = ({
   isConnecting,
 }) => {
   return (
-    <Card className="p-4 flex  items-center bg-primary-50 bg-gray-100">
+    <Card className="p-4 flex items-center bg-primary-50 bg-gray-100">
       <div className="flex gap-4 w-full items-center">
         <Image
           src={imageUrl}
@@ -28,6 +28,7 @@ export const GlobalFriendConnect: FC<ProfileCardProps> = ({
           width={40}
           height={40}
           className="w-[100px] h-[100px] rounded-full object-cover"
+          unoptimized={true}
         />
         <div className="flex flex-col">
           <div>

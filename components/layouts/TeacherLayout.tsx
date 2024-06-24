@@ -25,7 +25,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
   const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
-  const { isMobile, isTabletMini, isTabletOrMobile } = useResponsive();
+  const { isTabletMini } = useResponsive();
   const { userInformation } = useGlobalState();
 
   const showLayout = useMemo(() => {
@@ -51,11 +51,11 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
       title: 'Chat & Communities',
       path: '/teachers/chats',
     },
-    {
-      icon: '/assets/sidebaricons/students.svg',
-      title: 'Students',
-      path: '/teachers/students',
-    },
+    // {
+    //   icon: '/assets/sidebaricons/students.svg',
+    //   title: 'Students',
+    //   path: '/teachers/students',
+    // },
     {
       icon: '/assets/sidebaricons/penpalship.svg',
       title: 'Global Friends',
