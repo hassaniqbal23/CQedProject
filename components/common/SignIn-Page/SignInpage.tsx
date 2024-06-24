@@ -112,126 +112,114 @@ export function SignIn(props: SignInProps) {
   };
 
   return (
-    <>
-      <div className="flex flex-col md:flex-row items-stretch justify-stretch h-screen">
-        <div className="hidden md:block w-full md:w-1/2 ">
-          <LoginCarousel
-            carouselItems={[
-              {
-                title: 'Teach the Future',
-                description:
-                  'Shaping Global Citizens Through Cultural Intelligence',
-                imgPath: '/assets/images/LoginPage.png',
-              },
-              {
-                title: 'Teach the Future',
-                description:
-                  'Shaping Global Citizens Through Cultural Intelligence',
-                imgPath: '/assets/images/slider3.jpeg',
-              },
-            ]}
-          />
-        </div>
-
-        <div className="w-full md:w-6/12 h-screen flex flex-col justify-center items-center ">
-          {/* <div className="flex items-center justify-center">
-             <Image
-               alt="logo"
-              width={150}
-              height={150}
-             src="/assets/GCEd/NavGCEd.svg"
-            />
-           </div>  */}
-          <div className="text-center mb-4 mt-12">
-            <Typography variant="h2" weight="semibold">
-              Sign in to your account
-            </Typography>
-            <Typography
-              variant="p"
-              weight="medium"
-              className="text-slate-600 mt-1"
-            >
-              Sign in to access your account
-            </Typography>
-          </div>
-          <div className="flex items-center justify-center mb-2  ">
-            {icons.map((icon, index) => (
-              <div key={index} className="-ml-2  z-2 mb-5">
-                <Avatar className="h-6 w-6">
-                  <Image
-                    src={icon}
-                    alt={`Ellipse ${index + 1}`}
-                    width={100}
-                    height={100}
-                  />
-                </Avatar>
-              </div>
-            ))}
-          </div>
-          <Form {...form}>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 ">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder={
-                          module === 'teachers'
-                            ? 'Teacher ID or University Email'
-                            : 'Student ID or College Email'
-                        }
-                        {...field}
-                        className="w-96"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter your password"
-                        {...field}
-                        className="text-[#5D5E68] w-96"
-                        type="password"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Link
-                href={props.forgetPasswordLink}
-                className="text-sm text-primary hover:no-underline p-0 flex justify-end font-semibold"
-              >
-                Forget your password?
-              </Link>
-              <Button
-                type="submit"
-                variant="default"
-                size="md"
-                className="w-96 text-white flex items-center"
-                loading={isLoading}
-                disabled={isLoading}
-              >
-                Login
-              </Button>
-              {/*<div className="flex justify-center py-4 sm:py-6 md:py-10 items-center">*/}
-              {/*  <Separator className="text-slate-900 w-3/12 sm:w-4/12" />*/}
-              {/*  <p className="text-slate-500 m-1">or</p>*/}
-              {/*  <Separator className="text-slate-900 w-3/12 sm:w-4/12" />*/}
-              {/*</div>*/}
-            </form>
-          </Form>
-        </div>
+    <div className="flex flex-col md:flex-row items-stretch justify-stretch min-h-screen">
+      <div className="hidden md:block w-full md:w-1/2">
+        <LoginCarousel
+          carouselItems={[
+            {
+              title: 'Teach the Future',
+              description:
+                'Shaping Global Citizens Through Cultural Intelligence',
+              imgPath: '/assets/images/LoginPage.png',
+            },
+            {
+              title: 'Teach the Future',
+              description:
+                'Shaping Global Citizens Through Cultural Intelligence',
+              imgPath: '/assets/images/slider3.jpeg',
+            },
+          ]}
+        />
       </div>
-    </>
+
+      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-12">
+        <div className="text-center mb-4 mt-12 px-4">
+          <Typography variant="h2" weight="semibold">
+            Sign in to your account
+          </Typography>
+          <Typography
+            variant="p"
+            weight="medium"
+            className="text-slate-600 mt-1"
+          >
+            Sign in to access your account
+          </Typography>
+        </div>
+        <div className="flex items-center justify-center mb-2">
+          {icons.map((icon, index) => (
+            <div key={index} className="-ml-2 z-2 mb-5">
+              <Avatar className="h-6 w-6">
+                <Image
+                  src={icon}
+                  alt={`Ellipse ${index + 1}`}
+                  width={100}
+                  height={100}
+                />
+              </Avatar>
+            </div>
+          ))}
+        </div>
+        <Form {...form}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-5 w-full max-w-md px-4 md:px-0"
+          >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      placeholder={
+                        module === 'teachers'
+                          ? 'Teacher ID or University Email'
+                          : 'Student ID or College Email'
+                      }
+                      {...field}
+                      className="w-full"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your password"
+                      {...field}
+                      className="w-full"
+                      type="password"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Link
+              href={props.forgetPasswordLink}
+              className="text-sm text-primary hover:no-underline p-0 flex justify-end font-semibold"
+            >
+              Forget your password?
+            </Link>
+            <Button
+              type="submit"
+              variant="default"
+              size="md"
+              className="w-full text-white flex items-center"
+              loading={isLoading}
+              disabled={isLoading}
+            >
+              Login
+            </Button>
+          </form>
+        </Form>
+      </div>
+    </div>
   );
 }
