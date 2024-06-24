@@ -25,7 +25,7 @@ interface IProps {
 export const TeacherLayout: FC<IProps> = ({ children }) => {
   const { logout } = useGlobalState();
   const pathname = usePathname();
-  const { isMobile, isTabletMini, isTabletOrMobile } = useResponsive();
+  const { isTabletMini } = useResponsive();
   const [isOpenNotifications, setIsOpenNotifications] =
     useState<boolean>(false);
   const { userInformation } = useGlobalState();

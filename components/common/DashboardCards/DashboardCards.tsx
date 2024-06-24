@@ -84,7 +84,7 @@ function DashboardCards() {
                       ? true
                       : false;
                     return (
-                      <div key={index} className="whitespace-nowrap">
+                      <div key={index} className="">
                         <Coummuntiycard
                           className="bg-white "
                           totalMembers={item.member_count}
@@ -118,11 +118,7 @@ function DashboardCards() {
           </Card>
           <Card>
             <div className="px-3">
-              <Typography
-                variant="h4"
-                weight="semibold"
-                className="flex whitespace-nowrap my-3"
-              >
+              <Typography variant="h4" weight="semibold" className="flex  my-3">
                 Suggested Global Friends
               </Typography>
               {data?.data &&
