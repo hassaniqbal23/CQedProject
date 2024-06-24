@@ -1,3 +1,5 @@
+import { IUserProfile } from '@/app/api/types';
+
 enum FileType {
   JPG = 'JPG',
   PNG = 'PNG',
@@ -81,4 +83,13 @@ export interface ICommunityPost {
   User: IUser;
   comments: IComment[];
   likes: ILike[];
+}
+
+export interface IPenpalSearchResult {
+  email: string;
+  id: number;
+  mutualFriends: number;
+  name: string;
+  attachment: IAttachments;
+  profile: IUserProfile;
 }
