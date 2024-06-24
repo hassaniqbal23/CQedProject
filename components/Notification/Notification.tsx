@@ -28,7 +28,7 @@ export const Notification: React.FC<NotificationV2Props> = ({
       <div className="flex justify-between items-center gap-5 rounded-md">
         <div className="flex items-center gap-5">
           <Image
-            className="rounded-full object-cover self-start h-10 w-10 "
+            className="rounded-full object-cover self-start h-12 w-12 "
             src={avatar}
             alt="Avatar"
             width={48}

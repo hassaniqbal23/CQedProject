@@ -143,18 +143,18 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
                 </>
               }
               actions={() => (
-                <>
+                <div className="block">
                   <p className="text-xs text-gray-500 block">
                     {notification?.created_at && dayjs(createdAt).fromNow()}
                   </p>
                   {(notification.notificationType === 'PENPAL_REQUEST' ||
                     notification.notificationType ===
                       'COMMUNITY_JOIN_REQUEST') && (
-                    <div className="flex items-center flex-wrap">
+                    <div className="flex items-center">
                       <Button
                         onClick={() => handleClick(notification, 'ACCEPTED')}
                         size={'sm'}
-                        className="bg-primary-500 text-white rounded-full mb-2 px-14  "
+                        className="bg-primary-500 text-white rounded-full px-6 py-2 mt-1  "
                       >
                         {notification.notificationType === 'PENPAL_REQUEST'
                           ? 'Friend Request'
@@ -163,13 +163,13 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
                       <Button
                         size={'sm'}
                         onClick={() => handleClick(notification, 'REJECTED')}
-                        className="border border-solid border-primary-500 text-primary-500  px-14 rounded-full ml-4 bg-transparent"
+                        className="border border-solid border-primary-500 text-primary-500 px-8 py-2 rounded-full ml-4 bg-transparent"
                       >
                         Decline
                       </Button>
                     </div>
                   )}
-                </>
+                </div>
               )}
             />
           );

@@ -1,5 +1,5 @@
 'use client';
-import { FC, ReactNode, Suspense, useMemo } from 'react';
+import { FC, ReactNode, Suspense, useMemo, useState } from 'react';
 import Sidebar from '../common/sidebar/sidebar';
 import { usePathname } from 'next/navigation';
 import Navbar from '../common/navbar/MainBar';
@@ -16,6 +16,7 @@ import {
   Settings,
   UserCheck,
 } from 'lucide-react';
+import { PopNotifactions } from '../Notification/PopNotifactions';
 
 interface IProps {
   children: ReactNode;
@@ -24,8 +25,9 @@ interface IProps {
 export const TeacherLayout: FC<IProps> = ({ children }) => {
   const { logout } = useGlobalState();
   const pathname = usePathname();
-  const router = useRouter();
   const { isTabletMini } = useResponsive();
+  const [isOpenNotifications, setIsOpenNotifications] =
+    useState<boolean>(false);
   const { userInformation } = useGlobalState();
 
   const showLayout = useMemo(() => {
@@ -120,9 +122,20 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
                 icon: <MessageCircle />,
               },
               {
-                href: '/teachers/notifications',
                 type: 'icon',
-                icon: <Bell />,
+                icon: (
+                  <>
+                    <PopNotifactions
+                      IconName={<Bell className="w-6 h-6 text-black" />}
+                      open={isOpenNotifications}
+                      onClose={() => setIsOpenNotifications(false)}
+                      onOpenChange={() =>
+                        setIsOpenNotifications(!isOpenNotifications)
+                      }
+                      seeAllLink="/teachers/notifications"
+                    />
+                  </>
+                ),
               },
               {
                 href: '',
