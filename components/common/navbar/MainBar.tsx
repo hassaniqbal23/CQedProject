@@ -25,7 +25,7 @@ interface IDropDownOption {
   onClick?: () => void;
 }
 interface IHorizontalLinks {
-  href: string;
+  href?: string;
   type: 'icon' | 'profile';
   icon?: React.ComponentType | React.ReactNode;
   dropdownOption?: IDropDownOption[];
@@ -167,7 +167,7 @@ export const Navbar: FC<IProps> = ({
               if (link.type === 'icon' && link.icon) {
                 return (
                   <HorizontalLinks
-                    href={link.href}
+                    href={link.href || ''}
                     key={index}
                     icon={link.icon}
                   />

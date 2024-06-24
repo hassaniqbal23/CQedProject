@@ -137,9 +137,12 @@ const ProfileSettings = () => {
   };
 
   return (
-    <Card className="w-full p-4 mt-6">
-      <h1 className="text-xl font-semibold">Basic Information</h1>
-      <div className="mt-8 flex flex-col items-center w-1/5">
+    <Card className="w-full p-6 mt-6">
+      <Typography variant={'h3'} weight={'semibold'}>
+        Basic Information
+      </Typography>
+
+      <div className="mt-5 flex flex-col  w-1/5">
         <ImageUpload
           loading={isDeletingProfile || isUploadingProfile || isUserGetInfo}
           attachmentFilepath={userInformation?.attachment?.file_path}
@@ -151,7 +154,7 @@ const ProfileSettings = () => {
       <div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-2 gap-9 mt-10">
+            <div className="grid grid-cols-2 gap-5 mt-8">
               <FormInput
                 label="Full Name"
                 form={form}
@@ -165,13 +168,13 @@ const ProfileSettings = () => {
                 placeholder={'johndoe'}
               />
             </div>
-            <div className="grid grid-rows gap-2 my-4">
+            <div className="grid grid-rows gap-1 my-4">
               <FormField
                 control={form.control}
                 name="bio"
                 render={({ field }) => (
                   <FormItem className="col-span-2">
-                    <FormLabel className="!text-sm">
+                    <FormLabel className="!text-md">
                       Write about yourself
                     </FormLabel>
                     <FormControl>
@@ -188,7 +191,7 @@ const ProfileSettings = () => {
             </div>
           </form>
         </Form>
-        <div className="grid gap-9 mt-10">
+        <div className=" mt-10 ">
           <Typography
             variant={'h4'}
             weight={'bold'}
@@ -199,26 +202,28 @@ const ProfileSettings = () => {
 
           <AddEducation />
         </div>
-        <div className="grid gap-9 mt-10">
+        <div className="grid mt-10">
           <Typography
             variant={'h4'}
             weight={'bold'}
-            className="text-left text-primary-500"
+            className="text-left text-primary-500 mb-3"
           >
             Add Work Experience
           </Typography>
 
           <AddWorkExperience />
         </div>
-        <div className="grid gap-9 mt-10">
+        <div className="grid  mt-10">
           <Typography
             variant={'h4'}
             weight={'bold'}
-            className="text-primary-500 mb-6"
+            className="text-primary-500 mb-4"
           >
             Add Skills
           </Typography>
-
+          <Typography variant={'h6'} weight={'semibold'} className="mb-1">
+            Skills
+          </Typography>
           <MultipleSelector
             value={skills}
             onChange={(e) => setSkills(e)}
