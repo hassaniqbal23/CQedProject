@@ -64,7 +64,7 @@ interface SignInProps {
   loginSuccessLink: string;
 }
 
-export function SignIn(props: SignInProps) {
+export function SignInUni(props: SignInProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
 
