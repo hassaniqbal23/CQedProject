@@ -63,6 +63,7 @@ export interface IUserProfile {
   hobbies?: string[];
   interests?: string[];
   dob: string;
+  age?: number;
 }
 
 export interface ProfilesDetailPageProps {
