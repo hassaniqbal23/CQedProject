@@ -27,6 +27,7 @@ import { toast } from 'react-toastify';
 import { storeToken, storeUserId } from '@/app/utils/encryption';
 import { updateToken } from '@/app/utils/http';
 import { Typography } from '../Typography/Typography';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface ICarouselItems {
   title: string;
@@ -67,6 +68,7 @@ interface SignInProps {
 export function SignIn(props: SignInProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { module } = useModule();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -174,7 +176,15 @@ export function SignIn(props: SignInProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder=" email" {...field} className="w-96" />
+                      <Input
+                        placeholder={
+                          module === 'teachers'
+                            ? 'Teacher ID or University Email'
+                            : 'Student ID or College Email'
+                        }
+                        {...field}
+                        className="w-96"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
