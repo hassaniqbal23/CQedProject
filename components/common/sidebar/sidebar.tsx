@@ -20,7 +20,6 @@ export const Sidebar: FC<IProps> = ({
   isMobileSidebar,
 }) => {
   if (isMobileSidebar) {
-    console.log(isMobileSidebar);
     return (
       <>
         <aside
