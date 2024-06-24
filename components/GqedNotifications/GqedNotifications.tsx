@@ -46,20 +46,13 @@ export const GqedNotifications = () => {
 
   const requestFirebaseToken = async () => {
     if (messaging) {
-      console.log(
-        messaging,
-        process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
-        'key 1'
-      );
       try {
         const token = await getToken(messaging, {
           vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
         });
-        console.log(token, 'key 2');
         localStorage.setItem('firebaseToken', token);
         setFcmToken(token);
       } catch (error) {
-        console.log(error, 'error');
         console.error('Error getting Firebase token:', error);
       }
     }

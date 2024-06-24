@@ -24,10 +24,12 @@ export interface INotifications {
   community_post_comment_id: number | null;
   community_post_like_id: number | null;
   community_user_id: number | null;
+  penpal_id?: number | null;
 }
 
 export interface ICommunityAcceptInvite {
   userId: number;
   communityId: number;
   status: string;
+  requestId?: number;
 }

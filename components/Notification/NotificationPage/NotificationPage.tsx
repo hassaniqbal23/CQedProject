@@ -10,6 +10,7 @@ import {
   communityUserAcceptInvite,
   deleteNotification,
   notificationMarkRead,
+  penpalAcceptRequest,
 } from '@/app/api/auth';
 import { ICommunityAcceptInvite, INotifications } from '@/types/auth';
 
@@ -42,6 +43,17 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
       },
     }
   );
+  const { mutate: muatePenpalAcceptRequest, isLoading: isPenpalAccepting } =
+    useMutation(
+      (payload: ICommunityAcceptInvite) => penpalAcceptRequest(payload),
+      {
+        onSuccess: (res) => {},
+        onError: (error: any) => {
+          console.log(error, 'Error =====> log');
+        },
+      }
+    );
+
   const { mutate: muateNotificationMarkRead, isLoading: isReading } =
     useMutation(
       (payload: { id?: number; status: true }) =>
@@ -67,7 +79,6 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
     });
 
   const handleClick = (payload: INotifications, status: string) => {
-    console.log(payload, 'checking');
     if (payload?.notificationType === 'COMMUNITY_JOIN_REQUEST') {
       const submit = {
         userId: payload?.createdById,
@@ -75,6 +86,14 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
         status: status,
       };
       muateCommunityUserAcceptInvite(submit as ICommunityAcceptInvite);
+    }
+    if (payload?.notificationType === 'PENPAL_REQUEST') {
+      const submit = {
+        userId: payload?.createdById,
+        requestId: payload.penpal_id,
+        status: status,
+      };
+      muatePenpalAcceptRequest(submit as ICommunityAcceptInvite);
     }
   };
 

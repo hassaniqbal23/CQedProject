@@ -43,6 +43,9 @@ export const createNotifications = (payload: IFcmToken) =>
 export const communityUserAcceptInvite = (payload: ICommunityAcceptInvite) =>
   http.post(`/community-user/accept-user-invite`, payload);
 
+export const penpalAcceptRequest = (payload: ICommunityAcceptInvite) =>
+  http.post(`/penpal/accept-request`, payload);
+
 export const notificationMarkRead = (payload: { id?: number; status: true }) =>
   http.patch(`/notifications/read-notification`, payload);
 

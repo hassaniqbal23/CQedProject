@@ -16,8 +16,6 @@ import {
   Settings,
   UserCheck,
 } from 'lucide-react';
-import { ClientOnly } from '../GqedNotifications/ClientOnly';
-import { GqedNotifications } from '../GqedNotifications/GqedNotifications';
 
 interface IProps {
   children: ReactNode;
@@ -53,11 +51,11 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
       title: 'Chat & Communities',
       path: '/teachers/chats',
     },
-    {
-      icon: '/assets/sidebaricons/students.svg',
-      title: 'Students',
-      path: '/teachers/students',
-    },
+    // {
+    //   icon: '/assets/sidebaricons/students.svg',
+    //   title: 'Students',
+    //   path: '/teachers/students',
+    // },
     {
       icon: '/assets/sidebaricons/penpalship.svg',
       title: 'Global Friends',
