@@ -7,7 +7,6 @@ import AboutStudentsForm from '@/components/common/AboutStudentsForm';
 function AboutUserInfo() {
   return (
     <div>
-      <TopNavbar onLogout={() => {}}></TopNavbar>
       <AboutStudentsForm />
     </div>
   );

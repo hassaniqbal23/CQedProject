@@ -125,7 +125,7 @@ export const CreateProfile: React.FC = () => {
                     required={true}
                     form={form}
                     name="fullname"
-                    placeholder="e.g John, Emma"
+                    placeholder="e.g., John Smith, Emma Jones"
                     label="Full Name"
                   />
                 </div>

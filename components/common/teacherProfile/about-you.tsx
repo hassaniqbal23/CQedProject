@@ -97,7 +97,7 @@ export const AboutYou: React.FC = () => {
     {
       onSuccess: (res) => {
         toast.success(res.data.message);
-        router.push('/teachers/onboarding/update-password');
+        router.push('/teachers/onboarding/qualities');
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
@@ -128,14 +128,14 @@ export const AboutYou: React.FC = () => {
               weight={'bold'}
               className="text-center text-primary-500 pt-3"
             >
-              About You
+              Tell us about yourself,{userInformation.name}
             </Typography>
             <Typography
               variant={'body'}
               weight={'regular'}
               className="text-center pt-1"
             >
-              Tell us about yourself.
+              Let the world get to know you
             </Typography>
           </div>
         </div>
@@ -147,7 +147,7 @@ export const AboutYou: React.FC = () => {
                 control={form.control}
                 name="avatar"
                 render={({ field }) => (
-                  <FormItem className="flex justify-center flex-col items-center w-full">
+                  <FormItem className="flex justify-center flex-col items-center">
                     <FormControl>
                       <ImageUpload
                         loading={
@@ -242,20 +242,22 @@ export const AboutYou: React.FC = () => {
             placeholder="Add Skills"
           />
         </div>
-        <BottomNavbar
-          onContinue={async () => {
-            const isValid = await trigger();
-            if (isValid) {
-              handleSubmit(onSubmit)();
-            } else {
-              console.log('Validation failed');
-            }
-          }}
-          buttonLoading={isCreating}
-          onBackButton={function (): void {
-            throw new Error('Function not implemented.');
-          }}
-        />
+        <div className="fixed bottom-0 w-full ">
+          <BottomNavbar
+            onContinue={async () => {
+              const isValid = await trigger();
+              if (isValid) {
+                handleSubmit(onSubmit)();
+              } else {
+                console.log('Validation failed');
+              }
+            }}
+            buttonLoading={isCreating}
+            onBackButton={function (): void {
+              throw new Error('Function not implemented.');
+            }}
+          />
+        </div>
       </div>
     </div>
   );

@@ -6,8 +6,11 @@ import BottomNavbar from '../navbar/bottomNavbar';
 import ChipSelector from '../../ui/ChipSelect/ChipSelector';
 import { useRouter } from 'next/navigation';
 import { Typography } from '../Typography/Typography';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 function StudentsQualities() {
+  const { module } = useModule();
+
   const router = useRouter();
   return (
     <>
@@ -136,10 +139,13 @@ function StudentsQualities() {
         </div>
       </div>
       <BottomNavbar
-        isBackButton={false}
+        isBackButton={true}
+        onBackButton={() => {
+          router.back();
+        }}
         onContinue={() => {
           // onSubmit(form.getValues())
-          router.push('/students/onboarding/update-password');
+          router.push(`/${module}/onboarding/success`);
         }}
       ></BottomNavbar>
     </>
