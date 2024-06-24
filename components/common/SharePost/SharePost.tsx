@@ -72,8 +72,8 @@ function SharePost({
                 src={post?.attachment}
                 alt="post"
                 width={500}
-                height={500}
-                className="rounded-md w-full h-[300px] object-cover"
+                height={150}
+                className="rounded-md w-full h-[150px] object-cover"
               />
             </div>
           )}
@@ -99,8 +99,8 @@ function SharePost({
               <Typography variant="h5" weight="regular">
                 {post?.description && (
                   <>
-                    {post?.description.split(' ').slice(0, 40).join(' ')}
-                    {post?.description?.split(' ').length > 40 ? '...' : ''}
+                    {post?.description.split(' ').slice(0, 10).join(' ')}
+                    {post?.description?.split(' ').length > 10 ? '...' : ''}
                   </>
                 )}
               </Typography>

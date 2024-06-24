@@ -79,7 +79,7 @@ function DashboardFeeds() {
   const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
     useMutation((id: number) => createPenpal({ receiverId: id }), {
       onSuccess: (res) => {
-        queryClient.refetchQueries('pending-friends');
+        queryClient.refetchQueries('MyPenPals');
         setCreatingPanpalId(null);
         refetch();
       },
@@ -134,8 +134,14 @@ function DashboardFeeds() {
                   myPenpals.find((i: IPenpal) => i.id === item?.User?.id) ||
                   item.User.id === userInformation?.id;
 
-                const isPending = pendingGlobalFriendsList.find(
-                  (i: IPenpal) => i.id === item?.User?.id
+                const pendingPenpals = myPenpals.filter((i) => {
+                  if (i.status === 'PENDING') {
+                    return i;
+                  }
+                });
+
+                const isPending = pendingPenpals.find(
+                  (i: IPenpal) => i?.id === item?.User?.id
                 );
 
                 return (
