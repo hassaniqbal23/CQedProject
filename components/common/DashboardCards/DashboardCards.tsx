@@ -57,7 +57,7 @@ function DashboardCards() {
     });
 
   return (
-    <div className="hidden lg:block  ">
+    <div className="hidden lg:block">
       {isLoading ? (
         <div className="flex flex-col gap-2 ">
           <SuggestedCommunitySkeleton />
@@ -65,8 +65,8 @@ function DashboardCards() {
         </div>
       ) : (
         <>
-          <Card className="mb-4 ">
-            <div className="px-3 ">
+          <Card className="mb-4 xl:whitespace-nowrap">
+            <div className="px-3 xl:whitespace-nowrap">
               <Typography
                 variant="h4"
                 weight="semibold"
@@ -84,7 +84,7 @@ function DashboardCards() {
                       ? true
                       : false;
                     return (
-                      <div key={index} className="">
+                      <div key={index} className="whitespace-nowrap">
                         <Coummuntiycard
                           className="bg-white "
                           totalMembers={item.member_count}
@@ -118,7 +118,11 @@ function DashboardCards() {
           </Card>
           <Card>
             <div className="px-3">
-              <Typography variant="h4" weight="semibold" className="flex  my-3">
+              <Typography
+                variant="h4"
+                weight="semibold"
+                className="flex whitespace-nowrap my-3"
+              >
                 Suggested Global Friends
               </Typography>
               {data?.data &&
