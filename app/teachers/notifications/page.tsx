@@ -8,7 +8,7 @@ const Notifications = () => {
       <NotificationPage
         buttonOnClick={() => {}}
         buttonText="Mark all as read"
-        subTitle="The total number of teachers"
+        subTitle="Your latest update"
         title="Notifications"
       />
     </div>

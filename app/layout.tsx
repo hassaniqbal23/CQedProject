@@ -16,8 +16,8 @@ import { ChatGuardProvider } from '@/components/Chat/ChatProvider/ChatGuard';
 import NextTopLoader from 'nextjs-toploader';
 import { ModuleProvider } from '@/components/ModuleProvider/ModuleProvider';
 import { ChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
-import { NotifcationsModule } from '@/components/Notifications/Notifcations';
-import { ClientOnly } from '@/components/Notifications/ClientOnly';
+import { ClientOnly } from '@/components/GqedNotifications/ClientOnly';
+import { GqedNotifications } from '@/components/GqedNotifications/GqedNotifications';
 
 const montserrat = Montserrat({
   weight: ['400', '500', '600', '700'],
@@ -71,7 +71,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                         {/* </ThemeProvider> */}
                         <ToastContainer autoClose={1000} />
                         <ClientOnly>
-                          <NotifcationsModule />
+                          <GqedNotifications />
                         </ClientOnly>
                       </FormProvider>
                     </ChatProvider>

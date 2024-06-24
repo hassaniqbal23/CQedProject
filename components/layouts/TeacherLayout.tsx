@@ -16,6 +16,8 @@ import {
   Settings,
   UserCheck,
 } from 'lucide-react';
+import { ClientOnly } from '../GqedNotifications/ClientOnly';
+import { GqedNotifications } from '../GqedNotifications/GqedNotifications';
 
 interface IProps {
   children: ReactNode;

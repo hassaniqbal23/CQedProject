@@ -15,7 +15,7 @@ import { getAccessToken } from '@/app/utils/encryption';
 import { Avatar, AvatarImage } from '../ui';
 import { Typography } from '../common/Typography/Typography';
 
-export const NotifcationsModule = () => {
+export const GqedNotifications = () => {
   const router = useRouter();
   const { userInformation } = useGlobalState();
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -35,7 +35,7 @@ export const NotifcationsModule = () => {
 
   useEffect(() => {
     checkAndRequestFirebaseToken();
-  }, []);
+  }, [router]);
 
   const checkAndRequestFirebaseToken = async () => {
     const storedToken = localStorage.getItem('firebaseToken');
@@ -46,13 +46,20 @@ export const NotifcationsModule = () => {
 
   const requestFirebaseToken = async () => {
     if (messaging) {
+      console.log(
+        messaging,
+        process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
+        'key 1'
+      );
       try {
         const token = await getToken(messaging, {
           vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
         });
+        console.log(token, 'key 2');
         localStorage.setItem('firebaseToken', token);
         setFcmToken(token);
       } catch (error) {
+        console.log(error, 'error');
         console.error('Error getting Firebase token:', error);
       }
     }
@@ -108,13 +115,14 @@ export const NotifcationsModule = () => {
   );
 
   useEffect(() => {
+    console.log(fcmToken, userInformation, 'fcmToken');
     if (fcmToken && userInformation?.id) {
       willSendFireBaseToken({
         token: String(fcmToken),
         userId: Number(userInformation?.id),
       });
     }
-  }, [fcmToken, userInformation?.id]);
+  }, [fcmToken, userInformation]);
 
   return (
     <>

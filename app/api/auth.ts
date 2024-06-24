@@ -1,4 +1,4 @@
-import { IFcmToken } from '@/types/auth';
+import { ICommunityAcceptInvite, IFcmToken } from '@/types/auth';
 import http from '../utils/http';
 import {
   IAcceptInvitation,
@@ -39,3 +39,17 @@ export const getProfileInfo = async (id: number) => {
 
 export const createNotifications = (payload: IFcmToken) =>
   http.post(`/notifications/create`, payload);
+
+export const communityUserAcceptInvite = (payload: ICommunityAcceptInvite) =>
+  http.post(`/community-user/accept-user-invite`, payload);
+
+export const notificationMarkRead = (payload: { id?: number; status: true }) =>
+  http.patch(`/notifications/read-notification`, payload);
+
+export const deleteNotification = (id: number) =>
+  http.delete(`/notifications/${id}/delete`);
+
+export const getNotifications = (id: number) =>
+  http.get(`/notifications/${id}/index`).then((res) => {
+    return res.data.data;
+  });
