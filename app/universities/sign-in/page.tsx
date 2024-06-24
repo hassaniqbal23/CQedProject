@@ -1,10 +1,10 @@
-import { SignIn } from '@/components/common/SignIn-Page/SignInpage';
+import { SignInUni } from '@/components/common/UniversitiesSignIn/UniversitiesSignIn';
 
 export default function UniversitySignIn() {
   return (
-    <SignIn
+    <SignInUni
       loginSuccessLink={'/universities/dashboard'}
       forgetPasswordLink={'/universities/forget-password'}
-    ></SignIn>
+    ></SignInUni>
   );
 }

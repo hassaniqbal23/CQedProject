@@ -103,7 +103,9 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
 
   return (
     <div className="md:flex md:justify-stretch min-h-screen">
-      <div className="block w-[70px] md:w-[240px] bg-[#F6F8F9] dark:bg-slate-900">
+      <div
+        className={`block ${isTabletMini ? '' : 'w-[70px] md:w-[240px]'} bg-[#F6F8F9] dark:bg-slate-900`}
+      >
         <div className="flex">
           <Sidebar
             isMobileSidebar={isTabletMini}
@@ -174,9 +176,11 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
           />
         </div>
       </div>
-      <div className="block md:w-full pl-0 md:pl-8 pt-[60px] overflow-hidden bg-[#FAFAFA]">
+      <div
+        className={`block md:w-full ${isTabletMini ? 'px-6 pb-24' : ''} ${isChatPage ? '' : 'lg:pl-8'} ${isChatPage ? 'pt-[73px] pl-[42px]' : 'pt-[60px]'} overflow-hidden ${pathname?.includes('cq-communities') ? 'bg-[#EEF3FE]' : 'bg-[#FAFAFA]'}`}
+      >
         <div
-          className={`${isChatPage ? 'mt-[11px]' : 'mx-[10px] my-[30px] md:m-[40px]'} `}
+          className={`${isChatPage ? '' : 'mx-[10px] my-[30px]'} ${isTabletMini ? '' : `${isChatPage ? '' : 'md:m-[40px]'}`}`}
         >
           <div className="teacher-layout">{children}</div>
         </div>

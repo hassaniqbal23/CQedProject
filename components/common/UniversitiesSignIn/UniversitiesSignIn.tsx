@@ -27,7 +27,6 @@ import { toast } from 'react-toastify';
 import { storeToken, storeUserId } from '@/app/utils/encryption';
 import { updateToken } from '@/app/utils/http';
 import { Typography } from '../Typography/Typography';
-import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface ICarouselItems {
   title: string;
@@ -65,10 +64,9 @@ interface SignInProps {
   loginSuccessLink: string;
 }
 
-export function SignIn(props: SignInProps) {
+export function SignInUni(props: SignInProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { module } = useModule();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -118,10 +116,10 @@ export function SignIn(props: SignInProps) {
           <LoginCarousel
             carouselItems={[
               {
-                title: 'Teach the Future',
+                title: 'Empower your College',
                 description:
                   'Shaping Global Citizens Through Cultural Intelligence',
-                imgPath: '/assets/images/LoginPage.png',
+                imgPath: '/assets/images/slider1.jpeg',
               },
               {
                 title: 'Teach the Future',
@@ -134,27 +132,27 @@ export function SignIn(props: SignInProps) {
         </div>
 
         <div className="w-full md:w-6/12 h-screen flex flex-col justify-center items-center ">
-          {/* <div className="flex items-center justify-center">
-             <Image
-               alt="logo"
+          <div className="flex items-center justify-center">
+            <Image
+              alt="logo"
               width={150}
               height={150}
-             src="/assets/GCEd/NavGCEd.svg"
+              src="/assets/GCEd/NavGCEd.svg"
             />
-           </div>  */}
+          </div>
           <div className="text-center mb-4 mt-12">
             <Typography variant="h2" weight="semibold">
-              Sign in to your account
+              Log in to your account
             </Typography>
             <Typography
               variant="p"
               weight="medium"
               className="text-slate-600 mt-1"
             >
-              Sign in to access your account
+              Log in to access your GCEd dashboard
             </Typography>
           </div>
-          <div className="flex items-center justify-center mb-2  ">
+          {/* <div className="flex items-center justify-center mb-2  ">
             {icons.map((icon, index) => (
               <div key={index} className="-ml-2  z-2 mb-5">
                 <Avatar className="h-6 w-6">
@@ -167,7 +165,7 @@ export function SignIn(props: SignInProps) {
                 </Avatar>
               </div>
             ))}
-          </div>
+          </div> */}
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 ">
               <FormField
@@ -177,11 +175,7 @@ export function SignIn(props: SignInProps) {
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder={
-                          module === 'teachers'
-                            ? 'Teacher ID or University Email'
-                            : 'Student ID or College Email'
-                        }
+                        placeholder="College or university email"
                         {...field}
                         className="w-96"
                       />

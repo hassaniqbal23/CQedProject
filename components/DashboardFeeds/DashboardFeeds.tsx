@@ -53,8 +53,14 @@ function DashboardFeeds() {
     likeCommunityPost(postId)
   );
 
-  const { mutate: unLikePost } = useMutation('unlikePost', (id: number) =>
-    unlikeCommunityPost(id)
+  const { mutate: unLikePost } = useMutation(
+    'unlikePost',
+    (id: number) => unlikeCommunityPost(id),
+    {
+      onSuccess() {
+        queryClient.refetchQueries('getNotifications');
+      },
+    }
   );
 
   const { mutate: communityPostCommentApi, isLoading: isCreatingComments } =
@@ -68,6 +74,7 @@ function DashboardFeeds() {
       {
         onSuccess(res: any) {
           refetch();
+          queryClient.refetchQueries('getNotifications');
           setCommentSection({
             commentId: res?.data?.data?.communityPostId,
             openCommentSection: true,
@@ -80,6 +87,7 @@ function DashboardFeeds() {
     useMutation((id: number) => createPenpal({ receiverId: id }), {
       onSuccess: (res) => {
         queryClient.refetchQueries('MyPenPals');
+        queryClient.refetchQueries('getNotifications');
         setCreatingPanpalId(null);
         refetch();
       },
@@ -88,7 +96,6 @@ function DashboardFeeds() {
       },
     });
 
-  //deleted post mutatio
   const { mutate: deleteFeeds, isLoading: isDeletingPost } = useMutation(
     (id: number) => deletePost(id),
     {

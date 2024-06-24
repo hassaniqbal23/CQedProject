@@ -19,6 +19,7 @@ import { CommentInput } from '@/components/Comment/CommentInput';
 import { Separator } from '@/components/ui';
 import { IComment, ICommunityPost, ILike } from '@/types/global';
 import { IPenpal } from '@/app/globalContext/types';
+import FeedsSkeleton from '@/components/common/FeedsSkeleton/FeedsSkeleton';
 
 interface FeedsProps {
   communityId: string | number;
@@ -93,7 +94,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
   );
 
   return (
-    <div className="mt-6 p-6 w-full bg-white rounded-xl shadow-md space-y-4">
+    <div className="p-6 w-full bg-white rounded-xl shadow-md space-y-4">
       <Typography variant="h3" weight="bold" className="flex items-center">
         <Image
           src="/membersCard.svg"
@@ -118,8 +119,12 @@ export const Feeds = ({ communityId }: FeedsProps) => {
         </div>
         <div>
           {isFetchingCommunityPosts ? (
-            <div className="w-full h-[400px] flex items-center justify-center">
-              <Loading />
+            <div className="w-full flex flex-col gap-3 ">
+              {[1, 2, 3, 4].map((_, index) => (
+                <div key={index}>
+                  <FeedsSkeleton />
+                </div>
+              ))}
             </div>
           ) : (
             <>

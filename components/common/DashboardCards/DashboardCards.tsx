@@ -57,7 +57,7 @@ function DashboardCards() {
     });
 
   return (
-    <div className="hidden lg:block  ">
+    <div className="hidden lg:block">
       {isLoading ? (
         <div className="flex flex-col gap-2 ">
           <SuggestedCommunitySkeleton />
