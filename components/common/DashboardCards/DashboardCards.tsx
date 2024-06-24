@@ -57,7 +57,7 @@ function DashboardCards() {
     });
 
   return (
-    <div className="hidden lg:block">
+    <div className="hidden lg:block  ">
       {isLoading ? (
         <div className="flex flex-col gap-2 ">
           <SuggestedCommunitySkeleton />
@@ -65,8 +65,8 @@ function DashboardCards() {
         </div>
       ) : (
         <>
-          <Card className="mb-4 xl:whitespace-nowrap">
-            <div className="px-3 xl:whitespace-nowrap">
+          <Card className="mb-4 ">
+            <div className="px-3 ">
               <Typography
                 variant="h4"
                 weight="semibold"
