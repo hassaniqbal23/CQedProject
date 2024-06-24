@@ -145,7 +145,7 @@ export const AddEducation = () => {
         ))}
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-10 mt-8">
             <FormField
               control={form.control}
               name="educationLevel"

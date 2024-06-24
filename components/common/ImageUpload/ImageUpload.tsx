@@ -27,55 +27,57 @@ const ImageUpload: FC<IProps> = ({
     }
   };
   return (
-    <div className="relative">
-      {loading ? (
-        <div className=" h-40 w-40 flex justify-center items-center">
-          <LoaderCircle className="animate-spin spin-in-1 shadow-yellow-50" />
-        </div>
-      ) : (
-        <Avatar className="h-40 w-40">
-          <AvatarImage
-            loading={'lazy'}
-            src={attachmentFilepath || '/assets/images/user-image.png'}
-            alt="Profile Pictures"
-          />
-        </Avatar>
-      )}
-      <div className="relative">
-        <div className="absolute p-2 bg-white border right-1 bottom-4 rounded-full cursor-pointer">
-          {attachmentFilepath ? (
-            <Trash onClick={() => deleteProfile(attachmentID)} />
-          ) : (
-            <Camera onClick={handleIconClick} />
-          )}
-        </div>
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          style={{ display: 'none' }}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            if (event.target.files) {
-              const file = event.target.files[0];
-              if (file.size > 2097152) {
-                toast.error(
-                  'File is too large. Please select a file less than 2MB.',
-                  {
-                    position: 'top-right',
-                  }
-                );
-                return;
-              } else {
-                const formData = new FormData();
-                formData.append('file', event.target.files[0] as any);
-                uploadProfile(formData);
+    <>
+      <div className="relative flex  ">
+        {loading ? (
+          <div className="h-40 w-40 flex justify-center items-center">
+            <LoaderCircle className="animate-spin spin-in-1 shadow-yellow-50" />
+          </div>
+        ) : (
+          <Avatar className="h-40 w-40">
+            <AvatarImage
+              loading={'lazy'}
+              src={attachmentFilepath || '/assets/images/user-image.png'}
+              alt="Profile Pictures"
+            />
+          </Avatar>
+        )}
+        <div className="relative ">
+          <div className="absolute p-2 right-1 bg-white border bottom-0 rounded-full cursor-pointer">
+            {attachmentFilepath ? (
+              <Trash onClick={() => deleteProfile(attachmentID)} />
+            ) : (
+              <Camera onClick={handleIconClick} />
+            )}
+          </div>
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              if (event.target.files) {
+                const file = event.target.files[0];
+                if (file.size > 2097152) {
+                  toast.error(
+                    'File is too large. Please select a file less than 2MB.',
+                    {
+                      position: 'top-right',
+                    }
+                  );
+                  return;
+                } else {
+                  const formData = new FormData();
+                  formData.append('file', event.target.files[0] as any);
+                  uploadProfile(formData);
+                }
               }
-            }
-          }}
-        />
+            }}
+          />
+        </div>
       </div>
-      <h2 className="mt-2 font-semibold">{title}</h2>
-    </div>
+      <h2 className="mt-2 font-semibold ">{title}</h2>
+    </>
   );
 };
 
