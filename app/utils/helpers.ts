@@ -37,3 +37,11 @@ export const getMutualFriendsText = (mutualFriends: number) => {
   }
   return '';
 };
+export function getFcmTokenFromLocalStorage(
+  firebaseToken: string
+): string | null {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem(firebaseToken);
+  }
+  return null;
+}

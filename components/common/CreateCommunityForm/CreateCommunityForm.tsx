@@ -54,7 +54,7 @@ const formSchema = z.object({
     .min(1, {
       message: 'Please upload an image',
     }),
-  users: z.array(z.number()).nonempty({}),
+  users: z.array(z.number()).optional(),
 });
 
 export interface CreateCommunityFormProps {
@@ -78,6 +78,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
       name: '',
       description: ``,
       CommunityTypeId: 0,
+      users: [],
     },
   });
 
@@ -113,7 +114,6 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
       props.onFormSubmit({ ...data });
     }
   };
-
   return (
     <Form {...form}>
       <form className="m-10" onSubmit={form.handleSubmit(onSubmit)}>
