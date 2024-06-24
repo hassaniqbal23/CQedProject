@@ -17,13 +17,14 @@ import Link from 'next/link';
 import { MoveRight } from 'lucide-react';
 import { IPenpal } from '@/app/globalContext/types';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import { ICommunity } from '@/types/community';
 
 interface IProps {
   module: 'teachers' | 'students';
 }
 const Community: FC<IProps> = ({ module }) => {
   const queryClient = useQueryClient();
-  const { myPenpals, userInformation } = useGlobalState();
+  const { userInformation, pendingCommunitiesList } = useGlobalState();
   const [communityId, setCommunityId] = useState<number | null>(null);
   const params = useParams();
 
@@ -38,8 +39,6 @@ const Community: FC<IProps> = ({ module }) => {
   const { data: suggestedCommunities, isLoading: suggestedCommunitiesLoading } =
     useQuery('suggestedCommunities', () => getSuggestedCommunities());
 
-  console.log(suggestedCommunities);
-
   const { mutate: joinCommunityAsMember, isLoading: isJoiningCommunity } =
     useMutation(
       'join_community',
@@ -52,7 +51,7 @@ const Community: FC<IProps> = ({ module }) => {
       {
         onSuccess: (res) => {
           setCommunityId(null);
-          queryClient.refetchQueries('MyPenpals');
+          queryClient.refetchQueries('pending-communities');
         },
       }
     );
@@ -106,14 +105,8 @@ const Community: FC<IProps> = ({ module }) => {
                   {suggestedCommunities &&
                     suggestedCommunities?.data?.map(
                       (item: any, index: number) => {
-                        const pendingPenpals = myPenpals.filter((i) => {
-                          if (i.status === 'PENDING') {
-                            return i;
-                          }
-                        });
-
-                        const isPending = pendingPenpals.find(
-                          (i: IPenpal) => i?.id === item?.User?.id
+                        const isPending = pendingCommunitiesList.find(
+                          (i) => i?.communityId === item?.id
                         );
                         return (
                           <div key={index} className="whitespace-nowrap">
