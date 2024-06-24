@@ -120,7 +120,7 @@ function StudentsDetailsFrom() {
                       <FormLabel>Full name</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="e.g John, Emma"
+                          placeholder="e.g., John Smith, Emma Jones"
                           {...field}
                           className=""
                         />
