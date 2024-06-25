@@ -164,8 +164,8 @@ export const AiMatch = () => {
                     <FormLabel>Country</FormLabel>
                     <FormControl>
                       <SelectCountry
+                        menuPosition={'fixed'}
                         {...field}
-                        label=""
                         placeholder="Select a country or leave it to chance"
                       />
                     </FormControl>
@@ -308,7 +308,7 @@ export const AiMatch = () => {
               onButtonClick={() =>
                 handleRemovePaypals(FiltersData?.data?.data?.user?.id)
               }
-              buttonText={isUserPanpals(FiltersData?.data?.data?.user?.id)}
+              buttonText={isUserPanpals(FiltersData?.data?.data?.user?.id)} //return user
               screenType={
                 isMobile ? 'mobile' : isTabletMini ? 'tablet' : 'desktop'
               }
