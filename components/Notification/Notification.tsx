@@ -1,7 +1,6 @@
 import React from 'react';
 import { MoreHorizontal } from 'lucide-react';
-import { Typography } from '../common/Typography/Typography';
-import { Button, Dropdown } from '../ui';
+import { Dropdown } from '../ui';
 import Image from 'next/image';
 
 export interface NotificationV2Props {

@@ -28,7 +28,7 @@ const ImageUpload: FC<IProps> = ({
   };
   return (
     <>
-      <div className="relative flex  ">
+      <div className="relative flex">
         {loading ? (
           <div className="h-40 w-40 flex justify-center items-center">
             <LoaderCircle className="animate-spin spin-in-1 shadow-yellow-50" />
@@ -76,7 +76,7 @@ const ImageUpload: FC<IProps> = ({
           />
         </div>
       </div>
-      <h2 className="mt-2 font-semibold ">{title}</h2>
+      <h2 className="mt-2 font-semibold">{title}</h2>
     </>
   );
 };
