@@ -37,6 +37,7 @@ export interface IUserInformation {
   age: string;
   roleId: number;
   status: number;
+  hobbies?: string[];
   attachment: {
     file_path: string;
     id: number;
