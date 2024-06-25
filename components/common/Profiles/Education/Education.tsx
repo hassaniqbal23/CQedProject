@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Calendar, GraduationCap } from 'lucide-react';
 import { Typography } from '../../Typography/Typography';
 import Image from 'next/image';
+import { formatDate } from '@/lib/utils';
 
 interface Job {
   id: string;
@@ -24,14 +25,6 @@ export const ProfileEducation: React.FC<WorkHistoryProps> = ({
   jobs,
   title,
 }) => {
-  const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'long',
-    };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
   return (
     <Card>
       <div className="ml-5 mt-3">
@@ -75,7 +68,7 @@ export const ProfileEducation: React.FC<WorkHistoryProps> = ({
                     </p>
                     <p className="text-sm flex items-center ml-5">
                       <Calendar size={15} className="mr-2 font-medium" />
-                      {formatDate(job.startDate)} -{' '}
+                      {formatDate(job?.startDate || '')} -{' '}
                       {formatDate(job?.endDate || 'Present')}
                     </p>
                   </div>
