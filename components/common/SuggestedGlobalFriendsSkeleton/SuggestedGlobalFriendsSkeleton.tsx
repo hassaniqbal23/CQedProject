@@ -7,7 +7,7 @@ function SuggestedGlobalFriendsSkeleton() {
       <Typography
         variant="h4"
         weight="semibold"
-        className="flex whitespace-nowrap my-3"
+        className="flex whitespace-nowrap"
       >
         Suggested Global Friends
       </Typography>

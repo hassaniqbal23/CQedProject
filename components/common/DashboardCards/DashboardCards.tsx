@@ -119,7 +119,7 @@ function DashboardCards() {
           </Card>
           <Card>
             <div className="px-3">
-              <Typography variant="h4" weight="semibold" className="flex  my-3">
+              <Typography variant="h4" weight="semibold" className="flex  my-5">
                 Suggested Global Friends
               </Typography>
               {data?.data &&
