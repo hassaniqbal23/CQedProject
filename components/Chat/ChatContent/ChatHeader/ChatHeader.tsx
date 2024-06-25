@@ -30,7 +30,7 @@ export const ChatHeader: FC<IProps> = ({
       'last active at ' +
       format(
         new Date(conversation.user.last_active),
-        "MMMM dd yyyy 'at' hh:mm a"
+        "MMMM dd, yyyy 'at' hh:mm a"
       ).toLowerCase();
   }
   return (
