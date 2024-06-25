@@ -91,7 +91,7 @@ export const GqedNotifications = () => {
             </div>,
             {
               icon: false,
-              autoClose: 10000,
+              autoClose: 5000,
             }
           );
           playNotificationSound();
