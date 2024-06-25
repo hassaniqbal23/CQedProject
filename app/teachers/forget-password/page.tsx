@@ -10,12 +10,11 @@ export default function TeacherForgetPassword() {
     <>
       <TopNavbar showLogout={false}></TopNavbar>
       <div className="max-w-md mx-auto flex justify-center items-center h-[80vh] p-2 ">
-
         <ForgetPassword
           onSubmit={() => {
             router.push('/teachers/forget-password/email-sent');
           }}
-          onClick={() => { }}
+          onClick={() => {}}
         ></ForgetPassword>
       </div>
     </>

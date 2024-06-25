@@ -16,7 +16,7 @@ export default function SchoolForgetPassword() {
               onSubmit={() => {
                 router.push('/students/forget-password/email-sent');
               }}
-              onClick={() => { }}
+              onClick={() => {}}
             ></ForgetPassword>
           </div>
         </div>
