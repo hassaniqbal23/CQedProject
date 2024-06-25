@@ -213,14 +213,25 @@ export const Post: FC<IProps> = ({
                   setIsVisible={setShowShareModel}
                   title="Share Post"
                   onShare={(data) => handleShare && handleShare(data)}
-                  post={{
-                    userFullName,
-                    username,
-                    created_at,
-                    description,
-                    attachment,
-                    userImage,
-                  }}
+                  post={
+                    sharePost
+                      ? {
+                          userImage: sharePost.userImage,
+                          userFullName: sharePost.userFullName,
+                          username: sharePost.username,
+                          created_at: sharePost.created_at,
+                          description: sharePost.description,
+                          attachment: sharePost.attachment,
+                        }
+                      : {
+                          userImage,
+                          userFullName,
+                          username,
+                          created_at,
+                          description,
+                          attachment,
+                        }
+                  }
                   openModalButton={
                     <div className="flex justify-end items-center text-gray-600 cursor-pointer ">
                       <Share2 className="h-5 w-5 mr-1" />
