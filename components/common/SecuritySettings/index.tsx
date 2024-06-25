@@ -73,7 +73,7 @@ function SecuritySettings() {
   };
 
   return (
-    <Card className="w-full p-4">
+    <Card className="w-full p-4 mt-6">
       <h2 className="text-lg font-bold">Change Password</h2>
       <div className="sm:w-1/2 mt-8">
         <Form {...form}>
