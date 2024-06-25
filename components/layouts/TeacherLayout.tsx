@@ -15,6 +15,8 @@ import {
   UserCheck,
 } from 'lucide-react';
 import { PopNotifactions } from '../Notification/PopNotifactions';
+import { useMutation, useQueryClient } from 'react-query';
+import { notificationMarkRead } from '@/app/api/auth';
 
 interface IProps {
   children: ReactNode;
@@ -23,10 +25,24 @@ interface IProps {
 export const TeacherLayout: FC<IProps> = ({ children }) => {
   const { logout } = useGlobalState();
   const pathname = usePathname();
+  const client = useQueryClient();
   const { isTabletMini } = useResponsive();
   const [isOpenNotifications, setIsOpenNotifications] =
     useState<boolean>(false);
   const { userInformation } = useGlobalState();
+
+  const { mutate: muateNotificationMarkRead } = useMutation(
+    (payload: { id?: number; status: true }) =>
+      notificationMarkRead(payload as { id: number; status: true }),
+    {
+      onSuccess: (res) => {
+        client.refetchQueries('getNotifications');
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
 
   const showLayout = useMemo(() => {
     if (!pathname) return false;
@@ -124,9 +140,12 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
                       IconName={<Bell size={24} className=" text-black" />}
                       open={isOpenNotifications}
                       onClose={() => setIsOpenNotifications(false)}
-                      onOpenChange={() =>
-                        setIsOpenNotifications(!isOpenNotifications)
-                      }
+                      onOpenChange={() => {
+                        muateNotificationMarkRead({
+                          status: true,
+                        });
+                        setIsOpenNotifications(!isOpenNotifications);
+                      }}
                       seeAllLink="/teachers/notifications"
                     />
                   </>
