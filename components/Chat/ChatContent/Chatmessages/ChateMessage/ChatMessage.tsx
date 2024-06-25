@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Avatar, AvatarImage, ChatSidebarSheetDemo } from '@/components/ui';
 import { CircleX, Cross, Ellipsis, Languages } from 'lucide-react';
 import { Dropdown } from '@/components/ui';
@@ -12,11 +12,14 @@ import { ConversationUserSheet } from '../../ConversationUserSheet/ConversationU
 import { DELETE_CONVERSATION } from '@/components/Chat/EventBus/constants';
 import { useEventBus } from '@/components/Chat/EventBus/EventBus';
 import { useMutation } from 'react-query';
-import { translateMessage } from '@/app/api/chat';
+import { translateMessage, updateMessageRead } from '@/app/api/chat';
 import Loading from '@/components/ui/button/loading';
 import { IAttachment, IMessage } from '@/app/globalContext/types';
 import { ChatConversation } from '@/types/chat';
 import { Loader } from 'lucide-react';
+import { useOnScreen } from '@/lib/useOnScreen';
+import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
 interface Iprops {
   userImage?: string;
@@ -25,8 +28,9 @@ interface Iprops {
   showProfile?: boolean;
   showDate?: boolean;
   conversation: ChatConversation;
-  messages?: IMessage;
+  messages: IMessage;
   isDeletingMessage?: boolean;
+  isLastMessage?: boolean;
 }
 
 dayjs.extend(relativeTime);
@@ -40,11 +44,15 @@ const ChatMessage: FC<Iprops> = ({
   conversation,
   messages,
   isDeletingMessage,
+  isLastMessage,
 }: Iprops) => {
+  const messageRef = React.useRef<HTMLDivElement>(null);
   const attachments = messages?.attachments ?? [];
   const messageContent = messages?.message ?? '';
   const createdAt = messages?.created_at ?? '';
-
+  const isOnScreen = useOnScreen(messageRef);
+  const { onMessageRead } = useChatProvider();
+  const { userInformation } = useGlobalState();
   const { dispatchEvent } = useEventBus();
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
@@ -77,6 +85,11 @@ const ChatMessage: FC<Iprops> = ({
     }
   );
 
+  const { mutate: handleUpdateMessageRead } = useMutation(
+    ['translateMessage'],
+    () => updateMessageRead(messages.id, conversation.id)
+  );
+
   const handleTranslate = () => {
     if (messageContent) {
       translate(messageContent);
@@ -84,8 +97,20 @@ const ChatMessage: FC<Iprops> = ({
     }
   };
 
+  useEffect(() => {
+    if (
+      isOnScreen &&
+      isLastMessage &&
+      messages.senderId !== userInformation.id
+    ) {
+      onMessageRead(messages.id, conversation.id);
+      handleUpdateMessageRead();
+    }
+  }, [isLastMessage, isOnScreen, messages]);
+
   return (
     <div
+      ref={messageRef}
       className={`flex flex-col group gap-1 mb-5 ${isCurrentUser ? 'items-end' : 'items-start'}`}
     >
       <div

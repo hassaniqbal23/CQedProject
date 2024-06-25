@@ -90,6 +90,9 @@ const ChatMessages: React.FC<IChatMessages> = ({ conversation }) => {
                 showProfile={showProfile}
                 showDate={showDate}
                 conversation={conversation}
+                isLastMessage={
+                  index === currentConversation.messages.length - 1
+                }
                 userImage={
                   isMe
                     ? userInformation.attachment?.file_path

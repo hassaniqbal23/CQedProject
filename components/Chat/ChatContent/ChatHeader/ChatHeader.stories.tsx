@@ -20,6 +20,7 @@ const user: ChatConversation = {
     last_active: '2023-06-11T10:00:00Z',
   },
   id: 1,
+  unread_count: 0,
   lastMessageReceived: '2023-06-11T10:00:00Z',
   messages: [
     {

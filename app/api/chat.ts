@@ -52,3 +52,13 @@ export const translateMessage = async (message: string, to: string = 'en') => {
     )
     .then((res) => res.data);
 };
+
+export const updateMessageRead = (
+  messageId: string | number,
+  conversationId: string | number
+) => {
+  return http.patch('/messages/update-message-read', {
+    messageId,
+    conversationId,
+  });
+};
