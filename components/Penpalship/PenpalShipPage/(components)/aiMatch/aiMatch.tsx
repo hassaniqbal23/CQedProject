@@ -33,7 +33,7 @@ const formSchema = z.object({
       })
     )
     .nonempty({ message: 'At least one interest is required.' }),
-  gender: z.string().min(2, { message: 'Gender is required.' }),
+  gender: z.string().optional(),
   language: z
     .array(
       z.object({
@@ -43,6 +43,15 @@ const formSchema = z.object({
     )
     .nonempty({ message: 'At least one language is required.' }),
 });
+
+interface ISearchAI {
+  ageFrom?: number;
+  ageTo?: number;
+  country?: string;
+  gender?: string;
+  interests?: string[];
+  languages?: string[];
+}
 
 export const AiMatch = () => {
   const { isMobile, isTabletMini, isDesktopOrLaptop } = useResponsive();
@@ -60,15 +69,19 @@ export const AiMatch = () => {
     mutate: SearchPenpal,
     data: FiltersData,
     isLoading,
-  } = useMutation(['search-penpals'], (data: any) => penpalsFilters(data), {
-    onSuccess(data) {
-      queryClient.refetchQueries('penpalSuggestions');
-      queryClient.refetchQueries('MyPenPals');
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
+  } = useMutation(
+    ['search-penpals'],
+    (data: ISearchAI) => penpalsFilters(data as ISearchAI),
+    {
+      onSuccess(data) {
+        queryClient.refetchQueries('penpalSuggestions');
+        queryClient.refetchQueries('MyPenPals');
+      },
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
   useEffect(() => {
     if (FiltersData?.data?.data?.interests && userInterests.length > 0) {
       const penpalInterests = FiltersData?.data.data.interests;
@@ -103,7 +116,7 @@ export const AiMatch = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      country: {},
+      country: undefined,
       ageRange: [18, 51],
       interests: [],
       gender: '',
@@ -112,7 +125,7 @@ export const AiMatch = () => {
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (values) => {
-    const formattedValues = {
+    const formattedValues: ISearchAI = {
       country: values.country.value,
       gender: values.gender,
       ageFrom: values.ageRange[0],
@@ -121,7 +134,9 @@ export const AiMatch = () => {
       languages: values.language.map((language) => language.value),
     };
     SearchPenpal(formattedValues);
-    setUserInterests(formattedValues.interests);
+    if (formattedValues?.interests) {
+      setUserInterests(formattedValues?.interests);
+    }
   };
 
   useEffect(() => {
@@ -164,8 +179,8 @@ export const AiMatch = () => {
                     <FormLabel>Country</FormLabel>
                     <FormControl>
                       <SelectCountry
+                        menuPosition={'fixed'}
                         {...field}
-                        label=""
                         placeholder="Select a country or leave it to chance"
                       />
                     </FormControl>
@@ -301,14 +316,14 @@ export const AiMatch = () => {
             </form>
           </Form>
         </div>
-        {showUserProfile ? (
+        {showUserProfile && FiltersData?.data?.data ? (
           <div className={`order-1`}>
             <UserProfileMatch
               user={FiltersData?.data?.data}
               onButtonClick={() =>
                 handleRemovePaypals(FiltersData?.data?.data?.user?.id)
               }
-              buttonText={isUserPanpals(FiltersData?.data?.data?.user?.id)}
+              buttonText={isUserPanpals(FiltersData?.data?.data?.user?.id)} //return user
               screenType={
                 isMobile ? 'mobile' : isTabletMini ? 'tablet' : 'desktop'
               }

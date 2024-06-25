@@ -98,8 +98,9 @@ export default function UniversityTeachers() {
         <div className={'flex ml-auto gap-3  items-center'}>
           <Input
             rounded={true}
-            placeholder={'Search teachers here...'}
+            placeholder={'Search teachers'}
             type={'search'}
+            iconColor="black"
             onChange={handleInputChange}
           />
           <div>

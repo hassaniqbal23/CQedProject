@@ -79,7 +79,7 @@ const StudentProfilePage = () => {
       content: (
         <div className="mt-3">
           <StudentFeeds
-            userName={studentProfile?.user?.profile?.first_name || ''}
+            userName={studentProfile?.user?.profile?.full_name || ''}
           />
         </div>
       ),
@@ -111,7 +111,7 @@ const StudentProfilePage = () => {
   return (
     <div className="">
       <ProfileHeader
-        name={studentProfile?.user?.profile?.first_name}
+        name={studentProfile?.user?.profile?.full_name}
         imageSize={{ width: 100, height: 100 }}
         titleClass="text-3xl"
         buttonProps={{

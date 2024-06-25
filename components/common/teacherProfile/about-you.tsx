@@ -27,6 +27,7 @@ import { Typography } from '../Typography/Typography';
 import MultipleSelector from '../From/MultiSelect';
 import { AddEducation } from './AddEducation/AddEducation';
 import { AddWorkExperience } from './AddEducation/AddWorkExperience';
+import SkillsInput from '../From/SkillsInput';
 
 interface IAboutYouProps {
   avatar: string;
@@ -40,7 +41,7 @@ const formSchema = z.object({
 });
 
 export const AboutYou: React.FC = () => {
-  const [skills, setSkills] = useState<{ label: string; value: string }[]>();
+  const [skills, setSkills] = useState<string[]>([]);
   const { userInformation, isUserGetInfo } = useGlobalState();
   const refetch = useQueryClient();
   const router = useRouter();
@@ -87,7 +88,6 @@ export const AboutYou: React.FC = () => {
       },
     }
   );
-
   const { mutate: updateTeacher, isLoading: isCreating } = useMutation(
     (userData: IAboutYouProps) =>
       updateProfile(
@@ -104,19 +104,22 @@ export const AboutYou: React.FC = () => {
       },
     }
   );
+  const handleChildData = (newSkills: string[]) => {
+    setSkills(newSkills);
+  };
+
   const onSubmit: SubmitHandler<IAboutYouProps> = async (
     data: IAboutYouProps
   ) => {
-    const skill = skills?.map((c) => c.value);
-    const submitvalue = {
+    const submitValue = {
       ...data,
-      skills: skill,
+      skills: skills,
     };
-    updateTeacher(submitvalue);
+    updateTeacher(submitValue);
   };
 
   return (
-    <div className="overflow-x-hidden overflow-y-hidden">
+    <div className="overflow-x-hidden overflow-y-hidden mb-28">
       <div className=" mx-auto">
         <div className="">
           <div className="mx-auto mt-4 md:w-96">
@@ -128,7 +131,7 @@ export const AboutYou: React.FC = () => {
               weight={'bold'}
               className="text-center text-primary-500 pt-3"
             >
-              Tell us about yourself,{userInformation.name}
+              Tell us about yourself, {userInformation.name}
             </Typography>
             <Typography
               variant={'body'}
@@ -226,21 +229,7 @@ export const AboutYou: React.FC = () => {
             Add Skills
           </Typography>
 
-          <MultipleSelector
-            value={skills}
-            onChange={(e) => setSkills(e)}
-            options={[
-              {
-                value: 'Communication Skills',
-                label: 'Communication Skills',
-              },
-              {
-                value: 'Cultural Competence',
-                label: 'Cultural Competence',
-              },
-            ]}
-            placeholder="Add Skills"
-          />
+          <SkillsInput onTagsChange={handleChildData} BadgeVariant="outline" />
         </div>
         <div className="fixed bottom-0 w-full ">
           <BottomNavbar

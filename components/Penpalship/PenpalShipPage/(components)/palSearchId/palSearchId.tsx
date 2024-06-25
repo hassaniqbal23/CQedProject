@@ -80,7 +80,7 @@ export const PalSearchId = () => {
                   type="text"
                   form={form}
                   name="memberId"
-                  placeholder={'search by member id'}
+                  placeholder={'Member Id'}
                 />
               </div>
               <div className="mb-3 flex-1">
@@ -89,7 +89,7 @@ export const PalSearchId = () => {
                   type="text"
                   form={form}
                   name="userName"
-                  placeholder={'search by name'}
+                  placeholder={'Name'}
                 />
               </div>
               <div className="flex-1 mt-2 pl-5">

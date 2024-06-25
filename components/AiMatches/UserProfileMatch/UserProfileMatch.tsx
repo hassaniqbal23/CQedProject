@@ -94,7 +94,7 @@ export const UserProfileMatch: FC<Iprops> = ({
                 </div>
                 <div className="lg:flex lg:flex-col lg:items-center lg:justify-center sm:flex sm:flex-col sm:items-start sm:justify-center">
                   <h1 className="lg:text-center text-left text-[18px] font-semibold">
-                    {full_name}
+                    {user.full_name}
                   </h1>
                   <div className="lg:flex gap-2 sm:items-center  lg:items-center lg:justify-center lg:mt-2 flex justify-start items-center">
                     <Image
@@ -204,7 +204,7 @@ export const UserProfileMatch: FC<Iprops> = ({
                 </div>
                 <div className="lg:flex lg:flex-col lg:items-center lg:justify-center sm:flex sm:flex-col sm:items-start sm:justify-center">
                   <h1 className="lg:text-center text-left text-[18px] font-semibold">
-                    {full_name}
+                    {user.full_name}
                   </h1>
                   <div className="lg:flex gap-2 sm:items-center  lg:items-center lg:justify-center lg:mt-2 flex justify-start items-start ">
                     <Image
@@ -300,7 +300,7 @@ export const UserProfileMatch: FC<Iprops> = ({
                   weight={'semibold'}
                   className="lg:text-center text-left  "
                 >
-                  {full_name}
+                  {user.full_name}
                 </Typography>
 
                 <div className="lg:flex gap-2 lg:items-center lg:justify-center lg:mt-2 flex justify-start items-start">

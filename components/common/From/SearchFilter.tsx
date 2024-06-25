@@ -11,6 +11,8 @@ import { CommunityCard } from '@/components/Communities/CommunityCard2/Community
 import { Scrollbar } from 'react-scrollbars-custom';
 import { useParams, useSearchParams } from 'next/navigation';
 import { ICommunity } from '@/types/community';
+import { useRouter } from 'next/navigation';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
 export interface SearchFilterProps {
   buttonText: string;
@@ -47,6 +49,8 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
   onCategoryChange,
   onFiltersChange,
 }) => {
+  const router = useRouter();
+  const { userInformation } = useGlobalState();
   const params = useSearchParams();
   const [inputValue, setInputValue] = React.useState<null | string>(null);
   const [selectedCategory, setSelectedCategory] = React.useState<
@@ -157,16 +161,33 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
       </Typography>
       <div className="flex flex-col">
         {results &&
-          results.map((community: ICommunity, index: number) => (
-            <CommunityCard
-              description={community.description}
-              title={community.name}
-              id={community.id}
-              members={community?._count?.CommunityUsers}
-              key={index}
-              image={community?.profile_picture?.file_path || ''}
-            />
-          ))}
+          results.map((community: ICommunity, index: number) => {
+            console.log(userInformation.id, community.created_by);
+            return (
+              <CommunityCard
+                description={community.description}
+                title={community.name}
+                id={community.id}
+                members={community?._count?.CommunityUsers}
+                key={index}
+                image={community?.profile_picture?.file_path || ''}
+                button={
+                  userInformation?.id === community?.created_by ? (
+                    <Button
+                      className="text-base bg-primary-50 text-primary-500 rounded-full py-2 px-8"
+                      variant={'default'}
+                      iconPosition="left"
+                      onClick={() =>
+                        router.push(`/${module}/cq-communities/${community.id}`)
+                      }
+                    >
+                      View
+                    </Button>
+                  ) : null
+                }
+              />
+            );
+          })}
       </div>
     </div>
   );

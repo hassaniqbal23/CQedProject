@@ -17,9 +17,7 @@ export const updateProfile = (
   payload: { bio: string; skills: string[] },
   id: number
 ) => {
-  return http.patch(`/teachers/${id}/update`, {
-    payload,
-  });
+  return http.patch(`/teachers/${id}/update`, payload);
 };
 
 export const deleteTeacher = (id: number) =>

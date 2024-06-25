@@ -77,7 +77,7 @@ function UniversityStudents() {
             <Input
               iconColor="black"
               iconPosition="left"
-              placeholder="Search student here..."
+              placeholder="Search student"
               type="search"
               className="max-w-sm text-black rounded-full text"
               onChange={handleInputChange}

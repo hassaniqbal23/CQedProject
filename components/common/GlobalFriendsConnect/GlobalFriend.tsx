@@ -27,19 +27,19 @@ export const GlobalFriendConnect: FC<ProfileCardProps> = ({
           alt={name}
           width={40}
           height={40}
-          className="w-[100px] h-[100px] rounded-full object-cover"
+          className="w-[70px] h-[70px] rounded-full object-cover"
           unoptimized={true}
         />
         <div className="flex flex-col ">
           <div>
-            <Typography variant="h4" weight="semibold">
+            <Typography variant="h5" weight="semibold">
               {name}
             </Typography>
             <Typography variant="p" weight="medium" className="text-gray-600">
               @{username}
             </Typography>
           </div>
-          <div className="mt-4 flex flex-nowrap gap-2">
+          <div className="mt-2 flex flex-nowrap gap-2">
             <Button
               size={'sm'}
               onClick={onConnect}

@@ -12,12 +12,14 @@ interface IProps {
   mode?: string;
   selectDate?: (data: any) => void;
   defaultValue?: Date | DateRange | undefined;
+  iconPosition?: 'left' | 'right';
 }
 
 const DatePickerDemo: React.FC<IProps> = ({
   mode,
   defaultValue,
   selectDate,
+  iconPosition = 'right',
 }) => {
   const [date, setDate] = React.useState<Date | undefined>(() => {
     if (defaultValue && mode !== 'range') {
@@ -56,13 +58,12 @@ const DatePickerDemo: React.FC<IProps> = ({
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={'outline'}
           className={cn(
-            'w-full justify-start text-left font-normal',
+            'w-full justify-start text-left font-normal bg-[#F8F9FB] text-black relative',
             !date && 'text-muted-foreground'
           )}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
+          {iconPosition === 'left' && <CalendarIcon className="mr-2 h-4 w-4" />}
           {mode === 'range' ? (
             <>
               {rangeDate?.from ? (
@@ -80,6 +81,9 @@ const DatePickerDemo: React.FC<IProps> = ({
             </>
           ) : (
             <>{date ? format(date, 'PPP') : <span>Pick a date</span>}</>
+          )}
+          {iconPosition === 'right' && (
+            <CalendarIcon className="ml-2 h-4 w-4 absolute right-6" />
           )}
         </Button>
       </PopoverTrigger>

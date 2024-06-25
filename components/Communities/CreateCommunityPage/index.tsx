@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { createCommunity, getCommunityTypes } from '@/app/api/communities';
 import { CreateCommunityForm } from '@/components/common/CreateCommunityForm/CreateCommunityForm';
