@@ -66,6 +66,22 @@ export interface ICount {
   likes: number;
 }
 
+interface ISharedCommunityPost {
+  id: number;
+  communityId: number;
+  userId: number;
+  content: string;
+  status: number;
+  created_at: string;
+  updated_at: string;
+  community_post?: {
+    id: number;
+    file_path?: string;
+    owner_id?: number;
+  };
+  User: IUser;
+}
+
 export interface ICommunityPost {
   id: number;
   communityId: number;
@@ -74,6 +90,8 @@ export interface ICommunityPost {
   status: number;
   created_at: string;
   updated_at: string;
+  pinned_post?: ISharedCommunityPost;
+  pinned_post_id?: number;
   community_post?: {
     id: number;
     file_path?: string;

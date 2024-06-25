@@ -1,14 +1,18 @@
+'use client';
+
 import React, { FC, useEffect } from 'react';
 import { ChatSideBar } from './ChatSideBar/ChatSideBar';
 import ChatContent from './ChatContent/ChatContent';
 import { useQueryClient } from 'react-query';
 import { useChatProvider } from './ChatProvider/ChatProvider';
 import { Suspense } from 'react';
+import { usePathname } from 'next/navigation';
 
 export interface ChatPageProps {}
 
 export const Chat: FC<ChatPageProps> = (props) => {
   const queryClient = useQueryClient();
+  const pathname = usePathname();
   const {
     selectedConversationId,
     conversationFromParams,
@@ -26,9 +30,11 @@ export const Chat: FC<ChatPageProps> = (props) => {
   useEffect(() => {
     if (conversationFromParams) {
       setSelectedConversationId(conversationFromParams);
+    } else if (pathname?.endsWith('/chats')) {
+      setSelectedConversationId(null);
     }
     return () => {};
-  }, [conversationFromParams]);
+  }, [conversationFromParams, pathname]);
 
   useEffect(() => {
     const handleOnline = () => {

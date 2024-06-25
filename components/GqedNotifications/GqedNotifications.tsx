@@ -14,9 +14,11 @@ import { updateToken } from '@/app/utils/http';
 import { getAccessToken } from '@/app/utils/encryption';
 import { Avatar, AvatarImage } from '../ui';
 import { Typography } from '../common/Typography/Typography';
+import { useQueryClient } from 'react-query';
 
 export const GqedNotifications = () => {
   const router = useRouter();
+  const client = useQueryClient();
   const { userInformation } = useGlobalState();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [fcmToken, setFcmToken] = useState(
@@ -68,6 +70,8 @@ export const GqedNotifications = () => {
     if (messaging) {
       const onSubscribe = onMessage(messaging, (payload: any) => {
         if (payload.data) {
+          client.refetchQueries('getNotifications');
+          client.refetchQueries('MyPenPals');
           const { title, body, image } = payload.data;
           toast(
             <div className="flex items-center">
@@ -87,7 +91,7 @@ export const GqedNotifications = () => {
             </div>,
             {
               icon: false,
-              autoClose: 10000,
+              autoClose: 5000,
             }
           );
           playNotificationSound();

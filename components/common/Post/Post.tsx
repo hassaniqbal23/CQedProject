@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { Avatar, AvatarImage, Button, Dropdown } from '@/components/ui';
+import {
+  Avatar,
+  AvatarImage,
+  Button,
+  Dropdown,
+  Separator,
+} from '@/components/ui';
 import { ThumbsUp, Share2, Ellipsis, MessageCircle } from 'lucide-react';
 import Image from 'next/image';
 import dayjs from 'dayjs';
@@ -41,7 +47,10 @@ interface IProps {
   onAddFriend?: () => void;
   addFriendLoading?: boolean;
   addFriendText?: string;
-  handleShare?: () => void;
+  handleShare?: (data: {
+    content: string;
+    communityId?: number | string;
+  }) => void;
   share?: string | number;
   showShareButton?: boolean;
   isMyPost?: boolean;
@@ -49,6 +58,10 @@ interface IProps {
   sharePost?: ISharePost;
   isSharedPost?: boolean;
 }
+
+const RenderSharePost: FC<{ sharePost: ISharePost }> = ({ sharePost }) => (
+  <Post {...sharePost} isFriend={true} isMyPost={false} isSharedPost={true} />
+);
 
 export const Post: FC<IProps> = ({
   userId,
@@ -156,82 +169,80 @@ export const Post: FC<IProps> = ({
             </div>
           )}
         </div>
-        {sharePost ? (
-          Post({
-            ...sharePost,
-            showLikeButton: false,
-            showCommentButton: false,
-            showShareButton: false,
-            isFriend: false,
-            isMyPost: false,
-            isSharedPost: true,
-          })
-        ) : (
-          <div className="flex flex-col flex-grow">
-            <div className="text-gray-600 mb-2">{description}</div>{' '}
-            {/* Description here */}
-            {attachment ? (
-              <div className="mt-4 md:mt-0">
-                <Image
-                  className="w-full max-h-96 rounded-lg cursor-pointer"
-                  loading="lazy"
-                  alt={`post by ${username}`}
-                  src={attachment}
-                  width={1053}
-                  height={342}
-                  unoptimized={true}
-                />
-              </div>
-            ) : null}
-            <div className="flex justify-between mt-4 md:mt-6 items-center w-full">
-              <div className="flex items-center text-gray-600 mr-4 gap-5 ">
-                {showLikeButton && (
-                  <div className="flex items-center mr-4" onClick={handleLike}>
-                    <ThumbsUp
-                      className={`h-5 w-5 mr-1 cursor-pointer ${liked ? 'text-red-500 ' : ''}`}
-                    />
-                    <span>{likeCount}</span>
-                  </div>
-                )}
-                {showCommentButton && (
-                  <div
-                    className="flex items-center mr-4"
-                    onClick={handleComment}
-                  >
-                    <MessageCircle
-                      className={`h-5 w-5 mr-1 cursor-pointer ${comments ? 'text-blue-500' : ''}`}
-                    />
-                    <span>{comments}</span>
-                  </div>
-                )}
-                {showShareButton && (
-                  <SharePost
-                    isVisible={showShareModel}
-                    setIsVisible={setShowShareModel}
-                    title="Share Post"
-                    post={{
-                      userFullName,
-                      username,
-                      created_at,
-                      description,
-                      attachment,
-                      userImage,
-                    }}
-                    openModalButton={
-                      <div
-                        className="flex justify-end items-center text-gray-600 cursor-pointer "
-                        onClick={handleShare}
-                      >
-                        <Share2 className="h-5 w-5 mr-1" />
-                        <span>{share}</span>
-                      </div>
-                    }
+        <div className="flex flex-col flex-grow">
+          <div className="text-gray-600 mb-2">{description}</div>{' '}
+          {/* Description here */}
+          {attachment ? (
+            <div className="mt-4 md:mt-0">
+              <Image
+                className="w-full max-h-96 rounded-lg cursor-pointer"
+                loading="lazy"
+                alt={`post by ${username}`}
+                src={attachment}
+                width={1053}
+                height={342}
+                unoptimized={true}
+              />
+            </div>
+          ) : null}
+          {sharePost && <Separator className=" w-full space-x-10 text-sm" />}
+          {sharePost && <RenderSharePost sharePost={sharePost} />}
+          <div
+            className={`${isSharedPost ? 'hidden' : 'flex'} justify-between mt-4 md:mt-6 items-center w-full`}
+          >
+            <div className="flex items-center text-gray-600 mr-4 gap-5 ">
+              {showLikeButton && (
+                <div className="flex items-center mr-4" onClick={handleLike}>
+                  <ThumbsUp
+                    className={`h-5 w-5 mr-1 cursor-pointer ${liked ? 'text-red-500 ' : ''}`}
                   />
-                )}
-              </div>
+                  <span>{likeCount}</span>
+                </div>
+              )}
+              {showCommentButton && (
+                <div className="flex items-center mr-4" onClick={handleComment}>
+                  <MessageCircle
+                    className={`h-5 w-5 mr-1 cursor-pointer ${comments ? 'text-blue-500' : ''}`}
+                  />
+                  <span>{comments}</span>
+                </div>
+              )}
+              {showShareButton && (
+                <SharePost
+                  isVisible={showShareModel}
+                  setIsVisible={setShowShareModel}
+                  title="Share Post"
+                  onShare={(data) => handleShare && handleShare(data)}
+                  post={
+                    sharePost
+                      ? {
+                          userImage: sharePost.userImage,
+                          userFullName: sharePost.userFullName,
+                          username: sharePost.username,
+                          created_at: sharePost.created_at,
+                          description: sharePost.description,
+                          attachment: sharePost.attachment,
+                        }
+                      : {
+                          userImage,
+                          userFullName,
+                          username,
+                          created_at,
+                          description,
+                          attachment,
+                        }
+                  }
+                  openModalButton={
+                    <div className="flex justify-end items-center text-gray-600 cursor-pointer ">
+                      <Share2 className="h-5 w-5 mr-1" />
+                      <span>{share}</span>
+                    </div>
+                  }
+                />
+              )}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

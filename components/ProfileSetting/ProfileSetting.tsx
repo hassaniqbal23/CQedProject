@@ -142,7 +142,7 @@ const ProfileSettings = () => {
         Basic Information
       </Typography>
 
-      <div className="mt-5 flex flex-col  w-1/5">
+      <div className="mt-8 flex flex-col items-center w-full md:w-1/3 lg:w-1/5 md:ml-0">
         <ImageUpload
           loading={isDeletingProfile || isUploadingProfile || isUserGetInfo}
           attachmentFilepath={userInformation?.attachment?.file_path}

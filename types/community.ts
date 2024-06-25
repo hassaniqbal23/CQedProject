@@ -21,6 +21,7 @@ export interface ICommunity {
   name: string;
   description: string;
   status: number;
+  created_by: number;
   profile_picture: IProfilePicture;
   _count: {
     CommunityUsers: number;

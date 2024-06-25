@@ -25,6 +25,7 @@ export interface INotifications {
   community_post_like_id: number | null;
   community_user_id: number | null;
   penpal_id?: number | null;
+  type?: 'REJECTED' | 'PENDING' | 'ACCEPTED';
 }
 
 export interface ICommunityAcceptInvite {
@@ -32,4 +33,5 @@ export interface ICommunityAcceptInvite {
   communityId: number;
   status: string;
   requestId?: number;
+  notification_id: number;
 }

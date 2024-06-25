@@ -19,6 +19,7 @@ interface ISharePost {
   setIsVisible: (val: boolean) => void;
   title: string;
   defaultReceiverId?: string;
+  onShare?: (data: { content: string; communityId?: number | string }) => void;
   post?: {
     userFullName: string;
     username: string;
@@ -35,6 +36,7 @@ function SharePost({
   setIsVisible,
   title,
   post,
+  onShare,
 }: ISharePost) {
   const { joinedCommunities } = useGlobalState();
   const [textAreaValue, setTextAreaValue] = useState('');
@@ -74,6 +76,7 @@ function SharePost({
                 width={500}
                 height={150}
                 className="rounded-md w-full h-[150px] object-cover"
+                unoptimized={true}
               />
             </div>
           )}
@@ -142,7 +145,17 @@ function SharePost({
         </div>
       </div>
       <div className="flex w-full items-center justify-end">
-        <Button>
+        <Button
+          onClick={() => {
+            if (onShare) {
+              onShare({
+                content: textAreaValue,
+              });
+              setIsVisible(false);
+              setTextAreaValue('');
+            }
+          }}
+        >
           <Typography variant="h5" weight="semibold">
             Share Post
           </Typography>

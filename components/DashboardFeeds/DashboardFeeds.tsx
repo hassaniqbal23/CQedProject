@@ -1,3 +1,5 @@
+'use client';
+
 import {
   communityPostComment,
   likeCommunityPost,
@@ -5,7 +7,7 @@ import {
 } from '@/app/api/communities';
 import { createPost, deletePost, getFeeds } from '@/app/api/feeds';
 import { useGlobalState } from '@/app/globalContext/globalContext';
-import React, { useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Separator } from '../ui';
 import { Post } from '../common/Post/Post';
@@ -17,6 +19,13 @@ import { CreatePostModal } from '../common/CreatePostModal/CreatePostModal';
 import { IPenpal } from '@/app/globalContext/types';
 import { createPenpal } from '@/app/api/penpals';
 import FeedsSkeleton from '../common/FeedsSkeleton/FeedsSkeleton';
+import dynamic from 'next/dynamic';
+import { Typography } from '../common/Typography/Typography';
+
+const InfiniteScrollObserver = dynamic(
+  () => import('../common/InfiniteScrollObserver/InfiniteScrollObserver'),
+  { ssr: false }
+);
 
 function DashboardFeeds() {
   const { userInformation, myPenpals, pendingGlobalFriendsList } =
@@ -30,14 +39,24 @@ function DashboardFeeds() {
     commentId: null,
     openCommentSection: false,
   });
+  const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
 
   const { commentId, openCommentSection } = commentSection;
 
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
+
   const { data, isLoading, refetch } = useQuery(
     ['getPosts', page, limit],
-    async () => getFeeds(limit, page)
+    async () => getFeeds(limit, page),
+    {
+      keepPreviousData: true,
+      onSuccess: () => {
+        // Automatically increase the limit and page if more posts are fetched
+        // setPage((prev) => prev + 1);
+        setIsFetchingNextPage(false);
+      },
+    }
   );
 
   const { mutate: createFeed, isLoading: createPostLoading } = useMutation(
@@ -96,17 +115,22 @@ function DashboardFeeds() {
       },
     });
 
-  const { mutate: deleteFeeds, isLoading: isDeletingPost } = useMutation(
-    (id: number) => deletePost(id),
-    {
-      onSuccess() {
-        refetch();
-      },
-    }
-  );
+  const { mutate: deleteFeeds } = useMutation((id: number) => deletePost(id), {
+    onSuccess() {
+      refetch();
+    },
+  });
+
+  const loadMorePosts = useCallback(() => {
+    if (isFetchingNextPage || data?.data.data.length === data?.data.totalCount)
+      return;
+
+    setIsFetchingNextPage(true);
+    setLimit((prev) => prev + 10);
+  }, [isFetchingNextPage, data?.data.data.length, data?.data.totalCount]);
 
   return (
-    <div className="max-w-full px-2 gap-10 ">
+    <div className="w-full px-2 gap-10 ">
       <div className="mb-4 flex flex-col gap-4">
         <CreatePostModal
           icon="/uplode.svg"
@@ -194,6 +218,38 @@ function DashboardFeeds() {
                       isMyPost={item?.User?.id === userInformation?.id}
                       onDeletePost={() => deleteFeeds(item?.id)}
                       showShareButton={item?.User?.id !== userInformation?.id}
+                      handleShare={(data) => {
+                        let payload;
+                        if (item?.pinned_post) {
+                          payload = {
+                            content: data.content,
+                            pinned_post_id: item?.pinned_post?.id,
+                          };
+                        } else {
+                          payload = {
+                            content: data.content,
+                            pinned_post_id: item?.id,
+                          };
+                        }
+
+                        createFeed(payload as any);
+                      }}
+                      sharePost={
+                        item?.pinned_post && {
+                          userId: item?.pinned_post?.User.id,
+                          description: item?.pinned_post?.content || '',
+                          attachment: item?.pinned_post?.community_post
+                            ?.file_path
+                            ? item?.pinned_post?.community_post?.file_path
+                            : '',
+                          userFullName: item?.pinned_post?.User.name || '',
+                          username: item?.pinned_post?.User.name || '',
+                          created_at: item?.pinned_post?.created_at || '',
+                          userImage:
+                            item?.pinned_post?.User?.attachment?.file_path ||
+                            '',
+                        }
+                      }
                     />
                     <Separator className="w-12/12" />
                     {commentId === item.id && openCommentSection ? (
@@ -242,6 +298,37 @@ function DashboardFeeds() {
                   </div>
                 );
               })}
+            {!isLoading && (
+              <InfiniteScrollObserver
+                onIntersect={loadMorePosts}
+                isLoading={isLoading}
+              />
+            )}
+
+            {isFetchingNextPage && (
+              <div className="flex justify-center py-4">
+                <Loading />
+              </div>
+            )}
+            {data?.data?.data.length === 0 && (
+              <Typography
+                variant="h5"
+                weight="semibold"
+                className="text-center text-gray-500"
+              >
+                No Post added in this community yet 😊
+              </Typography>
+            )}
+            {data?.data?.data.length !== 0 &&
+              data?.data.data.length === data?.data.totalCount && (
+                <Typography
+                  variant="h5"
+                  weight="semibold"
+                  className="text-center text-gray-500"
+                >
+                  You've caught up with all the posts 😊
+                </Typography>
+              )}
           </>
         )}
       </div>

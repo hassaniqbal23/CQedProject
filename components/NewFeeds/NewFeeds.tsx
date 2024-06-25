@@ -38,8 +38,8 @@ export const NewFeeds: React.FC<NewFeedsProps> = ({
           </div>
         </div>
         <div className="flex justify-between items-center flex-wrap md:flex-nowrap ml-0 md:ml-16">
-          <div className="flex gap-5 mb-2 md:mb-0">
-            <div className="flex gap-3" onClick={onClick}>
+          <div className="flex gap-3 mb-1 text-md font-semibold  md:mb-0">
+            <div className="flex gap-3 items-center" onClick={onClick}>
               <ImageIcon />
               <p className="cursor-pointer">Photo/Video</p>
             </div>

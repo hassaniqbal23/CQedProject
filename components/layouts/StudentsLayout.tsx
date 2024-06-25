@@ -3,24 +3,40 @@ import { FC, ReactNode, Suspense, useMemo, useState } from 'react';
 import Sidebar from '../common/sidebar/sidebar';
 import { usePathname } from 'next/navigation';
 import Navbar from '../common/navbar/MainBar';
-import { useRouter } from 'next/navigation';
 import { useResponsive } from '@/lib/hooks';
 import { Bell, LogOut, MessageCircle, Settings, UserCheck } from 'lucide-react';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import { useChatProvider } from '../Chat/ChatProvider/ChatProvider';
 import { PopNotifactions } from '../Notification/PopNotifactions';
+import { useMutation, useQueryClient } from 'react-query';
+import { notificationMarkRead } from '@/app/api/auth';
 interface IProps {
   children: ReactNode;
   className?: string;
 }
 
 export const StudentsLayout: FC<IProps> = ({ children, className }) => {
+  const { totalUnreadMessages } = useChatProvider();
   const { logout } = useGlobalState();
   const pathname = usePathname();
-  const router = useRouter();
+  const client = useQueryClient();
   const { isTabletMini } = useResponsive();
   const { userInformation } = useGlobalState();
   const [isOpenNotifications, setIsOpenNotifications] =
     useState<boolean>(false);
+
+  const { mutate: muateNotificationMarkRead } = useMutation(
+    (payload: { id?: number; status: true }) =>
+      notificationMarkRead(payload as { id: number; status: true }),
+    {
+      onSuccess: (res) => {
+        client.refetchQueries('getNotifications');
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
 
   const showLayout = useMemo(() => {
     if (!pathname) return false;
@@ -108,10 +124,18 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
               {
                 href: '/students/chats',
                 type: 'icon',
-                icon: <MessageCircle />,
+                icon: (
+                  <div className="relative ">
+                    {totalUnreadMessages > 0 && (
+                      <div className="absolute bg-red-600 h-4 w-4 text-[10px] font-medium flex text-slate-100 rounded-3xl -right-3 -top-3 items-center justify-center">
+                        <span>{totalUnreadMessages}</span>
+                      </div>
+                    )}
+                    <MessageCircle />
+                  </div>
+                ),
               },
               {
-                href: '/students/notifications',
                 type: 'icon',
                 icon: (
                   <>
@@ -119,9 +143,10 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
                       IconName={<Bell size={24} className=" text-black" />}
                       open={isOpenNotifications}
                       onClose={() => setIsOpenNotifications(false)}
-                      onOpenChange={() =>
-                        setIsOpenNotifications(!isOpenNotifications)
-                      }
+                      onOpenChange={() => {
+                        muateNotificationMarkRead({ status: true });
+                        setIsOpenNotifications(!isOpenNotifications);
+                      }}
                       seeAllLink="/students/notifications"
                     />
                   </>

@@ -101,7 +101,7 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
             onClick={() => handleSelectConversation(conversation.id)}
           >
             <div
-              className={`flex gap-3 p-3 items-center transition-all cursor-pointer rounded-l-lg 
+              className={`relative flex gap-3 p-3 items-center transition-all cursor-pointer rounded-l-lg 
             ${selectedConversationId === conversation.id ? 'bg-primary-50 text-primary-600' : 'hover:bg-primary-50 hover:text-primary-500 active:bg-primary-50'}
           `}
             >
@@ -133,6 +133,12 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
                   maxLength={20}
                 />
               </div>
+
+              {conversation.unread_count > 0 && (
+                <div className="absolute bg-red-600 h-6 w-6 text-[10px] font-medium flex text-slate-100 rounded-3xl right-2 items-center justify-center">
+                  <span>{conversation.unread_count}</span>
+                </div>
+              )}
             </div>
           </div>
         );

@@ -14,7 +14,10 @@ import {
   Settings,
   UserCheck,
 } from 'lucide-react';
+import { useChatProvider } from '../Chat/ChatProvider/ChatProvider';
 import { PopNotifactions } from '../Notification/PopNotifactions';
+import { useMutation, useQueryClient } from 'react-query';
+import { notificationMarkRead } from '@/app/api/auth';
 
 interface IProps {
   children: ReactNode;
@@ -23,10 +26,25 @@ interface IProps {
 export const TeacherLayout: FC<IProps> = ({ children }) => {
   const { logout } = useGlobalState();
   const pathname = usePathname();
+  const client = useQueryClient();
   const { isTabletMini } = useResponsive();
   const [isOpenNotifications, setIsOpenNotifications] =
     useState<boolean>(false);
   const { userInformation } = useGlobalState();
+  const { totalUnreadMessages } = useChatProvider();
+
+  const { mutate: muateNotificationMarkRead } = useMutation(
+    (payload: { id?: number; status: true }) =>
+      notificationMarkRead(payload as { id: number; status: true }),
+    {
+      onSuccess: (res) => {
+        client.refetchQueries('getNotifications');
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
 
   const showLayout = useMemo(() => {
     if (!pathname) return false;
@@ -114,7 +132,16 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
               {
                 href: '/teachers/chats',
                 type: 'icon',
-                icon: <MessageCircle />,
+                icon: (
+                  <div className="relative ">
+                    {totalUnreadMessages > 0 && (
+                      <div className="absolute bg-red-600 h-4 w-4 text-[10px] font-medium flex text-slate-100 rounded-3xl -right-3 -top-3 items-center justify-center">
+                        <span>{totalUnreadMessages}</span>
+                      </div>
+                    )}
+                    <MessageCircle />
+                  </div>
+                ),
               },
               {
                 type: 'icon',
@@ -124,9 +151,12 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
                       IconName={<Bell size={24} className=" text-black" />}
                       open={isOpenNotifications}
                       onClose={() => setIsOpenNotifications(false)}
-                      onOpenChange={() =>
-                        setIsOpenNotifications(!isOpenNotifications)
-                      }
+                      onOpenChange={() => {
+                        muateNotificationMarkRead({
+                          status: true,
+                        });
+                        setIsOpenNotifications(!isOpenNotifications);
+                      }}
                       seeAllLink="/teachers/notifications"
                     />
                   </>
@@ -170,7 +200,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
         </div>
       </div>
       <div
-        className={`block md:w-full ${isTabletMini ? 'px-6 pb-24' : ''} ${isChatPage ? '' : 'lg:pl-8'} ${isChatPage ? 'pt-[90px] pl-[42px]' : 'pt-[60px]'} overflow-hidden ${pathname?.includes('cq-communities') ? 'bg-[#EEF3FE]' : 'bg-[#FAFAFA]'}`}
+        className={`block md:w-full ${isTabletMini ? 'px-6 pb-24' : ''} ${isChatPage ? '' : 'lg:pl-8'} ${isChatPage ? 'pt-[74px] pl-[42px]' : 'pt-[60px]'} overflow-hidden ${pathname?.includes('cq-communities') ? 'bg-[#EEF3FE]' : 'bg-[#FAFAFA]'}`}
       >
         <div
           className={`${isChatPage ? '' : 'mx-[10px] my-[30px]'} ${isTabletMini ? '' : `${isChatPage ? '' : 'md:m-[40px]'}`}`}

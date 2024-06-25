@@ -113,8 +113,6 @@ export interface IRole {
 export interface IUserProfile {
   id: number;
   full_name: string;
-  first_name: string;
-  last_name: string;
   nick_name: string;
   address: string;
   country?: string;

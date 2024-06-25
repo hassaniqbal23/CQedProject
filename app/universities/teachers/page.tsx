@@ -98,8 +98,9 @@ export default function UniversityTeachers() {
         <div className={'flex ml-auto gap-3  items-center'}>
           <Input
             rounded={true}
-            placeholder={'Search teachers here...'}
+            placeholder={'Search teachers'}
             type={'search'}
+            iconColor="black"
             onChange={handleInputChange}
           />
           <div>
@@ -129,14 +130,14 @@ export default function UniversityTeachers() {
             onPageChange={(value: number) => {
               setPaginationTeacherInvite((prev) => ({
                 ...prev,
-                schoolPage: value,
+                teacherInvitePage: value,
               }));
             }}
             totalCount={teacherInviteCount}
             setPageSize={(pageSize) =>
               setPaginationTeacherInvite((prev) => ({
                 ...prev,
-                schoolLimit: pageSize,
+                teacherInviteLimit: pageSize,
               }))
             }
           />
