@@ -165,6 +165,14 @@ export const ChatProvider = ({ children }: any) => {
       if (message.isNewMessage) {
         setInboxResponse([message.conversation, ...inboxResponse]);
         return;
+      } else {
+        const conversation = inboxResponse.find(
+          (item) => item.id === message.conversationId
+        );
+        if (!conversation) {
+          queryClient.refetchQueries('get-all-conversations');
+          return;
+        }
       }
       setInboxResponse(
         inboxResponse.map((conversation) => {
