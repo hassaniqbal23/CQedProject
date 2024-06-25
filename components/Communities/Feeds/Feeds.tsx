@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Typography } from '@/components/common/Typography/Typography';
 import { CreatePostModal } from '@/components/common/CreatePostModal/CreatePostModal';
@@ -20,6 +20,7 @@ import { Separator } from '@/components/ui';
 import { IComment, ICommunityPost, ILike } from '@/types/global';
 import { IPenpal } from '@/app/globalContext/types';
 import FeedsSkeleton from '@/components/common/FeedsSkeleton/FeedsSkeleton';
+import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 
 interface FeedsProps {
   communityId: string | number;
@@ -34,6 +35,8 @@ export const Feeds = ({ communityId }: FeedsProps) => {
     commentId: null,
     openCommentSection: false,
   });
+  const [limit, setLimit] = useState(10);
+  const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
 
   const { commentId, openCommentSection } = commentSection;
 
@@ -42,10 +45,11 @@ export const Feeds = ({ communityId }: FeedsProps) => {
     isLoading: isFetchingCommunityPosts,
     refetch,
   } = useQuery(
-    'getCommunityPosts',
-    () => getCommunityPosts(communityId, 1, 10),
+    ['getCommunityPosts', limit],
+    () => getCommunityPosts(communityId, 1, limit),
     {
       enabled: communityId ? true : false,
+      keepPreviousData: true,
     }
   );
 
@@ -92,6 +96,21 @@ export const Feeds = ({ communityId }: FeedsProps) => {
       },
     }
   );
+
+  const loadMorePosts = useCallback(() => {
+    if (
+      isFetchingNextPage ||
+      communityPosts?.data.length === communityPosts?.totalCount
+    )
+      return;
+
+    setIsFetchingNextPage(true);
+    setLimit((prev) => prev + 10);
+  }, [
+    isFetchingNextPage,
+    communityPosts?.data.length,
+    communityPosts?.totalCount,
+  ]);
 
   return (
     <div className="p-6 w-full bg-white rounded-xl shadow-md space-y-4">
@@ -220,6 +239,27 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                     );
                   }
                 )}
+              {!isFetchingCommunityPosts && (
+                <InfiniteScrollObserver
+                  onIntersect={loadMorePosts}
+                  isLoading={isFetchingCommunityPosts}
+                />
+              )}
+
+              {isFetchingNextPage && (
+                <div className="flex justify-center py-4">
+                  <Loading />
+                </div>
+              )}
+              {communityPosts?.data.length === communityPosts?.totalCount && (
+                <Typography
+                  variant="h3"
+                  weight="semibold"
+                  className="text-center text-gray-500"
+                >
+                  You've caught up with all the posts
+                </Typography>
+              )}
             </>
           )}
         </div>

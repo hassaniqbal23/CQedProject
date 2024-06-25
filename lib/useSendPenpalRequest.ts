@@ -39,7 +39,6 @@ const useSendPenpalRequest = () => {
     useMutation((id: number) => deletePenpal(id), {
       onSuccess: () => {
         queryClient.refetchQueries('MyPenPals');
-        queryClient.refetchQueries('getNotifications');
       },
       onError: (error) => {
         console.log('Error deleting penpal', error);

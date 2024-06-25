@@ -19,13 +19,11 @@ export const NotifcationPopover: FC<IProps> = ({
   return (
     <div>
       <Popover open={open} onOpenChange={onOpenChange}>
-        <PopoverTrigger asChild>
-          <div className="relative inline-block">
-            <button className="p-2 bg-gray-100 rounded-full">
-              {IconName as React.ReactNode}
-            </button>
+        <PopoverTrigger asChild className="h-6">
+          <div className="relative">
+            <button>{IconName as React.ReactNode}</button>
             {count && count > 0 ? (
-              <span className="absolute top-0 right-0 inline-flex items-center justify-center w-6 h-6 text-xs font-bold leading-none text-white bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
+              <span className="absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 text-xs font-bold leading-none text-white bg-[#FF4F3D] rounded-full transform translate-x-1/2 -translate-y-2/3">
                 {count}
               </span>
             ) : (

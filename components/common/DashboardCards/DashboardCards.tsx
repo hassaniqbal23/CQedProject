@@ -8,7 +8,6 @@ import { GlobalFriendConnect } from '../GlobalFriendsConnect/GlobalFriend';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { getDashboardData } from '@/app/api/teachers';
-import Loading from '@/components/ui/button/loading';
 import { joinCommunity } from '@/app/api/communities';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { createPenpal } from '@/app/api/penpals';
@@ -40,6 +39,7 @@ function DashboardCards() {
           setCommunityId(null);
           refetch();
           queryClient.refetchQueries('pending-communities');
+          queryClient.refetchQueries('getNotifications');
         },
       }
     );
@@ -48,6 +48,7 @@ function DashboardCards() {
     useMutation((id: number) => createPenpal({ receiverId: id }), {
       onSuccess: (res) => {
         queryClient.refetchQueries('pending-friends');
+        queryClient.refetchQueries('getNotifications');
         refetch();
         setCreatingPanpalId(null);
       },
