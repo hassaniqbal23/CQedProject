@@ -71,6 +71,7 @@ export const GqedNotifications = () => {
       const onSubscribe = onMessage(messaging, (payload: any) => {
         if (payload.data) {
           client.refetchQueries('getNotifications');
+          client.refetchQueries('MyPenPals');
           const { title, body, image } = payload.data;
           toast(
             <div className="flex items-center">

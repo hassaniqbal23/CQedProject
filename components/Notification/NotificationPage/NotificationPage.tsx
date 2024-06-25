@@ -37,7 +37,11 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
   } = useMutation(
     (payload: ICommunityAcceptInvite) => communityUserAcceptInvite(payload),
     {
-      onSuccess: (res) => {},
+      onSuccess: (res) => {
+        client.refetchQueries('getNotifications');
+        client.refetchQueries('communities');
+        client.refetchQueries('pending-communities');
+      },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
       },
@@ -47,7 +51,10 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
     useMutation(
       (payload: ICommunityAcceptInvite) => penpalAcceptRequest(payload),
       {
-        onSuccess: (res) => {},
+        onSuccess: (res) => {
+          client.invalidateQueries('getNotifications');
+          client.refetchQueries('MyPenPals');
+        },
         onError: (error: any) => {
           console.log(error, 'Error =====> log');
         },
@@ -84,7 +91,9 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
         userId: payload?.createdById,
         communityId: payload.community_id,
         status: status,
+        notification_id: payload.id,
       };
+
       muateCommunityUserAcceptInvite(submit as ICommunityAcceptInvite);
     }
     if (payload?.notificationType === 'PENPAL_REQUEST') {
@@ -92,6 +101,7 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
         userId: payload?.createdById,
         requestId: payload.penpal_id,
         status: status,
+        notification_id: payload.id,
       };
       muatePenpalAcceptRequest(submit as ICommunityAcceptInvite);
     }
@@ -129,6 +139,7 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
       <div className="mt-14">
         {notifications?.map((notification, index) => {
           const createdAt = notification?.created_at ?? '';
+
           return (
             <Notification
               onMarkAsRead={() => handelReadNotification(notification.id)}
@@ -150,22 +161,30 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
                   {(notification.notificationType === 'PENPAL_REQUEST' ||
                     notification.notificationType ===
                       'COMMUNITY_JOIN_REQUEST') && (
-                    <div className="flex items-center">
+                    <div className="flex items-center mt-2">
+                      {notification.type === 'PENDING' && (
+                        <Button
+                          onClick={() => handleClick(notification, 'ACCEPTED')}
+                          size={'sm'}
+                          className="bg-primary-500 text-white rounded-full px-6 py-2 mt-1 mr-4 "
+                        >
+                          {notification.notificationType === 'PENPAL_REQUEST'
+                            ? 'Accept'
+                            : 'Join'}
+                        </Button>
+                      )}
+
                       <Button
-                        onClick={() => handleClick(notification, 'ACCEPTED')}
                         size={'sm'}
-                        className="bg-primary-500 text-white rounded-full px-6 py-2 mt-1  "
-                      >
-                        {notification.notificationType === 'PENPAL_REQUEST'
-                          ? 'Friend Request'
-                          : 'Join'}
-                      </Button>
-                      <Button
-                        size={'sm'}
+                        disabled={notification.type !== 'PENDING'}
                         onClick={() => handleClick(notification, 'REJECTED')}
-                        className="border border-solid border-primary-500 text-primary-500 px-8 py-2 rounded-full ml-4 bg-transparent"
+                        className="border border-solid border-primary-500 text-primary-500 px-8 py-2 rounded-full bg-transparent"
                       >
-                        Decline
+                        {notification.type === 'ACCEPTED'
+                          ? 'Accepted'
+                          : notification.type === 'REJECTED'
+                            ? 'Declined'
+                            : 'Decline'}
                       </Button>
                     </div>
                   )}

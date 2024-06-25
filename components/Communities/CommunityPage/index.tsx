@@ -56,10 +56,6 @@ const Community: FC<IProps> = ({ module }) => {
       }
     );
 
-  useEffect(() => {
-    // queryClient.refetchQueries('UserJoinedCommunities');
-  }, []);
-
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-10 gap-4 lg:gap-6">

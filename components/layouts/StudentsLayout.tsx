@@ -125,7 +125,6 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
                 icon: <MessageCircle />,
               },
               {
-                href: '/students/notifications',
                 type: 'icon',
                 icon: (
                   <>
