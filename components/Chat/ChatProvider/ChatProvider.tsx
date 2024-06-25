@@ -42,6 +42,11 @@ interface ChatInterface {
   currentConversationAttachments: any[];
   setCurrentConversationAttachments: Dispatch<SetStateAction<any[]>>;
   conversationFromParams: number | null | undefined;
+  onMessageRead: (
+    messageId: number | string,
+    conversationId: number | string
+  ) => void;
+  totalUnreadMessages: number;
 }
 
 const ChatContext = createContext<ChatInterface>({
@@ -61,6 +66,8 @@ const ChatContext = createContext<ChatInterface>({
   currentConversationAttachments: [],
   setCurrentConversationAttachments: () => {},
   conversationFromParams: null,
+  onMessageRead: () => {},
+  totalUnreadMessages: 0,
 });
 
 export const useChatProvider = () => useContext(ChatContext);
@@ -130,6 +137,29 @@ export const ChatProvider = ({ children }: any) => {
     }
   );
 
+  const onMessageRead = (
+    messageId: number | string,
+    conversationId: number | string
+  ) => {
+    setInboxResponse(
+      inboxResponse.map((conversation) => {
+        if (conversation.id === conversationId) {
+          return {
+            ...conversation,
+            unread_count: 0,
+          };
+        }
+        return conversation;
+      })
+    );
+  };
+
+  const totalUnreadMessages = useMemo(() => {
+    return inboxResponse.reduce((acc, conversation) => {
+      return acc + conversation.unread_count;
+    }, 0);
+  }, [inboxResponse]);
+
   useEffect(() => {
     const handleAddMessageToInbox = (message: any) => {
       if (message.isNewMessage) {
@@ -157,6 +187,10 @@ export const ChatProvider = ({ children }: any) => {
               ...conversation,
               messages: messages,
               lastMessageReceived: message.created_at,
+              unread_count:
+                message.senderId !== userInformation.id
+                  ? conversation.unread_count + 1
+                  : conversation.unread_count,
             };
           }
           return conversation;
@@ -251,6 +285,8 @@ export const ChatProvider = ({ children }: any) => {
         currentConversationAttachments,
         setCurrentConversationAttachments,
         conversationFromParams,
+        onMessageRead,
+        totalUnreadMessages,
       }}
     >
       {children}
