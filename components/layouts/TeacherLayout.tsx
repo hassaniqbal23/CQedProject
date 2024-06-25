@@ -16,6 +16,7 @@ import {
   Settings,
   UserCheck,
 } from 'lucide-react';
+import { useChatProvider } from '../Chat/ChatProvider/ChatProvider';
 
 interface IProps {
   children: ReactNode;
@@ -27,6 +28,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
   const router = useRouter();
   const { isTabletMini } = useResponsive();
   const { userInformation } = useGlobalState();
+  const { totalUnreadMessages } = useChatProvider();
 
   const showLayout = useMemo(() => {
     if (!pathname) return false;
@@ -117,7 +119,16 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
               {
                 href: '/teachers/chats',
                 type: 'icon',
-                icon: <MessageCircle />,
+                icon: (
+                  <div className="relative ">
+                    {totalUnreadMessages > 0 && (
+                      <div className="absolute bg-red-600 h-4 w-4 text-[10px] font-medium flex text-slate-100 rounded-3xl -right-3 -top-3 items-center justify-center">
+                        <span>{totalUnreadMessages}</span>
+                      </div>
+                    )}
+                    <MessageCircle />
+                  </div>
+                ),
               },
               {
                 href: '/teachers/notifications',
