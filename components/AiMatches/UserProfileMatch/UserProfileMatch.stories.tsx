@@ -19,7 +19,6 @@ export const ViewNotification: Story = {
       attachment: { file_path: '/John.jpeg' },
       full_name: 'John Doe',
       country: 'United States',
-      countryFlag: locationIcon,
       age: 16,
       state: 'California',
     },
