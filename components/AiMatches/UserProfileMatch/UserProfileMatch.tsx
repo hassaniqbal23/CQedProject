@@ -2,8 +2,11 @@ import React, { FC } from 'react';
 import Image from 'next/image';
 import { Avatar, AvatarImage, Button } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
+import countriesData from '@/public/countries/countries.json';
 import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
-import { getCountry } from '@/app/utils/helpers';
+interface Countries {
+  [key: string]: string;
+}
 
 interface Iprops {
   user: {
@@ -13,6 +16,7 @@ interface Iprops {
     full_name: string;
     age: number;
     country: string;
+    countryFlag: string;
     state: string;
   };
   buttonText?: any;
@@ -21,6 +25,8 @@ interface Iprops {
   onButtonClick?: () => void;
   onViewProfile?: () => void;
 }
+
+const countries: Countries = countriesData;
 
 export const UserProfileMatch: FC<Iprops> = ({
   user,
@@ -31,9 +37,9 @@ export const UserProfileMatch: FC<Iprops> = ({
   screenType,
 }: Iprops) => {
   const { isCreatingPenpal, isDeletingPenpal } = useSendPenpalRequest();
-  const isPending = buttonText?.status === 'PENDING' ? true : false;
+  const isPending = buttonText.status === 'PENDING' ? true : false;
   const { full_name, country } = user;
-  const { country: countryName, flag = '' } = getCountry(country);
+  const countryFlag = `/country-flags/svg/${user.country.toLowerCase()}.svg`;
   const notification = 'Hello';
   const userImage = user.user.attachment.file_path;
   const heading = 'We have a match for you.';
@@ -98,13 +104,13 @@ export const UserProfileMatch: FC<Iprops> = ({
                   </h1>
                   <div className="lg:flex gap-2 sm:items-center  lg:items-center lg:justify-center lg:mt-2 flex justify-start items-center">
                     <Image
-                      src={flag}
+                      src={countryFlag}
                       alt="Country Flag"
                       width={22}
                       height={15}
                       className="object-contain"
                     />
-                    <h1>{countryName}</h1>
+                    <h1>{countries[country] || 'Unknown Country'}</h1>
                   </div>
                   <div>
                     <Typography
@@ -208,13 +214,13 @@ export const UserProfileMatch: FC<Iprops> = ({
                   </h1>
                   <div className="lg:flex gap-2 sm:items-center  lg:items-center lg:justify-center lg:mt-2 flex justify-start items-start ">
                     <Image
-                      src={flag}
+                      src={countryFlag}
                       alt="Country Flag"
                       width={22}
                       height={15}
                       className="object-contain"
                     />
-                    <h1>{countryName}</h1>
+                    <h1>{countries[country] || 'Unknown Country'}</h1>
                   </div>
                   <div>
                     <Typography
@@ -305,14 +311,14 @@ export const UserProfileMatch: FC<Iprops> = ({
 
                 <div className="lg:flex gap-2 lg:items-center lg:justify-center lg:mt-2 flex justify-start items-start">
                   <Image
-                    src={flag}
+                    src={countryFlag}
                     alt="Country Flag"
                     width={22}
                     height={15}
                     className="object-contain"
                   />
                   <Typography variant={'h5'} weight={'regular'}>
-                    {countryName}
+                    {countries[country] || 'Unknown Country'}
                   </Typography>
                 </div>
                 <div>
