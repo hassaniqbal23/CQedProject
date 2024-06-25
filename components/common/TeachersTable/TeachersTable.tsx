@@ -70,7 +70,7 @@ function TeachersTable(props: TeachersTableProps) {
                     width={30}
                     height={30}
                     unoptimized={true}
-                    alt={data.user.attachment?.file_path}
+                    alt={data.user.attachment?.file_path || ''}
                     className="rounded-full w-[30px] h-[30px] object-cover"
                   />
                   <h2>{data.user['name']}</h2>
