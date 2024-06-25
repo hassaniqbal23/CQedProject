@@ -1,3 +1,5 @@
+'use client';
+
 import { Card } from '@/components/ui';
 import React, { useState } from 'react';
 import { Typography } from '../Typography/Typography';
