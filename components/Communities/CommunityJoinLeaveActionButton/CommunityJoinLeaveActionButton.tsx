@@ -45,6 +45,7 @@ const CommunityJoinLeaveActionButton: React.FC<
         }),
       {
         onSuccess: (res) => {
+          queryClient.refetchQueries('pending-communities');
           queryClient.refetchQueries('UserJoinedCommunities');
         },
       }
