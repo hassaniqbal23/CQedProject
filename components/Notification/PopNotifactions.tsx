@@ -126,7 +126,7 @@ export const PopNotifactions: React.FC<PopNotification> = ({
           </div>
         </div>
         <Separator className="mt-2" />
-        <div className="grid gap-4 h-[500px] overflow-hidden overflow-y-scroll px-7">
+        <div className="grid gap-4 h-[400px] overflow-hidden overflow-y-scroll px-7">
           <div className="mt-4">
             {notifications?.slice(0, 4)?.map((notification, index) => {
               const createdAt = notification?.created_at ?? '';
