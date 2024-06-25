@@ -129,14 +129,14 @@ export default function UniversityTeachers() {
             onPageChange={(value: number) => {
               setPaginationTeacherInvite((prev) => ({
                 ...prev,
-                schoolPage: value,
+                teacherInvitePage: value,
               }));
             }}
             totalCount={teacherInviteCount}
             setPageSize={(pageSize) =>
               setPaginationTeacherInvite((prev) => ({
                 ...prev,
-                schoolLimit: pageSize,
+                teacherInviteLimit: pageSize,
               }))
             }
           />
