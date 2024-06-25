@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { useQuery } from 'react-query';
 import { searchNewPenpal } from '@/app/api/penpals';
 import SkeletonCard from '@/components/common/SkeletonCard/SkeletonCard';
+import { IPenpalSearchResult } from '@/types/global';
 
 const formSchema = z.object({
   memberId: z
@@ -106,19 +107,21 @@ export const PalSearchId = () => {
         ) : penpalSearchResult &&
           penpalSearchResult?.data?.data.length !== 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {penpalSearchResult?.data?.data.map((item: any, index: number) => (
-              <div key={index}>
-                <PenpalshipCard
-                  imgPath={item?.attachment?.file_path}
-                  id={item?.profile.id}
-                  title={item?.name}
-                  description={item?.profile?.bio}
-                  mutualFriends={item?.mutualFriends || 0}
-                  countryName={item?.profile.country?.toUpperCase()}
-                  studentAge={item?.profile.age}
-                />
-              </div>
-            ))}
+            {penpalSearchResult?.data?.data.map(
+              (item: IPenpalSearchResult, index: number) => (
+                <div key={index}>
+                  <PenpalshipCard
+                    imgPath={item?.attachment?.file_path || ''}
+                    id={item?.id}
+                    title={item?.name}
+                    description={item?.profile?.bio}
+                    mutualFriends={item?.mutualFriends || 0}
+                    countryName={item?.profile.country?.toUpperCase()}
+                    studentAge={item?.profile.age || 0}
+                  />
+                </div>
+              )
+            )}
           </div>
         ) : (
           <div className="flex items-center justify-center w-full col-span-3 h-96">

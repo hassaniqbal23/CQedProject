@@ -27,10 +27,7 @@ import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 export const PenPalCommunity = () => {
   const queryClient = useQueryClient();
   const { myPenpals, userInformation } = useGlobalState();
-  const route = useRouter();
-
   const [viewUserStoryId, setViewUserStoryId] = useState<number | null>(null);
-  const [creatingPanpalId, setCreatingPanpalId] = useState<number | null>(null);
   const [openStoryModal, setOpenStoryModal] = useState<boolean>(false);
   const [viewStoryModal, setViewStoryModal] = useState<boolean>(false);
   const [totalCount, setTotalCount] = useState<number>(1);
@@ -109,7 +106,7 @@ export const PenPalCommunity = () => {
   );
 
   const { data: suggestionsResponse, isLoading } = useQuery(
-    ['penpalSuggestions'],
+    ['penpalSuggestions', page, limit],
     () => getSuggestions(page, limit),
     {
       enabled: true,

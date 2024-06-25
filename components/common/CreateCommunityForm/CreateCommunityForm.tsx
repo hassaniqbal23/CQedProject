@@ -129,15 +129,25 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
           name="attachmentId"
           render={({ field }) => (
             <>
-              <div className="mt-8 flex items-center w-1/5">
-                <ImageUpload
-                  loading={isUploadingCommunity || isDeletingCommunity || false}
-                  attachmentFilepath={attachment?.file_path}
-                  attachmentID={attachment?.id}
-                  deleteProfile={deleteCommunityImage}
-                  uploadProfile={uploadCommunityImage}
-                  title="Choose your Cover Image"
-                />
+              <div className="flex flex-col">
+                <div className=" flex items-center w-1/5">
+                  <ImageUpload
+                    loading={
+                      isUploadingCommunity || isDeletingCommunity || false
+                    }
+                    attachmentFilepath={attachment?.file_path}
+                    attachmentID={attachment?.id}
+                    deleteProfile={deleteCommunityImage}
+                    uploadProfile={uploadCommunityImage}
+                    title=""
+                  />
+                </div>
+                <div className="mt-2">
+                  {' '}
+                  <Typography variant={'h5'} weight={'semibold'}>
+                    Choose your Cover Image
+                  </Typography>
+                </div>
               </div>
               <FormMessage className="mt-2" />
             </>
@@ -268,7 +278,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
                 }
                 options={
                   myPenpals?.map((penpal: any) => ({
-                    label: penpal?.friend?.profile[0]?.fullname,
+                    label: penpal?.friend?.profile?.full_name,
                     value: penpal?.friend?.id,
                   })) || []
                 }

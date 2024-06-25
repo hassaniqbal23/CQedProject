@@ -1,11 +1,9 @@
 'use client';
-import { FC, ReactNode, Suspense, useMemo } from 'react';
+import { FC, ReactNode, Suspense, useMemo, useState } from 'react';
 import Sidebar from '../common/sidebar/sidebar';
 import { usePathname } from 'next/navigation';
 import Navbar from '../common/navbar/MainBar';
-import { useRouter } from 'next/navigation';
 import { useGlobalState } from '@/app/globalContext/globalContext';
-import { removeToken, removeUserId } from '@/app/utils/encryption';
 
 import { useResponsive } from '@/lib/hooks';
 import {
@@ -17,6 +15,9 @@ import {
   UserCheck,
 } from 'lucide-react';
 import { useChatProvider } from '../Chat/ChatProvider/ChatProvider';
+import { PopNotifactions } from '../Notification/PopNotifactions';
+import { useMutation, useQueryClient } from 'react-query';
+import { notificationMarkRead } from '@/app/api/auth';
 
 interface IProps {
   children: ReactNode;
@@ -25,10 +26,25 @@ interface IProps {
 export const TeacherLayout: FC<IProps> = ({ children }) => {
   const { logout } = useGlobalState();
   const pathname = usePathname();
-  const router = useRouter();
+  const client = useQueryClient();
   const { isTabletMini } = useResponsive();
+  const [isOpenNotifications, setIsOpenNotifications] =
+    useState<boolean>(false);
   const { userInformation } = useGlobalState();
   const { totalUnreadMessages } = useChatProvider();
+
+  const { mutate: muateNotificationMarkRead } = useMutation(
+    (payload: { id?: number; status: true }) =>
+      notificationMarkRead(payload as { id: number; status: true }),
+    {
+      onSuccess: (res) => {
+        client.refetchQueries('getNotifications');
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
+    }
+  );
 
   const showLayout = useMemo(() => {
     if (!pathname) return false;
@@ -53,11 +69,6 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
       title: 'Chat & Communities',
       path: '/teachers/chats',
     },
-    // {
-    //   icon: '/assets/sidebaricons/students.svg',
-    //   title: 'Students',
-    //   path: '/teachers/students',
-    // },
     {
       icon: '/assets/sidebaricons/penpalship.svg',
       title: 'Global Friends',
@@ -103,7 +114,9 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
 
   return (
     <div className="md:flex md:justify-stretch min-h-screen">
-      <div className="block w-[70px] md:w-[240px] bg-[#F6F8F9] dark:bg-slate-900">
+      <div
+        className={`block ${isTabletMini ? '' : 'w-[70px] md:w-[240px]'} bg-[#F6F8F9] dark:bg-slate-900`}
+      >
         <div className="flex">
           <Sidebar
             isMobileSidebar={isTabletMini}
@@ -131,9 +144,23 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
                 ),
               },
               {
-                href: '/teachers/notifications',
                 type: 'icon',
-                icon: <Bell />,
+                icon: (
+                  <>
+                    <PopNotifactions
+                      IconName={<Bell size={24} className=" text-black" />}
+                      open={isOpenNotifications}
+                      onClose={() => setIsOpenNotifications(false)}
+                      onOpenChange={() => {
+                        muateNotificationMarkRead({
+                          status: true,
+                        });
+                        setIsOpenNotifications(!isOpenNotifications);
+                      }}
+                      seeAllLink="/teachers/notifications"
+                    />
+                  </>
+                ),
               },
               {
                 href: '',
@@ -172,9 +199,11 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
           />
         </div>
       </div>
-      <div className="block md:w-full pl-0 md:pl-8 pt-[60px] overflow-hidden bg-[#FAFAFA]">
+      <div
+        className={`block md:w-full ${isTabletMini ? 'px-6 pb-24' : ''} ${isChatPage ? '' : 'lg:pl-8'} ${isChatPage ? 'pt-[74px] pl-[42px]' : 'pt-[60px]'} overflow-hidden ${pathname?.includes('cq-communities') ? 'bg-[#EEF3FE]' : 'bg-[#FAFAFA]'}`}
+      >
         <div
-          className={`${isChatPage ? 'mt-[11px]' : 'mx-[10px] my-[30px] md:m-[40px]'} `}
+          className={`${isChatPage ? '' : 'mx-[10px] my-[30px]'} ${isTabletMini ? '' : `${isChatPage ? '' : 'md:m-[40px]'}`}`}
         >
           <div className="teacher-layout">{children}</div>
         </div>

@@ -13,13 +13,21 @@ const CommunityJoinLeaveActionButton: React.FC<
 > = ({ communityId }) => {
   const queryClient = useQueryClient();
 
-  const { joinedCommunities, userInformation } = useGlobalState();
+  const { joinedCommunities, userInformation, pendingCommunitiesList } =
+    useGlobalState();
   const isMember = React.useMemo(
     () =>
       joinedCommunities.findIndex((community) => community.id === communityId) >
       -1,
     [joinedCommunities]
   );
+
+  const pendingCommunity = React.useMemo(() => {
+    const isPending = pendingCommunitiesList.find(
+      (community) => community.communityId === communityId
+    );
+    return isPending ? true : false;
+  }, [pendingCommunitiesList]);
 
   const CommunityUserModel = React.useMemo(() => {
     return joinedCommunities.find((community) => community.id === communityId);
@@ -61,10 +69,10 @@ const CommunityJoinLeaveActionButton: React.FC<
           ? () => leaveCommunityAsMember()
           : () => joinCommunityAsMember()
       }
-      disabled={isLeavingCommunity || isJoiningCommunity}
+      disabled={isLeavingCommunity || isJoiningCommunity || pendingCommunity}
       className={`ml-auto py-2 px-8 rounded-full ${isMember ? 'bg-red-100 text-red-600' : 'bg-primary-50 text-primary-500'}`}
     >
-      {isMember ? 'Leave' : 'Join'}
+      {pendingCommunity ? 'Pending' : isMember ? 'Leave' : 'Join'}
     </Button>
   );
 };

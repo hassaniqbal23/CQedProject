@@ -63,7 +63,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   const router = useRouter();
   const { module } = useModule();
   const queryClient = useQueryClient();
-  const { usersIBlocked } = useGlobalState();
+  const { usersIBlocked, userInformation } = useGlobalState();
   const mutualFriend = getMutualFriendsText(mutualFriends);
 
   const { flag = '', country: countryName = '' } = getCountry(country);
@@ -140,6 +140,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
     !isReportingUser && setReport(false);
   };
 
+  console.log(profileId, buttonProps, 'profileId');
   return (
     <div className="flex items-center  flex-wrap justify-between w-full bg-primary-500 rounded-2xl text-white p-3 md:p-6 shadow-md text-left md:text-left">
       <div className="flex items-center">
@@ -270,7 +271,11 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   type="button"
                   size={'sm'}
                   loading={buttonProps?.isLoading}
-                  disabled={!buttonProps?.isFriend}
+                  disabled={
+                    Number(profileId) === userInformation?.id
+                      ? false
+                      : buttonProps?.isFriend
+                  }
                 >
                   {buttonProps.buttonText}
                 </Button>

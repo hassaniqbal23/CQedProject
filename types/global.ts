@@ -1,3 +1,5 @@
+import { IUserProfile } from '@/app/api/types';
+
 enum FileType {
   JPG = 'JPG',
   PNG = 'PNG',
@@ -64,7 +66,7 @@ export interface ICount {
   likes: number;
 }
 
-export interface ICommunityPost {
+interface ISharedCommunityPost {
   id: number;
   communityId: number;
   userId: number;
@@ -77,8 +79,35 @@ export interface ICommunityPost {
     file_path?: string;
     owner_id?: number;
   };
+  User: IUser;
+}
+
+export interface ICommunityPost {
+  id: number;
+  communityId: number;
+  userId: number;
+  content: string;
+  status: number;
+  created_at: string;
+  updated_at: string;
+  pinned_post?: ISharedCommunityPost;
+  pinned_post_id?: number;
+  community_post?: {
+    id: number;
+    file_path?: string;
+    owner_id?: number;
+  };
   _count: ICount;
   User: IUser;
   comments: IComment[];
   likes: ILike[];
+}
+
+export interface IPenpalSearchResult {
+  email: string;
+  id: number;
+  mutualFriends: number;
+  name: string;
+  attachment: IAttachments;
+  profile: IUserProfile;
 }

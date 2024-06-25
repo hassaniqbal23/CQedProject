@@ -42,15 +42,19 @@ const Coummuntiycard: FC<IProps> = ({
             <div className="flex ">
               <div className="flex flex-col">
                 <div>
-                  <Typography variant="h5" weight={'semibold'}>
-                    {title.length > 14 ? `${title.substr(0, 14)}...` : title}
+                  <Typography
+                    variant="h5"
+                    weight={'semibold'}
+                    className="whitespace-nowrap"
+                  >
+                    {title.length > 10 ? `${title.substr(0, 10)}...` : title}
                   </Typography>
                 </div>
-                <div className="flex flex-row items-center">
+                <div className="flex flex-row whitespace-nowrap items-center">
                   <Users size={13} className="text-[#464650] mb-1 mr-1" />
                   <CardDescription>{totalMembers} Members</CardDescription>
                 </div>
-                <div className="flex flex-row items-center ">
+                <div className="flex flex-row whitespace-nowrap items-center ">
                   <MessageCircle size={13} className="text-[#464650] mr-1" />
                   <CardDescription>
                     {totalDiscussions}+ Discussions

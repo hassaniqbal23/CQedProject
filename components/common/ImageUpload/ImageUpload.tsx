@@ -11,6 +11,7 @@ interface IProps {
   attachmentFilepath: string;
   title?: string;
 }
+
 const ImageUpload: FC<IProps> = ({
   loading,
   deleteProfile,
@@ -26,24 +27,28 @@ const ImageUpload: FC<IProps> = ({
       fileInputRef.current.click();
     }
   };
+
   return (
     <>
-      <div className="relative flex  ">
+      <div className="relative flex justify-center items-center">
         {loading ? (
           <div className="h-40 w-40 flex justify-center items-center">
             <LoaderCircle className="animate-spin spin-in-1 shadow-yellow-50" />
           </div>
         ) : (
-          <Avatar className="h-40 w-40">
+          <Avatar
+            className={` ${attachmentFilepath ? 'h-40 w-40 flex justify-center items-center' : 'h-40 w-40 flex justify-center items-center border-2 border-dashed border-[#05b6b7]'}`}
+          >
             <AvatarImage
               loading={'lazy'}
-              src={attachmentFilepath || '/assets/images/user-image.png'}
-              alt="Profile Pictures"
+              src={attachmentFilepath || '/imageUpload.svg'}
+              alt="Profile Picture"
+              className={` ${attachmentFilepath ? 'w-full h-full object-cover ' : 'h-14 w-14'}`}
             />
           </Avatar>
         )}
-        <div className="relative ">
-          <div className="absolute p-2 right-1 bg-white border bottom-0 rounded-full cursor-pointer">
+        <div className="relative">
+          <div className="absolute p-2 right-1  bg-white border border-[#CFCBCB] top-8 rounded-full cursor-pointer">
             {attachmentFilepath ? (
               <Trash onClick={() => deleteProfile(attachmentID)} />
             ) : (
@@ -76,7 +81,7 @@ const ImageUpload: FC<IProps> = ({
           />
         </div>
       </div>
-      <h2 className="mt-2 font-semibold ">{title}</h2>
+      <h2 className="mt-2 font-semibold">{title}</h2>
     </>
   );
 };

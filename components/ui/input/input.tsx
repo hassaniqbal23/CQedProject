@@ -46,7 +46,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       rounded = false, // Default value for rounded
       onKeyDown,
       iconPosition = 'left',
-      iconColor = '',
+      iconColor = 'black',
       accept,
       onClick,
       ...props

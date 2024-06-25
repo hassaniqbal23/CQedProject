@@ -186,3 +186,7 @@ export const pendingCommunities = () => {
     .get(`/community-user/pending-communities`)
     .then((res) => res.data);
 };
+
+export const getSuggestedCommunities = () => {
+  return http.get(`/community/suggest-communities`).then((res) => res.data);
+};

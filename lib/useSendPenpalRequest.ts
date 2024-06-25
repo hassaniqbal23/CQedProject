@@ -27,6 +27,7 @@ const useSendPenpalRequest = () => {
         } else {
           queryClient.refetchQueries('penpalSuggestions');
           queryClient.refetchQueries('MyPenPals');
+          queryClient.refetchQueries('getNotifications');
         }
       },
       onError: (error) => {
