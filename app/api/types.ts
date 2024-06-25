@@ -70,6 +70,10 @@ export interface ProfilesDetailPageProps {
   isFriend?: boolean;
   isPending?: boolean;
   data?: any;
+  buttonText?: string;
   setIsFriend?: (isFriend: boolean) => void;
   setIsPending?: (isPending: boolean) => void;
+  handleClick?: () => void;
+  isCreatingPenpal?: boolean;
+  isDeletingPenpal?: boolean;
 }

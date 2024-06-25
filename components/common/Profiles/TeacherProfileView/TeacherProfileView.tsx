@@ -18,6 +18,12 @@ import { ProfilesDetailPageProps } from '@/app/api/types';
 
 export const TeacherProfileView: FC<ProfilesDetailPageProps> = ({
   data: profileData,
+  isFriend,
+  isPending,
+  handleClick,
+  isCreatingPenpal,
+  isDeletingPenpal,
+  buttonText,
 }) => {
   const bio = (profileData && profileData?.profile?.bio) || '';
 
@@ -150,6 +156,15 @@ export const TeacherProfileView: FC<ProfilesDetailPageProps> = ({
         subrole={profileData?.school?.name}
         location={profileData?.profile?.state}
         profileIcon={profileData?.attachment?.file_path}
+        profileId={profileData?.id}
+        buttonProps={{
+          isVisbile: true,
+          isLoading: isCreatingPenpal || isDeletingPenpal,
+          onClick: handleClick,
+          buttonText,
+          isFriend: isPending ? false : isFriend,
+        }}
+        mutualFriends={profileData?.mutualFriends}
       />
       <div>
         <TabsComponent

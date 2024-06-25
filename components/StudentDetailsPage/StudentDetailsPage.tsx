@@ -1,9 +1,8 @@
 'use client';
-import React, { useEffect, useMemo, FC } from 'react';
+import React, { useMemo, FC } from 'react';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { Card, TabsComponent } from '@/components/ui';
 import { useParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import {
   ProfileHeader,
@@ -13,27 +12,21 @@ import {
   Gallery,
   Languages,
 } from '@/components/common/Profiles';
-import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 import { ProfilesDetailPageProps } from '@/app/api/types';
 
 const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
   isFriend,
-  data,
-  setIsFriend,
+  data: studentProfile,
+  buttonText,
+  handleClick,
   isPending,
-  setIsPending,
+  isCreatingPenpal,
+  isDeletingPenpal,
 }) => {
-  const { sendRequest, isCreatingPenpal, deleteRequest, isDeletingPenpal } =
-    useSendPenpalRequest();
   const params = useParams();
-  const router = useRouter();
+  const { userInformation } = useGlobalState();
   const currentProfileId = Number(params?.id);
-  const { userInformation, myPenpals } = useGlobalState();
-  const buttonText = isPending
-    ? 'Pending'
-    : userInformation?.id === currentProfileId
-      ? 'Edit Profile'
-      : 'Add Friend';
+
   const Map = useMemo(
     () =>
       dynamic(() => import('@/components/ui/MapComponent/Map'), {
@@ -43,31 +36,10 @@ const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
     []
   );
 
-  const getPenpalInfo = (id: number | string) => {
-    const penpal = myPenpals.find((penpal) => penpal.friend.id === id);
-    return { isPenpal: !!penpal, penpal };
-  };
-
-  const studentProfile = data?.data?.data;
   const location = [
     studentProfile?.profile?.latitude,
     studentProfile?.profile?.longitude,
   ];
-  const handleClick = () => {
-    const { penpal } = getPenpalInfo(studentProfile?.id);
-
-    userInformation?.id === currentProfileId
-      ? router.push('/students/account-settings')
-      : isFriend
-        ? penpal && deleteRequest(penpal?.id)
-        : sendRequest({ receiverId: Number(studentProfile?.id) });
-  };
-
-  useEffect(() => {
-    let { isPenpal, penpal } = getPenpalInfo(currentProfileId);
-    setIsFriend && setIsFriend(isPenpal);
-    setIsPending && penpal?.status === 'PENDING' && setIsPending(true);
-  }, [myPenpals, currentProfileId]);
 
   const tabContents = [
     {
