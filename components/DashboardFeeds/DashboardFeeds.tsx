@@ -308,15 +308,25 @@ function DashboardFeeds() {
                 <Loading />
               </div>
             )}
-            {data?.data.data.length === data?.data.totalCount && (
+            {data?.data?.data.length === 0 && (
               <Typography
                 variant="h5"
                 weight="semibold"
                 className="text-center text-gray-500"
               >
-                You've caught up with all the posts 😊
+                No Post added in this community yet 😊
               </Typography>
             )}
+            {data?.data?.data.length !== 0 &&
+              data?.data.data.length === data?.data.totalCount && (
+                <Typography
+                  variant="h5"
+                  weight="semibold"
+                  className="text-center text-gray-500"
+                >
+                  You've caught up with all the posts 😊
+                </Typography>
+              )}
           </>
         )}
       </div>

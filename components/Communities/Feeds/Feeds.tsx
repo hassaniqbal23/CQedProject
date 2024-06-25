@@ -251,15 +251,25 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                   <Loading />
                 </div>
               )}
-              {communityPosts?.data.length === communityPosts?.totalCount && (
+              {communityPosts?.data.length === 0 && (
                 <Typography
                   variant="h5"
                   weight="semibold"
                   className="text-center text-gray-500"
                 >
-                  You've caught up with all the posts 😊
+                  No Post added in this community yet 😊
                 </Typography>
               )}
+              {communityPosts?.data.length !== 0 &&
+                communityPosts?.data.length === communityPosts?.totalCount && (
+                  <Typography
+                    variant="h5"
+                    weight="semibold"
+                    className="text-center text-gray-500"
+                  >
+                    You've caught up with all the posts 😊
+                  </Typography>
+                )}
             </>
           )}
         </div>

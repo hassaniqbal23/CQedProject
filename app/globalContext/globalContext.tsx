@@ -136,8 +136,11 @@ export const GlobalProvider: FC<any> = ({ children }) => {
           setIsAuthenticated(false);
         }
       },
-      onError: (err) => {
+      onError: (err: { status: number | string }) => {
         setIsUserGetInfo(false);
+        if (err?.status === 401) {
+          removeToken();
+        }
         console.log(err, '======> ERROR');
       },
     }
