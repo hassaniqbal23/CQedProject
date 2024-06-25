@@ -132,7 +132,7 @@ export function SignIn(props: SignInProps) {
         />
       </div>
 
-      <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-6 md:p-12">
+      <div className="w-full md:w-1/2 m-auto flex flex-col justify-center items-center p-6 md:p-12">
         <div className="text-center mb-4 mt-12 px-4">
           <Typography variant="h2" weight="semibold">
             Sign in to your account

@@ -4,7 +4,7 @@ export default function TeacherSignIn() {
   return (
     <SignIn
       loginSuccessLink={'/teachers/dashboard'}
-      forgetPasswordLink={'/teacher/forget-password'}
+      forgetPasswordLink={'/teachers/forget-password'}
     ></SignIn>
   );
 }
