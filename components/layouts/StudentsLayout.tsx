@@ -136,7 +136,6 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
                 ),
               },
               {
-                href: '/students/notifications',
                 type: 'icon',
                 icon: (
                   <>
