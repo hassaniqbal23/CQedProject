@@ -7,12 +7,14 @@ import { useRouter } from 'next/navigation';
 import { useResponsive } from '@/lib/hooks';
 import { Bell, LogOut, MessageCircle, Settings, UserCheck } from 'lucide-react';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import { useChatProvider } from '../Chat/ChatProvider/ChatProvider';
 interface IProps {
   children: ReactNode;
   className?: string;
 }
 
 export const StudentsLayout: FC<IProps> = ({ children, className }) => {
+  const { totalUnreadMessages } = useChatProvider();
   const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
@@ -105,7 +107,16 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
               {
                 href: '/students/chats',
                 type: 'icon',
-                icon: <MessageCircle />,
+                icon: (
+                  <div className="relative ">
+                    {totalUnreadMessages > 0 && (
+                      <div className="absolute bg-red-600 h-4 w-4 text-[10px] font-medium flex text-slate-100 rounded-3xl -right-3 -top-3 items-center justify-center">
+                        <span>{totalUnreadMessages}</span>
+                      </div>
+                    )}
+                    <MessageCircle />
+                  </div>
+                ),
               },
               {
                 href: '/students/notifications',

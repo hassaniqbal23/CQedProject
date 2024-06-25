@@ -8,4 +8,5 @@ export interface ChatConversation {
   messages: IMessage[];
   schoolId: number | string;
   users: number[];
+  unread_count: number;
 }
