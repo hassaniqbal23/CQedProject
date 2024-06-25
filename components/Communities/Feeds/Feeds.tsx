@@ -253,11 +253,11 @@ export const Feeds = ({ communityId }: FeedsProps) => {
               )}
               {communityPosts?.data.length === communityPosts?.totalCount && (
                 <Typography
-                  variant="h3"
+                  variant="h5"
                   weight="semibold"
                   className="text-center text-gray-500"
                 >
-                  You've caught up with all the posts
+                  You've caught up with all the posts 😊
                 </Typography>
               )}
             </>

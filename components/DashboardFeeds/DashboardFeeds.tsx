@@ -217,10 +217,18 @@ function DashboardFeeds() {
                       onDeletePost={() => deleteFeeds(item?.id)}
                       showShareButton={item?.User?.id !== userInformation?.id}
                       handleShare={(data) => {
-                        const payload = {
-                          content: data.content,
-                          pinned_post_id: item?.id,
-                        };
+                        let payload;
+                        if (item?.pinned_post) {
+                          payload = {
+                            content: data.content,
+                            pinned_post_id: item?.pinned_post?.id,
+                          };
+                        } else {
+                          payload = {
+                            content: data.content,
+                            pinned_post_id: item?.id,
+                          };
+                        }
 
                         createFeed(payload as any);
                       }}
@@ -302,11 +310,11 @@ function DashboardFeeds() {
             )}
             {data?.data.data.length === data?.data.totalCount && (
               <Typography
-                variant="h3"
+                variant="h5"
                 weight="semibold"
                 className="text-center text-gray-500"
               >
-                You've caught up with all the posts
+                You've caught up with all the posts 😊
               </Typography>
             )}
           </>
