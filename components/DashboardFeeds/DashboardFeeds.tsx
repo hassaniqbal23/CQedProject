@@ -21,6 +21,7 @@ import { createPenpal } from '@/app/api/penpals';
 import FeedsSkeleton from '../common/FeedsSkeleton/FeedsSkeleton';
 import dynamic from 'next/dynamic';
 import { Typography } from '../common/Typography/Typography';
+import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 
 const InfiniteScrollObserver = dynamic(
   () => import('../common/InfiniteScrollObserver/InfiniteScrollObserver'),
@@ -28,8 +29,9 @@ const InfiniteScrollObserver = dynamic(
 );
 
 function DashboardFeeds() {
-  const { userInformation, myPenpals, pendingGlobalFriendsList } =
-    useGlobalState();
+  const { userInformation, myPenpals } = useGlobalState();
+
+  console.log(myPenpals, 'myPenpals');
   const queryClient = useQueryClient();
   const [creatingPanpalId, setCreatingPanpalId] = useState<number | null>(null);
   const [commentSection, setCommentSection] = useState<{
@@ -40,7 +42,7 @@ function DashboardFeeds() {
     openCommentSection: false,
   });
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
-
+  const { sendRequest, isCreatingPenpal } = useSendPenpalRequest();
   const { commentId, openCommentSection } = commentSection;
 
   const [limit, setLimit] = useState(10);
@@ -52,15 +54,16 @@ function DashboardFeeds() {
     {
       keepPreviousData: true,
       onSuccess: () => {
-        // Automatically increase the limit and page if more posts are fetched
-        // setPage((prev) => prev + 1);
         setIsFetchingNextPage(false);
       },
     }
   );
 
   const { mutate: createFeed, isLoading: createPostLoading } = useMutation(
-    (data) => createPost(data),
+    (data) => {
+      console.log(data);
+      return createPost(data);
+    },
     {
       onSuccess() {
         refetch();
@@ -101,19 +104,6 @@ function DashboardFeeds() {
         },
       }
     );
-
-  const { mutate: sendPanpalRequest, isLoading: isCreatingPanpal } =
-    useMutation((id: number) => createPenpal({ receiverId: id }), {
-      onSuccess: (res) => {
-        queryClient.refetchQueries('MyPenPals');
-        queryClient.refetchQueries('getNotifications');
-        setCreatingPanpalId(null);
-        refetch();
-      },
-      onError: (error) => {
-        console.error(error, 'Error =====> log');
-      },
-    });
 
   const { mutate: deleteFeeds } = useMutation((id: number) => deletePost(id), {
     onSuccess() {
@@ -172,7 +162,7 @@ function DashboardFeeds() {
                 });
 
                 const isPending = pendingPenpals.find(
-                  (i: IPenpal) => i?.id === item?.User?.id
+                  (i: IPenpal) => i?.receiverId === item?.User?.id
                 );
 
                 return (
@@ -210,10 +200,10 @@ function DashboardFeeds() {
                       addFriendText={isPending ? 'Pending' : 'Add Friend'}
                       onAddFriend={() => {
                         setCreatingPanpalId(index);
-                        sendPanpalRequest(item?.User?.id);
+                        sendRequest({ receiverId: item?.User?.id });
                       }}
                       addFriendLoading={
-                        isCreatingPanpal && creatingPanpalId === index
+                        isCreatingPenpal && creatingPanpalId === index
                       }
                       isMyPost={item?.User?.id === userInformation?.id}
                       onDeletePost={() => deleteFeeds(item?.id)}
@@ -224,11 +214,17 @@ function DashboardFeeds() {
                           payload = {
                             content: data.content,
                             pinned_post_id: item?.pinned_post?.id,
+                            communityId: data.communityId
+                              ? data.communityId
+                              : null,
                           };
                         } else {
                           payload = {
                             content: data.content,
                             pinned_post_id: item?.id,
+                            communityId: data.communityId
+                              ? data.communityId
+                              : null,
                           };
                         }
 
@@ -316,7 +312,7 @@ function DashboardFeeds() {
                 weight="semibold"
                 className="text-center text-gray-500"
               >
-                No Post added in this community yet 😊
+                No Post added yet 😊
               </Typography>
             )}
             {data?.data?.data.length !== 0 &&

@@ -72,6 +72,7 @@ export const GqedNotifications = () => {
         if (payload.data) {
           client.refetchQueries('getNotifications');
           client.refetchQueries('MyPenPals');
+          client.refetchQueries('UserJoinedCommunities');
           const { title, body, image } = payload.data;
           toast(
             <div className="flex items-center">

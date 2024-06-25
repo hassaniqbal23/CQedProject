@@ -40,6 +40,7 @@ function SharePost({
 }: ISharePost) {
   const { joinedCommunities } = useGlobalState();
   const [textAreaValue, setTextAreaValue] = useState('');
+  const [selectedCommunity, setSelectedCommunity] = useState<any>({});
 
   return (
     <Modal
@@ -118,8 +119,8 @@ function SharePost({
           <SelectV2
             options={
               joinedCommunities?.map((community: any) => ({
-                label: community?.profile?.full_name,
-                image: community?.attachment?.file_path,
+                label: community?.name,
+                image: community?.profile_picture?.file_path,
                 value: community?.id,
               })) || []
             }
@@ -140,7 +141,9 @@ function SharePost({
             }}
             className="font-semibold"
             classNamePrefix={'select'}
-            onChange={(value: any) => {}}
+            onChange={(value: any) => {
+              setSelectedCommunity(value.value);
+            }}
           />
         </div>
       </div>
@@ -150,6 +153,7 @@ function SharePost({
             if (onShare) {
               onShare({
                 content: textAreaValue,
+                communityId: selectedCommunity,
               });
               setIsVisible(false);
               setTextAreaValue('');

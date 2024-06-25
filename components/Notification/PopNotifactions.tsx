@@ -48,6 +48,7 @@ export const PopNotifactions: React.FC<PopNotification> = ({
       onSuccess: (res) => {
         client.refetchQueries('getNotifications');
         client.refetchQueries('pending-communities');
+        client.refetchQueries('UserJoinedCommunities');
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
