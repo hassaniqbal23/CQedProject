@@ -146,3 +146,11 @@ export const getSingleCountry = (name: string) => {
   let currentCountry = options?.filter((country) => country.value === name)[0];
   return currentCountry;
 };
+
+export const formatDate = (dateString: string) => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+  };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
