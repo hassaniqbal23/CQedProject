@@ -268,7 +268,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
                 }
                 options={
                   myPenpals?.map((penpal: any) => ({
-                    label: penpal?.friend?.profile[0]?.fullname,
+                    label: penpal?.friend?.profile?.full_name,
                     value: penpal?.friend?.id,
                   })) || []
                 }

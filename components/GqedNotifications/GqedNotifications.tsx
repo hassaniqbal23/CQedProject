@@ -112,7 +112,6 @@ export const GqedNotifications = () => {
 
   useEffect(() => {
     if (fcmToken && userInformation?.id) {
-      console.log(fcmToken, 'key 3');
       willSendFireBaseToken({
         token: String(fcmToken),
         userId: Number(userInformation?.id),
