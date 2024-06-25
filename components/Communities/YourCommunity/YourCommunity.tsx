@@ -11,7 +11,7 @@ import {
 import { Plus } from 'lucide-react';
 import { CommunityCard } from '../CommunityCard2/CommunityCard2';
 import { useRouter } from 'next/navigation';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { getCommunityJoined, getMyCommunity } from '@/app/api/communities';
 import { ICommunity, ICommunityJoined } from '@/types/community';
 
@@ -20,9 +20,14 @@ interface IProps {
 }
 export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
   const route = useRouter();
+  const client = useQueryClient();
 
   const { data: communityJoined, isLoading: isFetchingCommunityJoined } =
-    useQuery(['getCommunityJoined', 1, 10], () => getCommunityJoined(1, 10));
+    useQuery(['getCommunityJoined', 1, 10], () => getCommunityJoined(1, 10), {
+      onSuccess() {
+        client.refetchQueries('UserJoinedCommunities');
+      },
+    });
 
   const { data: mycommunity, isLoading: isFetchingMycommunity } = useQuery(
     ['getMyCommunity', 1, 10],
