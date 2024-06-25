@@ -80,7 +80,6 @@ interface ISharedCommunityPost {
     owner_id?: number;
   };
   User: IUser;
-
 }
 
 export interface ICommunityPost {
