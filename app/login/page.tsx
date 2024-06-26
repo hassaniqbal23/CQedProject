@@ -16,6 +16,7 @@ import { LoginAPI } from '../api/auth';
 import { useMutation } from 'react-query';
 import Link from 'next/link';
 import { Typography } from '@/components/common/Typography/Typography';
+import { useGlobalState } from '../globalContext/globalContext';
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -29,6 +30,12 @@ const formSchema = z.object({
 
 export default function Login() {
   const router = useRouter();
+  const { isAuthenticated } = useGlobalState();
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/admin/dashboard');
+    }
+  }, [isAuthenticated]);
 
   const form = useForm<IAuthentication>({
     resolver: zodResolver(formSchema),

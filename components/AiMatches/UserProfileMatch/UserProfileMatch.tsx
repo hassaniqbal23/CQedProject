@@ -32,12 +32,12 @@ export const UserProfileMatch: FC<Iprops> = ({
 }: Iprops) => {
   const { isCreatingPenpal, isDeletingPenpal } = useSendPenpalRequest();
   const isPending = buttonText?.status === 'PENDING' ? true : false;
-  const { full_name, country } = user;
+  const { country } = user;
   const { country: countryName, flag = '' } = getCountry(country);
   const notification = 'Hello';
-  const userImage = user.user.attachment.file_path;
+  const userImage = user?.user?.attachment?.file_path;
   const heading = 'We have a match for you.';
-  const userBio = `Hi, I am ${user.full_name}, a ${user.age}-year-old from ${user.state} with a love for drawing and a passion for adventure`;
+  const userBio = `Hi, I am ${user?.full_name}, a ${user?.age}-year-old from ${user?.state} with a love for drawing and a passion for adventure`;
   const caption = `Did you know ${user.full_name} has read 20 books last year 📖 🙂`;
 
   return (

@@ -64,7 +64,7 @@ const CommentInput: FC<IProps> = ({ onValueChange, loading }) => {
       >
         <Image
           src={
-            userInformation?.attachment.file_path ||
+            userInformation?.attachment?.file_path ||
             '/assets/profile/profile.svg'
           }
           alt="Profile Picture"

@@ -28,6 +28,8 @@ import { storeToken, storeUserId } from '@/app/utils/encryption';
 import { updateToken } from '@/app/utils/http';
 import { Typography } from '../Typography/Typography';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
+import { useEffect } from 'react';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
 interface ICarouselItems {
   title: string;
@@ -67,8 +69,15 @@ interface SignInProps {
 
 export function SignIn(props: SignInProps) {
   const router = useRouter();
+  const { isAuthenticated } = useGlobalState();
   const queryClient = useQueryClient();
   const { module } = useModule();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push(props.loginSuccessLink);
+    }
+  }, [isAuthenticated]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

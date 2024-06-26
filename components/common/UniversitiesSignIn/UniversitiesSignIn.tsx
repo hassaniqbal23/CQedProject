@@ -27,6 +27,8 @@ import { toast } from 'react-toastify';
 import { storeToken, storeUserId } from '@/app/utils/encryption';
 import { updateToken } from '@/app/utils/http';
 import { Typography } from '../Typography/Typography';
+import { useEffect } from 'react';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
 interface ICarouselItems {
   title: string;
@@ -66,8 +68,14 @@ interface SignInProps {
 
 export function SignInUni(props: SignInProps) {
   const router = useRouter();
+  const { isAuthenticated } = useGlobalState();
   const queryClient = useQueryClient();
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push(props.loginSuccessLink);
+    }
+  }, [isAuthenticated]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
