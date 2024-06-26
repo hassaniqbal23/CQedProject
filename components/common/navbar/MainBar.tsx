@@ -17,6 +17,7 @@ import Sidebar from '../sidebar/sidebar';
 import { ISidebar } from '../sidebar/types';
 import SidebarMobile from '../sidebar/SidebarMobile/SidebarMobile';
 import { useResponsive } from '@/lib/hooks';
+import { AlignJustify } from 'lucide-react';
 
 interface IDropDownOption {
   title: string;
@@ -138,12 +139,9 @@ export const Navbar: FC<IProps> = ({
           side="left"
           className="bg-primary-500 dark:bg-primary-700 h-full"
           trigger={
-            <Image
-              src={'/assets/logos/navbarlogo.svg'}
-              alt="navbar logo"
-              width={30}
-              height={30}
-            />
+            <div className="ml-3">
+              <AlignJustify size={30} />
+            </div>
           }
         >
           <SidebarMobile
@@ -153,12 +151,9 @@ export const Navbar: FC<IProps> = ({
           />
         </SheetDemo>
       ) : (
-        <Image
-          src={'/assets/logos/navbarlogo.svg'}
-          alt="navbar logo"
-          width={30}
-          height={30}
-        />
+        <div className="ml-3">
+          <AlignJustify size={30} />
+        </div>
       )}
       <div className="flex items-center justify-end">
         <div className="flex justify-around sm:justify-between gap-2 items-center py-2 pr-4">
