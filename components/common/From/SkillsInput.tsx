@@ -18,7 +18,15 @@ const SkillsInput: FC<IProps> = ({
   BadgeVariant = 'destructive',
   className,
 }) => {
-  const [tags, setTags] = useState<string[]>(initialTags);
+  const [tags, setTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (initialTags) {
+      setTags(initialTags);
+    } else {
+      setTags([]);
+    }
+  }, [initialTags]);
 
   const inputRef = useRef<HTMLInputElement>(null);
 

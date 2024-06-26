@@ -20,7 +20,6 @@ import { toast } from 'sonner';
 import { IUserInformation } from '@/app/globalContext/types';
 import { FormInput } from '../common/From/FormInput';
 import ImageUpload from '../common/ImageUpload/ImageUpload';
-import MultipleSelector from '../common/From/MultiSelect';
 import { Typography } from '../common/Typography/Typography';
 import { AddEducation } from '../common/teacherProfile/AddEducation/AddEducation';
 import { AddWorkExperience } from '../common/teacherProfile/AddEducation/AddWorkExperience';
@@ -40,10 +39,8 @@ const formSchema = z.object({
 
 const ProfileSettings = () => {
   const { userInformation, isUserGetInfo } = useGlobalState();
+  const [skills, setSkills] = useState<string[]>([]);
 
-  const [skills, setSkills] = useState<string[]>(
-    userInformation?.profile?.skills.map((skill: string) => skill) || []
-  );
   const queryClient = useQueryClient();
   const form = useForm<any>({
     resolver: zodResolver(formSchema),
@@ -107,23 +104,13 @@ const ProfileSettings = () => {
     if (userInformation) {
       form.setValue(
         'full_name',
-        userInformation.profile?.full_name || userInformation.name
+        userInformation.profile?.full_name || userInformation?.name
       );
       form.setValue('nick_name', userInformation.profile?.nick_name);
       form.setValue('bio', userInformation.profile?.bio);
-      form.setValue(
-        'skills',
-        userInformation.profile?.skills.map((skill: string) => ({
-          value: skill,
-          label: skill,
-        }))
-      );
+      setSkills(userInformation?.profile?.skills);
     }
   }, [userInformation, form]);
-
-  const handleValues = (newSkills: string[]) => {
-    setSkills(newSkills);
-  };
 
   const onSubmit: SubmitHandler<any> = () => {
     const formData = form.getValues();
@@ -227,7 +214,9 @@ const ProfileSettings = () => {
           </Typography>
           <SkillsInput
             initialTags={skills}
-            onTagsChange={handleValues}
+            onTagsChange={(newSkills: string[]) => {
+              setSkills(newSkills);
+            }}
             BadgeVariant="outline"
           />
         </div>
