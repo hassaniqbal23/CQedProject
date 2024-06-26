@@ -16,7 +16,7 @@ import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/Creat
 import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
 import { PenpalShipButtonRequest } from '../PenpalShipButtonRequest/PenpalShipButtonRequest';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
-
+import { useGlobalState } from '@/app/globalContext/globalContext';
 interface PenpalshipCardProps {
   title?: string;
   searchParams?: string;
@@ -45,6 +45,8 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
 }) => {
   const route = useRouter();
   const { setSelectedConversationId } = useChatProvider();
+  const { usersIBlocked } = useGlobalState();
+
   const { module } = useModule();
 
   const mutualFriend = getMutualFriendsText(mutualFriends);
@@ -58,6 +60,11 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
     route.push(`/${module}/profile/${id}`);
   };
 
+  const isUserBlocked = (userId: number | string) => {
+    return usersIBlocked.some(
+      (blockedUser: any) => blockedUser.blockedUserId === userId
+    );
+  };
   return (
     <Card className="flex flex-col h-full">
       <div className="flex flex-col flex-grow p-2 rounded-sm">
@@ -82,7 +89,10 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                   route.push(`/${module}/chats`);
                 }}
                 trigger={
-                  <button className="bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center">
+                  <button
+                    disabled={isUserBlocked(Number(id))}
+                    className="bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center"
+                  >
                     <MessageCircle />
                   </button>
                 }
