@@ -58,7 +58,7 @@ function DashboardCards() {
     });
 
   return (
-    <div className="hidden lg:block">
+    <div className="hidden lg:block sticky top-0">
       {isLoading ? (
         <div className="flex flex-col gap-2 ">
           <SuggestedCommunitySkeleton />
@@ -87,6 +87,7 @@ function DashboardCards() {
                     return (
                       <div key={index} className="">
                         <Coummuntiycard
+                          id={item.id}
                           className="bg-white "
                           totalMembers={item.member_count}
                           totalDiscussions={14000}
@@ -127,6 +128,7 @@ function DashboardCards() {
                   (item: any, index: number) => (
                     <div key={index} className="mb-4">
                       <GlobalFriendConnect
+                        id={item.id}
                         name={item.name}
                         username={item.name}
                         imageUrl={item?.attachment?.file_path}

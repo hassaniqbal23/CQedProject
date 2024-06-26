@@ -179,15 +179,19 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                       ? true
                       : false;
 
-                    const acceptedFriend = myPenpals.filter((i) => {
-                      if (i.status === 'ACCEPTED') {
-                        return i;
-                      }
-                    });
-
-                    const isFriend = acceptedFriend.find(
-                      (i: IPenpal) => i.id === item?.User?.id
-                    );
+                    const isFriend = myPenpals
+                      .filter((i) => {
+                        if (i.status === 'ACCEPTED') {
+                          return i;
+                        }
+                      })
+                      .find(
+                        (i: IPenpal) =>
+                          i.receiverId === item?.User?.id ||
+                          i.senderId === item?.User?.id
+                      )
+                      ? true
+                      : false;
 
                     const pendingPenpals = myPenpals.filter((i) => {
                       if (i.status === 'PENDING') {
