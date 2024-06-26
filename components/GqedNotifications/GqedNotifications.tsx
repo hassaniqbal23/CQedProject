@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { messaging } from '../../firebase';
 import { getToken, onMessage } from 'firebase/messaging';
@@ -10,8 +10,6 @@ import { getFcmTokenFromLocalStorage } from '@/app/utils/helpers';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { createNotifications } from '@/app/api/auth';
 import { IFcmToken } from '@/types/auth';
-import { updateToken } from '@/app/utils/http';
-import { getAccessToken } from '@/app/utils/encryption';
 import { Avatar, AvatarImage } from '../ui';
 import { Typography } from '../common/Typography/Typography';
 import { useQueryClient } from 'react-query';
@@ -24,16 +22,6 @@ export const GqedNotifications = () => {
   const [fcmToken, setFcmToken] = useState(
     getFcmTokenFromLocalStorage('firebaseToken')
   );
-
-  useEffect(() => {
-    const token = getAccessToken();
-    if (token) {
-      updateToken(token);
-    } else if (!window.location.search) {
-      console.log('checking');
-      //   router.push('/login');
-    }
-  }, [router]);
 
   useEffect(() => {
     checkAndRequestFirebaseToken();
@@ -68,7 +56,7 @@ export const GqedNotifications = () => {
 
   useEffect(() => {
     if (messaging) {
-      const onSubscribe = onMessage(messaging, (payload: any) => {
+      const unsubscribe = onMessage(messaging, (payload: any) => {
         if (payload.data) {
           client.refetchQueries('getNotifications');
           client.refetchQueries('MyPenPals');
@@ -92,7 +80,7 @@ export const GqedNotifications = () => {
             </div>,
             {
               icon: false,
-              autoClose: 5000,
+              autoClose: 3000,
             }
           );
           playNotificationSound();
@@ -103,7 +91,7 @@ export const GqedNotifications = () => {
       });
 
       return () => {
-        onSubscribe();
+        unsubscribe();
       };
     }
   }, [messaging]);
@@ -123,7 +111,6 @@ export const GqedNotifications = () => {
 
   return (
     <>
-      <ToastContainer autoClose={1000} />
       <audio ref={audioRef} src="/notification.mp3" preload="auto" />
     </>
   );
