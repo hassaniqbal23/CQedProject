@@ -13,7 +13,7 @@ export const ProfileBio: React.FC<BioProps> = ({ bio, title }) => {
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="[word-spacing:11px] font-medium italic leading-7 text-sm text-justify whitespace-pre-line ">
+        <p className="[word-spacing:11px] font-medium italic leading-6 text-sm text-justify whitespace-pre-line ">
           {bio}
         </p>
       </CardContent>

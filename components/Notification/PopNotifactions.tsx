@@ -98,6 +98,7 @@ export const PopNotifactions: React.FC<PopNotification> = ({
       const submit = {
         userId: payload?.createdById,
         communityId: payload.community_id,
+        communityUserId: payload.community_user_id,
         status: status,
         notification_id: payload.id,
       };

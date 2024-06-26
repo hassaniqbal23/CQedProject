@@ -20,7 +20,6 @@ import { toast } from 'sonner';
 import { IUserInformation } from '@/app/globalContext/types';
 import { FormInput } from '../common/From/FormInput';
 import ImageUpload from '../common/ImageUpload/ImageUpload';
-import MultipleSelector from '../common/From/MultiSelect';
 import { Typography } from '../common/Typography/Typography';
 import { AddEducation } from '../common/teacherProfile/AddEducation/AddEducation';
 import { AddWorkExperience } from '../common/teacherProfile/AddEducation/AddWorkExperience';
@@ -40,13 +39,7 @@ const formSchema = z.object({
 
 const ProfileSettings = () => {
   const { userInformation, isUserGetInfo } = useGlobalState();
-
-  const [skills, setSkills] = useState<{ label: string; value: string }[]>(
-    userInformation?.profile?.skills.map((skill: string) => ({
-      value: skill,
-      label: skill,
-    })) || []
-  );
+  const [skills, setSkills] = useState<string[]>([]);
 
   const queryClient = useQueryClient();
   const form = useForm<any>({
@@ -111,26 +104,19 @@ const ProfileSettings = () => {
     if (userInformation) {
       form.setValue(
         'full_name',
-        userInformation.profile?.full_name || userInformation.name
+        userInformation.profile?.full_name || userInformation?.name
       );
       form.setValue('nick_name', userInformation.profile?.nick_name);
       form.setValue('bio', userInformation.profile?.bio);
-      form.setValue(
-        'skills',
-        userInformation.profile?.skills.map((skill: string) => ({
-          value: skill,
-          label: skill,
-        }))
-      );
+      setSkills(userInformation?.profile?.skills);
     }
   }, [userInformation, form]);
 
   const onSubmit: SubmitHandler<any> = () => {
     const formData = form.getValues();
-    const skill = skills?.map((a) => a.value);
     const payload: IUserInformation = {
       ...formData,
-      skills: skill,
+      skills: skills,
     };
 
     if (userInformation?.profile?.id) {
@@ -215,7 +201,7 @@ const ProfileSettings = () => {
 
           <AddWorkExperience />
         </div>
-        <div className="grid  mt-10">
+        <div className="grid mt-10">
           <Typography
             variant={'h4'}
             weight={'bold'}
@@ -226,23 +212,15 @@ const ProfileSettings = () => {
           <Typography variant={'h6'} weight={'semibold'} className="mb-1">
             Skills
           </Typography>
-          <MultipleSelector
-            value={skills}
-            onChange={(e) => setSkills(e)}
-            options={[
-              {
-                value: 'Communication Skills',
-                label: 'Communication Skills',
-              },
-              {
-                value: 'Cultural Competence',
-                label: 'Cultural Competence',
-              },
-            ]}
-            placeholder="Add Skills"
+          <SkillsInput
+            initialTags={skills}
+            onTagsChange={(newSkills: string[]) => {
+              setSkills(newSkills);
+            }}
+            BadgeVariant="outline"
           />
         </div>
-        <div>
+        <div className="mt-6">
           <Button
             loading={isUpdatingProfile}
             className="text-md my-4 rounded-md px-9 hover:bg-primary-600"

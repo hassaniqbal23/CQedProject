@@ -89,6 +89,7 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
     if (payload?.notificationType === 'COMMUNITY_JOIN_REQUEST') {
       const submit = {
         userId: payload?.createdById,
+        communityUserId: payload.community_user_id,
         communityId: payload.community_id,
         status: status,
         notification_id: payload.id,
