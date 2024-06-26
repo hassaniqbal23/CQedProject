@@ -76,11 +76,11 @@ const DatePickerDemo: React.FC<IProps> = ({
                   format(rangeDate.from, 'LLL dd, y')
                 )
               ) : (
-                <span>Pick a date</span>
+                <span>Select</span>
               )}
             </>
           ) : (
-            <>{date ? format(date, 'PPP') : <span>Pick a date</span>}</>
+            <>{date ? format(date, 'PPP') : <span>Select</span>}</>
           )}
           {iconPosition === 'right' && (
             <CalendarIcon className="ml-2 h-4 w-4 absolute right-6" />

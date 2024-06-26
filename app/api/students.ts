@@ -1,7 +1,7 @@
 import http from '../utils/http';
-import { IStudentInfo } from './types';
+import { ICreateStudent } from './types';
 
-export const StudentsCreate = (payload: IStudentInfo) =>
+export const StudentsCreate = (payload: ICreateStudent) =>
   http.post('/students/create', payload);
 
 export const getAllStudents: any = (
