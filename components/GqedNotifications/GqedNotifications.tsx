@@ -15,6 +15,7 @@ import { Typography } from '../common/Typography/Typography';
 import { useQueryClient } from 'react-query';
 
 export const GqedNotifications = () => {
+  const { isAuthenticated } = useGlobalState();
   const router = useRouter();
   const client = useQueryClient();
   const { userInformation } = useGlobalState();
@@ -24,7 +25,9 @@ export const GqedNotifications = () => {
   );
 
   useEffect(() => {
-    checkAndRequestFirebaseToken();
+    if (isAuthenticated) {
+      checkAndRequestFirebaseToken();
+    }
   }, [router]);
 
   const checkAndRequestFirebaseToken = async () => {
@@ -57,6 +60,7 @@ export const GqedNotifications = () => {
   useEffect(() => {
     if (messaging) {
       const unsubscribe = onMessage(messaging, (payload: any) => {
+        console.log({ payload }, 'payload');
         if (payload.data) {
           client.refetchQueries('getNotifications');
           client.refetchQueries('MyPenPals');

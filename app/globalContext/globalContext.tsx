@@ -20,7 +20,6 @@ import { getBlockedUsers } from '../api/users';
 import { pendingCommunities } from '../api/communities';
 import { useRouter } from 'next/navigation';
 import { INotifications } from '@/types/auth';
-import { number } from 'echarts';
 
 type IGlobalState = {
   isUserGetInfo: boolean;
@@ -119,7 +118,6 @@ export const GlobalProvider: FC<any> = ({ children }) => {
       router.push('/login');
     }
   };
-
   useQuery(
     ['userInformation', userId],
     () => GetUserInformation(userId as string),
