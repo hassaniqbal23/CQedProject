@@ -36,6 +36,12 @@ function ChatInput({ onSendMessage }: any) {
   const [height, setHeight] = useState<number>(54);
   const [uploadLoading, setUploadLoading] = useState(false);
   const [files, setFiles] = useState<any[]>([]);
+  const [fileErrors, setFileErrors] = useState<{ [key: string]: string }>({});
+  const [fileLoading, setFileLoading] = useState<{ [key: string]: boolean }>(
+    {}
+  );
+  const [allFilesUploaded, setAllFilesUploaded] = useState<boolean>(true);
+
   const form = useForm<any>({
     defaultValues: {
       message: '',
@@ -46,24 +52,25 @@ function ChatInput({ onSendMessage }: any) {
   const uploadFileMutation = useUploadFile();
 
   const handleFileSelect = async (files: Blob[]) => {
-    setUploadLoading(true);
-    const uploadPromises = Array.from(files).map((file: Blob) =>
-      uploadFileMutation.mutateAsync(file)
-    );
+    setAllFilesUploaded(false);
+    const filePromises = Array.from(files).map(async (file: Blob) => {
+      setFileLoading((prev) => ({ ...prev, [file.name]: true }));
+      try {
+        const result = await uploadFileMutation.mutateAsync(file);
+        form.setValue('attachments', [
+          ...form.getValues('attachments'),
+          result,
+        ]);
+      } catch (error: any) {
+        setFileErrors((prev) => ({ ...prev, [file.name]: error.message }));
+      } finally {
+        setFileLoading((prev) => ({ ...prev, [file.name]: false }));
+      }
+    });
 
-    try {
-      const results = await Promise.all(uploadPromises);
-      form.setValue('attachments', [
-        ...form.getValues('attachments'),
-        ...results,
-      ]);
-      setFiles([]);
-      console.log('All files uploaded successfully:', results);
-    } catch (error) {
-      console.error('Error uploading files:', error);
-    } finally {
-      setUploadLoading(false);
-    }
+    await Promise.all(filePromises);
+    setFiles([]);
+    setAllFilesUploaded(true);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -112,19 +119,41 @@ function ChatInput({ onSendMessage }: any) {
       .watch('attachments')
       .filter((_: any, i: number) => i !== index);
     form.setValue('attachments', [...files]);
+    setFileErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[form.watch('attachments')[index]?.name];
+      return newErrors;
+    });
+    setFileLoading((prev) => {
+      const newLoading = { ...prev };
+      delete newLoading[form.watch('attachments')[index]?.name];
+      return newLoading;
+    });
   };
 
   const onSubmit: SubmitHandler<any> = async (data: any) => {
-    if (uploadLoading) {
+    const hasAttachments = data.attachments && data.attachments.length > 0;
+    const hasMessage = data.message && data.message.trim().length > 0;
+
+    // Check if any file is still uploading
+    const anyFileUploading = Object.values(fileLoading).some(
+      (loading) => loading
+    );
+
+    if (anyFileUploading) {
       sonnerToast.info('Please wait for the file to upload', {
         position: 'bottom-left',
         closeButton: true,
       });
       return;
     }
-    if (!data.message && data.attachments.length === 0) return;
+
+    if (!hasAttachments && !hasMessage) return;
+
     onSendMessage(data);
     form.reset();
+    setFileErrors({});
+    setFileLoading({});
   };
 
   return (
@@ -241,9 +270,14 @@ function ChatInput({ onSendMessage }: any) {
                                 fill
                                 unoptimized={true}
                               />
-                              {uploadLoading && (
+                              {fileLoading[file.name] && (
                                 <div className=" flex absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 w-full h-full bg-slate-300-opacity-50 rounded items-center justify-center ">
                                   <Loading />
+                                </div>
+                              )}
+                              {fileErrors[file.name] && (
+                                <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 flex w-full h-full bg-red-600-opacity-70 rounded items-center justify-center text-white text-center">
+                                  {fileErrors[file.name]}
                                 </div>
                               )}
                             </AspectRatio>
@@ -274,12 +308,17 @@ function ChatInput({ onSendMessage }: any) {
                                     fill
                                     unoptimized={true}
                                   />
-                                  {!uploadLoading && (
+                                  {!fileLoading[file.name] && (
                                     <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 group-hover:flex hidden w-full h-full bg-slate-300-opacity-50 rounded items-center justify-center ">
                                       <CircleX
                                         className="cursor-pointer"
                                         onClick={() => handleRemoveFile(index)}
                                       />
+                                    </div>
+                                  )}
+                                  {fileErrors[file.name] && (
+                                    <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 flex w-full h-full bg-red-600-opacity-70 rounded items-center justify-center text-white text-center">
+                                      {fileErrors[file.name]}
                                     </div>
                                   )}
                                 </AspectRatio>
@@ -298,7 +337,11 @@ function ChatInput({ onSendMessage }: any) {
           <Button
             className=" bg-blue-100 h-[54px] w-[54px] "
             type="submit"
-            disabled={!isConnected || hasCurrentConversationUserBlockedMe}
+            disabled={
+              !isConnected ||
+              hasCurrentConversationUserBlockedMe ||
+              !allFilesUploaded
+            }
           >
             <SendHorizontal className="text-primary " />
           </Button>

@@ -19,7 +19,10 @@ interface ISharePost {
   setIsVisible: (val: boolean) => void;
   title: string;
   defaultReceiverId?: string;
-  onShare?: (data: { content: string; communityId?: number | string }) => void;
+  onShare?: (data: {
+    content: string;
+    communityId?: number | string | null;
+  }) => void;
   post?: {
     userFullName: string;
     username: string;
@@ -40,7 +43,9 @@ function SharePost({
 }: ISharePost) {
   const { joinedCommunities } = useGlobalState();
   const [textAreaValue, setTextAreaValue] = useState('');
-  const [selectedCommunity, setSelectedCommunity] = useState<any>({});
+  const [selectedCommunity, setSelectedCommunity] = useState<number | null>(
+    null
+  );
 
   return (
     <Modal

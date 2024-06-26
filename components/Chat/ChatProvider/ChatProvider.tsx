@@ -163,6 +163,7 @@ export const ChatProvider = ({ children }: any) => {
   useEffect(() => {
     const handleAddMessageToInbox = (message: any) => {
       if (message.isNewMessage) {
+        console.log(message, 'new incoming messasge');
         setInboxResponse([message.conversation, ...inboxResponse]);
         return;
       } else {
