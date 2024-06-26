@@ -54,7 +54,7 @@ const SkillsInput: FC<IProps> = ({
         <Input
           type="text"
           onKeyDown={handleInputKeyDown}
-          className="grow px-3 py-2 rounded-md focus:outline-none focus:border-transparent mt-2"
+          className="grow px-3 py-3 rounded-md focus:outline-none focus:border-transparent mt-2"
           placeholder="Enter your skills"
           ref={inputRef}
         />

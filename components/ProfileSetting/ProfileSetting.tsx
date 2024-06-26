@@ -41,13 +41,9 @@ const formSchema = z.object({
 const ProfileSettings = () => {
   const { userInformation, isUserGetInfo } = useGlobalState();
 
-  const [skills, setSkills] = useState<{ label: string; value: string }[]>(
-    userInformation?.profile?.skills.map((skill: string) => ({
-      value: skill,
-      label: skill,
-    })) || []
+  const [skills, setSkills] = useState<string[]>(
+    userInformation?.profile?.skills.map((skill: string) => (skill)) || []
   );
-
   const queryClient = useQueryClient();
   const form = useForm<any>({
     resolver: zodResolver(formSchema),
@@ -125,12 +121,15 @@ const ProfileSettings = () => {
     }
   }, [userInformation, form]);
 
+  const handleValues = (newSkills: string[]) => {
+    setSkills(newSkills);
+  };
+
   const onSubmit: SubmitHandler<any> = () => {
     const formData = form.getValues();
-    const skill = skills?.map((a) => a.value);
     const payload: IUserInformation = {
       ...formData,
-      skills: skill,
+      skills: skills,
     };
 
     if (userInformation?.profile?.id) {
@@ -215,7 +214,7 @@ const ProfileSettings = () => {
 
           <AddWorkExperience />
         </div>
-        <div className="grid  mt-10">
+        <div className="grid mt-10">
           <Typography
             variant={'h4'}
             weight={'bold'}
@@ -226,23 +225,9 @@ const ProfileSettings = () => {
           <Typography variant={'h6'} weight={'semibold'} className="mb-1">
             Skills
           </Typography>
-          <MultipleSelector
-            value={skills}
-            onChange={(e) => setSkills(e)}
-            options={[
-              {
-                value: 'Communication Skills',
-                label: 'Communication Skills',
-              },
-              {
-                value: 'Cultural Competence',
-                label: 'Cultural Competence',
-              },
-            ]}
-            placeholder="Add Skills"
-          />
+          <SkillsInput initialTags={skills} onTagsChange={handleValues} BadgeVariant="outline" />
         </div>
-        <div>
+        <div className='mt-6'>
           <Button
             loading={isUpdatingProfile}
             className="text-md my-4 rounded-md px-9 hover:bg-primary-600"
