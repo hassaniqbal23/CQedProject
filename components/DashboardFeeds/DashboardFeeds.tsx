@@ -30,8 +30,6 @@ const InfiniteScrollObserver = dynamic(
 
 function DashboardFeeds() {
   const { userInformation, myPenpals } = useGlobalState();
-
-  console.log(myPenpals, 'myPenpals');
   const queryClient = useQueryClient();
   const [creatingPanpalId, setCreatingPanpalId] = useState<number | null>(null);
   const [commentSection, setCommentSection] = useState<{
@@ -151,9 +149,13 @@ function DashboardFeeds() {
                   ? true
                   : false;
 
-                const isFriend =
-                  myPenpals.find((i: IPenpal) => i.id === item?.User?.id) ||
-                  item.User.id === userInformation?.id;
+                const isFriend = myPenpals.find(
+                  (i: IPenpal) =>
+                    i.receiverId === item?.User?.id ||
+                    i.senderId === item?.User?.id
+                )
+                  ? true
+                  : false;
 
                 const pendingPenpals = myPenpals.filter((i) => {
                   if (i.status === 'PENDING') {
@@ -196,7 +198,7 @@ function DashboardFeeds() {
                       }}
                       onUnlike={() => unLikePost(item?.id)}
                       onLike={() => likePost(item?.id)}
-                      isFriend={isFriend ? true : false}
+                      isFriend={isFriend}
                       addFriendText={isPending ? 'Pending' : 'Add Friend'}
                       onAddFriend={() => {
                         setCreatingPanpalId(index);

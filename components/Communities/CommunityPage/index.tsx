@@ -29,7 +29,7 @@ const Community: FC<IProps> = ({ module }) => {
   const params = useParams();
 
   const { data: communities, isLoading } = useQuery(
-    'community',
+    ['community', params?.id],
     () => getCommunity(params?.id),
     {
       enabled: params?.id ? true : false,
@@ -107,6 +107,7 @@ const Community: FC<IProps> = ({ module }) => {
                         return (
                           <div key={index} className="whitespace-nowrap">
                             <Coummuntiycard
+                              id={item.id}
                               className="bg-white "
                               totalMembers={item.member_count}
                               totalDiscussions={14000}
