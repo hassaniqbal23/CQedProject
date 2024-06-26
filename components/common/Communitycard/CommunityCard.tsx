@@ -36,8 +36,8 @@ const Coummuntiycard: FC<IProps> = ({
   const { module } = useModule();
 
   return (
-    <div>
-      <Card className={`max-w-full mb-2 ${className}`}>
+    <div className="max-w-full">
+      <Card className={`mb-2 ${className}`}>
         <div className="flex items-center justify-between flex-col xl:flex-row ">
           <Link href={`/${module}/cq-communities/${id}`}>
             <div className="flex flex-row p-3">
@@ -46,35 +46,33 @@ const Coummuntiycard: FC<IProps> = ({
                   <AvatarImage src={imageSrc} alt="Profile Picture" />
                 </Avatar>
               </div>
-              <div className="flex ">
-                <div className="flex flex-col">
-                  <div>
-                    <Typography
-                      variant="h5"
-                      weight={'semibold'}
-                      className="whitespace-nowrap"
-                    >
-                      {title.length > 10 ? `${title.substr(0, 10)}...` : title}
-                    </Typography>
-                  </div>
-                  <div className="flex flex-row whitespace-nowrap items-center">
-                    <Users size={13} className="text-[#464650] mb-1 mr-1" />
-                    <CardDescription>{totalMembers} Members</CardDescription>
-                  </div>
-                  <div className="flex flex-row whitespace-nowrap items-center ">
-                    <MessageCircle size={13} className="text-[#464650] mr-1" />
-                    <CardDescription>
-                      {totalDiscussions}+ Discussions
-                    </CardDescription>
-                  </div>
+              <div className="flex flex-col">
+                <div>
+                  <Typography
+                    variant="h5"
+                    weight={'semibold'}
+                    className="whitespace-nowrap"
+                  >
+                    {title.length > 10 ? `${title.substr(0, 10)}...` : title}
+                  </Typography>
+                </div>
+                <div className="flex flex-row whitespace-nowrap items-center">
+                  <Users size={13} className="text-[#464650] mb-1 mr-1" />
+                  <CardDescription>{totalMembers} Members</CardDescription>
+                </div>
+                <div className="flex flex-row whitespace-nowrap items-center justify-center">
+                  <MessageCircle size={13} className="text-[#464650] mr-1" />
+                  <CardDescription>
+                    {totalDiscussions}+ Discussions
+                  </CardDescription>
                 </div>
               </div>
             </div>
           </Link>
-          <div className="flex mr-5">
+          <div className="flex mr-3 mb-2">
             <Button
               {...buttonProps}
-              className=" h-[30px] max-w-[222px] p-4  rounded-full "
+              className="mt-2 xl:mt-0 xl:ml-5 h-[30px] max-w-[222px] p-4 rounded-full"
             ></Button>
           </div>
         </div>
