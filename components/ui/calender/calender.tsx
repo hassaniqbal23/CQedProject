@@ -66,11 +66,13 @@ function Calendar({
           const { goToMonth, currentMonth } = useNavigation();
 
           if (props.name === 'months') {
-            const selectItems: { value: number | string; label: string }[] =
-              Array.from({ length: 12 }, (_, index) => ({
+            const selectItems: { value: string; label: string }[] = Array.from(
+              { length: 12 },
+              (_, index) => ({
                 value: index.toString(),
                 label: format(setMonth(new Date(), index), 'MMM'),
-              }));
+              })
+            );
             return (
               <SelectInput
                 options={[...selectItems]}
