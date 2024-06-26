@@ -120,7 +120,7 @@ export {
 };
 
 interface ISelect {
-  options: { label: string; value: string | number }[];
+  options: { label: string; value: string }[];
   onSelect?: (value: string) => void;
   placeholder?: string | 'Please select';
   SelectTriggerClass?: string;
