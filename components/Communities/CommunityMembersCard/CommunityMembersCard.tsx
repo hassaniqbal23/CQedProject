@@ -1,19 +1,20 @@
 import React from 'react';
 import { Typography } from '@/components/common/Typography/Typography';
-import { Card, Separator, Skeleton } from '@/components/ui';
+import {
+  Card,
+  Separator,
+  Skeleton,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { IMembers } from '@/types/tearcher';
 
-interface IMembers {
-  User: {
-    attachment: {
-      file_path: string;
-      id: number;
-    };
-  };
-}
 interface CommunityMembersCardProps {
   members: IMembers[];
   totalMembers: number;
@@ -57,17 +58,28 @@ export const CommunityMembersCard = ({
           ? Array.from({ length: 20 }).map((_, index) => (
               <Skeleton key={index} className="h-14 w-14 rounded-full" />
             ))
-          : members?.slice(0, 20).map((image: IMembers, index: number) => (
-              <Avatar className="h-14 w-14" key={index}>
-                <AvatarImage
-                  height={56}
-                  width={56}
-                  src={image?.User?.attachment?.file_path}
-                  alt={`Member ${index + 1}`}
-                  className="w-14 h-14 rounded-full"
-                />
-              </Avatar>
-            ))}
+          : members?.slice(0, 20).map((image: IMembers, index: number) => {
+              return (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Avatar className="h-14 w-14 " key={index}>
+                        <AvatarImage
+                          height={56}
+                          width={56}
+                          src={image?.User?.attachment?.file_path}
+                          alt={`Member ${index + 1}`}
+                          className="w-full h-full rounded-full object-cover"
+                        />
+                      </Avatar>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{image?.User?.name}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              );
+            })}
       </div>
       {totalMembers > 20 && !loading && (
         <Link
