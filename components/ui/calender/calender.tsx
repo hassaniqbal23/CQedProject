@@ -2,10 +2,12 @@
 
 import * as React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { DayPicker } from 'react-day-picker';
+import { DayPicker, useDayPicker, useNavigation } from 'react-day-picker';
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button/button';
+import { format, setMonth } from 'date-fns';
+import { SelectInput } from '../select/select';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -51,11 +53,73 @@ function Calendar({
         day_range_middle:
           'aria-selected:bg-accent aria-selected:text-accent-foreground',
         day_hidden: 'invisible',
+        caption_dropdowns: 'flex gap-1',
         ...classNames,
       }}
       components={{
         IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
         IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
+        Dropdown(props) {
+          const { fromDate, fromMonth, fromYear, toDate, toMonth, toYear } =
+            useDayPicker();
+
+          const { goToMonth, currentMonth } = useNavigation();
+
+          if (props.name === 'months') {
+            const selectItems: { value: number | string; label: string }[] =
+              Array.from({ length: 12 }, (_, index) => ({
+                value: index.toString(),
+                label: format(setMonth(new Date(), index), 'MMM'),
+              }));
+            return (
+              <SelectInput
+                options={[...selectItems]}
+                value={props.value?.toString()}
+                placeholder={format(currentMonth, 'MMM')}
+                SelectTriggerClass="p-2"
+                onSelect={(value) => {
+                  const newDate = new Date(currentMonth);
+                  newDate.setMonth(parseInt(value));
+                  goToMonth(newDate);
+                }}
+              ></SelectInput>
+            );
+          } else {
+            const earliestYear =
+              fromYear || fromMonth?.getFullYear() || fromDate?.getFullYear();
+
+            const latestYear =
+              toYear || toMonth?.getFullYear() || toDate?.getFullYear();
+
+            let selectItem: { value: string; label: string }[] = [];
+
+            if (earliestYear && latestYear) {
+              selectItem = Array.from(
+                { length: latestYear - earliestYear + 1 },
+                (_, index) => ({
+                  value: `${earliestYear + index}`,
+                  label: `${earliestYear + index}`,
+                })
+              );
+            }
+
+            return (
+              <SelectInput
+                options={selectItem}
+                value={props.value?.toString()}
+                placeholder={currentMonth.getFullYear().toString()}
+                SelectTriggerClass="p-2"
+                onSelect={(value) => {
+                  const newDate = new Date(currentMonth);
+                  newDate.setFullYear(parseInt(value));
+                  goToMonth(newDate);
+                }}
+              />
+            );
+          }
+
+          return null;
+        },
       }}
       {...props}
     />

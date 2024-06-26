@@ -1,7 +1,6 @@
 import React, { useState, useEffect, FC } from 'react';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
-
 import { cn } from '../../../lib/utils';
 import { Button } from '@/components/ui/button/button';
 import { Calendar } from '@/components/ui/calender/calender';
@@ -37,6 +36,9 @@ const DatePickerDemo: React.FC<IProps> = ({
     }
   );
 
+  const [showYearDropdown, setShowYearDropdown] = useState(false);
+  const currentYear = date ? date.getFullYear() : new Date().getFullYear();
+
   useEffect(() => {
     if (defaultValue && mode !== 'range') {
       setDate(defaultValue as Date);
@@ -44,6 +46,7 @@ const DatePickerDemo: React.FC<IProps> = ({
       setDate(undefined);
     }
   }, [defaultValue]);
+
   const handleDateChange = (selectedDate: Date | undefined) => {
     setDate(selectedDate);
     selectDate?.(selectedDate);
@@ -54,6 +57,18 @@ const DatePickerDemo: React.FC<IProps> = ({
     selectDate?.(selectedRange);
   };
 
+  const handleYearDropdown = () => {
+    setShowYearDropdown(!showYearDropdown);
+  };
+
+  const selectYear = (year: number) => {
+    const newDate = new Date(
+      date ? date.setFullYear(year) : new Date().setFullYear(year)
+    );
+    setDate(newDate);
+    setShowYearDropdown(false);
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -62,6 +77,7 @@ const DatePickerDemo: React.FC<IProps> = ({
             'w-full justify-start text-left font-normal bg-[#F8F9FB] text-black relative',
             !date && 'text-muted-foreground'
           )}
+          onClick={handleYearDropdown}
         >
           {iconPosition === 'left' && <CalendarIcon className="mr-2 h-4 w-4" />}
           {mode === 'range' ? (
@@ -102,6 +118,9 @@ const DatePickerDemo: React.FC<IProps> = ({
             selected={date}
             onSelect={handleDateChange}
             initialFocus
+            captionLayout="dropdown-buttons"
+            fromYear={1950}
+            toYear={new Date().getFullYear()}
           />
         )}
       </PopoverContent>
@@ -110,3 +129,90 @@ const DatePickerDemo: React.FC<IProps> = ({
 };
 
 export default DatePickerDemo;
+
+// 'use client';
+// import React, { useState, useEffect, FC } from 'react';
+// import { format } from 'date-fns';
+// import { Calendar as CalendarIcon } from 'lucide-react';
+
+// import { cn } from '../../../lib/utils';
+// import { Button } from '@/components/ui/button/button';
+// import { Calendar } from '@/components/ui/calender/calender';
+// import {
+//   Input,
+//   Popover,
+//   PopoverContent,
+//   PopoverTrigger,
+// } from '@/components/ui';
+// import { DateRange } from 'react-day-picker';
+
+// interface Props {
+//   initialDate?: Date;
+// }
+
+// function DatePickerDemo({ initialDate }: Props) {
+//   const [date, setDate] = useState<Date | undefined>(initialDate);
+//   const [stringDate, setStringDate] = useState(
+//     initialDate ? format(initialDate, 'PPP') : ''
+//   );
+//   const [errorMessage, setErrorMessage] = useState<string>('');
+
+//   return (
+//     <Popover key={date?.getDate()}>
+//       <div className="relative w-[280px]">
+//         <Input
+//           type="string"
+//           value={stringDate}
+//           onChange={(e) => {
+//             if (date) setStringDate('');
+//             setStringDate(e.target.value);
+//           }}
+//           onBlur={(e) => {
+//             let parsedDate = new Date(e.target.value);
+//             if (parsedDate.toString() === 'Invalid Date') {
+//               setErrorMessage('Invalid Date');
+//             } else {
+//               setErrorMessage('');
+//               setDate(parsedDate);
+//               setStringDate(format(parsedDate, 'PPP'));
+//             }
+//           }}
+//         />
+//         {errorMessage !== '' && (
+//           <div className="absolute bottom-[-1.75rem] left-0 text-red-400 text-sm">
+//             {errorMessage}
+//           </div>
+//         )}
+//         <PopoverTrigger asChild>
+//           <Button
+//             variant={'outline'}
+//             className={cn(
+//               'font-normal absolute right-0 translate-y-[-50%] top-[50%] rounded-l-none',
+//               !date && 'text-muted-foreground'
+//             )}
+//           >
+//             <CalendarIcon className="w-4 h-4" />
+//           </Button>
+//         </PopoverTrigger>
+//       </div>
+//       <PopoverContent align="end" className="w-auto p-0">
+//         <Calendar
+//           mode="single"
+//           captionLayout="dropdown-buttons"
+//           selected={date}
+//           defaultMonth={date}
+//           onSelect={(selectedDate) => {
+//             if (!selectedDate) return;
+//             setDate(selectedDate);
+//             setStringDate(format(selectedDate, 'PPP'));
+//             setErrorMessage('');
+//           }}
+//           fromYear={1960}
+//           toYear={2030}
+//         />
+//       </PopoverContent>
+//     </Popover>
+//   );
+// }
+
+// export default DatePickerDemo;
