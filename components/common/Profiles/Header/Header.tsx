@@ -59,13 +59,11 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   profileId,
   loggedInUser,
 }) => {
-  const pathname = usePathname();
   const router = useRouter();
   const { module } = useModule();
   const queryClient = useQueryClient();
   const { usersIBlocked, userInformation } = useGlobalState();
   const mutualFriend = getMutualFriendsText(mutualFriends);
-
   const { flag = '', country: countryName = '' } = getCountry(country);
   const { setSelectedConversationId } = useChatProvider();
   const [report, setReport] = useState(false);
@@ -140,7 +138,6 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
     !isReportingUser && setReport(false);
   };
 
-  console.log(profileId, buttonProps, 'profileId');
   return (
     <div className="flex items-center  flex-wrap justify-between w-full bg-primary-500 rounded-2xl text-white p-3 md:p-6 shadow-md text-left md:text-left">
       <div className="flex items-center">
@@ -205,6 +202,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   trigger={
                     <Button
                       onClick={() => {}}
+                      disabled={isUserBlocked(Number(profileId))}
                       icon={<IoChatbubbleOutline size={20} />}
                       iconPosition="left"
                       className={`rounded-full bg-[#ECEDF8] text-primary-500 h-10 text-base mr-2 hover: border border-white`}
@@ -226,7 +224,9 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                         type="button"
                         size={'sm'}
                       >
-                        Friends
+                        {isUserBlocked(Number(profileId))
+                          ? 'Blocked'
+                          : 'Friends'}
                       </Button>
                     </div>
                   }
@@ -274,7 +274,9 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   disabled={
                     Number(profileId) === userInformation?.id
                       ? false
-                      : buttonProps?.isFriend
+                      : buttonProps.buttonText == 'Pending'
+                        ? true
+                        : buttonProps?.isFriend
                   }
                 >
                   {buttonProps.buttonText}
