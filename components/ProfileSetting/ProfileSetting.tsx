@@ -25,6 +25,7 @@ import { Typography } from '../common/Typography/Typography';
 import { AddEducation } from '../common/teacherProfile/AddEducation/AddEducation';
 import { AddWorkExperience } from '../common/teacherProfile/AddEducation/AddWorkExperience';
 import { userUpdateProfile } from '@/app/api/users';
+import SkillsInput from '../common/From/SkillsInput';
 
 const formSchema = z.object({
   full_name: z.string().min(2, {
@@ -39,6 +40,7 @@ const formSchema = z.object({
 
 const ProfileSettings = () => {
   const { userInformation, isUserGetInfo } = useGlobalState();
+
   const [skills, setSkills] = useState<{ label: string; value: string }[]>(
     userInformation?.profile?.skills.map((skill: string) => ({
       value: skill,
