@@ -33,5 +33,6 @@ export interface ICommunityAcceptInvite {
   communityId: number;
   status: string;
   requestId?: number;
+  communityUserId?: number;
   notification_id: number;
 }

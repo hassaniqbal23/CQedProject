@@ -89,6 +89,7 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
     if (payload?.notificationType === 'COMMUNITY_JOIN_REQUEST') {
       const submit = {
         userId: payload?.createdById,
+        communityUserId: payload.community_user_id,
         communityId: payload.community_id,
         status: status,
         notification_id: payload.id,
@@ -160,34 +161,34 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
                   </p>
                   {(notification.notificationType === 'PENPAL_REQUEST' ||
                     notification.notificationType ===
-                      'COMMUNITY_JOIN_REQUEST') && (
-                    <div className="flex items-center mt-2">
-                      {notification.type === 'PENDING' && (
-                        <Button
-                          onClick={() => handleClick(notification, 'ACCEPTED')}
-                          size={'sm'}
-                          className="bg-primary-500 text-white rounded-full px-6 py-2 mt-1 mr-4 "
-                        >
-                          {notification.notificationType === 'PENPAL_REQUEST'
-                            ? 'Accept'
-                            : 'Join'}
-                        </Button>
-                      )}
+                    'COMMUNITY_JOIN_REQUEST') && (
+                      <div className="flex items-center mt-2">
+                        {notification.type === 'PENDING' && (
+                          <Button
+                            onClick={() => handleClick(notification, 'ACCEPTED')}
+                            size={'sm'}
+                            className="bg-primary-500 text-white rounded-full px-6 py-2 mt-1 mr-4 "
+                          >
+                            {notification.notificationType === 'PENPAL_REQUEST'
+                              ? 'Accept'
+                              : 'Join'}
+                          </Button>
+                        )}
 
-                      <Button
-                        size={'sm'}
-                        disabled={notification.type !== 'PENDING'}
-                        onClick={() => handleClick(notification, 'REJECTED')}
-                        className="border border-solid border-primary-500 text-primary-500 px-8 py-2 rounded-full bg-transparent"
-                      >
-                        {notification.type === 'ACCEPTED'
-                          ? 'Accepted'
-                          : notification.type === 'REJECTED'
-                            ? 'Declined'
-                            : 'Decline'}
-                      </Button>
-                    </div>
-                  )}
+                        <Button
+                          size={'sm'}
+                          disabled={notification.type !== 'PENDING'}
+                          onClick={() => handleClick(notification, 'REJECTED')}
+                          className="border border-solid border-primary-500 text-primary-500 px-8 py-2 rounded-full bg-transparent"
+                        >
+                          {notification.type === 'ACCEPTED'
+                            ? 'Accepted'
+                            : notification.type === 'REJECTED'
+                              ? 'Declined'
+                              : 'Decline'}
+                        </Button>
+                      </div>
+                    )}
                 </div>
               )}
             />

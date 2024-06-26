@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import Image from 'next/image';
 import { Typography } from '@/components/common/Typography/Typography';
 import {
@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { useQuery, useQueryClient } from 'react-query';
 import { getCommunityJoined, getMyCommunity } from '@/app/api/communities';
 import { ICommunity, ICommunityJoined } from '@/types/community';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
 interface IProps {
   module?: 'students' | 'teachers';
@@ -21,6 +22,12 @@ interface IProps {
 export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
   const route = useRouter();
   const client = useQueryClient();
+  const { joinedCommunities } = useGlobalState()
+
+  console.log({ joinedCommunities }, 'joinedCommunities')
+  useEffect(() => {
+    client.refetchQueries('UserJoinedCommunities')
+  }, [joinedCommunities])
 
   const { data: communityJoined, isLoading: isFetchingCommunityJoined } =
     useQuery(['getCommunityJoined', 1, 10], () => getCommunityJoined(1, 10), {
