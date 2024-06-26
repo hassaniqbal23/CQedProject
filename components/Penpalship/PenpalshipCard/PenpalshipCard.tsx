@@ -9,8 +9,7 @@ import {
   getMutualFriendsText,
   truncateText,
 } from '@/app/utils/helpers';
-import { MessageCircle } from 'lucide-react';
-import { LucideUsers } from 'lucide-react';
+import { MessageCircle, LucideUsers, UserX } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal';
 import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
@@ -65,6 +64,8 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
       (blockedUser: any) => blockedUser.blockedUserId === userId
     );
   };
+  const isBlocked = isUserBlocked(Number(id));
+
   return (
     <Card className="flex flex-col h-full">
       <div className="flex flex-col flex-grow p-2 rounded-sm">
@@ -72,7 +73,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
           <Image
             src={imgPath || '/assets/profile/profile.svg'}
             alt=""
-            className="rounded-xl"
+            className="rounded-xl max-h-[52px]"
             width={70}
             height={70}
             unoptimized={true}
@@ -90,8 +91,8 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                 }}
                 trigger={
                   <button
-                    disabled={isUserBlocked(Number(id))}
-                    className="bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center"
+                    disabled={isBlocked}
+                    className={`bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center ${isBlocked && 'opacity-60'}`}
                   >
                     <MessageCircle />
                   </button>
@@ -101,7 +102,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                 trigger={
                   <div>
                     <button className="bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center">
-                      <LucideUsers />
+                      {isBlocked ? <UserX /> : <LucideUsers />}
                     </button>
                   </div>
                 }
