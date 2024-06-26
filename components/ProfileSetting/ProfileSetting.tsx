@@ -42,7 +42,7 @@ const ProfileSettings = () => {
   const { userInformation, isUserGetInfo } = useGlobalState();
 
   const [skills, setSkills] = useState<string[]>(
-    userInformation?.profile?.skills.map((skill: string) => (skill)) || []
+    userInformation?.profile?.skills.map((skill: string) => skill) || []
   );
   const queryClient = useQueryClient();
   const form = useForm<any>({
@@ -225,9 +225,13 @@ const ProfileSettings = () => {
           <Typography variant={'h6'} weight={'semibold'} className="mb-1">
             Skills
           </Typography>
-          <SkillsInput initialTags={skills} onTagsChange={handleValues} BadgeVariant="outline" />
+          <SkillsInput
+            initialTags={skills}
+            onTagsChange={handleValues}
+            BadgeVariant="outline"
+          />
         </div>
-        <div className='mt-6'>
+        <div className="mt-6">
           <Button
             loading={isUpdatingProfile}
             className="text-md my-4 rounded-md px-9 hover:bg-primary-600"

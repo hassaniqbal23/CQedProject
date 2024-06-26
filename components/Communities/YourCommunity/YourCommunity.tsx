@@ -22,12 +22,11 @@ interface IProps {
 export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
   const route = useRouter();
   const client = useQueryClient();
-  const { joinedCommunities } = useGlobalState()
+  const { joinedCommunities } = useGlobalState();
 
-  console.log({ joinedCommunities }, 'joinedCommunities')
-  useEffect(() => {
-    client.refetchQueries('UserJoinedCommunities')
-  }, [joinedCommunities])
+  // useEffect(() => {
+  //   client.refetchQueries('UserJoinedCommunities')
+  // }, [joinedCommunities])
 
   const { data: communityJoined, isLoading: isFetchingCommunityJoined } =
     useQuery(['getCommunityJoined', 1, 10], () => getCommunityJoined(1, 10), {

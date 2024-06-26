@@ -64,7 +64,7 @@ export const GqedNotifications = () => {
         if (payload.data) {
           client.refetchQueries('getNotifications');
           client.refetchQueries('MyPenPals');
-          client.refetchQueries('pending-communities')
+          client.refetchQueries('pending-communities');
           client.refetchQueries('UserJoinedCommunities');
           const { title, body, image } = payload.data;
           toast(
