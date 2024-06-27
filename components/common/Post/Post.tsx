@@ -195,7 +195,7 @@ export const Post: FC<IProps> = ({
               {showLikeButton && (
                 <div className="flex items-center mr-4" onClick={handleLike}>
                   <ThumbsUp
-                    className={`h-5 w-5 mr-1 cursor-pointer ${liked ? 'text-red-500 ' : ''}`}
+                    className={`h-5 w-5 mr-1 cursor-pointer ${liked ? 'text-red-500  ' : ''}`}
                   />
                   <span>{likeCount}</span>
                 </div>
