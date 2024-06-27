@@ -49,7 +49,7 @@ interface IProps {
   addFriendText?: string;
   handleShare?: (data: {
     content: string;
-    communityId?: number | string;
+    communityId?: number | string | null;
   }) => void;
   share?: string | number;
   showShareButton?: boolean;
