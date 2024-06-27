@@ -1,4 +1,3 @@
-// components/ProfileForm.tsx
 'use client';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -16,9 +15,6 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui';
-import { Separator } from '@/components/ui/separator/separator';
-import { Heading } from '../Heading';
-import { Avatar } from '@/components/ui/avatar/avatar';
 import { LoginCarousel } from '@/components/ui/carousel/carousel';
 import { useMutation, useQueryClient } from 'react-query';
 import { IAuthentication } from '@/app/api/types';
@@ -72,10 +68,15 @@ export function SignInUni(props: SignInProps) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      router.push(props.loginSuccessLink);
+    if (typeof window !== 'undefined') {
+      if (isAuthenticated) {
+        router.push(props.loginSuccessLink);
+      } else {
+        localStorage.clear();
+      }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, router]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -160,20 +161,6 @@ export function SignInUni(props: SignInProps) {
               Log in to access your GCEd dashboard
             </Typography>
           </div>
-          {/* <div className="flex items-center justify-center mb-2  ">
-            {icons.map((icon, index) => (
-              <div key={index} className="-ml-2  z-2 mb-5">
-                <Avatar className="h-6 w-6">
-                  <Image
-                    src={icon}
-                    alt={`Ellipse ${index + 1}`}
-                    width={100}
-                    height={100}
-                  />
-                </Avatar>
-              </div>
-            ))}
-          </div> */}
           <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 ">
               <FormField
@@ -225,11 +212,6 @@ export function SignInUni(props: SignInProps) {
               >
                 Login
               </Button>
-              {/*<div className="flex justify-center py-4 sm:py-6 md:py-10 items-center">*/}
-              {/*  <Separator className="text-slate-900 w-3/12 sm:w-4/12" />*/}
-              {/*  <p className="text-slate-500 m-1">or</p>*/}
-              {/*  <Separator className="text-slate-900 w-3/12 sm:w-4/12" />*/}
-              {/*</div>*/}
             </form>
           </Form>
         </div>
