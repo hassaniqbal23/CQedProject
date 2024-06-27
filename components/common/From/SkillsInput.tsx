@@ -18,13 +18,13 @@ const SkillsInput: FC<IProps> = ({
   BadgeVariant = 'destructive',
   className,
 }) => {
-  const [tags, setTags] = useState<string[]>([]);
+  const initialTagsRef = useRef(initialTags);
+  const [tags, setTags] = useState<string[]>(initialTagsRef.current);
 
   useEffect(() => {
-    if (initialTags) {
+    if (JSON.stringify(initialTags) !== JSON.stringify(initialTagsRef.current)) {
+      initialTagsRef.current = initialTags;
       setTags(initialTags);
-    } else {
-      setTags([]);
     }
   }, [initialTags]);
 
@@ -62,7 +62,7 @@ const SkillsInput: FC<IProps> = ({
         <Input
           type="text"
           onKeyDown={handleInputKeyDown}
-          className="grow px-3 py-3 rounded-md focus:outline-none focus:border-transparent mt-2"
+          className="grow px-3 py-6 rounded-md focus:outline-none focus:border-transparent mt-2"
           placeholder="Enter your skills"
           ref={inputRef}
         />

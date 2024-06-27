@@ -79,9 +79,11 @@ const Community: FC<IProps> = ({ module }) => {
           />
         </div>
       </div>
-      <div className="flex mt-6 gap-3 ">
-        <Feeds communityId={communities?.data?.id} />
-        <div className="w-[44%]">
+      <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-10 gap-4 lg:gap-6 mt-6 ">
+        <div className="w-full col-span-1 md:col-span-4 lg:col-span-7">
+          <Feeds communityId={communities?.data?.id} />
+        </div>
+        <div className="col-span-3">
           {suggestedCommunitiesLoading ? (
             <div>
               <SuggestedCommunitySkeleton />

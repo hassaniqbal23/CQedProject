@@ -137,14 +137,15 @@ export const Navbar: FC<IProps> = ({
       {isMobile && !isTabletMini ? (
         <SheetDemo
           side="left"
-          className="bg-primary-500 dark:bg-primary-700 h-full"
+          className="bg-primary-500 dark:bg-primary-700 h-full w-[300px] "
           trigger={
             <div className="ml-3">
-              <AlignJustify size={30} />
+              <AlignJustify size={30} className="cursor-pointer" />
             </div>
           }
         >
           <SidebarMobile
+            className="w-[300px] z-0"
             isVerticalIcon={isVerticalIcon}
             pathname={pathname}
             sidebarLinks={sidebarLinks}
