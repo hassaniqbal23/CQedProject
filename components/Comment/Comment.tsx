@@ -52,7 +52,7 @@ export const Comment: React.FC<CommentProps> = ({
   return (
     <div className="p-4  rounded-lg">
       <div className="flex items-start">
-        <Avatar className="w-14 h-14 ">
+        <Avatar className="w-9 h-9">
           <AvatarImage
             src={avatarUrl || '/assets/profile/profile.svg'}
             alt={`Profile Picture-${user}`}

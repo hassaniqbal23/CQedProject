@@ -362,19 +362,6 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                                       />
                                       {replyId === comment.id && openReply && (
                                         <div className="py-3 px-3">
-                                          <CommentInput
-                                            loading={replyLoading}
-                                            onValueChange={(value) => {
-                                              if (value) {
-                                                setReplyLoading(true);
-                                                communityPostCommentApi({
-                                                  id: item.id,
-                                                  content: value,
-                                                  parentCommentId: comment.id,
-                                                });
-                                              }
-                                            }}
-                                          />
                                           {comment?.replies?.length > 0 &&
                                             comment?.replies?.map(
                                               (
@@ -384,7 +371,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                                                 const liked =
                                                   reply?.likes?.find(
                                                     (i) =>
-                                                      i.userId ===
+                                                      i.User.id ===
                                                       userInformation?.id
                                                   )
                                                     ? true
@@ -423,6 +410,24 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                                                       hasUserLiked={liked}
                                                       likes={reply._count.likes}
                                                       showComment={false}
+                                                    />
+                                                    <CommentInput
+                                                      loading={replyLoading}
+                                                      onValueChange={(
+                                                        value
+                                                      ) => {
+                                                        if (value) {
+                                                          setReplyLoading(true);
+                                                          communityPostCommentApi(
+                                                            {
+                                                              id: item.id,
+                                                              content: value,
+                                                              parentCommentId:
+                                                                comment.id,
+                                                            }
+                                                          );
+                                                        }
+                                                      }}
                                                     />
                                                   </div>
                                                 );

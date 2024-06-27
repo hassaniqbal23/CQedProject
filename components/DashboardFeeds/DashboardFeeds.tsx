@@ -357,19 +357,6 @@ function DashboardFeeds() {
                                   />
                                   {replyId === comment.id && openReply && (
                                     <div className="py-3 px-3">
-                                      <CommentInput
-                                        loading={replyLoading}
-                                        onValueChange={(value) => {
-                                          if (value) {
-                                            setReplyLoading(true);
-                                            communityPostCommentApi({
-                                              id: item.id,
-                                              content: value,
-                                              parentCommentId: comment.id,
-                                            });
-                                          }
-                                        }}
-                                      />
                                       {comment?.replies?.length > 0 &&
                                         comment?.replies?.map(
                                           (
@@ -378,13 +365,14 @@ function DashboardFeeds() {
                                           ) => {
                                             const liked = reply?.likes?.find(
                                               (i) =>
-                                                i.userId === userInformation?.id
+                                                i.User.id ===
+                                                userInformation?.id
                                             )
                                               ? true
                                               : false;
                                             return (
                                               <div
-                                                className="mb-3 ml-5 px-3"
+                                                className="mb-3 ml-3 px-2"
                                                 key={index}
                                               >
                                                 <Comment
@@ -412,6 +400,20 @@ function DashboardFeeds() {
                                                   hasUserLiked={liked}
                                                   likes={reply._count.likes}
                                                   showComment={false}
+                                                />
+                                                <CommentInput
+                                                  loading={replyLoading}
+                                                  onValueChange={(value) => {
+                                                    if (value) {
+                                                      setReplyLoading(true);
+                                                      communityPostCommentApi({
+                                                        id: item.id,
+                                                        content: value,
+                                                        parentCommentId:
+                                                          comment.id,
+                                                      });
+                                                    }
+                                                  }}
                                                 />
                                               </div>
                                             );
