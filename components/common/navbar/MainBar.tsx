@@ -9,11 +9,9 @@ import {
   SheetDemo,
 } from '@/components/ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { IUserInformation } from '@/app/globalContext/types';
-import Sidebar from '../sidebar/sidebar';
 import { ISidebar } from '../sidebar/types';
 import SidebarMobile from '../sidebar/SidebarMobile/SidebarMobile';
 import { useResponsive } from '@/lib/hooks';
@@ -32,13 +30,25 @@ interface IHorizontalLinks {
   dropdownOption?: IDropDownOption[];
 }
 
-const HorizontalLinks = ({ icon: Icon, href }: { icon: any; href: string }) => (
-  <Link href={href} className="my-2 cursor-pointer">
-    <div className="flex gap-4 items-center p-2 bg-[#F0F0F0] rounded-full">
-      {Icon}
-    </div>
-  </Link>
-);
+const HorizontalLinks = ({ icon: Icon, href }: { icon: any; href: string }) => {
+  return (
+    <>
+      {href === 'notification' ? (
+        <div className="my-2 cursor-pointer">
+          <div className="flex gap-4 items-center p-2 bg-[#F0F0F0] rounded-full">
+            {Icon}
+          </div>
+        </div>
+      ) : (
+        <Link href={href} className="my-2 cursor-pointer">
+          <div className="flex gap-4 items-center p-2 bg-[#F0F0F0] rounded-full">
+            {Icon}
+          </div>
+        </Link>
+      )}
+    </>
+  );
+};
 
 const ProfileLink = ({
   userInformation,
