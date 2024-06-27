@@ -107,6 +107,7 @@ export const getCommunityPostComments = (id: number, postId: number) => {
 export const communityPostComment = (payload: {
   communityPostId: number;
   content: string;
+  parentCommentId?: number;
 }) => {
   return http.post(
     `/community-post-comment/create-community-post-comment`,
