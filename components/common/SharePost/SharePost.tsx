@@ -43,7 +43,7 @@ function SharePost({
 }: ISharePost) {
   const { joinedCommunities } = useGlobalState();
   const [textAreaValue, setTextAreaValue] = useState('');
-  const [selectedCommunity, setSelectedCommunity] = useState<number | null>(
+  const [selectedCommunityId, setSelectedCommunityId] = useState<number | null>(
     null
   );
 
@@ -147,7 +147,7 @@ function SharePost({
             className="font-semibold"
             classNamePrefix={'select'}
             onChange={(value: any) => {
-              setSelectedCommunity(value.value);
+              setSelectedCommunityId(value.value);
             }}
           />
         </div>
@@ -158,7 +158,7 @@ function SharePost({
             if (onShare) {
               onShare({
                 content: textAreaValue,
-                communityId: selectedCommunity,
+                communityId: selectedCommunityId,
               });
               setIsVisible(false);
               setTextAreaValue('');
