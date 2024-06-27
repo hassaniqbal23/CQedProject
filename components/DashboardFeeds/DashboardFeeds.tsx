@@ -7,7 +7,7 @@ import {
 } from '@/app/api/communities';
 import { createPost, deletePost, getFeeds } from '@/app/api/feeds';
 import { useGlobalState } from '@/app/globalContext/globalContext';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Separator } from '../ui';
 import { Post } from '../common/Post/Post';
@@ -17,7 +17,6 @@ import { CommentInput } from '../Comment/CommentInput';
 import { Comment } from '../Comment/Comment';
 import { CreatePostModal } from '../common/CreatePostModal/CreatePostModal';
 import { IPenpal } from '@/app/globalContext/types';
-import { createPenpal } from '@/app/api/penpals';
 import FeedsSkeleton from '../common/FeedsSkeleton/FeedsSkeleton';
 import dynamic from 'next/dynamic';
 import { Typography } from '../common/Typography/Typography';
@@ -59,7 +58,6 @@ function DashboardFeeds() {
 
   const { mutate: createFeed, isLoading: createPostLoading } = useMutation(
     (data) => {
-      console.log(data);
       return createPost(data);
     },
     {
@@ -69,8 +67,14 @@ function DashboardFeeds() {
     }
   );
 
-  const { mutate: likePost } = useMutation('likePost', (postId: number) =>
-    likeCommunityPost(postId)
+  const { mutate: likePost } = useMutation(
+    'likePost',
+    (postId: number) => likeCommunityPost(postId),
+    {
+      onSuccess: (res) => {
+        refetch();
+      },
+    }
   );
 
   const { mutate: unLikePost } = useMutation(
@@ -78,6 +82,7 @@ function DashboardFeeds() {
     (id: number) => unlikeCommunityPost(id),
     {
       onSuccess() {
+        refetch();
         queryClient.refetchQueries('getNotifications');
       },
     }
