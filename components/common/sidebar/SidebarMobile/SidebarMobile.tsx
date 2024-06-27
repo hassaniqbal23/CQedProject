@@ -7,16 +7,18 @@ interface ISidebarMobileProps {
   sidebarLinks: ISidebar[];
   pathname: string;
   isVerticalIcon: boolean;
+  className?: string;
 }
 
 function SidebarMobile({
   sidebarLinks,
   pathname,
   isVerticalIcon,
+  className,
 }: ISidebarMobileProps) {
   return (
     <div
-      className={`fixed bottom-0 left-0 z-40 md:translate-x-0 h-screen flex flex-col bg-primary-500 `}
+      className={`fixed bottom-0 left-0  md:translate-x-0 h-screen flex flex-col bg-primary-500 ${className}  `}
     >
       <div className="flex items-center justify-center pt-7">
         <Image

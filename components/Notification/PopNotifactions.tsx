@@ -208,7 +208,7 @@ export const PopNotifactions: React.FC<PopNotification> = ({
                 className="text-center mt-36 text-gray-500"
                 weight={'bold'}
               >
-                No notifications yet
+                No Notifications Available
               </Typography>
             )}
           </div>
