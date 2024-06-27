@@ -157,11 +157,11 @@ export const AiMatch = () => {
   return (
     <>
       <div className="mt-4">
-        <Typography variant={'h3'} weight={'semibold'} className="mb-4">
+        <Typography variant={'h3'} weight={'semibold'} className="mb-2">
           Find a penpal
         </Typography>
         <Typography variant={'body'} weight={'regular'}>
-          Please fill in the below information to match you with the right Pal
+          Tell us about yourself to find your perfect penpal!
         </Typography>
       </div>
 
@@ -181,6 +181,7 @@ export const AiMatch = () => {
                       <SelectCountry
                         menuPosition={'fixed'}
                         {...field}
+                        label=""
                         placeholder="Select a country or leave it to chance"
                       />
                     </FormControl>
