@@ -40,7 +40,6 @@ const formSchema = z.object({
 const ProfileSettings = () => {
   const { userInformation, isUserGetInfo } = useGlobalState();
   const [skills, setSkills] = useState<string[]>([]);
-
   const queryClient = useQueryClient();
   const form = useForm<any>({
     resolver: zodResolver(formSchema),
@@ -108,7 +107,9 @@ const ProfileSettings = () => {
       );
       form.setValue('nick_name', userInformation.profile?.nick_name);
       form.setValue('bio', userInformation.profile?.bio);
-      setSkills(userInformation?.profile?.skills);
+      if (userInformation.profile?.skills) {
+        setSkills(userInformation.profile.skills);
+      }
     }
   }, [userInformation, form]);
 
