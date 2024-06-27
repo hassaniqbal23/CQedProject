@@ -14,6 +14,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { IMembers } from '@/types/tearcher';
+import { useResponsive } from '@/lib/hooks';
 
 interface CommunityMembersCardProps {
   members: IMembers[];
@@ -29,6 +30,7 @@ export const CommunityMembersCard = ({
   routeLink,
 }: CommunityMembersCardProps) => {
   const params = useParams();
+  const { isMobile, isTabletMini } = useResponsive();
   return (
     <Card className="p-10 min-h-[538px] h-[538px] w-full bg-white rounded-xl shadow-md space-y-4">
       <div className="flex items-rn mb-4">
@@ -53,31 +55,32 @@ export const CommunityMembersCard = ({
         )}
       </div>
       <Separator />
-      <div className="grid grid-cols-6 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-6 md:grid-cols-4 gap-y-3 ">
         {loading
           ? Array.from({ length: 20 }).map((_, index) => (
               <Skeleton key={index} className="h-14 w-14 rounded-full" />
             ))
           : members?.slice(0, 20).map((image: IMembers, index: number) => {
               return (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Avatar className="h-14 w-14 " key={index}>
-                        <AvatarImage
-                          height={56}
-                          width={56}
+                <div key={index}>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Image
+                          height={60}
+                          unoptimized={true}
+                          width={60}
                           src={image?.User?.attachment?.file_path}
                           alt={`Member ${index + 1}`}
-                          className="w-full h-full rounded-full object-cover"
+                          className={`${isTabletMini || isMobile ? 'h-10 w-10' : 'h-16 w-16'} rounded-full object-cover`}
                         />
-                      </Avatar>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{image?.User?.name}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{image?.User?.name}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
               );
             })}
       </div>
