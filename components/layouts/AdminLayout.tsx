@@ -74,11 +74,6 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
             isVerticalIcon={false}
             horizontalLinks={[
               {
-                href: '/admin/notifications',
-                type: 'icon',
-                icon: <Bell />,
-              },
-              {
                 href: '',
                 type: 'profile',
                 dropdownOption: [
@@ -87,11 +82,11 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
                   //   path: '/admin/profile',
                   //   icon: <Bell size={15} />,
                   // },
-                  // {
-                  //   title: 'settings',
-                  //   path: '/admin/settings',
-                  //   icon: <Settings size={15} />,
-                  // },
+                  {
+                    title: 'settings',
+                    path: '/admin/settings',
+                    icon: <Settings size={15} />,
+                  },
 
                   // {
                   //   title: 'Help ',

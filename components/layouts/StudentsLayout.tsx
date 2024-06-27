@@ -137,6 +137,7 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
               },
               {
                 type: 'icon',
+                href: 'notification',
                 icon: (
                   <>
                     <PopNotifactions
