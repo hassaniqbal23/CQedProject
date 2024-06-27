@@ -28,7 +28,7 @@ export const GqedNotifications = () => {
     if (isAuthenticated) {
       checkAndRequestFirebaseToken();
     }
-  }, [router]);
+  }, [router, isAuthenticated]);
 
   const checkAndRequestFirebaseToken = async () => {
     const storedToken = localStorage.getItem('firebaseToken');
