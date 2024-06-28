@@ -1,4 +1,3 @@
-// components/ProfileForm.tsx
 'use client';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -16,8 +15,6 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui';
-import { Separator } from '@/components/ui/separator/separator';
-import { Heading } from '../Heading';
 import { Avatar } from '@/components/ui/avatar/avatar';
 import { LoginCarousel } from '@/components/ui/carousel/carousel';
 import { useMutation, useQueryClient } from 'react-query';
@@ -74,10 +71,14 @@ export function SignIn(props: SignInProps) {
   const { module } = useModule();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      router.push(props.loginSuccessLink);
+    if (typeof window !== 'undefined') {
+      if (isAuthenticated) {
+        router.push(props.loginSuccessLink);
+      } else {
+        localStorage.clear();
+      }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, router]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

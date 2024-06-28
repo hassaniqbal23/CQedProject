@@ -1,13 +1,6 @@
 import React, { FC } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card/card';
+import { Avatar, AvatarImage } from '@/components/ui';
+import { Card, CardDescription } from '@/components/ui/card/card';
 import { Button, ButtonProps } from '@/components/ui';
 import { Users, MessageCircle } from 'lucide-react';
 import { Typography } from '../Typography/Typography';

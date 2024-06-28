@@ -5,19 +5,29 @@ import {
   likeCommunityPost,
   unlikeCommunityPost,
 } from '@/app/api/communities';
-import { createPost, deletePost, getFeeds } from '@/app/api/feeds';
+import {
+  commentLike,
+  commentUnlike,
+  createPost,
+  deletePost,
+  getFeeds,
+} from '@/app/api/feeds';
 import { useGlobalState } from '@/app/globalContext/globalContext';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Separator } from '../ui';
 import { Post } from '../common/Post/Post';
-import { IComment, ICommunityPost, ILike } from '@/types/global';
+import {
+  IComment,
+  ICommunityPost,
+  ILike,
+  IReplyComments,
+} from '@/types/global';
 import Loading from '../ui/button/loading';
 import { CommentInput } from '../Comment/CommentInput';
 import { Comment } from '../Comment/Comment';
 import { CreatePostModal } from '../common/CreatePostModal/CreatePostModal';
 import { IPenpal } from '@/app/globalContext/types';
-import { createPenpal } from '@/app/api/penpals';
 import FeedsSkeleton from '../common/FeedsSkeleton/FeedsSkeleton';
 import dynamic from 'next/dynamic';
 import { Typography } from '../common/Typography/Typography';
@@ -35,13 +45,18 @@ function DashboardFeeds() {
   const [commentSection, setCommentSection] = useState<{
     commentId: number | null;
     openCommentSection: boolean;
+    replyId?: number | null;
+    openReply?: boolean;
   }>({
     commentId: null,
     openCommentSection: false,
+    openReply: false,
+    replyId: null,
   });
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
+  const [replyLoading, setReplyLoading] = useState(false);
   const { sendRequest, isCreatingPenpal } = useSendPenpalRequest();
-  const { commentId, openCommentSection } = commentSection;
+  const { commentId, openCommentSection, openReply, replyId } = commentSection;
 
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
@@ -59,7 +74,6 @@ function DashboardFeeds() {
 
   const { mutate: createFeed, isLoading: createPostLoading } = useMutation(
     (data) => {
-      console.log(data);
       return createPost(data);
     },
     {
@@ -69,8 +83,14 @@ function DashboardFeeds() {
     }
   );
 
-  const { mutate: likePost } = useMutation('likePost', (postId: number) =>
-    likeCommunityPost(postId)
+  const { mutate: likePost } = useMutation(
+    'likePost',
+    (postId: number) => likeCommunityPost(postId),
+    {
+      onSuccess: (res) => {
+        refetch();
+      },
+    }
   );
 
   const { mutate: unLikePost } = useMutation(
@@ -78,6 +98,7 @@ function DashboardFeeds() {
     (id: number) => unlikeCommunityPost(id),
     {
       onSuccess() {
+        refetch();
         queryClient.refetchQueries('getNotifications');
       },
     }
@@ -86,19 +107,34 @@ function DashboardFeeds() {
   const { mutate: communityPostCommentApi, isLoading: isCreatingComments } =
     useMutation(
       'createCommunityPostComment',
-      (requestBody: { id: number; content: string }) =>
-        communityPostComment({
-          communityPostId: requestBody.id,
-          content: requestBody.content,
-        }),
+      (requestBody: {
+        id: number;
+        content: string;
+        parentCommentId?: number;
+      }) => {
+        if (requestBody.parentCommentId) {
+          return communityPostComment({
+            communityPostId: requestBody.id,
+            content: requestBody.content,
+            parentCommentId: requestBody.parentCommentId,
+          });
+        } else {
+          return communityPostComment({
+            communityPostId: requestBody.id,
+            content: requestBody.content,
+          });
+        }
+      },
       {
         onSuccess(res: any) {
           refetch();
           queryClient.refetchQueries('getNotifications');
           setCommentSection({
+            ...commentSection,
             commentId: res?.data?.data?.communityPostId,
             openCommentSection: true,
           });
+          setReplyLoading(false);
         },
       }
     );
@@ -108,6 +144,21 @@ function DashboardFeeds() {
       refetch();
     },
   });
+
+  const { mutate: likeComment } = useMutation((id: number) => commentLike(id), {
+    onSuccess() {
+      queryClient.refetchQueries('getNotifications');
+    },
+  });
+
+  const { mutate: unLikeComment } = useMutation(
+    (id: number) => commentUnlike(id),
+    {
+      onSuccess() {
+        queryClient.refetchQueries('getNotifications');
+      },
+    }
+  );
 
   const loadMorePosts = useCallback(() => {
     if (isFetchingNextPage || data?.data.data.length === data?.data.totalCount)
@@ -253,7 +304,7 @@ function DashboardFeeds() {
                     {commentId === item.id && openCommentSection ? (
                       <div className="py-3 px-3">
                         <CommentInput
-                          loading={isCreatingComments}
+                          loading={!replyLoading && isCreatingComments}
                           onValueChange={(value) => {
                             if (value) {
                               communityPostCommentApi({
@@ -276,6 +327,11 @@ function DashboardFeeds() {
                         {item &&
                           item?.comments?.map(
                             (comment: IComment, index: number) => {
+                              const liked = comment?.likes?.find(
+                                (i) => i.userId === userInformation?.id
+                              )
+                                ? true
+                                : false;
                               return (
                                 <div className="mb-3 ml-5 px-3" key={index}>
                                   <Comment
@@ -286,7 +342,85 @@ function DashboardFeeds() {
                                     text={comment?.content}
                                     user={comment?.User?.name || ''}
                                     created_at={comment?.created_at}
+                                    handleComment={() => {
+                                      setCommentSection({
+                                        ...commentSection,
+                                        replyId: comment.id,
+                                        openReply: !openReply,
+                                      });
+                                    }}
+                                    onLike={() => likeComment(comment.id)}
+                                    onUnlike={() => unLikeComment(comment.id)}
+                                    hasUserLiked={liked}
+                                    likes={comment._count.likes}
+                                    replies={comment._count.replies}
                                   />
+                                  {replyId === comment.id && openReply && (
+                                    <div className="py-3 px-3">
+                                      {comment?.replies?.length > 0 &&
+                                        comment?.replies?.map(
+                                          (
+                                            reply: IReplyComments,
+                                            index: number
+                                          ) => {
+                                            const liked = reply?.likes?.find(
+                                              (i) =>
+                                                i.User.id ===
+                                                userInformation?.id
+                                            )
+                                              ? true
+                                              : false;
+                                            return (
+                                              <div
+                                                className="mb-3 ml-3 px-2"
+                                                key={index}
+                                              >
+                                                <Comment
+                                                  avatarUrl={
+                                                    reply.User?.attachment
+                                                      ?.file_path ||
+                                                    '/assets/profile/teacherprofile.svg'
+                                                  }
+                                                  text={reply?.content}
+                                                  user={reply?.User?.name || ''}
+                                                  created_at={reply?.created_at}
+                                                  handleComment={() => {
+                                                    setCommentSection({
+                                                      ...commentSection,
+                                                      replyId: comment.id,
+                                                      openReply: true,
+                                                    });
+                                                  }}
+                                                  onLike={() =>
+                                                    likeComment(reply.id)
+                                                  }
+                                                  onUnlike={() =>
+                                                    unLikeComment(reply.id)
+                                                  }
+                                                  hasUserLiked={liked}
+                                                  likes={reply._count.likes}
+                                                  showComment={false}
+                                                />
+                                                <CommentInput
+                                                  loading={replyLoading}
+                                                  onValueChange={(value) => {
+                                                    if (value) {
+                                                      setReplyLoading(true);
+                                                      communityPostCommentApi({
+                                                        id: item.id,
+                                                        content: value,
+                                                        parentCommentId:
+                                                          comment.id,
+                                                      });
+                                                    }
+                                                  }}
+                                                />
+                                              </div>
+                                            );
+                                          }
+                                        )}
+                                    </div>
+                                  )}
                                 </div>
                               );
                             }

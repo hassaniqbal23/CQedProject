@@ -10,7 +10,7 @@ const getFlag = (code: string) => {
     .default.src;
 };
 
-export interface SelectCountryProps extends SelectV2Props {}
+export interface SelectCountryProps extends SelectV2Props { }
 const SelectCountry = (props: SelectCountryProps) => {
   const [searchValue, setSearchValue] = useState('');
 

@@ -36,6 +36,23 @@ export interface IUser {
   last_active: string;
 }
 
+export interface IReplyComments {
+  id: number;
+  communityPostId: number;
+  userId: number;
+  content: string;
+  status: number;
+  created_at: string;
+  updated_at: string;
+  User: {
+    id?: number;
+    name?: string;
+    attachment: IAttachments;
+  };
+  likes: ILike[];
+  _count: ICount;
+}
+
 export interface IComment {
   id: number;
   communityPostId: number;
@@ -49,6 +66,9 @@ export interface IComment {
     name?: string;
     attachment: IAttachments;
   };
+  replies: IReplyComments[]
+  likes: ILike[];
+  _count: ICount;
 }
 
 export interface ILike {
@@ -64,6 +84,7 @@ export interface ILike {
 export interface ICount {
   comments: number;
   likes: number;
+  replies?: number
 }
 
 interface ISharedCommunityPost {

@@ -31,11 +31,16 @@ const formSchema = z.object({
 export default function Login() {
   const router = useRouter();
   const { isAuthenticated } = useGlobalState();
+
   useEffect(() => {
-    if (isAuthenticated) {
-      router.push('/admin/dashboard');
+    if (typeof window !== 'undefined') {
+      if (isAuthenticated) {
+        router.push('/admin/dashboard');
+      } else {
+        localStorage.clear();
+      }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, router]);
 
   const form = useForm<IAuthentication>({
     resolver: zodResolver(formSchema),

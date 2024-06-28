@@ -10,7 +10,7 @@ import { ThumbsUp, Share2, Ellipsis, MessageCircle } from 'lucide-react';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import Link from 'next/link';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 import SharePost from '../SharePost/SharePost';
@@ -49,7 +49,7 @@ interface IProps {
   addFriendText?: string;
   handleShare?: (data: {
     content: string;
-    communityId?: number | string;
+    communityId?: number | string | null;
   }) => void;
   share?: string | number;
   showShareButton?: boolean;
@@ -92,22 +92,13 @@ export const Post: FC<IProps> = ({
   isSharedPost,
 }: IProps) => {
   const { module } = useModule();
-  const [liked, setLiked] = useState(false);
-  const [likeCount, setLikedCount] = useState(likes);
   const [showShareModel, setShowShareModel] = useState(false);
 
-  useEffect(() => {
-    if (hasUserLiked) setLiked(true);
-  }, [hasUserLiked]);
-
   const handleLike = () => {
-    setLiked(!liked);
-    if (liked) {
+    if (hasUserLiked) {
       onUnlike && onUnlike();
-      setLikedCount(likeCount - 1);
     } else {
       onLike && onLike();
-      setLikedCount(likeCount + 1);
     }
   };
 
@@ -195,9 +186,9 @@ export const Post: FC<IProps> = ({
               {showLikeButton && (
                 <div className="flex items-center mr-4" onClick={handleLike}>
                   <ThumbsUp
-                    className={`h-5 w-5 mr-1 cursor-pointer ${liked ? 'text-red-500 ' : ''}`}
+                    className={`h-5 w-5 mr-1 cursor-pointer ${hasUserLiked ? 'text-red-500 ' : ''}`}
                   />
-                  <span>{likeCount}</span>
+                  <span>{likes}</span>
                 </div>
               )}
               {showCommentButton && (
