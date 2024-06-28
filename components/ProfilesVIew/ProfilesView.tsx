@@ -5,7 +5,7 @@ import TeacherProfileView from '../common/Profiles/TeacherProfileView/TeacherPro
 import StudentDetailsPage from '@/components/StudentDetailsPage/StudentDetailsPage';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { getProfile } from '@/app/api/students';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { useParams, useRouter } from 'next/navigation';
 import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
@@ -15,6 +15,7 @@ import { ProfileHeader } from '@/components/common/Profiles';
 const ProfilesView = () => {
   const params = useParams();
   const currentProfileId = Number(params?.id);
+  const queryClient = useQueryClient();
   const { userInformation, myPenpals } = useGlobalState();
   const [isFriend, setIsFriend] = useState<boolean>(false);
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -39,15 +40,7 @@ const ProfilesView = () => {
     {
       enabled: currentProfileId ? true : false,
       onSuccess: (data) => {
-        let { isPenpal: myPenpal, penpal } = getPenpalInfo(currentProfileId);
-        let isPenpal =
-          data.data.data.penpalStatus === 'ACCEPTED' ||
-          penpal?.status === 'ACCEPTED'
-            ? true
-            : false;
-        setIsFriend(
-          userInformation?.id !== currentProfileId && isPenpal ? true : false
-        );
+        queryClient.refetchQueries('MyPenPals');
       },
     }
   );
@@ -72,10 +65,22 @@ const ProfilesView = () => {
   };
 
   useEffect(() => {
-    let { isPenpal, penpal } = getPenpalInfo(currentProfileId);
+    let { isPenpal: myPenpal, penpal } = getPenpalInfo(currentProfileId);
+
     penpal?.status === 'PENDING' || profileData?.penpalStatus === 'PENDING'
       ? setIsPending(true)
       : setIsPending(false);
+
+    let isPenpal =
+      data?.data?.data?.penpalStatus === 'ACCEPTED' ||
+      penpal?.status === 'ACCEPTED'
+        ? true
+        : false;
+    setIsFriend(
+      userInformation?.id !== currentProfileId && isPenpal && myPenpal
+        ? true
+        : false
+    );
   }, [profileData, currentProfileId, myPenpals]);
 
   const role = profileData?.role?.name;
