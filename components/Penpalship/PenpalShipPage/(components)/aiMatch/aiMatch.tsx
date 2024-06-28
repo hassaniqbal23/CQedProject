@@ -103,7 +103,7 @@ export const AiMatch = () => {
   const handleRemovePaypals = (id: number | string) => {
     const myPenpal = isUserPanpals(id);
     if (myPenpal) {
-      deleteRequest(Number(myPenpal.id));
+      deleteRequest({ id: Number(myPenpal.id) });
       setTimeout(() => {
         setShowUserProfile(false);
         form.reset();

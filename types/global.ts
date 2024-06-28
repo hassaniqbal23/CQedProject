@@ -104,6 +104,8 @@ export interface ICommunityPost {
 }
 
 export interface IPenpalSearchResult {
+  penpalStatus: string;
+  penpalId: string | number;
   email: string;
   id: number;
   mutualFriends: number;

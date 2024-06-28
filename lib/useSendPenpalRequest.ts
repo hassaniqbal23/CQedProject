@@ -17,17 +17,13 @@ const useSendPenpalRequest = () => {
     useMutation((payload: any) => createPenpal(payload), {
       onSuccess: (res, context: MutationContext | undefined) => {
         const { searchParams } = context || {};
-
         if (searchParams) {
-          queryClient.refetchQueries([
-            'penpalSearchData',
-            searchParams.memberId,
-            searchParams.userName,
-          ]);
+          queryClient.refetchQueries(['penpalSearchData', searchParams]);
         } else {
           queryClient.refetchQueries('penpalSuggestions');
           queryClient.refetchQueries('MyPenPals');
           queryClient.refetchQueries('getNotifications');
+          queryClient.refetchQueries('getProfile');
         }
       },
       onError: (error) => {
@@ -36,9 +32,14 @@ const useSendPenpalRequest = () => {
     });
 
   const { mutate: removePenpalRequest, isLoading: isDeletingPenpal } =
-    useMutation((id: number) => deletePenpal(id), {
-      onSuccess: () => {
+    useMutation((payload: any) => deletePenpal(Number(payload.user_id)), {
+      onSuccess: (res, context: MutationContext | undefined) => {
+        const { searchParams } = context || {};
+        if (searchParams) {
+          queryClient.refetchQueries(['penpalSearchData', searchParams]);
+        }
         queryClient.refetchQueries('MyPenPals');
+        queryClient.refetchQueries('getProfile');
       },
       onError: (error) => {
         console.log('Error deleting penpal', error);
@@ -49,8 +50,8 @@ const useSendPenpalRequest = () => {
     sendPenpalRequest(payload, options);
   };
 
-  const deleteRequest = (id: number, options = {}) => {
-    removePenpalRequest(id, options);
+  const deleteRequest = (payload: any, options = {}) => {
+    removePenpalRequest(payload, options);
   };
 
   return {

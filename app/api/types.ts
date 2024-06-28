@@ -76,4 +76,5 @@ export interface ProfilesDetailPageProps {
   handleClick?: () => void;
   isCreatingPenpal?: boolean;
   isDeletingPenpal?: boolean;
+  penpalStatus?: string;
 }

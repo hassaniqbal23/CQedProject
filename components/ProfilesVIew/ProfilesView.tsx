@@ -39,28 +39,35 @@ const ProfilesView = () => {
     {
       enabled: currentProfileId ? true : false,
       onSuccess: (data) => {
-        let { isPenpal } = getPenpalInfo(currentProfileId);
-        setIsFriend(userInformation?.id !== currentProfileId && isPenpal);
+        let { isPenpal: myPenpal, penpal } = getPenpalInfo(currentProfileId);
+        let isPenpal =
+          data.data.data.penpalStatus === 'ACCEPTED' ? true : false;
+        setIsFriend(
+          (userInformation?.id !== currentProfileId && isPenpal) || myPenpal
+        );
       },
     }
   );
   const profileData = data?.data?.data;
-
   const handleClick = () => {
     const { penpal } = getPenpalInfo(profileData?.id);
-
     userInformation?.id === currentProfileId
       ? router.push(`/${module}/account-settings`)
       : isFriend
-        ? penpal && deleteRequest(penpal?.id)
+        ? penpal &&
+          deleteRequest({
+            user_id: profileData?.penpalId
+              ? Number(profileData?.penpalId)
+              : penpal.id,
+          })
         : sendRequest({ receiverId: Number(profileData?.id) });
   };
 
   useEffect(() => {
-    let { isPenpal, penpal } = getPenpalInfo(currentProfileId);
-    setIsFriend && setIsFriend(isPenpal);
-    setIsPending && penpal?.status === 'PENDING' && setIsPending(true);
-  }, [myPenpals, currentProfileId]);
+    profileData?.penpalStatus === 'PENDING'
+      ? setIsPending(true)
+      : setIsPending(false);
+  }, [profileData, currentProfileId]);
 
   const role = profileData?.role?.name;
 
@@ -88,6 +95,7 @@ const ProfilesView = () => {
           isPending={isPending}
           isCreatingPenpal={isCreatingPenpal}
           isDeletingPenpal={isDeletingPenpal}
+          penpalStatus={profileData?.penpalStatus}
         />
       ) : role === 'teacher' ? (
         <TeacherProfileView
@@ -98,6 +106,7 @@ const ProfilesView = () => {
           isPending={isPending}
           isCreatingPenpal={isCreatingPenpal}
           isDeletingPenpal={isDeletingPenpal}
+          penpalStatus={profileData?.penpalStatus}
         />
       ) : null}
     </div>

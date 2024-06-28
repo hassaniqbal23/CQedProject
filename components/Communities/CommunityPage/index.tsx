@@ -110,7 +110,7 @@ const Community: FC<IProps> = ({ module }) => {
                               id={item.id}
                               className="bg-white "
                               totalMembers={item.member_count}
-                              totalDiscussions={14000}
+                              totalDiscussions={item?.commentCount}
                               title={item.name}
                               imageSrc={item?.profile_picture?.file_path}
                               buttonProps={{
