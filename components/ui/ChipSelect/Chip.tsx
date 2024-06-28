@@ -10,11 +10,11 @@ interface ChipProps<T> {
   children: React.ReactNode;
   rounded?: boolean;
   variant?:
-  | 'primary'
-  | 'secondary'
-  | 'outlined'
-  | 'secondary-outlined'
-  | 'link';
+    | 'primary'
+    | 'secondary'
+    | 'outlined'
+    | 'secondary-outlined'
+    | 'link';
   className?: string;
 }
 

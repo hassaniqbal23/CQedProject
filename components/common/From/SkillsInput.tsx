@@ -22,7 +22,9 @@ const SkillsInput: FC<IProps> = ({
   const [tags, setTags] = useState<string[]>(initialTagsRef.current);
 
   useEffect(() => {
-    if (JSON.stringify(initialTags) !== JSON.stringify(initialTagsRef.current)) {
+    if (
+      JSON.stringify(initialTags) !== JSON.stringify(initialTagsRef.current)
+    ) {
       initialTagsRef.current = initialTags;
       setTags(initialTags);
     }

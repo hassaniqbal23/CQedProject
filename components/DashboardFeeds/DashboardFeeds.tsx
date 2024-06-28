@@ -200,23 +200,23 @@ function DashboardFeeds() {
                   ? true
                   : false;
 
-                const isFriend = myPenpals.find(
-                  (i: IPenpal) =>
-                    i.receiverId === item?.User?.id ||
-                    i.senderId === item?.User?.id
-                )
+                const isFriend = myPenpals
+                  .filter((item) => item.status === 'ACCEPTED')
+                  .find(
+                    (i: IPenpal) =>
+                      i.receiverId === item?.User?.id ||
+                      i.senderId === item?.User?.id
+                  )
                   ? true
                   : false;
 
-                const pendingPenpals = myPenpals.filter((i) => {
-                  if (i.status === 'PENDING') {
-                    return i;
-                  }
-                });
-
-                const isPending = pendingPenpals.find(
-                  (i: IPenpal) => i?.receiverId === item?.User?.id
-                );
+                const isPending = myPenpals
+                  .filter((i) => {
+                    if (i.status === 'PENDING') {
+                      return i;
+                    }
+                  })
+                  .find((i: IPenpal) => i?.receiverId === item?.User?.id);
 
                 return (
                   <div
