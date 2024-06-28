@@ -24,6 +24,7 @@ export const TeacherProfileView: FC<ProfilesDetailPageProps> = ({
   isCreatingPenpal,
   isDeletingPenpal,
   buttonText,
+  penpalStatus,
 }) => {
   const bio = (profileData && profileData?.profile?.bio) || '';
 
@@ -125,6 +126,8 @@ export const TeacherProfileView: FC<ProfilesDetailPageProps> = ({
           isFriend: isPending ? false : isFriend,
         }}
         mutualFriends={profileData?.mutualFriends}
+        penpalStatus={penpalStatus}
+        penpalId={profileData?.penpalId}
       />
       <div>
         <TabsComponent

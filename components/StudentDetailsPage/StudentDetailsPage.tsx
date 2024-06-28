@@ -22,6 +22,7 @@ const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
   isPending,
   isCreatingPenpal,
   isDeletingPenpal,
+  penpalStatus,
 }) => {
   const params = useParams();
   const { userInformation } = useGlobalState();
@@ -128,6 +129,8 @@ const StudentDetailsPage: FC<ProfilesDetailPageProps> = ({
           }}
           profileIcon={studentProfile?.attachment?.file_path}
           mutualFriends={studentProfile?.mutualFriends}
+          penpalStatus={penpalStatus}
+          penpalId={studentProfile?.penpalId}
         />
         <div className="mt-4">
           <TabsComponent

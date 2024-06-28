@@ -54,10 +54,19 @@ const Coummuntiycard: FC<IProps> = ({
                   <CardDescription>{totalMembers} Members</CardDescription>
                 </div>
                 <div className="flex flex-row whitespace-nowrap items-center justify-center">
-                  <MessageCircle size={13} className="text-[#464650] mr-1" />
-                  <CardDescription>
-                    {totalDiscussions}+ Discussions
-                  </CardDescription>
+                  {totalDiscussions > 0 ? (
+                    <>
+                      <MessageCircle
+                        size={13}
+                        className="text-[#464650] mr-1"
+                      />
+                      <CardDescription>
+                        {totalDiscussions}+ Discussions
+                      </CardDescription>
+                    </>
+                  ) : (
+                    ''
+                  )}
                 </div>
               </div>
             </div>
