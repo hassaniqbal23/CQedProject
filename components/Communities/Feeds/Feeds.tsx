@@ -107,20 +107,18 @@ export const Feeds = ({ communityId }: FeedsProps) => {
       },
     }
   );
-  const { mutate: likeComment } = useMutation(
-    (id: number) => commentLike(id),
+  const { mutate: likeComment } = useMutation((id: number) => commentLike(id), {
+    onSuccess: () => {
+      refetch();
+    },
+  });
+  const { mutate: unLikeComment } = useMutation(
+    (id: number) => commentUnlike(id),
     {
       onSuccess: () => {
         refetch();
       },
     }
-  );
-  const { mutate: unLikeComment } = useMutation((id: number) =>
-    commentUnlike(id), {
-    onSuccess: () => {
-      refetch()
-    }
-  }
   );
 
   const { mutate: deleteFeeds } = useMutation((id: number) => deletePost(id), {
