@@ -55,7 +55,6 @@ function TeachersTable(props: TeachersTableProps) {
             label: 'Name',
             key: 'name',
             render: (data: ITeachers) => {
-              console.log(data, 'checmklmsdsd');
               return (
                 // <Link
                 //   className="hover:text-primary-500"

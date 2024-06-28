@@ -16,9 +16,10 @@ import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
 import { PenpalShipButtonRequest } from '../PenpalShipButtonRequest/PenpalShipButtonRequest';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 interface PenpalshipCardProps {
   title?: string;
-  searchParams?: string;
+  searchParams?: any;
   label?: string;
   imgPath: string;
   description?: string;
@@ -29,6 +30,8 @@ interface PenpalshipCardProps {
   showIcons?: boolean;
   id?: string | number;
   pendingReq?: boolean;
+  penpalStatus?: string;
+  penpalId?: number;
 }
 
 const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
@@ -41,10 +44,15 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   showRemoveButton = true,
   showIcons = false,
   id,
+  penpalStatus = '',
+  searchParams,
+  penpalId,
 }) => {
   const route = useRouter();
   const { setSelectedConversationId } = useChatProvider();
   const { usersIBlocked } = useGlobalState();
+  const { sendRequest, isCreatingPenpal, deleteRequest, isDeletingPenpal } =
+    useSendPenpalRequest();
 
   const { module } = useModule();
 
@@ -79,7 +87,12 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
             unoptimized={true}
           />
           {showRemoveButton && (
-            <PenpalShipButtonRequest user_id={id}></PenpalShipButtonRequest>
+            <PenpalShipButtonRequest
+              penpalStatus={penpalStatus}
+              searchParams={searchParams}
+              user_id={id}
+              penpalId={Number(penpalId)}
+            />
           )}
           {showIcons && (
             <div className="flex gap-2 text-primary-500">
@@ -109,9 +122,14 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                 options={[
                   {
                     content: (
-                      <PenpalShipButtonRequest
-                        user_id={id}
-                      ></PenpalShipButtonRequest>
+                      <div
+                        className="font-semibold text-red-500 bg-red-50 mx-auto"
+                        onClick={() =>
+                          deleteRequest({ user_id: Number(penpalId) })
+                        }
+                      >
+                        Unfriend
+                      </div>
                     ),
                   },
                 ]}
