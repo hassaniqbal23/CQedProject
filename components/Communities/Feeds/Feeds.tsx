@@ -66,11 +66,6 @@ export const Feeds = ({ communityId }: FeedsProps) => {
       keepPreviousData: true,
     }
   );
-
-  const { mutate: likePost } = useMutation('likePost', (postId: number) =>
-    likeCommunityPost(postId)
-  );
-
   const { mutate: communityPostCommentApi, isLoading: isCreatingComments } =
     useMutation(
       'createCommunityPostComment',
@@ -95,14 +90,37 @@ export const Feeds = ({ communityId }: FeedsProps) => {
       }
     );
 
-  const { mutate: unLikePost } = useMutation('likePost', (id: number) =>
-    unlikeCommunityPost(id)
+  const { mutate: likePost } = useMutation(
+    (postId: number) => likeCommunityPost(postId),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    }
   );
 
-  const { mutate: likeComment } = useMutation((id: number) => commentLike(id));
-
+  const { mutate: unLikePost } = useMutation(
+    (id: number) => unlikeCommunityPost(id),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    }
+  );
+  const { mutate: likeComment } = useMutation(
+    (id: number) => commentLike(id),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    }
+  );
   const { mutate: unLikeComment } = useMutation((id: number) =>
-    commentUnlike(id)
+    commentUnlike(id), {
+    onSuccess: () => {
+      refetch()
+    }
+  }
   );
 
   const { mutate: deleteFeeds } = useMutation((id: number) => deletePost(id), {
