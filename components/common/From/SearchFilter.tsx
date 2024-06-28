@@ -51,7 +51,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
   onFiltersChange,
 }) => {
   const router = useRouter();
-  const { module } = useModule()
+  const { module } = useModule();
   const { userInformation } = useGlobalState();
   const params = useSearchParams();
   const [inputValue, setInputValue] = React.useState<null | string>(null);

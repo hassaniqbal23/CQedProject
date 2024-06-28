@@ -66,7 +66,7 @@ export interface IComment {
     name?: string;
     attachment: IAttachments;
   };
-  replies: IReplyComments[]
+  replies: IReplyComments[];
   likes: ILike[];
   _count: ICount;
 }
@@ -84,7 +84,7 @@ export interface ILike {
 export interface ICount {
   comments: number;
   likes: number;
-  replies?: number
+  replies?: number;
 }
 
 interface ISharedCommunityPost {

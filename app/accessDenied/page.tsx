@@ -19,7 +19,7 @@ const AccessDenied = () => {
           <p className="mt-3 text-base leading-7 text-gray-600">
             Sorry, you don’t have permission to access this page.
           </p>
-          <Button className="mt-10" onClick={() => router.push('/')}>
+          <Button className="mt-10" onClick={() => router.back()}>
             Go Back
           </Button>
         </div>

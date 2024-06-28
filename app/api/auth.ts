@@ -10,6 +10,8 @@ import {
 export const LoginAPI = (payload: IAuthentication) =>
   http.post('/auth/login', payload);
 
+export const LoginOutUser = () => http.patch('/auth/logout');
+
 export const UpdateUserPassword = (payload: UpdatePasswordBody) =>
   http.patch('/password/update-password', payload);
 
