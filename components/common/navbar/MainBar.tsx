@@ -162,9 +162,7 @@ export const Navbar: FC<IProps> = ({
           />
         </SheetDemo>
       ) : (
-        <div className="ml-3">
-          <AlignJustify size={30} />
-        </div>
+        <div className="ml-3">{/* <AlignJustify size={30} /> */}</div>
       )}
       <div className="flex items-center justify-end">
         <div className="flex justify-around sm:justify-between gap-2 items-center py-2 pr-4">
