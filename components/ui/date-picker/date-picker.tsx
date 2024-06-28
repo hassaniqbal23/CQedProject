@@ -1,7 +1,6 @@
 import React, { useState, useEffect, FC } from 'react';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
-
 import { cn } from '../../../lib/utils';
 import { Button } from '@/components/ui/button/button';
 import { Calendar } from '@/components/ui/calender/calender';
@@ -12,12 +11,14 @@ interface IProps {
   mode?: string;
   selectDate?: (data: any) => void;
   defaultValue?: Date | DateRange | undefined;
+  iconPosition?: 'left' | 'right';
 }
 
 const DatePickerDemo: React.FC<IProps> = ({
   mode,
   defaultValue,
   selectDate,
+  iconPosition = 'right',
 }) => {
   const [date, setDate] = React.useState<Date | undefined>(() => {
     if (defaultValue && mode !== 'range') {
@@ -35,6 +36,9 @@ const DatePickerDemo: React.FC<IProps> = ({
     }
   );
 
+  const [showYearDropdown, setShowYearDropdown] = useState(false);
+  const currentYear = date ? date.getFullYear() : new Date().getFullYear();
+
   useEffect(() => {
     if (defaultValue && mode !== 'range') {
       setDate(defaultValue as Date);
@@ -42,6 +46,7 @@ const DatePickerDemo: React.FC<IProps> = ({
       setDate(undefined);
     }
   }, [defaultValue]);
+
   const handleDateChange = (selectedDate: Date | undefined) => {
     setDate(selectedDate);
     selectDate?.(selectedDate);
@@ -52,17 +57,29 @@ const DatePickerDemo: React.FC<IProps> = ({
     selectDate?.(selectedRange);
   };
 
+  const handleYearDropdown = () => {
+    setShowYearDropdown(!showYearDropdown);
+  };
+
+  const selectYear = (year: number) => {
+    const newDate = new Date(
+      date ? date.setFullYear(year) : new Date().setFullYear(year)
+    );
+    setDate(newDate);
+    setShowYearDropdown(false);
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={'outline'}
           className={cn(
-            'w-full justify-start text-left font-normal',
+            'w-full justify-start text-left font-normal bg-[#F8F9FB] text-black relative',
             !date && 'text-muted-foreground'
           )}
+          onClick={handleYearDropdown}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
+          {iconPosition === 'left' && <CalendarIcon className="mr-2 h-4 w-4" />}
           {mode === 'range' ? (
             <>
               {rangeDate?.from ? (
@@ -75,11 +92,14 @@ const DatePickerDemo: React.FC<IProps> = ({
                   format(rangeDate.from, 'LLL dd, y')
                 )
               ) : (
-                <span>Pick a date</span>
+                <span>Select</span>
               )}
             </>
           ) : (
-            <>{date ? format(date, 'PPP') : <span>Pick a date</span>}</>
+            <>{date ? format(date, 'PPP') : <span>Select</span>}</>
+          )}
+          {iconPosition === 'right' && (
+            <CalendarIcon className="ml-2 h-4 w-4 absolute right-6" />
           )}
         </Button>
       </PopoverTrigger>
@@ -98,6 +118,9 @@ const DatePickerDemo: React.FC<IProps> = ({
             selected={date}
             onSelect={handleDateChange}
             initialFocus
+            captionLayout="dropdown-buttons"
+            fromYear={1950}
+            toYear={new Date().getFullYear()}
           />
         )}
       </PopoverContent>

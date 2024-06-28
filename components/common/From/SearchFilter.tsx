@@ -13,6 +13,7 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { ICommunity } from '@/types/community';
 import { useRouter } from 'next/navigation';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 export interface SearchFilterProps {
   buttonText: string;
@@ -50,6 +51,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
   onFiltersChange,
 }) => {
   const router = useRouter();
+  const { module } = useModule();
   const { userInformation } = useGlobalState();
   const params = useSearchParams();
   const [inputValue, setInputValue] = React.useState<null | string>(null);

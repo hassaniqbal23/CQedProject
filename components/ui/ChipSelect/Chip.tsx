@@ -31,7 +31,7 @@ function Chip<T>({
     <div
       onClick={() => onClick && onClick(value)}
       className={cn(
-        `flex items-center justify-center text-nowrap rounded gap-2 p-2 font-medium text-lg text-center cursor-pointer border border-solid border-Stroke ${active && 'text-primary border border-solid border-primary font-medium'}`,
+        `flex items-center justify-center text-nowrap rounded gap-2 py-2 px-[32px] font-normal text-md text-center cursor-pointer border border-solid border-Stroke ${active && 'text-primary border border-solid border-primary font-medium'}`,
         rounded ? 'rounded-full' : '',
         variant === `secondary`
           ? `${active && 'text-secondary border border-solid border-secondary font-medium'}`

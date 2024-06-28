@@ -1,7 +1,5 @@
 importScripts(
   'https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js',
-);
-importScripts(
   'https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js',
 );
 
@@ -13,7 +11,7 @@ const firebaseConfig = {
   messagingSenderId: "115585502486",
   appId: "1:115585502486:web:b546f44540c34801045437",
   measurementId: "G-4VD6PPDJXM"
-}
+};
 
 firebase.initializeApp(firebaseConfig);
 

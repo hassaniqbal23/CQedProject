@@ -50,3 +50,14 @@ export interface ITeacherProfileResponse {
   message: string;
   status: boolean;
 }
+
+export interface IMembers {
+  User: {
+    attachment: {
+      file_path: string;
+      id: number;
+    };
+    name?: string;
+    id: number;
+  };
+}

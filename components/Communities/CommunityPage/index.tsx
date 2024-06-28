@@ -29,7 +29,7 @@ const Community: FC<IProps> = ({ module }) => {
   const params = useParams();
 
   const { data: communities, isLoading } = useQuery(
-    'community',
+    ['community', params?.id],
     () => getCommunity(params?.id),
     {
       enabled: params?.id ? true : false,
@@ -79,9 +79,11 @@ const Community: FC<IProps> = ({ module }) => {
           />
         </div>
       </div>
-      <div className="flex mt-6 gap-3 ">
-        <Feeds communityId={communities?.data?.id} />
-        <div className="w-[44%]">
+      <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-10 gap-4 lg:gap-6 mt-6 ">
+        <div className="w-full col-span-1 md:col-span-4 lg:col-span-7">
+          <Feeds communityId={communities?.data?.id} />
+        </div>
+        <div className="col-span-3">
           {suggestedCommunitiesLoading ? (
             <div>
               <SuggestedCommunitySkeleton />
@@ -107,9 +109,10 @@ const Community: FC<IProps> = ({ module }) => {
                         return (
                           <div key={index} className="whitespace-nowrap">
                             <Coummuntiycard
+                              id={item.id}
                               className="bg-white "
                               totalMembers={item.member_count}
-                              totalDiscussions={14000}
+                              totalDiscussions={item?.commentCount}
                               title={item.name}
                               imageSrc={item?.profile_picture?.file_path}
                               buttonProps={{

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import Image from 'next/image';
 import { Typography } from '@/components/common/Typography/Typography';
 import {
@@ -11,18 +11,29 @@ import {
 import { Plus } from 'lucide-react';
 import { CommunityCard } from '../CommunityCard2/CommunityCard2';
 import { useRouter } from 'next/navigation';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { getCommunityJoined, getMyCommunity } from '@/app/api/communities';
 import { ICommunity, ICommunityJoined } from '@/types/community';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
 interface IProps {
   module?: 'students' | 'teachers';
 }
 export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
   const route = useRouter();
+  const client = useQueryClient();
+  const { joinedCommunities } = useGlobalState();
+
+  // useEffect(() => {
+  //   client.refetchQueries('UserJoinedCommunities')
+  // }, [joinedCommunities])
 
   const { data: communityJoined, isLoading: isFetchingCommunityJoined } =
-    useQuery(['getCommunityJoined', 1, 10], () => getCommunityJoined(1, 10));
+    useQuery(['getCommunityJoined', 1, 10], () => getCommunityJoined(1, 10), {
+      onSuccess() {
+        client.refetchQueries('UserJoinedCommunities');
+      },
+    });
 
   const { data: mycommunity, isLoading: isFetchingMycommunity } = useQuery(
     ['getMyCommunity', 1, 10],

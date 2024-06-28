@@ -19,7 +19,10 @@ interface ISharePost {
   setIsVisible: (val: boolean) => void;
   title: string;
   defaultReceiverId?: string;
-  onShare?: (data: { content: string; communityId?: number | string }) => void;
+  onShare?: (data: {
+    content: string;
+    communityId?: number | string | null;
+  }) => void;
   post?: {
     userFullName: string;
     username: string;
@@ -40,6 +43,9 @@ function SharePost({
 }: ISharePost) {
   const { joinedCommunities } = useGlobalState();
   const [textAreaValue, setTextAreaValue] = useState('');
+  const [selectedCommunityId, setSelectedCommunityId] = useState<number | null>(
+    null
+  );
 
   return (
     <Modal
@@ -118,8 +124,8 @@ function SharePost({
           <SelectV2
             options={
               joinedCommunities?.map((community: any) => ({
-                label: community?.profile?.full_name,
-                image: community?.attachment?.file_path,
+                label: community?.name,
+                image: community?.profile_picture?.file_path,
                 value: community?.id,
               })) || []
             }
@@ -140,7 +146,9 @@ function SharePost({
             }}
             className="font-semibold"
             classNamePrefix={'select'}
-            onChange={(value: any) => {}}
+            onChange={(value: any) => {
+              setSelectedCommunityId(value.value);
+            }}
           />
         </div>
       </div>
@@ -150,6 +158,7 @@ function SharePost({
             if (onShare) {
               onShare({
                 content: textAreaValue,
+                communityId: selectedCommunityId,
               });
               setIsVisible(false);
               setTextAreaValue('');

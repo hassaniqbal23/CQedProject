@@ -1,10 +1,21 @@
+import React, { FC } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
-import React from 'react';
-import { Image } from '../../Image';
-import { ArrowUpRight } from 'lucide-react';
 import { Typography } from '../../Typography/Typography';
+import { ArrowUpRight } from 'lucide-react';
+import { Image } from '../../Image';
 
-export const UniversityLink = () => {
+interface WorkExperience {
+  companyName?: string;
+}
+
+interface CurrentlyWorkingProps {
+  data: {
+    workExperience?: WorkExperience[];
+  };
+}
+
+export const CurrentlyWorking: FC<CurrentlyWorkingProps> = ({ data }) => {
+  const currentlyWorking = data?.workExperience?.[0];
   return (
     <Card>
       <CardHeader>
@@ -27,7 +38,7 @@ export const UniversityLink = () => {
               weight={'semibold'}
               className="text-[#393939] ml-3 italic"
             >
-              Harvard University
+              {currentlyWorking?.companyName}
             </Typography>
             <ArrowUpRight color="black" className=" cursor-pointer" />
           </div>
@@ -37,4 +48,4 @@ export const UniversityLink = () => {
   );
 };
 
-UniversityLink.displayName = 'UniversityLink';
+CurrentlyWorking.displayName = 'CurrentlyWorking';

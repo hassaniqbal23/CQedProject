@@ -9,17 +9,17 @@ import {
   getMutualFriendsText,
   truncateText,
 } from '@/app/utils/helpers';
-import { MessageCircle } from 'lucide-react';
-import { LucideUsers } from 'lucide-react';
+import { MessageCircle, LucideUsers, UserX } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import CreateChatModal from '@/components/Chat/ChatContent/CreateChatModal/CreateChatModal';
 import { useChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
 import { PenpalShipButtonRequest } from '../PenpalShipButtonRequest/PenpalShipButtonRequest';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
-
+import { useGlobalState } from '@/app/globalContext/globalContext';
+import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 interface PenpalshipCardProps {
   title?: string;
-  searchParams?: string;
+  searchParams?: any;
   label?: string;
   imgPath: string;
   description?: string;
@@ -30,6 +30,8 @@ interface PenpalshipCardProps {
   showIcons?: boolean;
   id?: string | number;
   pendingReq?: boolean;
+  penpalStatus?: string;
+  penpalId?: number;
 }
 
 const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
@@ -42,9 +44,16 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   showRemoveButton = true,
   showIcons = false,
   id,
+  penpalStatus = '',
+  searchParams,
+  penpalId,
 }) => {
   const route = useRouter();
   const { setSelectedConversationId } = useChatProvider();
+  const { usersIBlocked } = useGlobalState();
+  const { sendRequest, isCreatingPenpal, deleteRequest, isDeletingPenpal } =
+    useSendPenpalRequest();
+
   const { module } = useModule();
 
   const mutualFriend = getMutualFriendsText(mutualFriends);
@@ -58,6 +67,13 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
     route.push(`/${module}/profile/${id}`);
   };
 
+  const isUserBlocked = (userId: number | string) => {
+    return usersIBlocked.some(
+      (blockedUser: any) => blockedUser.blockedUserId === userId
+    );
+  };
+  const isBlocked = isUserBlocked(Number(id));
+
   return (
     <Card className="flex flex-col h-full">
       <div className="flex flex-col flex-grow p-2 rounded-sm">
@@ -65,13 +81,18 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
           <Image
             src={imgPath || '/assets/profile/profile.svg'}
             alt=""
-            className="rounded-xl"
+            className="rounded-xl max-h-[52px]"
             width={70}
             height={70}
             unoptimized={true}
           />
           {showRemoveButton && (
-            <PenpalShipButtonRequest user_id={id}></PenpalShipButtonRequest>
+            <PenpalShipButtonRequest
+              penpalStatus={penpalStatus}
+              searchParams={searchParams}
+              user_id={id}
+              penpalId={Number(penpalId)}
+            />
           )}
           {showIcons && (
             <div className="flex gap-2 text-primary-500">
@@ -82,7 +103,10 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                   route.push(`/${module}/chats`);
                 }}
                 trigger={
-                  <button className="bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center">
+                  <button
+                    disabled={isBlocked}
+                    className={`bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center ${isBlocked && 'opacity-60'}`}
+                  >
                     <MessageCircle />
                   </button>
                 }
@@ -91,16 +115,21 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
                 trigger={
                   <div>
                     <button className="bg-[#ECEDF8] w-12 h-12 rounded-full flex items-center justify-center">
-                      <LucideUsers />
+                      {isBlocked ? <UserX /> : <LucideUsers />}
                     </button>
                   </div>
                 }
                 options={[
                   {
                     content: (
-                      <PenpalShipButtonRequest
-                        user_id={id}
-                      ></PenpalShipButtonRequest>
+                      <div
+                        className="font-semibold text-red-500 bg-red-50 mx-auto"
+                        onClick={() =>
+                          deleteRequest({ user_id: Number(penpalId) })
+                        }
+                      >
+                        Unfriend
+                      </div>
                     ),
                   },
                 ]}

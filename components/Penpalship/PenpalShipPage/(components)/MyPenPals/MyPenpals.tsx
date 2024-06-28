@@ -40,13 +40,15 @@ export const MyPenpals: React.FC = () => {
     const list = searchTerm
       ? searchPenpalsQuery.data?.data?.data || []
       : myPenpals || [];
-    return list.map((c: any) => ({
-      ...c,
-      user:
-        c.sender.id === userInformation.id
-          ? { ...c.receiver, profile: c.receiver.profile }
-          : { ...c.sender, profile: c.sender.profile },
-    }));
+    return list
+      .filter((c: any) => c.status !== 'PENDING')
+      .map((c: any) => ({
+        ...c,
+        user:
+          c.sender.id === userInformation.id
+            ? { ...c.receiver, profile: c.receiver.profile }
+            : { ...c.sender, profile: c.sender.profile },
+      }));
   }, [myPenpals, searchPenpalsQuery.data, searchTerm, userInformation.id]);
 
   const handleSearchTermChange = useCallback(
@@ -82,6 +84,7 @@ export const MyPenpals: React.FC = () => {
             studentAge={item?.user?.profile?.age}
             showRemoveButton={item?.status === 'PENDING' ? true : false}
             showIcons={item?.status === 'PENDING' ? false : true}
+            penpalId={item?.id}
           />
         ))}
       </div>

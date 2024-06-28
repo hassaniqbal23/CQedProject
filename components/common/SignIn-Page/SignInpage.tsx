@@ -1,4 +1,3 @@
-// components/ProfileForm.tsx
 'use client';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -16,8 +15,6 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui';
-import { Separator } from '@/components/ui/separator/separator';
-import { Heading } from '../Heading';
 import { Avatar } from '@/components/ui/avatar/avatar';
 import { LoginCarousel } from '@/components/ui/carousel/carousel';
 import { useMutation, useQueryClient } from 'react-query';
@@ -28,6 +25,8 @@ import { storeToken, storeUserId } from '@/app/utils/encryption';
 import { updateToken } from '@/app/utils/http';
 import { Typography } from '../Typography/Typography';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
+import { useEffect } from 'react';
+import { useGlobalState } from '@/app/globalContext/globalContext';
 
 interface ICarouselItems {
   title: string;
@@ -67,8 +66,19 @@ interface SignInProps {
 
 export function SignIn(props: SignInProps) {
   const router = useRouter();
+  const { isAuthenticated } = useGlobalState();
   const queryClient = useQueryClient();
   const { module } = useModule();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (isAuthenticated) {
+        router.push(props.loginSuccessLink);
+      } else {
+        localStorage.clear();
+      }
+    }
+  }, [isAuthenticated, router]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

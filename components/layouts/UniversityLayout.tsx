@@ -4,10 +4,9 @@ import Sidebar from '../common/sidebar/sidebar';
 import { usePathname } from 'next/navigation';
 import Navbar from '../common/navbar/MainBar';
 import { useRouter } from 'next/navigation';
-import { removeToken, removeUserId } from '@/app/utils/encryption';
 
 import { useResponsive } from '@/lib/hooks';
-import { Bell, LogOut } from 'lucide-react';
+import { Bell, LogOut, Settings } from 'lucide-react';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 interface IProps {
   children: ReactNode;
@@ -80,9 +79,9 @@ export const UniversityLayout: FC<IProps> = ({ children }) => {
             isVerticalIcon={false}
             horizontalLinks={[
               {
-                href: '/universities/notifications',
+                href: 'notification',
+                icon: <Bell size={24} className=" text-black" />,
                 type: 'icon',
-                icon: <Bell />,
               },
               {
                 href: '',
@@ -93,11 +92,11 @@ export const UniversityLayout: FC<IProps> = ({ children }) => {
                   //   path: '/university/profile',
                   //   icon: <Bell size={15} />,
                   // },
-                  // {
-                  //   title: 'Account',
-                  //   path: '/university/account',
-                  //   icon: <Settings size={15} />,
-                  // },
+                  {
+                    title: 'Account',
+                    path: '/universities/settings',
+                    icon: <Settings size={15} />,
+                  },
                   // {
                   //   title: 'Help ',
                   //   path: '/universities/help',

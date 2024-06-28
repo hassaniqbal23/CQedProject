@@ -8,7 +8,7 @@ import {
   ProfileHeader,
   ProfileSkills,
   ProfileWorkHistory,
-  UniversityLink,
+  // UniversityLink,
 } from '@/components/common/Profiles';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { TabsComponent } from '@/components/ui/tabs/tabs';
@@ -151,7 +151,7 @@ export const MyProfileTeacher: FC = () => {
         />
       </div>
       <div className="">
-        <UniversityLink />
+        {/* <UniversityLink /> */}
         <ProfileCertificates
           title="Certificates"
           certificates={[

@@ -1,19 +1,21 @@
 import React from 'react';
 import { Typography } from '@/components/common/Typography/Typography';
-import { Card, Separator, Skeleton } from '@/components/ui';
+import {
+  Card,
+  Separator,
+  Skeleton,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { IMembers } from '@/types/tearcher';
+import { useResponsive } from '@/lib/hooks';
 
-interface IMembers {
-  User: {
-    attachment: {
-      file_path: string;
-      id: number;
-    };
-  };
-}
 interface CommunityMembersCardProps {
   members: IMembers[];
   totalMembers: number;
@@ -28,8 +30,9 @@ export const CommunityMembersCard = ({
   routeLink,
 }: CommunityMembersCardProps) => {
   const params = useParams();
+  const { isMobile, isTabletMini } = useResponsive();
   return (
-    <Card className="p-10 min-h-[538px] h-[538px] w-full bg-white rounded-xl shadow-md space-y-4">
+    <Card className="px-5 py-10  min-h-[538px] h-[538px] w-full bg-white rounded-xl shadow-md space-y-4">
       <div className="flex items-rn mb-4">
         {loading ? (
           <Skeleton className="w-8 h-8 mr-2 rounded-full" />
@@ -52,22 +55,32 @@ export const CommunityMembersCard = ({
         )}
       </div>
       <Separator />
-      <div className="grid grid-cols-6 md:grid-cols-4 gap-4">
+      <div className="grid 2xl:grid-cols-5 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-5 sm:grid-cols-11 grid-cols-6 gap-y-3 gap-x-2">
         {loading
           ? Array.from({ length: 20 }).map((_, index) => (
-              <Skeleton key={index} className="h-14 w-14 rounded-full" />
-            ))
+            <Skeleton key={index} className="h-14 w-14 rounded-full" />
+          ))
           : members?.slice(0, 20).map((image: IMembers, index: number) => (
-              <Avatar className="h-14 w-14" key={index}>
-                <AvatarImage
-                  height={56}
-                  width={56}
-                  src={image?.User?.attachment?.file_path}
-                  alt={`Member ${index + 1}`}
-                  className="w-14 h-14 rounded-full"
-                />
-              </Avatar>
-            ))}
+            <div key={index}>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Image
+                      height={56}
+                      width={56}
+                      src={image?.User?.attachment?.file_path}
+                      alt={`Member ${index + 1}`}
+                      className={`${isTabletMini || isMobile ? 'h-10 w-10' : 'h-14 w-14'} rounded-full object-cover`}
+                      unoptimized={true}
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{image?.User?.name}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          ))}
       </div>
       {totalMembers > 20 && !loading && (
         <Link

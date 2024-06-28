@@ -22,3 +22,16 @@ export const getUserFeed = (
     `/community-post/view-feeds?id=${id}&page=${pageParam}&limit=${limit}`
   );
 };
+
+export const commentLike = (communityPostCommentId: number) => {
+  return http.post(
+    '/community-post-comment/create-community-post-comment-like',
+    { communityPostCommentId }
+  );
+};
+
+export const commentUnlike = (id: number) => {
+  return http.delete(
+    `/community-post-comment/${id}/delete-community-post-comment-like`
+  );
+};

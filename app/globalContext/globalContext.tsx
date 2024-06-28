@@ -1,9 +1,10 @@
 import { FC, createContext, useContext, useState } from 'react';
 import { IUserInformation, IPenpal, ICommunityJoin } from './types';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import {
   GetUserInformation,
   GetUserJoinedCommunities,
+  LoginOutUser,
   getNotifications,
 } from '../api/auth';
 import {
@@ -20,7 +21,6 @@ import { getBlockedUsers } from '../api/users';
 import { pendingCommunities } from '../api/communities';
 import { useRouter } from 'next/navigation';
 import { INotifications } from '@/types/auth';
-import { number } from 'echarts';
 
 type IGlobalState = {
   isUserGetInfo: boolean;
@@ -93,33 +93,44 @@ export const GlobalProvider: FC<any> = ({ children }) => {
 
   const userId = getUserIdLocalStorage();
 
-  const logout = () => {
-    const clonedUserInfo = JSON.parse(JSON.stringify(userInformation));
-    setUserInformation({} as IUserInformation);
-    setIsAuthenticated(false);
-    setJoinedCommunities([]);
-    setMyPenpals([]);
-    removeToken();
-    removeUserId();
-    removeFcmToken();
-    setUsersIBlocked([]);
-    setPendingCommunitiesList([]);
+  const { mutate: UserLogin, isLoading: isLogOutLoading } = useMutation(
+    () => LoginOutUser(),
+    {
+      onSuccess: (res) => {
+        const clonedUserInfo = JSON.parse(JSON.stringify(userInformation));
+        setUserInformation({} as IUserInformation);
+        setIsAuthenticated(false);
+        setJoinedCommunities([]);
+        setMyPenpals([]);
+        removeToken();
+        removeUserId();
+        removeFcmToken();
+        setUsersIBlocked([]);
+        setPendingCommunitiesList([]);
 
-    const roleName = clonedUserInfo?.role?.name;
+        const roleName = clonedUserInfo?.role?.name;
 
-    if (roleName === 'student') {
-      router.push('/students/sign-in');
-    } else if (roleName === 'university') {
-      router.push('/universities/sign-in');
-    } else if (roleName === 'school') {
-      router.push('/universities/sign-in');
-    } else if (roleName === 'teacher') {
-      router.push('/teachers/sign-in');
-    } else if (roleName === '*') {
-      router.push('/login');
+        if (roleName === 'student') {
+          router.push('/students/sign-in');
+        } else if (roleName === 'university') {
+          router.push('/universities/sign-in');
+        } else if (roleName === 'school') {
+          router.push('/universities/sign-in');
+        } else if (roleName === 'teacher') {
+          router.push('/teachers/sign-in');
+        } else if (roleName === '*') {
+          router.push('/login');
+        }
+      },
+      onError: (error: any) => {
+        console.log(error, 'Error =====> log');
+      },
     }
-  };
+  );
 
+  const logout = () => {
+    UserLogin();
+  };
   useQuery(
     ['userInformation', userId],
     () => GetUserInformation(userId as string),

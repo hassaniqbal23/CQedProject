@@ -11,13 +11,15 @@ export interface IRegisterFrom {
 }
 
 export interface IStudentInfo {
-  fullName: string;
-  nickname: string;
-  birthday: Date;
+  fullname: string;
+  nick_name: string;
+  dob: any;
   country: any;
   gender: string;
-  language: string;
+  languages: { label: string; value: string }[];
+  university?: string;
 }
+export interface ICreateStudent extends IStudentInfo {}
 
 export interface IAcceptInvitation {
   inviteToken: string;
@@ -68,6 +70,11 @@ export interface ProfilesDetailPageProps {
   isFriend?: boolean;
   isPending?: boolean;
   data?: any;
+  buttonText?: string;
   setIsFriend?: (isFriend: boolean) => void;
   setIsPending?: (isPending: boolean) => void;
+  handleClick?: () => void;
+  isCreatingPenpal?: boolean;
+  isDeletingPenpal?: boolean;
+  penpalStatus?: string;
 }

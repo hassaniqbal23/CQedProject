@@ -23,6 +23,14 @@ export const ProfileWorkHistory: React.FC<WorkHistoryProps> = ({
   jobs,
   title,
 }) => {
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
     <Card>
       <div className="ml-5 mt-3 ">
@@ -63,7 +71,8 @@ export const ProfileWorkHistory: React.FC<WorkHistoryProps> = ({
                         <p className="text-sm font-medium">{job.location}</p>
                         <p className="text-sm flex items-center ml-5">
                           <Calendar size={15} className="mr-2 font-medium" />
-                          {job.startDate} - {job.endDate}
+                          {formatDate(job.startDate)} -{' '}
+                          {formatDate(job?.endDate || 'Present')}
                         </p>
                       </div>
                     </div>

@@ -8,7 +8,7 @@ import {
   ProfileHeader,
   ProfileSkills,
   ProfileWorkHistory,
-  UniversityLink,
+  CurrentlyWorking,
 } from '@/components/common/Profiles';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { TabsComponent } from '@/components/ui/tabs/tabs';
@@ -18,10 +18,15 @@ import { ProfilesDetailPageProps } from '@/app/api/types';
 
 export const TeacherProfileView: FC<ProfilesDetailPageProps> = ({
   data: profileData,
+  isFriend,
+  isPending,
+  handleClick,
+  isCreatingPenpal,
+  isDeletingPenpal,
+  buttonText,
+  penpalStatus,
 }) => {
   const bio = (profileData && profileData?.profile?.bio) || '';
-
-  const interestsArray = profileData?.profile?.interests;
 
   const contactDetails = () => {
     const detailsData = profileData?.profile;
@@ -83,32 +88,12 @@ export const TeacherProfileView: FC<ProfilesDetailPageProps> = ({
           <div className="mb-3 mt-3">
             <ProfileSkills
               title="Skills"
-              skills={
-                interestsArray?.map((skill: string) => {
-                  return skill;
-                }) || []
-              }
+              skills={profileData?.profile?.skills || []}
             />
           </div>
           <div className="w-full space-y-4 col-span-2">
-            <UniversityLink />
-            <ProfileCertificates
-              title="Certificates"
-              certificates={[
-                {
-                  id: '1',
-                  name: 'Teaching Certificate',
-                  date: '02/04 2024',
-                  issueName: 'Certificate issuer',
-                },
-                {
-                  id: '2',
-                  name: 'Professional Development',
-                  date: '02/04 2024',
-                  issueName: 'Certificate issuer',
-                },
-              ]}
-            />
+            <CurrentlyWorking data={profileData} />
+            <ProfileCertificates title="Certificates" certificates={[]} />
           </div>
         </div>
       ) : (
@@ -122,24 +107,6 @@ export const TeacherProfileView: FC<ProfilesDetailPageProps> = ({
       value: 'Feeds',
       content: <TeacherProfileFeeds />,
     },
-    {
-      label: 'Photos',
-      value: 'Photos',
-      content: (
-        <div className="space-y-4 mt-4">
-          <Gallery
-            title="Gallery"
-            className="border-0 shadow-0"
-            images={[
-              '/assets/images/LoginPage.png',
-              '/assets/images/LoginPage.png',
-              '/assets/images/LoginPage.png',
-              '/assets/images/LoginPage.png',
-            ]}
-          />
-        </div>
-      ),
-    },
   ];
 
   return (
@@ -150,6 +117,17 @@ export const TeacherProfileView: FC<ProfilesDetailPageProps> = ({
         subrole={profileData?.school?.name}
         location={profileData?.profile?.state}
         profileIcon={profileData?.attachment?.file_path}
+        profileId={profileData?.id}
+        buttonProps={{
+          isVisbile: true,
+          isLoading: isCreatingPenpal || isDeletingPenpal,
+          onClick: handleClick,
+          buttonText,
+          isFriend: isPending ? false : isFriend,
+        }}
+        mutualFriends={profileData?.mutualFriends}
+        penpalStatus={penpalStatus}
+        penpalId={profileData?.penpalId}
       />
       <div>
         <TabsComponent

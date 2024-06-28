@@ -17,10 +17,17 @@ import Loading from '@/components/ui/button/loading';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { CommentInput } from '@/components/Comment/CommentInput';
 import { Separator } from '@/components/ui';
-import { IComment, ICommunityPost, ILike } from '@/types/global';
+import {
+  IComment,
+  ICommunityPost,
+  ILike,
+  IReplyComments,
+} from '@/types/global';
 import { IPenpal } from '@/app/globalContext/types';
 import FeedsSkeleton from '@/components/common/FeedsSkeleton/FeedsSkeleton';
 import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
+import { commentLike, commentUnlike, deletePost } from '@/app/api/feeds';
+import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 
 interface FeedsProps {
   communityId: string | number;
@@ -31,14 +38,21 @@ export const Feeds = ({ communityId }: FeedsProps) => {
   const [commentSection, setCommentSection] = useState<{
     commentId: number | null;
     openCommentSection: boolean;
+    replyId?: number | null;
+    openReply?: boolean;
   }>({
     commentId: null,
     openCommentSection: false,
+    openReply: false,
+    replyId: null,
   });
   const [limit, setLimit] = useState(10);
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
+  const [creatingPanpalId, setCreatingPanpalId] = useState<number | null>(null);
+  const { sendRequest, isCreatingPenpal } = useSendPenpalRequest();
+  const [replyLoading, setReplyLoading] = useState(false);
 
-  const { commentId, openCommentSection } = commentSection;
+  const { commentId, openCommentSection, openReply, replyId } = commentSection;
 
   const {
     data: communityPosts,
@@ -52,18 +66,18 @@ export const Feeds = ({ communityId }: FeedsProps) => {
       keepPreviousData: true,
     }
   );
-
-  const { mutate: likePost } = useMutation('likePost', (postId: number) =>
-    likeCommunityPost(postId)
-  );
-
   const { mutate: communityPostCommentApi, isLoading: isCreatingComments } =
     useMutation(
       'createCommunityPostComment',
-      (requestBody: { id: number; content: string }) =>
+      (requestBody: {
+        id: number;
+        content: string;
+        parentCommentId?: number;
+      }) =>
         communityPostComment({
           communityPostId: requestBody.id,
           content: requestBody.content,
+          parentCommentId: requestBody.parentCommentId,
         }),
       {
         onSuccess(res, variables, context) {
@@ -76,17 +90,65 @@ export const Feeds = ({ communityId }: FeedsProps) => {
       }
     );
 
-  const { mutate: unLikePost } = useMutation('likePost', (id: number) =>
-    unlikeCommunityPost(id)
+  const { mutate: likePost } = useMutation(
+    (postId: number) => likeCommunityPost(postId),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    }
   );
+
+  const { mutate: unLikePost } = useMutation(
+    (id: number) => unlikeCommunityPost(id),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    }
+  );
+  const { mutate: likeComment } = useMutation(
+    (id: number) => commentLike(id),
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    }
+  );
+  const { mutate: unLikeComment } = useMutation((id: number) =>
+    commentUnlike(id), {
+    onSuccess: () => {
+      refetch()
+    }
+  }
+  );
+
+  const { mutate: deleteFeeds } = useMutation((id: number) => deletePost(id), {
+    onSuccess() {
+      refetch();
+    },
+  });
 
   const { mutate: createPost, isLoading: isCreatingPost } = useMutation(
     ['createPost'],
-    (data: { content: string }) =>
-      createCommunityPost({
-        ...data,
-        communityId,
-      }),
+    (data: {
+      content: string;
+      attachment_id?: string | number;
+      communityId?: number | string;
+      pinned_post_id?: number;
+    }) => {
+      if (data.pinned_post_id) {
+        return createCommunityPost({
+          ...data,
+        });
+      } else {
+        return createCommunityPost({
+          ...data,
+          communityId,
+        });
+      }
+    },
+
     {
       onSuccess(data) {
         toast.success('Post created successfully', {
@@ -156,9 +218,30 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                       ? true
                       : false;
 
-                    const isFriend = myPenpals.find(
-                      (i: IPenpal) => i.id === item?.User?.id
+                    const isFriend = myPenpals
+                      .filter((i) => {
+                        if (i.status === 'ACCEPTED') {
+                          return i;
+                        }
+                      })
+                      .find(
+                        (i: IPenpal) =>
+                          i.receiverId === item?.User?.id ||
+                          i.senderId === item?.User?.id
+                      )
+                      ? true
+                      : false;
+
+                    const pendingPenpals = myPenpals.filter((i) => {
+                      if (i.status === 'PENDING') {
+                        return i;
+                      }
+                    });
+
+                    const isPending = pendingPenpals.find(
+                      (i: IPenpal) => i?.receiverId === item?.User?.id
                     );
+
                     return (
                       <div key={index}>
                         <Post
@@ -187,15 +270,62 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                               });
                             }
                           }}
-                          onUnlike={() => unLikePost(item.id)}
-                          onLike={() => likePost(item.id)}
+                          onUnlike={() => unLikePost(item?.id)}
+                          onLike={() => likePost(item?.id)}
                           isFriend={isFriend ? true : false}
+                          addFriendText={isPending ? 'Pending' : 'Add Friend'}
+                          onAddFriend={() => {
+                            setCreatingPanpalId(index);
+                            sendRequest({ receiverId: item?.User?.id });
+                          }}
+                          addFriendLoading={
+                            isCreatingPenpal && creatingPanpalId === index
+                          }
+                          isMyPost={item?.User?.id === userInformation?.id}
+                          onDeletePost={() => deleteFeeds(item?.id)}
+                          showShareButton={
+                            item?.User?.id !== userInformation?.id
+                          }
+                          handleShare={(data) => {
+                            let payload;
+                            if (item?.pinned_post) {
+                              payload = {
+                                content: data.content,
+                                pinned_post_id: item?.pinned_post?.id,
+                                commentId: data.communityId,
+                              };
+                            } else {
+                              payload = {
+                                content: data.content,
+                                pinned_post_id: item?.id,
+                                commentId: data.communityId,
+                              };
+                            }
+
+                            createPost(payload as any);
+                          }}
+                          sharePost={
+                            item?.pinned_post && {
+                              userId: item?.pinned_post?.User.id,
+                              description: item?.pinned_post?.content || '',
+                              attachment: item?.pinned_post?.community_post
+                                ?.file_path
+                                ? item?.pinned_post?.community_post?.file_path
+                                : '',
+                              userFullName: item?.pinned_post?.User.name || '',
+                              username: item?.pinned_post?.User.name || '',
+                              created_at: item?.pinned_post?.created_at || '',
+                              userImage:
+                                item?.pinned_post?.User?.attachment
+                                  ?.file_path || '',
+                            }
+                          }
                         />
                         <Separator className="w-12/12" />
                         {commentId === item.id && openCommentSection ? (
-                          <div className="py-3">
+                          <div className="py-3 px-3">
                             <CommentInput
-                              loading={isCreatingComments}
+                              loading={!replyLoading && isCreatingComments}
                               onValueChange={(value) => {
                                 if (value) {
                                   communityPostCommentApi({
@@ -218,8 +348,13 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                             {item &&
                               item?.comments?.map(
                                 (comment: IComment, index: number) => {
+                                  const liked = comment?.likes?.find(
+                                    (i) => i.userId === userInformation?.id
+                                  )
+                                    ? true
+                                    : false;
                                   return (
-                                    <div className="mb-3 ml-5 " key={index}>
+                                    <div className="mb-3 ml-5 px-3" key={index}>
                                       <Comment
                                         avatarUrl={
                                           comment.User?.attachment?.file_path ||
@@ -228,7 +363,96 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                                         text={comment?.content}
                                         user={comment?.User?.name || ''}
                                         created_at={comment?.created_at}
+                                        handleComment={() => {
+                                          setCommentSection({
+                                            ...commentSection,
+                                            replyId: comment.id,
+                                            openReply: !openReply,
+                                          });
+                                        }}
+                                        onLike={() => likeComment(comment.id)}
+                                        onUnlike={() =>
+                                          unLikeComment(comment.id)
+                                        }
+                                        hasUserLiked={liked}
+                                        likes={comment._count.likes}
+                                        replies={comment._count.replies}
                                       />
+                                      {replyId === comment.id && openReply && (
+                                        <div className="py-3 px-3">
+                                          {comment?.replies?.length > 0 &&
+                                            comment?.replies?.map(
+                                              (
+                                                reply: IReplyComments,
+                                                index: number
+                                              ) => {
+                                                const liked =
+                                                  reply?.likes?.find(
+                                                    (i) =>
+                                                      i.User.id ===
+                                                      userInformation?.id
+                                                  )
+                                                    ? true
+                                                    : false;
+                                                return (
+                                                  <div
+                                                    className="mb-3 ml-5 px-3"
+                                                    key={index}
+                                                  >
+                                                    <Comment
+                                                      avatarUrl={
+                                                        reply.User?.attachment
+                                                          ?.file_path ||
+                                                        '/assets/profile/teacherprofile.svg'
+                                                      }
+                                                      text={reply?.content}
+                                                      user={
+                                                        reply?.User?.name || ''
+                                                      }
+                                                      created_at={
+                                                        reply?.created_at
+                                                      }
+                                                      handleComment={() => {
+                                                        setCommentSection({
+                                                          ...commentSection,
+                                                          replyId: comment.id,
+                                                          openReply: true,
+                                                        });
+                                                      }}
+                                                      onLike={() =>
+                                                        likeComment(reply.id)
+                                                      }
+                                                      onUnlike={() =>
+                                                        unLikeComment(reply.id)
+                                                      }
+                                                      hasUserLiked={liked}
+                                                      likes={reply._count.likes}
+                                                      showComment={false}
+                                                    />
+                                                    <CommentInput
+                                                      loading={replyLoading}
+                                                      onValueChange={(
+                                                        value
+                                                      ) => {
+                                                        if (value) {
+                                                          setReplyLoading(true);
+                                                          communityPostCommentApi(
+                                                            {
+                                                              id: item.id,
+                                                              content: value,
+                                                              parentCommentId:
+                                                                comment.id,
+                                                            }
+                                                          );
+                                                        }
+                                                      }}
+                                                    />
+                                                  </div>
+                                                );
+                                              }
+                                            )}
+                                        </div>
+                                      )}
                                     </div>
                                   );
                                 }
@@ -260,7 +484,8 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                   No Post added in this community yet 😊
                 </Typography>
               )}
-              {communityPosts?.data.length !== 0 &&
+              {communityPosts?.data &&
+                communityPosts?.data.length !== 0 &&
                 communityPosts?.data.length === communityPosts?.totalCount && (
                   <Typography
                     variant="h5"

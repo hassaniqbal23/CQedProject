@@ -108,7 +108,7 @@ export const StudentFeeds = ({ userName }: IStudentsFeed) => {
                     showLikeButton={false}
                     showCommentButton={false}
                     userFullName={post.User.name}
-                    userImage={post.User.attachment.file_path}
+                    userImage={post?.User?.attachment?.file_path}
                     username={post.username}
                     isFriend={false}
                   />
@@ -123,7 +123,7 @@ export const StudentFeeds = ({ userName }: IStudentsFeed) => {
                 description={post.content}
                 likes={post.likes}
                 userFullName={post.User.name}
-                userImage={post.User.attachment.file_path}
+                userImage={post?.User?.attachment?.file_path}
                 username={post.username}
               />
             );

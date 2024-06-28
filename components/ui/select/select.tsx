@@ -126,6 +126,7 @@ interface ISelect {
   SelectTriggerClass?: string;
   defaultValue?: string;
   loading?: boolean;
+  value?: string;
 }
 
 const SelectInput: FC<ISelect> = ({
@@ -135,10 +136,11 @@ const SelectInput: FC<ISelect> = ({
   SelectTriggerClass,
   defaultValue,
   loading,
+  value,
 }) => {
   return (
-    <Select defaultValue={defaultValue} onValueChange={onSelect}>
-      <SelectTrigger className={`${SelectTriggerClass} p-7 bg-[#F8F9FB]`}>
+    <Select defaultValue={defaultValue} value={value} onValueChange={onSelect}>
+      <SelectTrigger className={cn(`p-7 bg-[#F8F9FB]`, SelectTriggerClass)}>
         {Number(defaultValue) > 0 ? (
           <SelectValue>
             {options

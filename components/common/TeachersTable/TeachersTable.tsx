@@ -55,19 +55,21 @@ function TeachersTable(props: TeachersTableProps) {
             label: 'Name',
             key: 'name',
             render: (data: ITeachers) => {
-              console.log(data, 'checmklmsdsd');
               return (
                 // <Link
                 //   className="hover:text-primary-500"
                 //   href={`/universities/teachers/${data['id']}`}
                 // >
                 <div className="flex items-center gap-2 w-full">
-                  <img
+                  <Image
                     src={
                       data?.user?.attachment?.file_path ||
                       '/assets/profile/profile.svg'
                     }
-                    alt={data.user.attachment?.file_path}
+                    width={30}
+                    height={30}
+                    unoptimized={true}
+                    alt={data.user.attachment?.file_path || ''}
                     className="rounded-full w-[30px] h-[30px] object-cover"
                   />
                   <h2>{data.user['name']}</h2>

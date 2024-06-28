@@ -1,21 +1,32 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TeacherProfileView from '../common/Profiles/TeacherProfileView/TeacherProfileView';
 import StudentDetailsPage from '@/components/StudentDetailsPage/StudentDetailsPage';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { getProfile } from '@/app/api/students';
-import { useParams } from 'next/navigation';
-import Loading from '../ui/button/loading';
 import { useQuery } from 'react-query';
+import { useParams, useRouter } from 'next/navigation';
+import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
+import Loading from '../ui/button/loading';
+import { ProfileHeader } from '@/components/common/Profiles';
 
 const ProfilesView = () => {
   const params = useParams();
   const currentProfileId = Number(params?.id);
   const { userInformation, myPenpals } = useGlobalState();
-
   const [isFriend, setIsFriend] = useState<boolean>(false);
   const [isPending, setIsPending] = useState<boolean>(false);
+  const { sendRequest, isCreatingPenpal, deleteRequest, isDeletingPenpal } =
+    useSendPenpalRequest();
+  const router = useRouter();
+  const { module } = useModule();
+  const buttonText = isPending
+    ? 'Pending'
+    : userInformation?.id === currentProfileId
+      ? 'Edit Profile'
+      : 'Add Friend';
 
   const getPenpalInfo = (id: number | string) => {
     const penpal = myPenpals.find((penpal) => penpal.friend.id === id);
@@ -28,13 +39,46 @@ const ProfilesView = () => {
     {
       enabled: currentProfileId ? true : false,
       onSuccess: (data) => {
-        let { isPenpal } = getPenpalInfo(currentProfileId);
-        setIsFriend(userInformation?.id !== currentProfileId && isPenpal);
+        let { isPenpal: myPenpal, penpal } = getPenpalInfo(currentProfileId);
+        let isPenpal =
+          data.data.data.penpalStatus === 'ACCEPTED' ||
+          penpal?.status === 'ACCEPTED'
+            ? true
+            : false;
+        setIsFriend(
+          userInformation?.id !== currentProfileId && isPenpal ? true : false
+        );
       },
     }
   );
+  const handleUnfriend = (profileData: any, penpal: any) => {
+    const userId = profileData?.penpalId
+      ? Number(profileData?.penpalId)
+      : penpal.id;
+    deleteRequest({
+      user_id: userId,
+    });
+    setIsFriend(false);
+    setIsPending(false);
+  };
+  const profileData = data?.data?.data;
+  const handleClick = () => {
+    const { penpal } = getPenpalInfo(profileData?.id);
+    userInformation?.id === currentProfileId
+      ? router.push(`/${module}/account-settings`)
+      : isFriend
+        ? penpal && handleUnfriend(profileData, penpal)
+        : sendRequest({ receiverId: Number(profileData?.id) });
+  };
 
-  const role = data?.data?.data?.role?.name;
+  useEffect(() => {
+    let { isPenpal, penpal } = getPenpalInfo(currentProfileId);
+    penpal?.status === 'PENDING' || profileData?.penpalStatus === 'PENDING'
+      ? setIsPending(true)
+      : setIsPending(false);
+  }, [profileData, currentProfileId, myPenpals]);
+
+  const role = profileData?.role?.name;
 
   if (error) {
     return <div>Error loading profile</div>;
@@ -47,19 +91,32 @@ const ProfilesView = () => {
       </div>
     );
   }
-
   return (
     <div>
       {role === 'student' ? (
         <StudentDetailsPage
           isFriend={isFriend}
-          data={data}
+          data={profileData}
           setIsFriend={setIsFriend}
           setIsPending={setIsPending}
+          buttonText={buttonText}
+          handleClick={handleClick}
           isPending={isPending}
+          isCreatingPenpal={isCreatingPenpal}
+          isDeletingPenpal={isDeletingPenpal}
+          penpalStatus={profileData?.penpalStatus}
         />
       ) : role === 'teacher' ? (
-        <TeacherProfileView data={data?.data?.data} />
+        <TeacherProfileView
+          isFriend={isFriend}
+          data={profileData}
+          buttonText={buttonText}
+          handleClick={handleClick}
+          isPending={isPending}
+          isCreatingPenpal={isCreatingPenpal}
+          isDeletingPenpal={isDeletingPenpal}
+          penpalStatus={profileData?.penpalStatus}
+        />
       ) : null}
     </div>
   );

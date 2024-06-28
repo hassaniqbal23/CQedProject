@@ -81,3 +81,9 @@ export const removeFcmToken = (): void => {
     localStorage.removeItem(FCM_TOKEN_KEY);
   }
 };
+export const getFcmToken = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem(FCM_TOKEN_KEY);
+  }
+  return;
+};

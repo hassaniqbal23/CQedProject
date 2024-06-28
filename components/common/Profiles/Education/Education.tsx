@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { Calendar, GraduationCap } from 'lucide-react';
 import { Typography } from '../../Typography/Typography';
 import Image from 'next/image';
+import { formatDate } from '@/lib/utils';
 
 interface Job {
   id: string;
@@ -67,7 +68,8 @@ export const ProfileEducation: React.FC<WorkHistoryProps> = ({
                     </p>
                     <p className="text-sm flex items-center ml-5">
                       <Calendar size={15} className="mr-2 font-medium" />
-                      {job.startDate} - {job.endDate}
+                      {formatDate(job?.startDate || '')} -{' '}
+                      {formatDate(job?.endDate || 'Present')}
                     </p>
                   </div>
                 </div>

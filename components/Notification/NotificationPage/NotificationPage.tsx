@@ -41,6 +41,7 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
         client.refetchQueries('getNotifications');
         client.refetchQueries('communities');
         client.refetchQueries('pending-communities');
+        client.refetchQueries('getProfile');
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
@@ -89,6 +90,7 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
     if (payload?.notificationType === 'COMMUNITY_JOIN_REQUEST') {
       const submit = {
         userId: payload?.createdById,
+        communityUserId: payload.community_user_id,
         communityId: payload.community_id,
         status: status,
         notification_id: payload.id,
@@ -137,62 +139,75 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
         </div>
       </div>
       <div className="mt-14">
-        {notifications?.map((notification, index) => {
-          const createdAt = notification?.created_at ?? '';
+        {notifications && notifications.length > 0 ? (
+          notifications?.map((notification, index) => {
+            const createdAt = notification?.created_at ?? '';
+            return (
+              <Notification
+                onMarkAsRead={() => handelReadNotification(notification.id)}
+                onDelete={() => muateNotificationDelete(notification.id)}
+                key={index}
+                avatar={
+                  notification?.createdByUser?.attachment?.file_path || ''
+                }
+                isRead={notification.isRead}
+                message={
+                  <>
+                    <b>@{notification?.createdByUser?.name} </b>
+                    {notification?.body}
+                  </>
+                }
+                actions={() => (
+                  <div className="block">
+                    <p className="text-xs text-gray-500 block">
+                      {notification?.created_at && dayjs(createdAt).fromNow()}
+                    </p>
+                    {(notification.notificationType === 'PENPAL_REQUEST' ||
+                      notification.notificationType ===
+                        'COMMUNITY_JOIN_REQUEST') && (
+                      <div className="flex items-center mt-2">
+                        {notification.type === 'PENDING' && (
+                          <Button
+                            onClick={() =>
+                              handleClick(notification, 'ACCEPTED')
+                            }
+                            size={'sm'}
+                            className="bg-primary-500 text-white rounded-full px-6 py-2 mt-1 mr-4 "
+                          >
+                            {notification.notificationType === 'PENPAL_REQUEST'
+                              ? 'Accept'
+                              : 'Join'}
+                          </Button>
+                        )}
 
-          return (
-            <Notification
-              onMarkAsRead={() => handelReadNotification(notification.id)}
-              onDelete={() => muateNotificationDelete(notification.id)}
-              key={index}
-              avatar={notification?.createdByUser?.attachment?.file_path || ''}
-              isRead={notification.isRead}
-              message={
-                <>
-                  <b>@{notification?.createdByUser?.name} </b>
-                  {notification?.body}
-                </>
-              }
-              actions={() => (
-                <div className="block">
-                  <p className="text-xs text-gray-500 block">
-                    {notification?.created_at && dayjs(createdAt).fromNow()}
-                  </p>
-                  {(notification.notificationType === 'PENPAL_REQUEST' ||
-                    notification.notificationType ===
-                      'COMMUNITY_JOIN_REQUEST') && (
-                    <div className="flex items-center mt-2">
-                      {notification.type === 'PENDING' && (
                         <Button
-                          onClick={() => handleClick(notification, 'ACCEPTED')}
                           size={'sm'}
-                          className="bg-primary-500 text-white rounded-full px-6 py-2 mt-1 mr-4 "
+                          disabled={notification.type !== 'PENDING'}
+                          onClick={() => handleClick(notification, 'REJECTED')}
+                          className="border border-solid border-primary-500 text-primary-500 px-8 py-2 rounded-full bg-transparent"
                         >
-                          {notification.notificationType === 'PENPAL_REQUEST'
-                            ? 'Accept'
-                            : 'Join'}
+                          {notification.type === 'ACCEPTED'
+                            ? 'Accepted'
+                            : notification.type === 'REJECTED'
+                              ? 'Declined'
+                              : 'Decline'}
                         </Button>
-                      )}
-
-                      <Button
-                        size={'sm'}
-                        disabled={notification.type !== 'PENDING'}
-                        onClick={() => handleClick(notification, 'REJECTED')}
-                        className="border border-solid border-primary-500 text-primary-500 px-8 py-2 rounded-full bg-transparent"
-                      >
-                        {notification.type === 'ACCEPTED'
-                          ? 'Accepted'
-                          : notification.type === 'REJECTED'
-                            ? 'Declined'
-                            : 'Decline'}
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              )}
-            />
-          );
-        })}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
+            );
+          })
+        ) : (
+          <Typography
+            variant={'body'}
+            className="text-center mt-36 text-gray-500"
+            weight={'bold'}
+          >
+            No Notifications Available
+          </Typography>
+        )}
       </div>
     </div>
   );

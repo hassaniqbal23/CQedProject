@@ -51,10 +51,10 @@ export const PalSearchId = () => {
         searchParams?.userName
       ),
     {
-      enabled: !!searchParams,
-      onSuccess: (data) => {
-        console.log({ data });
-      },
+      enabled:
+        searchParams && (searchParams.memberId || searchParams.userName)
+          ? true
+          : false,
       onError: (err) => {
         console.log(err);
       },
@@ -112,12 +112,15 @@ export const PalSearchId = () => {
                 <div key={index}>
                   <PenpalshipCard
                     imgPath={item?.attachment?.file_path || ''}
-                    id={item?.id}
+                    id={item.id}
                     title={item?.name}
                     description={item?.profile?.bio}
                     mutualFriends={item?.mutualFriends || 0}
                     countryName={item?.profile.country?.toUpperCase()}
                     studentAge={item?.profile.age || 0}
+                    penpalStatus={item?.penpalStatus}
+                    searchParams={searchParams}
+                    penpalId={Number(item?.penpalId)}
                   />
                 </div>
               )

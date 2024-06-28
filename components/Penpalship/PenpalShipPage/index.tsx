@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Typography } from '@/components/common/Typography/Typography';
 import { Info } from 'lucide-react';

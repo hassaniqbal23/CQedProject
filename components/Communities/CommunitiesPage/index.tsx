@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { CommunityHeader } from '../../ui/communityHeader/CommunityHeader';
 import { PopularCommunitiesList } from '../PopularCommunitiesList/PopularCommunitiesList';

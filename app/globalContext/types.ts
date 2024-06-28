@@ -37,12 +37,18 @@ export interface IUserInformation {
   age: string;
   roleId: number;
   status: number;
+  hobbies?: string[];
   attachment: {
     file_path: string;
     id: number;
   };
   BlockedFrom: BlockedFrom[];
   school: { id: number; name: string };
+  role: {
+    description: string;
+    id: number;
+    name: string;
+  };
 }
 
 interface IProfile {
