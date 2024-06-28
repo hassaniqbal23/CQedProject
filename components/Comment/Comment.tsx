@@ -76,15 +76,15 @@ export const Comment: React.FC<CommentProps> = ({
         <div className="flex items-center">
           <Heart
             onClick={handleLike}
-            className={`h-3 w-3 mr-1 cursor-pointer ${liked ? 'text-red-500 fill-red-500' : ''}`}
+            className={`h-5 w-5 mr-1 cursor-pointer ${liked ? 'text-red-500 fill-red-500' : ''}`}
           />
-          <span className="">{likeCount}</span>
+          <span className="text-md">{likeCount}</span>
         </div>
         {showComment && (
           <div className="flex items-center ">
             <MessageCircleMore
               onClick={handleComment}
-              className={`h-3 w-3 mr-1 cursor-pointer ${replies ? 'text-blue-500 fll-blue-500' : ''}`}
+              className={`h-5 w-5 mr-1 cursor-pointer ${replies ? 'text-blue-500 fll-blue-500' : ''}`}
             />
             <span className="">{replies}</span>
           </div>

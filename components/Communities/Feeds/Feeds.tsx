@@ -280,6 +280,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                             isCreatingPenpal && creatingPanpalId === index
                           }
                           isMyPost={item?.User?.id === userInformation?.id}
+                          share={item._count.child_posts}
                           onDeletePost={() => deleteFeeds(item?.id)}
                           showShareButton={
                             item?.User?.id !== userInformation?.id
@@ -394,7 +395,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                                                     : false;
                                                 return (
                                                   <div
-                                                    className="mb-3 ml-5 px-3"
+                                                    className="mb-3 ml-3 px-2"
                                                     key={index}
                                                   >
                                                     <Comment
@@ -427,28 +428,23 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                                                       likes={reply._count.likes}
                                                       showComment={false}
                                                     />
-                                                    <CommentInput
-                                                      loading={replyLoading}
-                                                      onValueChange={(
-                                                        value
-                                                      ) => {
-                                                        if (value) {
-                                                          setReplyLoading(true);
-                                                          communityPostCommentApi(
-                                                            {
-                                                              id: item.id,
-                                                              content: value,
-                                                              parentCommentId:
-                                                                comment.id,
-                                                            }
-                                                          );
-                                                        }
-                                                      }}
-                                                    />
                                                   </div>
                                                 );
                                               }
                                             )}
+                                          <CommentInput
+                                            loading={replyLoading}
+                                            onValueChange={(value) => {
+                                              if (value) {
+                                                setReplyLoading(true);
+                                                communityPostCommentApi({
+                                                  id: item.id,
+                                                  content: value,
+                                                  parentCommentId: comment.id,
+                                                });
+                                              }
+                                            }}
+                                          />
                                         </div>
                                       )}
                                     </div>
