@@ -74,7 +74,7 @@ const Coummuntiycard: FC<IProps> = ({
           <div className="flex mr-3 mb-2">
             <Button
               {...buttonProps}
-              className="mt-2 xl:mt-0 xl:ml-5 h-[30px] max-w-[222px] p-4 rounded-full"
+              className="mt-2 xl:mt-0 xl:ml-5 h-[30px] max-w-[70px] p-3 rounded-full min-w-[70px]"
             ></Button>
           </div>
         </div>
