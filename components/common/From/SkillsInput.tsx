@@ -75,11 +75,11 @@ const SkillsInput: FC<IProps> = ({
                 onClick={() => removeTag(tag)}
                 className={cn(
                   className,
-                  'bg-accent text-gray-700 dark:text-white/70 mr-2'
+                  'bg-white border border-[#D1D5DB] px-4 py-2 text-sm text-[#5D5E68] dark:text-white/70 mr-2'
                 )}
               >
                 <span className="mr-1 inline">{tag}</span>
-                <Cross1Icon className="h-3 w-3 inline cursor-pointer" />
+                <Cross1Icon className="h-4 w-4 inline cursor-pointer" />
               </Badge>
             ))}
           </ScrollArea>
