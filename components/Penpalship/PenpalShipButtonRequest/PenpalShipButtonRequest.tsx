@@ -1,6 +1,8 @@
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 import { Button, Dropdown } from '@/components/ui';
 import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 export interface PenpalShipButtonRequestProps {
@@ -19,6 +21,8 @@ const PenpalShipButtonRequest: React.FC<PenpalShipButtonRequestProps> = ({
   const { sendRequest, deleteRequest, isCreatingPenpal, isDeletingPenpal } =
     useSendPenpalRequest();
   const { userInformation, myPenpals } = useGlobalState();
+  const { module } = useModule();
+  const router = useRouter();
   const isFriend = React.useMemo(() => {
     return myPenpals.some((pal) => {
       return (
@@ -33,6 +37,7 @@ const PenpalShipButtonRequest: React.FC<PenpalShipButtonRequestProps> = ({
       (pal.receiverId == userInformation.id && pal.senderId == user_id)
     );
   });
+  console.log({ penpalInstance });
   return (
     <>
       {penpalInstance?.status === 'PENDING' ||
@@ -59,7 +64,9 @@ const PenpalShipButtonRequest: React.FC<PenpalShipButtonRequestProps> = ({
                 <div
                   className="font-semibold text-red-500 bg-red-50 mx-auto"
                   onClick={() =>
-                    deleteRequest({ user_id: Number(penpalId), searchParams })
+                    deleteRequest({
+                      user_id: penpalId ? Number(penpalId) : penpalInstance?.id,
+                    })
                   }
                 >
                   {penpalInstance?.status === 'PENDING' ||
@@ -71,6 +78,17 @@ const PenpalShipButtonRequest: React.FC<PenpalShipButtonRequestProps> = ({
             },
           ]}
         />
+      ) : userInformation.id === user_id ? (
+        <>
+          <Button
+            loading={isCreatingPenpal}
+            onClick={() => router.push(`/${module}/account-settings`)}
+            disabled={isCreatingPenpal}
+            className={`ml-auto px-8 h-10 rounded-full bg-primary-50 text-primary-500`}
+          >
+            Edit Profile
+          </Button>
+        </>
       ) : (
         <Button
           loading={isCreatingPenpal}
