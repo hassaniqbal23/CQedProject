@@ -40,6 +40,7 @@ const ChatContent: FC = () => {
         users: currentConversation.users,
         senderId: userInformation.id,
         created_at: new Date().toISOString(),
+        message_deleted_by: [],
       };
       setInboxResponse(
         inboxResponse.map((conversation: any) => {
