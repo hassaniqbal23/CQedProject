@@ -39,35 +39,44 @@ const ProfilesView = () => {
     {
       enabled: currentProfileId ? true : false,
       onSuccess: (data) => {
-        let { isPenpal: myPenpal } = getPenpalInfo(currentProfileId);
+        let { isPenpal: myPenpal, penpal } = getPenpalInfo(currentProfileId);
         let isPenpal =
-          data.data.data.penpalStatus === 'ACCEPTED' ? true : false;
+          data.data.data.penpalStatus === 'ACCEPTED' ||
+          penpal?.status === 'ACCEPTED'
+            ? true
+            : false;
         setIsFriend(
-          (userInformation?.id !== currentProfileId && isPenpal) || myPenpal
+          userInformation?.id !== currentProfileId && isPenpal ? true : false
         );
       },
     }
   );
+  const handleUnfriend = (profileData: any, penpal: any) => {
+    const userId = profileData?.penpalId
+      ? Number(profileData?.penpalId)
+      : penpal.id;
+    deleteRequest({
+      user_id: userId,
+    });
+    setIsFriend(false);
+    setIsPending(false);
+  };
   const profileData = data?.data?.data;
   const handleClick = () => {
     const { penpal } = getPenpalInfo(profileData?.id);
     userInformation?.id === currentProfileId
       ? router.push(`/${module}/account-settings`)
       : isFriend
-        ? penpal &&
-          deleteRequest({
-            user_id: profileData?.penpalId
-              ? Number(profileData?.penpalId)
-              : penpal.id,
-          })
+        ? penpal && handleUnfriend(profileData, penpal)
         : sendRequest({ receiverId: Number(profileData?.id) });
   };
 
   useEffect(() => {
-    profileData?.penpalStatus === 'PENDING'
+    let { isPenpal, penpal } = getPenpalInfo(currentProfileId);
+    penpal?.status === 'PENDING' || profileData?.penpalStatus === 'PENDING'
       ? setIsPending(true)
       : setIsPending(false);
-  }, [profileData, currentProfileId]);
+  }, [profileData, currentProfileId, myPenpals]);
 
   const role = profileData?.role?.name;
 

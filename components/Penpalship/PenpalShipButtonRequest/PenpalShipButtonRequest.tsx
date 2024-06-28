@@ -37,7 +37,6 @@ const PenpalShipButtonRequest: React.FC<PenpalShipButtonRequestProps> = ({
       (pal.receiverId == userInformation.id && pal.senderId == user_id)
     );
   });
-  console.log({ penpalInstance });
   return (
     <>
       {penpalInstance?.status === 'PENDING' ||
@@ -66,6 +65,7 @@ const PenpalShipButtonRequest: React.FC<PenpalShipButtonRequestProps> = ({
                   onClick={() =>
                     deleteRequest({
                       user_id: penpalId ? Number(penpalId) : penpalInstance?.id,
+                      searchParams,
                     })
                   }
                 >
