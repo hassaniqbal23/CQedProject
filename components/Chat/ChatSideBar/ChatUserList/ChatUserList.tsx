@@ -94,7 +94,11 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
             lastMessageTXT = lastMessage.message;
           }
 
-          if (lastMessage.message_deleted_by.includes(lastMessage.senderId)) {
+          if (
+            (lastMessage.message_deleted_by ?? []).includes(
+              lastMessage.senderId
+            )
+          ) {
             lastMessageTXT = 'This message was deleted';
           }
         }
