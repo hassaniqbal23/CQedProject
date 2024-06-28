@@ -41,6 +41,7 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
         client.refetchQueries('getNotifications');
         client.refetchQueries('communities');
         client.refetchQueries('pending-communities');
+        client.refetchQueries('getProfile');
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
