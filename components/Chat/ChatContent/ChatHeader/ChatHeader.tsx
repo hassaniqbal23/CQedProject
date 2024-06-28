@@ -10,6 +10,7 @@ import { EllipsisVertical } from 'lucide-react';
 import { ConversationUserSheet } from '../ConversationUserSheet/ConversationUserSheet';
 import { ChatConversation } from '@/types/chat';
 import { format, isValid } from 'date-fns';
+import { getLastActiveDate } from '@/app/utils/getLastActiveAt';
 
 interface IProps {
   isOnline: boolean;
@@ -26,12 +27,7 @@ export const ChatHeader: FC<IProps> = ({
 }: IProps) => {
   let lastOnlineDate = 'last active unknown';
   if (isValid(new Date(conversation.user.last_active))) {
-    lastOnlineDate =
-      'last active at ' +
-      format(
-        new Date(conversation.user.last_active),
-        "MMMM dd yyyy 'at' hh:mm a"
-      ).toLowerCase();
+    lastOnlineDate = getLastActiveDate(conversation.user.last_active);
   }
   return (
     <div className="flex justify-between bg-[#F4F4F4] items-center px-10 mx-0 py-2 w-full">
