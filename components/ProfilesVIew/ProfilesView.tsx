@@ -39,7 +39,7 @@ const ProfilesView = () => {
     {
       enabled: currentProfileId ? true : false,
       onSuccess: (data) => {
-        let { isPenpal: myPenpal, penpal } = getPenpalInfo(currentProfileId);
+        let { isPenpal: myPenpal } = getPenpalInfo(currentProfileId);
         let isPenpal =
           data.data.data.penpalStatus === 'ACCEPTED' ? true : false;
         setIsFriend(

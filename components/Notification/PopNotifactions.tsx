@@ -49,6 +49,7 @@ export const PopNotifactions: React.FC<PopNotification> = ({
         client.refetchQueries('getNotifications');
         client.refetchQueries('pending-communities');
         client.refetchQueries('UserJoinedCommunities');
+        client.refetchQueries('getProfile');
       },
       onError: (error: any) => {
         console.log(error, 'Error =====> log');
@@ -62,6 +63,7 @@ export const PopNotifactions: React.FC<PopNotification> = ({
         onSuccess: (res) => {
           client.refetchQueries('getNotifications');
           client.refetchQueries('MyPenPals');
+          client.refetchQueries('getProfile');
         },
         onError: (error: any) => {
           console.log(error, 'Error =====> log');
