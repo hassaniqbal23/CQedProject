@@ -261,6 +261,7 @@ function DashboardFeeds() {
                       isMyPost={item?.User?.id === userInformation?.id}
                       onDeletePost={() => deleteFeeds(item?.id)}
                       showShareButton={item?.User?.id !== userInformation?.id}
+                      share={item._count.child_posts}
                       handleShare={(data) => {
                         let payload;
                         if (item?.pinned_post) {
@@ -401,24 +402,23 @@ function DashboardFeeds() {
                                                   likes={reply._count.likes}
                                                   showComment={false}
                                                 />
-                                                <CommentInput
-                                                  loading={replyLoading}
-                                                  onValueChange={(value) => {
-                                                    if (value) {
-                                                      setReplyLoading(true);
-                                                      communityPostCommentApi({
-                                                        id: item.id,
-                                                        content: value,
-                                                        parentCommentId:
-                                                          comment.id,
-                                                      });
-                                                    }
-                                                  }}
-                                                />
                                               </div>
                                             );
                                           }
                                         )}
+                                      <CommentInput
+                                        loading={replyLoading}
+                                        onValueChange={(value) => {
+                                          if (value) {
+                                            setReplyLoading(true);
+                                            communityPostCommentApi({
+                                              id: item.id,
+                                              content: value,
+                                              parentCommentId: comment.id,
+                                            });
+                                          }
+                                        }}
+                                      />
                                     </div>
                                   )}
                                 </div>

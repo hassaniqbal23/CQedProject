@@ -85,6 +85,7 @@ export interface ICount {
   comments: number;
   likes: number;
   replies?: number;
+  child_posts?: number;
 }
 
 interface ISharedCommunityPost {
