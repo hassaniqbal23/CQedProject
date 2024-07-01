@@ -52,7 +52,6 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   location,
   profileIcon,
   subrole,
-  imageSize,
   buttonProps,
   titleClass = 'text-xl',
   age,
@@ -67,7 +66,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   const router = useRouter();
   const { module } = useModule();
   const queryClient = useQueryClient();
-  const { usersIBlocked, userInformation } = useGlobalState();
+  const { usersIBlocked } = useGlobalState();
   const mutualFriend = getMutualFriendsText(mutualFriends);
   const { flag = '', country: countryName = '' } = getCountry(country);
   const { setSelectedConversationId } = useChatProvider();
@@ -189,7 +188,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
           <Typography
             variant="p"
             weight="semibold"
-            className="mb-10 text-base pt-2 "
+            className="mb-10 text-base pt-2 text-right mr-2"
           >
             Profile Id: {profileId}
           </Typography>
@@ -224,6 +223,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                         onClick={() => {}}
                         iconPosition="right"
                         icon={<IoChevronDown />}
+                        loading={buttonProps.isLoading}
                         className={`rounded-full bg-[#ECEDF8] text-primary-500 w-36 h-10 text-base hover: border border-white`}
                         variant={'outline'}
                         type="button"
@@ -276,6 +276,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   penpalStatus={penpalStatus}
                   user_id={profileId}
                   penpalId={Number(penpalId)}
+                  isFriend={buttonProps.isFriend}
                 />
                 {!loggedInUser && (
                   <Typography
