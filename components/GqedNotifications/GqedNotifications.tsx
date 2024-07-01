@@ -63,6 +63,7 @@ export const GqedNotifications = () => {
           client.refetchQueries('pending-communities');
           client.refetchQueries('UserJoinedCommunities');
           client.refetchQueries('getProfile');
+          client.refetchQueries('penpalSearchData');
           const { title, body, image } = payload.data;
           toast(
             <div className="flex items-center">

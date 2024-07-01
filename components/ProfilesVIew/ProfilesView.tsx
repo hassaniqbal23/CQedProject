@@ -71,13 +71,13 @@ const ProfilesView = () => {
       ? setIsPending(true)
       : setIsPending(false);
 
-    let isPenpal =
+    let isMyPenpal =
       data?.data?.data?.penpalStatus === 'ACCEPTED' ||
       penpal?.status === 'ACCEPTED'
         ? true
         : false;
     setIsFriend(
-      userInformation?.id !== currentProfileId && isPenpal && myPenpal
+      userInformation?.id !== currentProfileId && isMyPenpal && myPenpal
         ? true
         : false
     );
@@ -102,8 +102,6 @@ const ProfilesView = () => {
         <StudentDetailsPage
           isFriend={isFriend}
           data={profileData}
-          setIsFriend={setIsFriend}
-          setIsPending={setIsPending}
           buttonText={buttonText}
           handleClick={handleClick}
           isPending={isPending}
