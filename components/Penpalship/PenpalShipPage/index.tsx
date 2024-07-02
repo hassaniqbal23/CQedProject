@@ -15,7 +15,7 @@ const PenpalshipPage = () => {
   return (
     <div>
       <div className="flex flex-row items-center mb-4">
-        <Typography variant={'h2'} weight={'bold'}>
+        <Typography variant={'h2'} weight={'semibold'}>
           Global Friends
         </Typography>
         <Info className="ml-2 text-[#5D5E68] stroke-slate-500" size={26} />

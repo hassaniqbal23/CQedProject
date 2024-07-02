@@ -13,12 +13,14 @@ import {
   penpalAcceptRequest,
 } from '@/app/api/auth';
 import { ICommunityAcceptInvite, INotifications } from '@/types/auth';
+import { useRouter } from 'next/navigation';
 
 interface NotificationPageProps {
   title: string;
   subTitle: string;
   buttonText: string;
   buttonOnClick: () => void;
+  linkType?: string;
 }
 
 export const NotificationPage: React.FC<NotificationPageProps> = ({
@@ -26,10 +28,12 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
   subTitle,
   buttonText,
   buttonOnClick,
+  linkType,
 }) => {
   dayjs.extend(relativeTime);
   const { notifications } = useGlobalState();
   const client = useQueryClient();
+  const route = useRouter();
 
   const {
     mutate: muateCommunityUserAcceptInvite,
@@ -113,6 +117,24 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
     muateNotificationMarkRead({ id: id, status: true });
   };
 
+  const handleNotificationRedirect = (item: INotifications) => {
+    if (linkType) {
+      if (item?.penpal_id) {
+        route.push(`/${linkType}/profile/${item?.createdById}`);
+      }
+      if (
+        item.notificationType === 'POST_COMMENT' ||
+        item.notificationType === 'POST_LIKE' ||
+        item.notificationType === 'POST_COMMENT_LIKE'
+      ) {
+        route.push(`/${linkType}/dashboard`);
+      }
+      if (item.community_id) {
+        route.push(`/${linkType}/cq-communities/${item.community_id}`);
+      }
+    }
+  };
+
   return (
     <div className="">
       <div className="px-4 flex flex-wrap items-center justify-between mb-4">
@@ -144,6 +166,7 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
             const createdAt = notification?.created_at ?? '';
             return (
               <Notification
+                onClick={() => handleNotificationRedirect(notification)}
                 onMarkAsRead={() => handelReadNotification(notification.id)}
                 onDelete={() => muateNotificationDelete(notification.id)}
                 key={index}

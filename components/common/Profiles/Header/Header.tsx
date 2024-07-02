@@ -149,7 +149,21 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
           <AvatarImage src={profileIcon} alt="Profile Picture" />
         </Avatar>
         <div className="ml-6">
-          {name && <h1 className={`font-bold mb-2 ${titleClass}`}>{name}</h1>}
+          {name && (
+            <div className="flex items-baseline">
+              <h1 className={`font-bold mb-2 ${titleClass}`}>{name}</h1>
+              {userInformation.role.name === 'teacher' && (
+                <Image
+                  height={16}
+                  width={16}
+                  src={'/icons/check1.svg'}
+                  alt="check"
+                  className="ml-2"
+                  unoptimized
+                />
+              )}
+            </div>
+          )}
           {role && (
             <p className="text-[#F1F1F1CC] text-sm font-medium">
               {role} at <span className="text-white ml-1 ">{subrole}</span>

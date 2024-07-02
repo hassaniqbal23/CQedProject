@@ -20,7 +20,7 @@ export const Default: Story = {
   args: {
     item: {
       icon: '/assets/sidebaricons/accounts.svg',
-      title: 'Dashboard',
+      title: 'Home',
       path: '/admin/dashboard',
     },
 

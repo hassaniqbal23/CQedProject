@@ -185,7 +185,7 @@ export const TeacherForm: FC<TeacherFormProps> = ({ title, buttonOnClick }) => {
           />
         </div>
         <div className="w-full  flex flex-col gap-3  ">
-          <Label htmlFor="fullName" className="font-semibold text-lg">
+          <Label htmlFor="fullName" className="font-semibold text-xl">
             Certificates
           </Label>
           <MultipleSelector

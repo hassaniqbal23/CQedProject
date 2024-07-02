@@ -40,12 +40,18 @@ export const NewFeeds: React.FC<NewFeedsProps> = ({
         <div className="flex justify-between items-center flex-wrap md:flex-nowrap ml-0 md:ml-16">
           <div className="flex gap-3 mb-1 text-md font-semibold  md:mb-0">
             <div className="flex gap-3 items-center" onClick={onClick}>
-              <ImageIcon />
-              <p className="cursor-pointer">Photo/Video</p>
+              <ImageIcon color="text-[#4E5D78] " />
+              <p className="cursor-pointer text-[#4E5D78] ">Photo/Video</p>
             </div>
             <div className="flex items-center gap-3" onClick={onClick}>
-              <SmilePlus />
-              <p className="cursor-pointer">Feeling</p>
+              <Image
+                height={17}
+                width={17}
+                src="/icons/Smile.svg"
+                alt="simple "
+                unoptimized
+              />
+              <p className="cursor-pointer text-[#4E5D78] ">Feeling</p>
             </div>
           </div>
           <div>

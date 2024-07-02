@@ -28,7 +28,7 @@ export const ProfileEducation: React.FC<WorkHistoryProps> = ({
   return (
     <Card>
       <div className="ml-5 mt-3">
-        <Typography variant={'h3'} weight={'semibold'}>
+        <Typography variant={'h4'} weight={'semibold'}>
           {title}
         </Typography>
       </div>
