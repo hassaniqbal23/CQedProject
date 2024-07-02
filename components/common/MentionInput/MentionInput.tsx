@@ -89,7 +89,11 @@ function MentionInput({
           <div className={`mention-suggestion flex gap-2 items-center`}>
             <Avatar className="w-8 h-8">
               <AvatarImage
-                src={suggestion.image ? suggestion.image : '/avatar1.svg'}
+                src={
+                  (suggestion as any).image
+                    ? (suggestion as any).image
+                    : '/avatar1.svg'
+                }
               />
             </Avatar>
             <span>{suggestion.display}</span>
