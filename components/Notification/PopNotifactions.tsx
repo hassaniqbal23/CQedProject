@@ -126,14 +126,18 @@ export const PopNotifactions: React.FC<PopNotification> = ({
   };
   const handleNotificationRedirect = (item: INotifications) => {
     if (linkType) {
-      if (item?.penpal_id) {
+      if (
+        item?.penpal_id ||
+        item.notificationType === 'PENPAL_REQUEST_ACCEPTED'
+      ) {
         route.push(`/${linkType}/profile/${item?.createdById}`);
         onOpenChange();
       }
       if (
-        item.notificationType === 'POST_COMMENT' ||
-        item.notificationType === 'POST_LIKE' ||
-        item.notificationType === 'POST_COMMENT_LIKE'
+        (item.notificationType === 'POST_COMMENT' ||
+          item.notificationType === 'POST_LIKE' ||
+          item.notificationType === 'POST_COMMENT_LIKE',
+        item.notificationType === 'POST_SHARED')
       ) {
         route.push(`/${linkType}/dashboard`);
         onOpenChange();
