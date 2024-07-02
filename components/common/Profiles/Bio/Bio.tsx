@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import React from 'react';
+import { Typography } from '../../Typography/Typography';
 
 interface BioProps {
   bio: string;
@@ -9,13 +10,17 @@ interface BioProps {
 export const ProfileBio: React.FC<BioProps> = ({ bio, title }) => {
   return (
     <Card className="h-full">
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
+      <CardHeader className="pb-4">
+        <CardTitle className="text-xl">{title}</CardTitle>
       </CardHeader>
-      <CardContent>
-        <p className="[word-spacing:11px] font-medium italic leading-6 text-sm text-justify whitespace-pre-line ">
+      <CardContent className="mt-0">
+        <Typography
+          weight="medium"
+          variant="p"
+          className=" italic leading-6 text-[#393939] text-justify whitespace-pre-line "
+        >
           {bio}
-        </p>
+        </Typography>
       </CardContent>
     </Card>
   );

@@ -128,7 +128,7 @@ export const Post: FC<IProps> = ({
               </div>
             </div>
           </Link>
-          {!isFriend && !isMyPost && (
+          {/* {!isFriend && !isMyPost && (
             <div>
               <Button
                 className="bg-[#ECEDF8] text-[#2183C4]  px-4 py-2 rounded-full"
@@ -139,7 +139,7 @@ export const Post: FC<IProps> = ({
                 {addFriendText}
               </Button>
             </div>
-          )}
+          )} */}
           {isMyPost && (
             <div>
               <Dropdown

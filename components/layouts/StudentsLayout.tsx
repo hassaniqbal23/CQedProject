@@ -65,8 +65,8 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
 
   const sidebarLinks = [
     {
-      icon: '/assets/sidebaricons/dashboard.svg',
-      title: 'Dashboard',
+      icon: '/assets/sidebaricons/home.svg',
+      title: 'Home',
       path: '/students/dashboard',
     },
     {
@@ -148,6 +148,7 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
                         muateNotificationMarkRead({ status: true });
                         setIsOpenNotifications(!isOpenNotifications);
                       }}
+                      linkType="students"
                       seeAllLink="/students/notifications"
                     />
                   </>

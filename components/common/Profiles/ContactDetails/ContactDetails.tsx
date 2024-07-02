@@ -21,7 +21,7 @@ export const ProfileContactDetails: React.FC<ContactDetailsProps> = ({
   return (
     <Card>
       <div className="ml-5 mt-3">
-        <Typography variant={'h3'} weight={'semibold'}>
+        <Typography variant={'h4'} weight={'semibold'}>
           {title}
         </Typography>
       </div>
@@ -38,7 +38,7 @@ export const ProfileContactDetails: React.FC<ContactDetailsProps> = ({
               </div>
               <div className="p-2 text-left ml-2">
                 <h2 className="font-semibold text-sm">{item.title}</h2>
-                <h3 className="font-sm text-sm lg:text-base text-[#393939] flex flex-wrap">
+                <h3 className="font-sm text-sm text-[#393939] flex flex-wrap">
                   {item.content}
                 </h3>
               </div>

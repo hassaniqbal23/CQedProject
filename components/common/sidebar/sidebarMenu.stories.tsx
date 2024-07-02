@@ -6,7 +6,7 @@ import { ISidebar } from './types';
 const sidebarLinks: ISidebar[] = [
   {
     path: '/dashboard',
-    title: 'Dashboard',
+    title: 'Home',
     icon: '/assets/sidebaricons/dashboard.svg',
   },
   {

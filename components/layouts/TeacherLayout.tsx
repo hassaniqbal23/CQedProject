@@ -60,13 +60,13 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
 
   const sidebarLinks = [
     {
-      icon: '/assets/sidebaricons/dashboard.svg',
-      title: 'Dashboard',
+      icon: '/assets/sidebaricons/home.svg',
+      title: 'Home',
       path: '/teachers/dashboard',
     },
     {
       icon: '/assets/sidebaricons/chat.svg',
-      title: 'Chat & Communities',
+      title: 'Chats',
       path: '/teachers/chats',
     },
     {
@@ -158,6 +158,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
                         });
                         setIsOpenNotifications(!isOpenNotifications);
                       }}
+                      linkType="teachers"
                       seeAllLink="/teachers/notifications"
                     />
                   </>

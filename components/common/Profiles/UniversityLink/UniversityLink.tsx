@@ -19,7 +19,7 @@ export const CurrentlyWorking: FC<CurrentlyWorkingProps> = ({ data }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Currently Working at</CardTitle>
+        <CardTitle className="text-xl">Currently Working at</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex items-center py-4 px-4 text-primary-500 text-center rounded-xl text-sm bg-[#ECEDF8] shadow ">
