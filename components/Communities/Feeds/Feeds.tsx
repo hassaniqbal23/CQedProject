@@ -28,6 +28,7 @@ import FeedsSkeleton from '@/components/common/FeedsSkeleton/FeedsSkeleton';
 import InfiniteScrollObserver from '@/components/common/InfiniteScrollObserver/InfiniteScrollObserver';
 import { commentLike, commentUnlike, deletePost } from '@/app/api/feeds';
 import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
+import { extractUserInfo, formatMentions } from '@/app/utils/helpers';
 
 interface FeedsProps {
   communityId: string | number;
@@ -240,6 +241,11 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                       (i: IPenpal) => i?.receiverId === item?.User?.id
                     );
 
+                    const mentionUser = extractUserInfo(
+                      item,
+                      myPenpals.filter((i) => i.status === 'ACCEPTED')
+                    ).filter((item) => item.id !== userInformation?.id);
+
                     return (
                       <div key={index}>
                         <Post
@@ -324,6 +330,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                         {commentId === item.id && openCommentSection ? (
                           <div className="py-3 px-3">
                             <CommentInput
+                              users={mentionUser || []}
                               loading={!replyLoading && isCreatingComments}
                               onValueChange={(value) => {
                                 if (value) {
@@ -359,7 +366,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                                           comment.User?.attachment?.file_path ||
                                           '/assets/profile/teacherprofile.svg'
                                         }
-                                        text={comment?.content}
+                                        text={formatMentions(comment?.content)}
                                         user={comment?.User?.name || ''}
                                         created_at={comment?.created_at}
                                         handleComment={() => {
@@ -404,7 +411,9 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                                                           ?.file_path ||
                                                         '/assets/profile/teacherprofile.svg'
                                                       }
-                                                      text={reply?.content}
+                                                      text={formatMentions(
+                                                        comment?.content
+                                                      )}
                                                       user={
                                                         reply?.User?.name || ''
                                                       }
@@ -433,6 +442,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                                               }
                                             )}
                                           <CommentInput
+                                            users={mentionUser || []}
                                             loading={replyLoading}
                                             onValueChange={(value) => {
                                               if (value) {

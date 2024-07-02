@@ -48,15 +48,14 @@ export function getFcmTokenFromLocalStorage(
   return null;
 }
 
-
 export const extractUserInfo = (feeds: ICommunityPost, penpals: IPenpal[]) => {
   const result = [];
-  
+
   if (feeds.User) {
     result.push({
       id: feeds.User.id,
       display: feeds.User.name,
-      image: feeds.User.attachment ? feeds.User.attachment.file_path : ''
+      image: feeds.User.attachment ? feeds.User.attachment.file_path : '',
     });
   }
 
@@ -66,32 +65,40 @@ export const extractUserInfo = (feeds: ICommunityPost, penpals: IPenpal[]) => {
         result.push({
           id: comment.User.id,
           display: comment.User.name,
-          image: comment.User.attachment ? comment.User.attachment.file_path : ''
+          image: comment.User.attachment
+            ? comment.User.attachment.file_path
+            : '',
         });
       }
     });
   }
 
-  if(penpals && penpals.length > 0) {
+  if (penpals && penpals.length > 0) {
     penpals.forEach((penpal: IPenpal) => {
       if (penpal.friend) {
         result.push({
           id: penpal.friend.id,
           display: penpal.friend.profile?.full_name,
-          image: penpal.friend.attachment ? penpal.friend.attachment.file_path : ''
+          image: penpal.friend.attachment
+            ? penpal.friend.attachment.file_path
+            : '',
         });
       }
     });
   }
 
-  const uniqueResult = Array.from(new Map(result.map(user => [user.id, user])).values());
-
+  const uniqueResult = Array.from(
+    new Map(result.map((user) => [user.id, user])).values()
+  );
 
   return uniqueResult;
 };
 
 export const formatMentions = (text: string) => {
   const mentionRegex = /@\[([^\]]+)\]\((\d+)\)/g;
-  const formattedText = text.replace(mentionRegex, (_, display, id) => `<b>@${display}</b>`);
+  const formattedText = text.replace(
+    mentionRegex,
+    (_, display, id) => `<b>@${display}</b>`
+  );
   return formattedText;
 };
