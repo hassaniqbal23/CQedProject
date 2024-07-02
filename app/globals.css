@@ -137,7 +137,7 @@
 
 .mention-suggestion:hover {
   background-color: var(--primary-500);
-  color: white
+  color: white;
 }
 
 /* Custom styles for mentions */
