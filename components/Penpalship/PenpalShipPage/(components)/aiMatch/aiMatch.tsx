@@ -299,6 +299,7 @@ export const AiMatch = () => {
                           { label: 'Italian', value: 'Italian' },
                           { label: 'Spanish', value: 'Spanish' },
                         ]}
+                        creatable={true}
                       />
                     </FormControl>
                     <FormMessage />

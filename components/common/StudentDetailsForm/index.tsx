@@ -251,10 +251,10 @@ function StudentsDetailsFrom() {
                             value={
                               field.value
                                 ? {
-                                    label: getSingleCountry(field?.value)
-                                      ?.label,
-                                    value: field.value,
-                                  }
+                                  label: getSingleCountry(field?.value)
+                                    ?.label,
+                                  value: field.value,
+                                }
                                 : undefined
                             }
                             onChange={(e: any) => {
@@ -287,6 +287,7 @@ function StudentsDetailsFrom() {
                               { value: 'Spanish', label: 'Spanish' },
                               { value: 'French', label: 'French' },
                             ]}
+                            creatable={true}
                             placeholder="Add Your Languages "
                           />
                         </FormControl>
