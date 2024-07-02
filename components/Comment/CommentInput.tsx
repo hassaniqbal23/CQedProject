@@ -11,19 +11,22 @@ import React, { useState, useEffect, useRef, FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import Image from 'next/image';
+import { MentionInput } from '../common/MentionInput/MentionInput';
 
 interface IProps {
-  onValueChange?: (value: string) => void;
+  onValueChange?: (value: string, ids?: number[]) => void;
   loading?: boolean;
+  users?: { id: string | number; display: string; image?: string | null }[];
 }
 
-const CommentInput: FC<IProps> = ({ onValueChange, loading }) => {
+const CommentInput: FC<IProps> = ({ onValueChange, loading, users }) => {
   const { userInformation } = useGlobalState();
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
   const form = useForm<any>({
     defaultValues: {
       content: '',
+      mentionIds: [],
     },
   });
 
@@ -52,7 +55,7 @@ const CommentInput: FC<IProps> = ({ onValueChange, loading }) => {
   const { handleSubmit } = form;
 
   const onSubmit = (value: any) => {
-    onValueChange && onValueChange(value.content);
+    onValueChange && onValueChange(value.content, value.mentionIds);
     form.reset();
   };
 
@@ -80,10 +83,28 @@ const CommentInput: FC<IProps> = ({ onValueChange, loading }) => {
               <FormItem className="w-full mx-2">
                 <FormControl className="">
                   <div className="relative">
-                    <Input
+                    <MentionInput
+                      onChange={(
+                        e: any,
+                        newValue: string,
+                        newPlainTextValue: string,
+                        mentions: any[]
+                      ) => {
+                        field.onChange(newValue);
+                        form.setValue(
+                          'mentionIds',
+                          mentions.map((m) => +m.id)
+                        );
+                      }}
+                      value={field.value}
                       placeholder="Enter your comment"
-                      {...field}
-                      className={`pb-auto h-19 rounded-full resize-none bg-[#F3F3F3] border-none outline-none ring-0`}
+                      mentionSuggestions={users || []}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault();
+                          handleSubmit(onSubmit)();
+                        }
+                      }}
                     />
                   </div>
                 </FormControl>
