@@ -475,7 +475,7 @@ function DashboardFeeds() {
                 <Typography
                   variant="h5"
                   weight="semibold"
-                  className="text-center text-gray-500"
+                  className="text-center text-gray-500 mt-5"
                 >
                   You've caught up with all the posts 😊
                 </Typography>

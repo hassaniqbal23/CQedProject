@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../Modal/Modal';
 import { Typography } from '../Typography/Typography';
-import {
-  Avatar,
-  AvatarImage,
-  Button,
-  Separator,
-  Textarea,
-} from '@/components/ui';
+import { Avatar, AvatarImage, Button, Separator, Textarea } from '@/components/ui';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { SelectV2 } from '@/components/ui/select-v2/select-v2';
 import Image from 'next/image';
@@ -43,9 +37,36 @@ function SharePost({
 }: ISharePost) {
   const { joinedCommunities } = useGlobalState();
   const [textAreaValue, setTextAreaValue] = useState('');
-  const [selectedCommunityId, setSelectedCommunityId] = useState<number | null>(
-    null
-  );
+  const [selectedCommunityId, setSelectedCommunityId] = useState<number | null>(null);
+
+  const customStyles = {
+    control: (provided: any) => ({
+      ...provided,
+      minHeight: '48px',
+      borderRadius: '8px',
+      borderColor: '#d1d5db',
+    }),
+    valueContainer: (provided: any) => ({
+      ...provided,
+      display: 'flex',
+      alignItems: 'center',
+    }),
+    input: (provided: any) => ({
+      ...provided,
+      height: '48px',
+      padding: '0',
+    }),
+    singleValue: (provided: any) => ({
+      ...provided,
+      display: 'flex',
+      alignItems: 'center',
+    }),
+    placeholder: (provided: any) => ({
+      ...provided,
+      display: 'flex',
+      alignItems: 'center',
+    }),
+  };
 
   return (
     <Modal
@@ -66,16 +87,15 @@ function SharePost({
         <div className="mb-3">
           <Textarea
             placeholder="What would you like to share?"
-            className={`w-full h-[100px] bg-[#F8F9FB]`}
+            className="w-full h-[100px] bg-[#F8F9FB]"
             value={textAreaValue}
             onChange={(e) => setTextAreaValue(e.target.value)}
           />
         </div>
-        <div className="rounded-lg border  shadow-sm w-full">
+        <div className="rounded-lg border shadow-sm w-full">
           {post?.attachment && (
             <div className="">
               <Image
-                //   layout="responsive"
                 loading="lazy"
                 src={post?.attachment}
                 alt="post"
@@ -88,9 +108,7 @@ function SharePost({
           )}
           <div className="flex gap-3 items-center my-4 p-3">
             <div>
-              <Avatar
-                className={`w-14 h-14 md:w-54 md:h-54 rounded-full bg-lightgray mb-3`}
-              >
+              <Avatar className="w-14 h-14 md:w-54 md:h-54 rounded-full bg-lightgray mb-3">
                 <AvatarImage src={post?.userImage} alt="Profile Picture" />
               </Avatar>
             </div>
@@ -149,11 +167,13 @@ function SharePost({
             onChange={(value: any) => {
               setSelectedCommunityId(value.value);
             }}
+            styles={customStyles}
           />
         </div>
       </div>
       <div className="flex w-full items-center justify-end">
         <Button
+          className="px-6"
           onClick={() => {
             if (onShare) {
               onShare({
@@ -165,9 +185,7 @@ function SharePost({
             }
           }}
         >
-          <Typography variant="h5" weight="semibold">
-            Share Post
-          </Typography>
+          Share Post
         </Button>
       </div>
     </Modal>

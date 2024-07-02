@@ -48,7 +48,7 @@ export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
             <Typography
               variant="h4"
               weight="semibold"
-              className="flex gap-3 items-end"
+              className="flex gap-3 items-end text-[24px]"
             >
               <Image
                 src={'/yellowChart.svg'}
@@ -124,7 +124,7 @@ export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
             <Typography
               variant="h4"
               weight="semibold"
-              className="flex gap-3 items-end"
+              className="flex gap-3 items-end text-[24px]"
             >
               <Image
                 src={'/yellowChart.svg'}

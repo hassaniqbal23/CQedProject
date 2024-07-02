@@ -53,7 +53,7 @@ export const CommunityCard = ({
             {loading ? (
               <Skeleton className="h-6 w-40 mb-2" />
             ) : (
-              <Typography variant="h5" weight="semibold">
+              <Typography className='text-lg' variant="h5" weight="semibold">
                 {title}
               </Typography>
             )}
@@ -62,8 +62,8 @@ export const CommunityCard = ({
             ) : (
               <Typography
                 variant="p"
-                weight="regular"
-                className="text-gray-500"
+                weight="semibold"
+                className="text-[#08090A]"
               >
                 {members} {members > 1 ? 'Members' : 'Member'}
               </Typography>
