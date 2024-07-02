@@ -18,6 +18,7 @@ import { SelectV2Creatable } from '@/components/ui/select-v2/select-v2';
 import DatePicker from '@/components/ui/date-picker/date-picker';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { getSingleCountry } from '@/lib/utils';
+import MultipleSelector from '../From/MultiSelect';
 
 const formSchema = z.object({
   fullname: z.string().min(2).max(50).nonempty('Name is required'),
@@ -248,10 +249,10 @@ export const CreateProfile: React.FC = () => {
                               value={
                                 field.value
                                   ? {
-                                      label: getSingleCountry(field?.value)
-                                        ?.label,
-                                      value: field.value,
-                                    }
+                                    label: getSingleCountry(field?.value)
+                                      ?.label,
+                                    value: field.value,
+                                  }
                                   : undefined
                               }
                               onChange={(e: any) => {
@@ -275,34 +276,17 @@ export const CreateProfile: React.FC = () => {
                       return (
                         <>
                           <FormLabel className="text-sm">Languages</FormLabel>
-                          <SelectV2Creatable
-                            isMulti
+                          <MultipleSelector
+                            {...field}
                             value={field.value}
-                            onChange={(e) => {
-                              field.onChange(e);
-                            }}
+                            onChange={field.onChange}
                             options={[
-                              {
-                                label: 'English',
-                                value: 'english',
-                              },
-                              {
-                                label: 'Spanish',
-                                value: 'spanish',
-                              },
-                              {
-                                label: 'French',
-                                value: 'french',
-                              },
-                              {
-                                label: 'German',
-                                value: 'german',
-                              },
-                              {
-                                label: 'Italian',
-                                value: 'italian',
-                              },
+                              { value: 'English', label: 'English' },
+                              { value: 'Udru', label: 'Udru' },
+                              { value: 'Spanish', label: 'Spanish' },
+                              { value: 'French', label: 'French' },
                             ]}
+                            creatable={true}
                             placeholder="Select Languages"
                           />
                           <FormMessage />

@@ -317,8 +317,6 @@ const MultipleSelector = React.forwardRef<
         </CommandItem>
       );
 
-      console.log(inputValue);
-
       if (!onSearch && inputValue.length > 0) {
         return Item;
       }
@@ -460,7 +458,7 @@ const MultipleSelector = React.forwardRef<
                                 className={cn(
                                   'cursor-pointer',
                                   option.disable &&
-                                    'cursor-default text-muted-foreground'
+                                  'cursor-default text-muted-foreground'
                                 )}
                               >
                                 {option.render ? option.render() : option.label}

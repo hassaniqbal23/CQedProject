@@ -22,11 +22,10 @@ import { FormInput } from '../From/FormInput';
 import ImageUpload from '../ImageUpload/ImageUpload';
 import ChipSelector from '@/components/ui/ChipSelect/ChipSelector';
 import { SelectCountry } from '@/components/ui/select-v2/select-v2-components';
-import MultipleSelector from '../From/MultiSelect';
 import DatePickerDemo from '@/components/ui/date-picker/date-picker';
 import { userUpdateProfile } from '@/app/api/users';
 import { IUserInformation } from '@/app/globalContext/types';
-import { getCountry } from '@/app/utils/helpers';
+import MultipleSelector from '../From/MultiSelect';
 
 const formSchema = z.object({
   full_name: z.string().min(2, {
@@ -246,9 +245,9 @@ const StudentProfileSettings = () => {
                           value={
                             field.value
                               ? {
-                                  label: getSingleCountry(field?.value)?.label,
-                                  value: field.value,
-                                }
+                                label: getSingleCountry(field?.value)?.label,
+                                value: field.value,
+                              }
                               : undefined
                           }
                           onChange={(newValue: any) => {
@@ -323,6 +322,7 @@ const StudentProfileSettings = () => {
                             { value: 'Spanish', label: 'Spanish' },
                             { value: 'French', label: 'French' },
                           ]}
+                          creatable={true}
                           placeholder="Add Languages "
                         />
                       </FormControl>
