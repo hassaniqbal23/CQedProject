@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "types": ["/app/globalContext/types.d.ts"],
-    "typeRoots": ["/node_modules/@types", "./app/globalContext"],
+    "types": ["app/globalContext/types.d.ts"],
+    "typeRoots": ["node_modules/@types", "app/globalContext"],
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -33,8 +33,8 @@
     ".next/types/**/*.ts",
     "components/ImageCropper/imageDialog.js",
     "app/utils/canvasUtils.js",
-    "app/universities/onboarding/about-user",
-    "app/globalContext/types.d.ts"
+    "app/globalContext/types.d.ts",
+    "app/universities/onboarding/about-user"
   ],
   "exclude": ["node_modules"]
 }
