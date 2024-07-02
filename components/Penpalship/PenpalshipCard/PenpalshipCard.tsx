@@ -149,11 +149,13 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
               {title}
             </span>
           </Typography>
-          <Typography variant="p" weight="semibold" className="mb-1 text-xs">
-            <Link href="" className="text-primary-500">
-              {mutualFriend || '\u00A0'}
-            </Link>
-          </Typography>
+          {mutualFriend && (
+            <Typography variant="p" weight="semibold" className="mb-1 text-xs">
+              <Link href="" className="text-primary-500">
+                {mutualFriend || '\u00A0'}
+              </Link>
+            </Typography>
+          )}
           <Typography
             variant="body"
             weight="medium"
