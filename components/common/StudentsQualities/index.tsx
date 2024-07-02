@@ -10,6 +10,7 @@ import { userUpdateProfile } from '@/app/api/users';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { toast } from 'sonner'; // Assuming 'sonner' is a valid toast library
 import { IUserInformation } from '@/app/globalContext/types';
+import { Button } from '@/components/ui/button/button';
 
 interface IUserHobbiesUpdate {
   hobbies: string[];
@@ -21,6 +22,28 @@ const StudentsQualities: React.FC = () => {
   const queryClient = useQueryClient();
   const [selectedHobbies, setSelectedHobbies] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showInput, setShowInput] = useState(false);
+  const [customInterest, setCustomInterest] = useState('');
+  const [options, setOptions] = useState([
+    { label: 'Gardening', value: 'Gardening' },
+    { label: 'Adventure', value: 'Adventure' },
+    { label: 'Fitness', value: 'Fitness' },
+    { label: 'Music', value: 'Music' },
+    { label: 'Nature', value: 'Nature' },
+    { label: 'Dancing', value: 'Dancing' },
+    { label: 'Beauty', value: 'Beauty' },
+    { label: 'Drawing', value: 'Drawing' },
+    { label: 'Handicraft', value: 'Handicraft' },
+    { label: 'Sports', value: 'Sports' },
+    { label: 'Writing', value: 'Writing' },
+    { label: 'Books', value: 'Books' },
+    { label: 'Culture', value: 'Culture' },
+    { label: 'Animals', value: 'Animals' },
+    { label: 'Cooking', value: 'Cooking' },
+    { label: 'Movies', value: 'Movies' },
+    { label: 'Computers', value: 'Computers' },
+  ]);
+
   const router = useRouter();
 
   const { mutate: updateProfile, isLoading: isUpdatingProfile } = useMutation(
@@ -52,6 +75,34 @@ const StudentsQualities: React.FC = () => {
     }
   };
 
+  const handleAddInterest = () => {
+    setShowInput((prev) => !prev);
+  };
+
+  const handleCustomInterestChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setCustomInterest(e.target.value);
+  };
+
+  const handleAddCustomInterest = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === 'Enter' && customInterest.trim() !== '') {
+      const newOption = {
+        label: customInterest.trim(),
+        value: customInterest.trim(),
+      };
+      setOptions((prevOptions) => [newOption, ...prevOptions]);
+      setSelectedHobbies((prevHobbies) => [
+        ...prevHobbies,
+        customInterest.trim(),
+      ]);
+      setCustomInterest('');
+      setShowInput(false);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col max-w-3xl mx-auto mt-8 h-screen items-center">
@@ -79,29 +130,29 @@ const StudentsQualities: React.FC = () => {
             rounded
             multiSelect
             size="md"
-            options={[
-              { label: 'Gardening', value: 'Gardening' },
-              { label: 'Adventure', value: 'Adventure' },
-              { label: 'Fitness', value: 'Fitness' },
-              { label: 'Music', value: 'Music' },
-              { label: 'Nature', value: 'Nature' },
-              { label: 'Dancing', value: 'Dancing' },
-              { label: 'Beauty', value: 'Beauty' },
-              { label: 'Drawing', value: 'Drawing' },
-              { label: 'Handicraft', value: 'Handicraft' },
-              { label: 'Sports', value: 'Sports' },
-              { label: 'Writing', value: 'Writing' },
-              { label: 'Books', value: 'Books' },
-              { label: 'Culture', value: 'Culture' },
-              { label: 'Animals', value: 'Animals' },
-              { label: 'Cooking', value: 'Cooking' },
-              { label: 'Movies', value: 'Movies' },
-              { label: 'Computers', value: 'Computers' },
-              { label: 'Others - Tell us what.', value: 'Others' },
-            ]}
+            options={options}
             onChange={(value) => setSelectedHobbies(value as string[])}
           />
         </div>
+        <Button
+          onClick={handleAddInterest}
+          variant={'outline'}
+          className="mt-3  px-3 py-2 rounded-full"
+        >
+          Add Your Own Interest
+        </Button>
+        {showInput && (
+          <div className="mt-3 w-96">
+            <input
+              type="text"
+              value={customInterest}
+              onChange={handleCustomInterestChange}
+              onKeyDown={handleAddCustomInterest}
+              placeholder="Search for your hobbies or interests"
+              className="border rounded px-3 py-2 w-full"
+            />
+          </div>
+        )}
       </div>
       <BottomNavbar
         isBackButton={true}
