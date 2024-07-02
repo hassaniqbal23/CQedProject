@@ -49,7 +49,7 @@ export const CommunityMembersCard = ({
         {loading ? (
           <Skeleton className="h-8 w-32" />
         ) : (
-          <Typography variant="h3" weight="bold">
+          <Typography variant="h3" weight="semibold">
             Members
           </Typography>
         )}

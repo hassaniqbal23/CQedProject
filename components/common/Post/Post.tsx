@@ -120,7 +120,7 @@ export const Post: FC<IProps> = ({
 
               <div className="flex flex-col mb-4 ">
                 <div className="text-xl font-semibold ml-3">{userFullName}</div>
-                <div className="text-gray-600 text-sm ml-3 mt-[7px]">
+                <div className="text-gray-600 text-sm ml-3 mt-[5px]">
                   <span>@{username}</span>
                   <span className="mx-1">•</span>
                   <span>{dayjs(created_at).fromNow()}</span>
