@@ -251,10 +251,10 @@ function StudentsDetailsFrom() {
                             value={
                               field.value
                                 ? {
-                                  label: getSingleCountry(field?.value)
-                                    ?.label,
-                                  value: field.value,
-                                }
+                                    label: getSingleCountry(field?.value)
+                                      ?.label,
+                                    value: field.value,
+                                  }
                                 : undefined
                             }
                             onChange={(e: any) => {
