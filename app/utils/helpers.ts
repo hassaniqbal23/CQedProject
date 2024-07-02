@@ -1,5 +1,7 @@
 //Helper functions
 import countriesData from '@/public/countries/countries.json';
+import { IPenpal } from '../globalContext/types';
+import { IComment, ICommunityPost } from '@/types/global';
 
 export const truncateText = (desc: string | any, wordsLimit: number) => {
   const words = desc?.split(' ');
@@ -45,3 +47,51 @@ export function getFcmTokenFromLocalStorage(
   }
   return null;
 }
+
+
+export const extractUserInfo = (feeds: ICommunityPost, penpals: IPenpal[]) => {
+  const result = [];
+  
+  if (feeds.User) {
+    result.push({
+      id: feeds.User.id,
+      display: feeds.User.name,
+      image: feeds.User.attachment ? feeds.User.attachment.file_path : ''
+    });
+  }
+
+  if (feeds.comments && Array.isArray(feeds.comments)) {
+    feeds.comments.forEach((comment: IComment) => {
+      if (comment.User) {
+        result.push({
+          id: comment.User.id,
+          display: comment.User.name,
+          image: comment.User.attachment ? comment.User.attachment.file_path : ''
+        });
+      }
+    });
+  }
+
+  if(penpals && penpals.length > 0) {
+    penpals.forEach((penpal: IPenpal) => {
+      if (penpal.friend) {
+        result.push({
+          id: penpal.friend.id,
+          display: penpal.friend.profile?.full_name,
+          image: penpal.friend.attachment ? penpal.friend.attachment.file_path : ''
+        });
+      }
+    });
+  }
+
+  const uniqueResult = Array.from(new Map(result.map(user => [user.id, user])).values());
+
+
+  return uniqueResult;
+};
+
+export const formatMentions = (text: string) => {
+  const mentionRegex = /@\[([^\]]+)\]\((\d+)\)/g;
+  const formattedText = text.replace(mentionRegex, (_, display, id) => `<b>@${display}</b>`);
+  return formattedText;
+};
