@@ -28,7 +28,7 @@ export const MainSidebar: Story = {
     sidebarLinks: [
       {
         icon: '/assets/sidebaricons/dashboard.svg',
-        title: 'Dashboard',
+        title: 'Home',
         path: '/admin/dashboard',
       },
       {
@@ -69,7 +69,7 @@ export const VerticalSidebar: Story = {
     sidebarLinks: [
       {
         icon: '/assets/sidebaricons/dashboard.svg',
-        title: 'Dashboard',
+        title: 'Home',
         path: '/admin/dashboard',
       },
       {
@@ -111,7 +111,7 @@ export const Horizontal: Story = {
     sidebarLinks: [
       {
         icon: '/assets/sidebaricons/dashboard.svg',
-        title: 'Dashboard',
+        title: 'Home',
         path: '/admin/dashboard',
       },
       {

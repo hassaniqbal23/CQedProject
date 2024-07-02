@@ -61,7 +61,7 @@ export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
             </Typography>
 
             <Button
-              className="px-3 text-base"
+              className="px-3 text-base rounded-lg"
               variant={'default'}
               icon={<Plus size={20} />}
               iconPosition="left"

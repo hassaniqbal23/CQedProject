@@ -10,6 +10,7 @@ const Notifications = () => {
         buttonText="Mark all as read"
         subTitle="Your latest update"
         title="Notifications"
+        linkType="teachers"
       />
     </div>
   );

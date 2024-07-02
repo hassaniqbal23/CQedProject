@@ -17,6 +17,7 @@ import { NotifcationPopover } from './NotifcationPopover/NotifcationPopover';
 import Link from 'next/link';
 import { Typography } from '../common/Typography/Typography';
 import { X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface PopNotification {
   onOpenChange: () => void;
@@ -25,6 +26,7 @@ interface PopNotification {
   IconName?: React.ComponentType | React.ReactNode;
   headTitle?: string;
   seeAllLink?: string;
+  linkType?: string;
 }
 
 export const PopNotifactions: React.FC<PopNotification> = ({
@@ -34,10 +36,12 @@ export const PopNotifactions: React.FC<PopNotification> = ({
   onClose,
   headTitle,
   seeAllLink,
+  linkType,
 }) => {
   dayjs.extend(relativeTime);
   const { notifications, countUnreadNotifications } = useGlobalState();
   const client = useQueryClient();
+  const route = useRouter();
 
   const {
     mutate: muateCommunityUserAcceptInvite,
@@ -120,6 +124,26 @@ export const PopNotifactions: React.FC<PopNotification> = ({
   const handelReadNotification = (id?: number) => {
     muateNotificationMarkRead({ id: id, status: true });
   };
+  const handleNotificationRedirect = (item: INotifications) => {
+    if (linkType) {
+      if (item?.penpal_id) {
+        route.push(`/${linkType}/profile/${item?.createdById}`);
+        onOpenChange();
+      }
+      if (
+        item.notificationType === 'POST_COMMENT' ||
+        item.notificationType === 'POST_LIKE' ||
+        item.notificationType === 'POST_COMMENT_LIKE'
+      ) {
+        route.push(`/${linkType}/dashboard`);
+        onOpenChange();
+      }
+      if (item.community_id) {
+        route.push(`/${linkType}/cq-communities/${item.community_id}`);
+        onOpenChange();
+      }
+    }
+  };
 
   return (
     <div>
@@ -145,6 +169,7 @@ export const PopNotifactions: React.FC<PopNotification> = ({
                 const createdAt = notification?.created_at ?? '';
                 return (
                   <Notification
+                    onClick={() => handleNotificationRedirect(notification)}
                     onMarkAsRead={() => handelReadNotification(notification.id)}
                     onDelete={() => muateNotificationDelete(notification.id)}
                     key={index}
@@ -159,7 +184,7 @@ export const PopNotifactions: React.FC<PopNotification> = ({
                       </>
                     }
                     actions={() => (
-                      <div className="block">
+                      <div className="block cursor-pointer">
                         <p className="text-xs text-gray-500 block">
                           {notification?.created_at &&
                             dayjs(createdAt).fromNow()}

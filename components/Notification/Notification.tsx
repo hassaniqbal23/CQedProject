@@ -10,6 +10,7 @@ export interface NotificationV2Props {
   actions?: (notification: any) => React.ReactNode;
   onMarkAsRead?: () => void;
   onDelete?: () => void;
+  onClick?: () => void;
 }
 
 export const Notification: React.FC<NotificationV2Props> = ({
@@ -19,10 +20,12 @@ export const Notification: React.FC<NotificationV2Props> = ({
   onMarkAsRead,
   onDelete,
   isRead,
+  onClick,
 }) => {
   return (
     <div
-      className={`w-full px-4 py-3 rounded-lg ${isRead ? '' : 'bg-primary-50'} mb-2`}
+      onClick={onClick}
+      className={`w-full px-4 py-3 rounded-lg ${isRead ? '' : 'bg-primary-50'} cursor-pointer hover:bg-primary-50 mb-2`}
     >
       <div className="flex justify-between items-center gap-5 rounded-md">
         <div className="flex items-center gap-5">

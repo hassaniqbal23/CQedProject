@@ -11,7 +11,7 @@ export const ProfileSkills: React.FC<SkillsProps> = ({ skills, title }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle className="text-xl">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-7 ">
