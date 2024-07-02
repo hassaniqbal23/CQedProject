@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button, Dropdown } from '@/components/ui';
+import { Dropdown } from '@/components/ui';
 import { Card } from '@/components/ui';
 import { Typography } from '@/components/common/Typography/Typography';
 import {
@@ -51,8 +51,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
   const route = useRouter();
   const { setSelectedConversationId } = useChatProvider();
   const { usersIBlocked } = useGlobalState();
-  const { sendRequest, isCreatingPenpal, deleteRequest, isDeletingPenpal } =
-    useSendPenpalRequest();
+  const { deleteRequest } = useSendPenpalRequest();
 
   const { module } = useModule();
 
