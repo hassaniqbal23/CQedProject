@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "types": ["./app/globalContext/types.d.ts"],
-    "typeRoots": ["./node_modules/@types", "./app/globalContext"],
+    "types": ["/app/globalContext/types.d.ts"],
+    "typeRoots": ["/node_modules/@types", "./app/globalContext"],
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
