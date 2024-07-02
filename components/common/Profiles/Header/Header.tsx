@@ -66,7 +66,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   const router = useRouter();
   const { module } = useModule();
   const queryClient = useQueryClient();
-  const { usersIBlocked } = useGlobalState();
+  const { usersIBlocked, userInformation } = useGlobalState();
   const mutualFriend = getMutualFriendsText(mutualFriends);
   const { flag = '', country: countryName = '' } = getCountry(country);
   const { setSelectedConversationId } = useChatProvider();
@@ -152,7 +152,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
           {name && (
             <div className="flex items-baseline">
               <h1 className={`font-bold mb-2 ${titleClass}`}>{name}</h1>
-              {userInformation.role.name === 'teacher' && (
+              {userInformation?.role?.name === 'teacher' && (
                 <Image
                   height={16}
                   width={16}
