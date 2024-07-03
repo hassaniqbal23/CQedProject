@@ -44,6 +44,7 @@ export interface IReplyComments {
   status: number;
   created_at: string;
   updated_at: string;
+  parentCommentId: number;
   User: {
     id?: number;
     name?: string;
