@@ -116,8 +116,10 @@ export function SignIn(props: SignInProps) {
   );
 
   const onSubmit: SubmitHandler<IAuthentication> = async (
-    data: IAuthentication
+    data: IAuthentication,
+    event: any
   ) => {
+    event.preventDefault();
     userLogin(data);
   };
 
