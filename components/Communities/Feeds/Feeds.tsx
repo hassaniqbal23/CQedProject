@@ -175,7 +175,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
 
   return (
     <div className="p-6 w-full bg-white rounded-xl shadow-md space-y-4">
-      <Typography variant="h3" weight="bold" className="flex items-center">
+      <Typography variant="h3" weight="semibold" className="flex items-center">
         <Image
           src="/membersCard.svg"
           alt="Members Icon"
