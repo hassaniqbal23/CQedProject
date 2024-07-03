@@ -117,6 +117,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
       (blockedUser: any) => blockedUser.blockedUserId === userId
     );
   };
+
   const getBlockedUserId = (userId: number | string) => {
     const blockedUser = usersIBlocked.find(
       (blockedUser: any) => blockedUser.blockedUserId === userId
@@ -132,7 +133,6 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
       blockProfile(Number(profileId));
     }
   };
-  console.log(isUserBlocked(Number(profileId)));
 
   const handleReport = (reportText?: string) => {
     if (reportText) {
