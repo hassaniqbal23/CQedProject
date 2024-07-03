@@ -34,6 +34,7 @@ export const ConversationUserSheet: FC<IProps> = ({
     {
       onSuccess: (data) => {
         queryClient.refetchQueries('get-users-i-blocked');
+        queryClient.refetchQueries('MyPenPals');
       },
       onError: (error) => {
         console.log('Error blocking user', error);
@@ -45,6 +46,7 @@ export const ConversationUserSheet: FC<IProps> = ({
     useMutation((blockedUserId: number) => unblockUser(blockedUserId), {
       onSuccess: () => {
         queryClient.refetchQueries('get-users-i-blocked');
+        queryClient.refetchQueries('MyPenPals');
       },
       onError: (error) => {
         console.log('Error unblocking user', error);

@@ -91,6 +91,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
     {
       onSuccess: (data) => {
         queryClient.refetchQueries('get-users-i-blocked');
+        queryClient.refetchQueries('MyPenPals');
       },
       onError: (error) => {
         console.log('Error blocking user', error);
@@ -103,6 +104,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
     {
       onSuccess: () => {
         queryClient.refetchQueries('get-users-i-blocked');
+        queryClient.refetchQueries('MyPenPals');
       },
       onError: (error) => {
         console.log('Error unblocking user', error);
@@ -209,7 +211,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
         )}
         {buttonProps?.isVisbile && (
           <>
-            {buttonProps.isFriend ? (
+            {buttonProps.isFriend || getBlockedUserId(Number(profileId)) ? (
               <div className="flex">
                 <CreateChatModal
                   defaultReceiverId={Number(profileId)}
