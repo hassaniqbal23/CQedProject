@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Typography } from '@/components/common/Typography/Typography';
 import {
@@ -19,6 +19,7 @@ import {
 } from '@/app/api/communities';
 import { ICommunity, ICommunityJoined } from '@/types/community';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import Pagination from '@/components/common/pagination/pagination';
 
 interface IProps {
   module?: 'students' | 'teachers';
@@ -27,6 +28,37 @@ export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
   const route = useRouter();
   const client = useQueryClient();
   const { joinedCommunities } = useGlobalState();
+
+  const [paginationMycommunity, setPaginationMycommunity] = useState<{
+    mycommunityPage: number;
+    mycommunityLimit: number;
+  }>({
+    mycommunityPage: 1,
+    mycommunityLimit: 10,
+  });
+
+  const [paginationCommunityJoined, setPaginationCommunityJoined] = useState<{
+    communityJoinedPage: number;
+    communityJoinedLimit: number;
+  }>({
+    communityJoinedPage: 1,
+    communityJoinedLimit: 10,
+  });
+
+  const [paginationCommunitiesRequested, setPaginationCommunitiesRequested] =
+    useState<{
+      communitiesRequestedPage: number;
+      communitiesRequestedLimit: number;
+    }>({
+      communitiesRequestedPage: 1,
+      communitiesRequestedLimit: 10,
+    });
+
+  const { mycommunityPage, mycommunityLimit } = paginationMycommunity;
+  const { communityJoinedPage, communityJoinedLimit } =
+    paginationCommunityJoined;
+  const { communitiesRequestedPage, communitiesRequestedLimit } =
+    paginationCommunitiesRequested;
 
   // useEffect(() => {
   //   client.refetchQueries('UserJoinedCommunities')
@@ -40,16 +72,23 @@ export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
   );
 
   const { data: communityJoined, isLoading: isFetchingCommunityJoined } =
-    useQuery(['getCommunityJoined', 1, 10], () => getCommunityJoined(1, 10), {
-      onSuccess() {
-        client.refetchQueries('UserJoinedCommunities');
-      },
-    });
+    useQuery(
+      ['getCommunityJoined', communityJoinedPage, communityJoinedLimit],
+      () => getCommunityJoined(communityJoinedPage, communityJoinedLimit),
+      {
+        onSuccess() {
+          client.refetchQueries('UserJoinedCommunities');
+        },
+      }
+    );
 
   const { data: mycommunity, isLoading: isFetchingMycommunity } = useQuery(
-    ['getMyCommunity', 1, 10],
-    () => getMyCommunity(1, 10)
+    ['getMyCommunity', mycommunityPage, mycommunityLimit],
+    () => getMyCommunity(mycommunityPage, mycommunityLimit)
   );
+  const mycommunityTotalCount = mycommunity?.totalCount || 0;
+  const communityJoinedTotalCount = communityJoined?.totalCount || 0;
+  const communitiesRequestedTotalCount = communitiesRequested?.totalCount || 0;
 
   return (
     <div>
@@ -135,6 +174,28 @@ export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
                 />
               );
             })}
+          {mycommunity?.data?.length > 9 && (
+            <div className="flex justify-end py-3">
+              <Pagination
+                currentPage={mycommunityPage}
+                totalPages={Math.ceil(mycommunityTotalCount / mycommunityLimit)}
+                pageSize={mycommunityLimit}
+                onPageChange={(pageNumber: number) => {
+                  setPaginationMycommunity((prev) => ({
+                    ...prev,
+                    mycommunityPage: pageNumber,
+                  }));
+                }}
+                totalCount={mycommunityTotalCount}
+                setPageSize={(pageSize) =>
+                  setPaginationMycommunity((prev) => ({
+                    ...prev,
+                    mycommunityLimit: pageSize,
+                  }))
+                }
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
       <Card className="rounded-xl px-5 mt-10">
@@ -198,6 +259,30 @@ export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
                 );
               }
             )}
+          {communityJoined?.data?.length > 9 && (
+            <div className="flex justify-end py-3">
+              <Pagination
+                currentPage={communityJoinedPage}
+                totalPages={Math.ceil(
+                  communityJoinedTotalCount / communityJoinedLimit
+                )}
+                pageSize={communityJoinedLimit}
+                onPageChange={(pageNumber: number) => {
+                  setPaginationCommunityJoined((prev) => ({
+                    ...prev,
+                    communityJoinedPage: pageNumber,
+                  }));
+                }}
+                totalCount={communityJoinedTotalCount}
+                setPageSize={(pageSize) =>
+                  setPaginationCommunityJoined((prev) => ({
+                    ...prev,
+                    communityJoinedLimit: pageSize,
+                  }))
+                }
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
       <Card className="rounded-xl px-5 mt-10">
@@ -261,6 +346,30 @@ export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
                 );
               }
             )}
+          {communitiesRequested?.data?.length > 9 && (
+            <div className="flex justify-end py-3">
+              <Pagination
+                currentPage={communitiesRequestedPage}
+                totalPages={Math.ceil(
+                  communitiesRequestedTotalCount / communitiesRequestedLimit
+                )}
+                pageSize={communitiesRequestedLimit}
+                onPageChange={(pageNumber: number) => {
+                  setPaginationCommunitiesRequested((prev) => ({
+                    ...prev,
+                    communitiesRequestedPage: pageNumber,
+                  }));
+                }}
+                totalCount={communitiesRequestedTotalCount}
+                setPageSize={(pageSize) =>
+                  setPaginationCommunitiesRequested((prev) => ({
+                    ...prev,
+                    communitiesRequestedLimit: pageSize,
+                  }))
+                }
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
