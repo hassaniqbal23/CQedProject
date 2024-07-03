@@ -110,7 +110,7 @@ const ProfileLink = ({
                     {item.icon as React.ReactNode}
                     <Link
                       href={item.path || ''}
-                      className="text-sm w-min p-0 m-0 ml-2 capitalize whitespace-nowrap h-min font-semibold "
+                      className="text-sm w-min p-0 m-0 ml-2 capitalize whitespace-nowrap h-min font-medium leading-5"
                     >
                       {item.title}
                     </Link>

@@ -61,7 +61,7 @@ export const MyPenpals: React.FC = () => {
 
   return (
     <div>
-      <div className="flex pt-5 justify-between flex-wrap items-end">
+      <div className="flex pt-5 justify-between flex-wrap items-center">
         <Typography variant="h2" weight="semibold" className="mb-4 text-[24px]">
           My Global Friends
         </Typography>
@@ -71,7 +71,7 @@ export const MyPenpals: React.FC = () => {
           placeholder="Search for Penpal"
         />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
         {penpals.map((item: any, index: number) => (
           <PenpalshipCard
             key={index}
