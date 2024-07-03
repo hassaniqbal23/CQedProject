@@ -71,7 +71,6 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   const { flag = '', country: countryName = '' } = getCountry(country);
   const { setSelectedConversationId } = useChatProvider();
   const [report, setReport] = useState(false);
-
   const { mutate: reportUserMutation, isLoading: isReportingUser } =
     useMutation(
       ({ userId, reportText }: { userId: number; reportText: string }) =>
@@ -154,7 +153,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
           {name && (
             <div className="flex items-baseline">
               <h1 className={`font-bold mb-2 ${titleClass}`}>{name}</h1>
-              {userInformation?.role?.name === 'teacher' && (
+              {role === 'teacher' && (
                 <Image
                   height={16}
                   width={16}

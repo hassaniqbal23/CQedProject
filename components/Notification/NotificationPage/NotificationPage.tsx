@@ -14,6 +14,7 @@ import {
 } from '@/app/api/auth';
 import { ICommunityAcceptInvite, INotifications } from '@/types/auth';
 import { useRouter } from 'next/navigation';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface NotificationPageProps {
   title: string;
@@ -34,6 +35,7 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
   const { notifications } = useGlobalState();
   const client = useQueryClient();
   const route = useRouter();
+  const { module } = useModule();
 
   const {
     mutate: muateCommunityUserAcceptInvite,
@@ -120,7 +122,7 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
   const handleNotificationRedirect = (item: INotifications) => {
     if (linkType) {
       if (item?.penpal_id) {
-        route.push(`/${linkType}/profile/${item?.createdById}`);
+        route.push(`/${module}/profile/${item?.createdById}`);
       }
       if (
         item.notificationType === 'POST_COMMENT' ||
@@ -130,10 +132,10 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
         item.notificationType === 'POST_COMMENT_REPLY' ||
         item.notificationType === 'POST_SHARED'
       ) {
-        route.push(`/${linkType}/dashboard`);
+        route.push(`/${module}/dashboard`);
       }
       if (item.community_id) {
-        route.push(`/${linkType}/cq-communities/${item.community_id}`);
+        route.push(`/${module}/cq-communities/${item.community_id}`);
       }
     }
   };
