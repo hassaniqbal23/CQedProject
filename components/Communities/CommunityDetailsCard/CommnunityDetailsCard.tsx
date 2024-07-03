@@ -43,7 +43,7 @@ export const CommunityDetailsCard = ({
               <Typography
                 variant="h3"
                 weight="semibold"
-                className="text-black font-sans   leading-normal"
+                className="text-black leading-normal"
               >
                 {title}
               </Typography>
