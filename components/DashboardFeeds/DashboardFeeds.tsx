@@ -13,7 +13,7 @@ import {
   getFeeds,
 } from '@/app/api/feeds';
 import { useGlobalState } from '@/app/globalContext/globalContext';
-import React, { useCallback, useState } from 'react';
+import React, { use, useCallback, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Separator } from '../ui';
 import { Post } from '../common/Post/Post';
@@ -33,6 +33,7 @@ import dynamic from 'next/dynamic';
 import { Typography } from '../common/Typography/Typography';
 import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 import { extractUserInfo, formatMentions } from '@/app/utils/helpers';
+import ReplyComment from '../Comment/ReplyComment/ReplyComment';
 
 const InfiniteScrollObserver = dynamic(
   () => import('../common/InfiniteScrollObserver/InfiniteScrollObserver'),
@@ -57,6 +58,7 @@ function DashboardFeeds() {
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
   const [replyLoading, setReplyLoading] = useState(false);
   const { sendRequest, isCreatingPenpal } = useSendPenpalRequest();
+  const [replyCommentLoading, setReplyCommentLoading] = useState(false);
   const { commentId, openCommentSection, openReply, replyId } = commentSection;
 
   const [limit, setLimit] = useState(10);
@@ -139,6 +141,7 @@ function DashboardFeeds() {
             openCommentSection: true,
           });
           setReplyLoading(false);
+          setReplyCommentLoading(false);
         },
       }
     );
@@ -171,8 +174,6 @@ function DashboardFeeds() {
     setIsFetchingNextPage(true);
     setLimit((prev) => prev + 10);
   }, [isFetchingNextPage, data?.data.data.length, data?.data.totalCount]);
-
-  console.log(openReply);
 
   return (
     <div className="w-full px-2 gap-10 ">
@@ -377,6 +378,7 @@ function DashboardFeeds() {
                                             reply: IReplyComments,
                                             index: number
                                           ) => {
+                                            console.log(reply);
                                             const liked = reply?.likes?.find(
                                               (i) =>
                                                 i.User.id ===
@@ -384,12 +386,20 @@ function DashboardFeeds() {
                                             )
                                               ? true
                                               : false;
+
+                                            const repliedComment =
+                                              item?.comments?.find(
+                                                (item) =>
+                                                  item.id ===
+                                                  reply.parentCommentId
+                                              );
+
                                             return (
                                               <div
                                                 className="mb-3 ml-3 px-2"
                                                 key={index}
                                               >
-                                                <Comment
+                                                <ReplyComment
                                                   avatarUrl={
                                                     reply.User?.attachment
                                                       ?.file_path ||
@@ -400,13 +410,6 @@ function DashboardFeeds() {
                                                   )}
                                                   user={reply?.User?.name || ''}
                                                   created_at={reply?.created_at}
-                                                  handleComment={() => {
-                                                    setCommentSection({
-                                                      ...commentSection,
-                                                      replyId: reply.id,
-                                                      openReply: true,
-                                                    });
-                                                  }}
                                                   onLike={() =>
                                                     likeComment(reply.id)
                                                   }
@@ -415,7 +418,40 @@ function DashboardFeeds() {
                                                   }
                                                   hasUserLiked={liked}
                                                   likes={reply._count.likes}
-                                                  showComment={false}
+                                                  mentionUsers={mentionUser}
+                                                  submitLoading={
+                                                    replyCommentLoading
+                                                  }
+                                                  onValueChange={(
+                                                    value,
+                                                    ids
+                                                  ) => {
+                                                    if (value) {
+                                                      setReplyCommentLoading(
+                                                        true
+                                                      );
+                                                      communityPostCommentApi({
+                                                        id: item.id,
+                                                        content: value,
+                                                        parentCommentId:
+                                                          reply.id,
+                                                        mentionIds: ids,
+                                                      });
+                                                    }
+                                                  }}
+                                                  replyToName={
+                                                    repliedComment
+                                                      ? repliedComment?.User
+                                                          .name
+                                                      : ''
+                                                  }
+                                                  replyToText={
+                                                    repliedComment
+                                                      ? formatMentions(
+                                                          repliedComment?.content
+                                                        )
+                                                      : ''
+                                                  }
                                                 />
                                               </div>
                                             );
