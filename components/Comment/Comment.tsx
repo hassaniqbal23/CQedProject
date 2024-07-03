@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Avatar, AvatarImage } from '../ui';
 import { Typography } from '../common/Typography/Typography';
 import dayjs from 'dayjs';
-import { Heart, MessageCircleMore } from 'lucide-react';
+import { MessageCircle, ThumbsUp } from 'lucide-react';
 
 type CommentProps = {
   user: string;
@@ -68,21 +68,21 @@ export const Comment: React.FC<CommentProps> = ({
             </Typography>
           </div>
           <Typography variant="p" weight="regular">
-            {text}
+            <span dangerouslySetInnerHTML={{ __html: text }}></span>
           </Typography>
         </div>
       </div>
       <div className="flex gap-2 ml-14 mt-3">
         <div className="flex items-center">
-          <Heart
+          <ThumbsUp
             onClick={handleLike}
-            className={`h-5 w-5 mr-1 cursor-pointer ${liked ? 'text-red-500 fill-red-500' : ''}`}
+            className={`h-5 w-5 mr-1 cursor-pointer ${liked ? 'text-red-500' : ''}`}
           />
           <span className="text-md">{likeCount}</span>
         </div>
         {showComment && (
           <div className="flex items-center ">
-            <MessageCircleMore
+            <MessageCircle
               onClick={handleComment}
               className={`h-5 w-5 mr-1 cursor-pointer ${replies ? 'text-blue-500 fll-blue-500' : ''}`}
             />

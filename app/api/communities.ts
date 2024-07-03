@@ -108,6 +108,7 @@ export const communityPostComment = (payload: {
   communityPostId: number;
   content: string;
   parentCommentId?: number;
+  mentionIds?: number[];
 }) => {
   return http.post(
     `/community-post-comment/create-community-post-comment`,
@@ -157,6 +158,12 @@ export const getStudentsFeeds = (
 
 export const getStudentCommunities = (id: number) => {
   return http.get(`/users/${id}/communities`);
+};
+
+export const getCommunityRequested = (page: number = 1, limit: number = 10) => {
+  return http
+    .get(`/community/communities-requested?page=${page}&limit=${limit}`)
+    .then((res) => res.data);
 };
 
 export const getCommunityJoined = (page: number = 1, limit: number = 10) => {

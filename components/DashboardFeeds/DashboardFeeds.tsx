@@ -32,6 +32,7 @@ import FeedsSkeleton from '../common/FeedsSkeleton/FeedsSkeleton';
 import dynamic from 'next/dynamic';
 import { Typography } from '../common/Typography/Typography';
 import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
+import { extractUserInfo, formatMentions } from '@/app/utils/helpers';
 
 const InfiniteScrollObserver = dynamic(
   () => import('../common/InfiniteScrollObserver/InfiniteScrollObserver'),
@@ -111,17 +112,20 @@ function DashboardFeeds() {
         id: number;
         content: string;
         parentCommentId?: number;
+        mentionIds?: number[];
       }) => {
         if (requestBody.parentCommentId) {
           return communityPostComment({
             communityPostId: requestBody.id,
             content: requestBody.content,
             parentCommentId: requestBody.parentCommentId,
+            mentionIds: requestBody.mentionIds,
           });
         } else {
           return communityPostComment({
             communityPostId: requestBody.id,
             content: requestBody.content,
+            mentionIds: requestBody.mentionIds,
           });
         }
       },
@@ -218,6 +222,11 @@ function DashboardFeeds() {
                   })
                   .find((i: IPenpal) => i?.receiverId === item?.User?.id);
 
+                const mentionUser = extractUserInfo(
+                  item,
+                  myPenpals.filter((i) => i.status === 'ACCEPTED')
+                ).filter((item) => item.id !== userInformation?.id);
+
                 return (
                   <div
                     key={index}
@@ -305,12 +314,14 @@ function DashboardFeeds() {
                     {commentId === item.id && openCommentSection ? (
                       <div className="py-3 px-3">
                         <CommentInput
+                          users={mentionUser || []}
                           loading={!replyLoading && isCreatingComments}
-                          onValueChange={(value) => {
+                          onValueChange={(value, ids) => {
                             if (value) {
                               communityPostCommentApi({
                                 id: item.id,
                                 content: value,
+                                mentionIds: ids,
                               });
                             }
                           }}
@@ -340,7 +351,7 @@ function DashboardFeeds() {
                                       comment.User?.attachment?.file_path ||
                                       '/assets/profile/teacherprofile.svg'
                                     }
-                                    text={comment?.content}
+                                    text={formatMentions(comment?.content)}
                                     user={comment?.User?.name || ''}
                                     created_at={comment?.created_at}
                                     handleComment={() => {
@@ -382,13 +393,15 @@ function DashboardFeeds() {
                                                       ?.file_path ||
                                                     '/assets/profile/teacherprofile.svg'
                                                   }
-                                                  text={reply?.content}
+                                                  text={formatMentions(
+                                                    reply?.content
+                                                  )}
                                                   user={reply?.User?.name || ''}
                                                   created_at={reply?.created_at}
                                                   handleComment={() => {
                                                     setCommentSection({
                                                       ...commentSection,
-                                                      replyId: comment.id,
+                                                      replyId: reply.id,
                                                       openReply: true,
                                                     });
                                                   }}
@@ -406,20 +419,24 @@ function DashboardFeeds() {
                                             );
                                           }
                                         )}
-                                      <CommentInput
-                                        loading={replyLoading}
-                                        onValueChange={(value) => {
-                                          if (value) {
-                                            setReplyLoading(true);
-                                            communityPostCommentApi({
-                                              id: item.id,
-                                              content: value,
-                                              parentCommentId: comment.id,
-                                            });
-                                          }
-                                        }}
-                                      />
                                     </div>
+                                  )}
+                                  {replyId === comment.id && openReply && (
+                                    <CommentInput
+                                      users={mentionUser || []}
+                                      loading={replyLoading}
+                                      onValueChange={(value, ids) => {
+                                        if (value) {
+                                          setReplyLoading(true);
+                                          communityPostCommentApi({
+                                            id: item.id,
+                                            content: value,
+                                            parentCommentId: replyId,
+                                            mentionIds: ids,
+                                          });
+                                        }
+                                      }}
+                                    />
                                   )}
                                 </div>
                               );

@@ -129,3 +129,25 @@
 .quill-container-height .ql-container {
   background-color: #f8f9fb;
 }
+
+.mention-suggestion {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.mention-suggestion:hover {
+  background-color: var(--primary-500);
+  color: white;
+}
+
+/* Custom styles for mentions */
+.mention {
+  font-weight: 800 !important;
+  background-color: transparent !important;
+}
+
+/* Additional styles if needed */
+.mention-input {
+  background-color: #f3f4f6;
+  border-radius: 9999px;
+}

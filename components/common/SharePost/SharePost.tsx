@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import Modal from '../Modal/Modal';
 import { Typography } from '../Typography/Typography';
-import { Avatar, AvatarImage, Button, Separator, Textarea } from '@/components/ui';
+import {
+  Avatar,
+  AvatarImage,
+  Button,
+  Separator,
+  Textarea,
+} from '@/components/ui';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { SelectV2 } from '@/components/ui/select-v2/select-v2';
 import Image from 'next/image';
@@ -37,7 +43,9 @@ function SharePost({
 }: ISharePost) {
   const { joinedCommunities } = useGlobalState();
   const [textAreaValue, setTextAreaValue] = useState('');
-  const [selectedCommunityId, setSelectedCommunityId] = useState<number | null>(null);
+  const [selectedCommunityId, setSelectedCommunityId] = useState<number | null>(
+    null
+  );
 
   const customStyles = {
     control: (provided: any) => ({

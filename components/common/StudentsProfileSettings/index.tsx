@@ -245,9 +245,9 @@ const StudentProfileSettings = () => {
                           value={
                             field.value
                               ? {
-                                label: getSingleCountry(field?.value)?.label,
-                                value: field.value,
-                              }
+                                  label: getSingleCountry(field?.value)?.label,
+                                  value: field.value,
+                                }
                               : undefined
                           }
                           onChange={(newValue: any) => {
