@@ -188,6 +188,13 @@ export const AiMatch = () => {
                         menuPosition={'fixed'}
                         {...field}
                         label=""
+                        onChange={(...args) => {
+                          if (!args[0]) {
+                            form.setValue('country', undefined);
+                          } else {
+                            field.onChange(...args);
+                          }
+                        }}
                         placeholder="Select a country or leave it to chance"
                       />
                     </FormControl>
