@@ -134,10 +134,12 @@ export const PopNotifactions: React.FC<PopNotification> = ({
         onOpenChange();
       }
       if (
-        (item.notificationType === 'POST_COMMENT' ||
-          item.notificationType === 'POST_LIKE' ||
-          item.notificationType === 'POST_COMMENT_LIKE',
-        item.notificationType === 'POST_SHARED')
+        item.notificationType === 'POST_COMMENT' ||
+        item.notificationType === 'POST_LIKE' ||
+        item.notificationType === 'POST_COMMENT_LIKE' ||
+        item.notificationType === 'MENTION_IN_COMMENT' ||
+        item.notificationType === 'POST_COMMENT_REPLY' ||
+        item.notificationType === 'POST_SHARED'
       ) {
         route.push(`/${linkType}/dashboard`);
         onOpenChange();
@@ -183,7 +185,14 @@ export const PopNotifactions: React.FC<PopNotification> = ({
                     isRead={notification.isRead}
                     message={
                       <>
-                        <b>@{notification?.createdByUser?.name} </b>
+                        <b
+                          className="hover:text-primary-500 cursor-pointer"
+                          onClick={() =>
+                            handleNotificationRedirect(notification)
+                          }
+                        >
+                          @{notification?.createdByUser?.name}{' '}
+                        </b>
                         {notification?.body}
                       </>
                     }

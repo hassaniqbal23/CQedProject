@@ -20,12 +20,10 @@ export const Notification: React.FC<NotificationV2Props> = ({
   onMarkAsRead,
   onDelete,
   isRead,
-  onClick,
 }) => {
   return (
     <div
-      onClick={onClick}
-      className={`w-full px-4 py-3 rounded-lg ${isRead ? '' : 'bg-primary-50'} cursor-pointer hover:bg-primary-50 mb-2`}
+      className={`w-full px-4 py-3 rounded-lg ${isRead ? '' : 'bg-primary-50'} hover:bg-primary-50 mb-2`}
     >
       <div className="flex justify-between items-center gap-5 rounded-md">
         <div className="flex items-center gap-5">

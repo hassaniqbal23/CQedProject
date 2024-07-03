@@ -172,8 +172,6 @@ function DashboardFeeds() {
     setLimit((prev) => prev + 10);
   }, [isFetchingNextPage, data?.data.data.length, data?.data.totalCount]);
 
-  console.log(openReply);
-
   return (
     <div className="w-full px-2 gap-10 ">
       <div className="mb-4 flex flex-col gap-4">
