@@ -147,7 +147,7 @@ const ChatMessage: FC<Iprops> = ({
             <Typography
               variant="p"
               weight="semibold"
-              className={`${isMessageDeleted ? 'text-xs' : ''} font-medium font-montserrat max-w-lg rounded-sm leading-26 p-3 ${isCurrentUser ? 'text-[#4E5D78] bg-gray-50' : 'text-white bg-[#377DFF]'}`}
+              className={`${isMessageDeleted ? 'text-xs' : ''} font-medium font-montserrat max-w-lg rounded-sm leading-26 p-3 ${isCurrentUser ? 'text-[#4E5D78] bg-gray-50' : 'text-white bg-primary-500'}`}
             >
               {isMessageDeleted === false &&
                 Array.isArray(attachments) &&
