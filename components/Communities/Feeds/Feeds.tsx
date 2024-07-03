@@ -189,7 +189,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
       <div className="mt-4">
         <div className="flex justify-center p-4 w-full border-t border-gray-300">
           <CreatePostModal
-            icon="/uplode.svg"
+            icon="/upload.svg"
             title="Create a post"
             buttonTrigger={'Add Post'}
             buttonAction="Publish"

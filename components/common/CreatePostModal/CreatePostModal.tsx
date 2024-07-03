@@ -189,13 +189,13 @@ export const CreatePostModal = ({
               unoptimized={true}
             />
           </div>
-          <Typography variant="h4" weight="semibold" className="mt-4">
+          <Typography variant="h4" weight="semibold" className="mt-5">
             Upload files
           </Typography>
           <Typography
-            variant="h5"
-            className="text-center mt-2 text-[#5D5E68]"
-            weight="semibold"
+            variant="p"
+            className="text-center text-sm mt-3 text-[#5D5E68]"
+            weight="medium"
           >
             Share images or a single video in your post.
           </Typography>
@@ -203,11 +203,10 @@ export const CreatePostModal = ({
             variant={'default'}
             size={'md'}
             loading={isUploadingPost}
-            className="mt-2 rounded-full"
+            className="mt-3 rounded-full"
             onClick={handleFileUploadClick}
           >
-            Upload from computer
-            <Input
+            Choose Media            <Input
               type="file"
               id="picture"
               accept="image/*"
@@ -222,17 +221,16 @@ export const CreatePostModal = ({
         <div className="flex flex-col sm:flex-row ml-3">
           <div
             onClick={handleShowUpload}
-            className={`flex items-center mb-2 sm:mb-0 sm:mr-4 p-2 cursor-pointer ${
-              showUpload || uploadedImage
-                ? 'bg-[#ECEDF8] text-primary-500 rounded-full'
-                : 'text-[#4E5D78]'
-            }`}
+            className={`flex items-center mb-2 sm:mb-0 sm:mr-4 p-2 cursor-pointer ${showUpload || uploadedImage
+              ? 'bg-[#ECEDF8] text-primary-500 rounded-full'
+              : 'text-[#4E5D78]'
+              }`}
           >
             <Images
               className={`${showUpload || uploadedImage ? 'text-primary-500' : ''}`}
             />
             <span
-              className={`font-semibold ml-1 ${showUpload || uploadedImage ? 'text-primary-500' : ''}`}
+              className={`font-semibold text-sm ml-1 ${showUpload || uploadedImage ? 'text-primary-500' : ''}`}
             >
               Photo/Video
             </span>
@@ -242,15 +240,14 @@ export const CreatePostModal = ({
               setShowEmojiPicker((prev) => !prev);
               setShowUpload(false);
             }}
-            className={`relative flex items-center mb-2 sm:mb-0 p-2 cursor-pointer ${
-              showEmojiPicker
-                ? 'bg-[#ECEDF8] text-primary-500 rounded-full'
-                : 'text-[#4E5D78]'
-            }`}
+            className={`relative flex items-center mb-2 sm:mb-0 p-2 cursor-pointer ${showEmojiPicker
+              ? 'bg-[#ECEDF8] text-primary-500 rounded-full'
+              : 'text-[#4E5D78]'
+              }`}
           >
             <Smile className={`${showEmojiPicker ? 'text-primary-500' : ''}`} />
             <span
-              className={`font-semibold ml-1 ${showEmojiPicker ? 'text-primary-500' : ''}`}
+              className={`font-semibold text-sm ml-1 ${showEmojiPicker ? 'text-primary-500' : ''}`}
             >
               Feeling
             </span>
@@ -270,7 +267,7 @@ export const CreatePostModal = ({
           size="md"
           disabled={textAreaValue || uploadedImage ? false : true}
           loading={buttonActionLoading}
-          onClick={textAreaValue || uploadedImage ? handleOkClick : () => {}}
+          onClick={textAreaValue || uploadedImage ? handleOkClick : () => { }}
         >
           {buttonAction}
         </Button>
