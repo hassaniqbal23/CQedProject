@@ -244,7 +244,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
       onError: (err) => {
         console.log(err, '======> ERROR');
       },
-      enabled: userId !== 'undefined' && userId !== null ? true : false,
+      enabled: !!userId,
       retry: 100,
       retryDelay: 5000,
     }

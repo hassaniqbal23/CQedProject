@@ -28,7 +28,7 @@ let TypingTimeout: any;
 
 function ChatInput({ onSendMessage }: any) {
   const { currentConversation } = useChatProvider();
-  const { userInformation } = useGlobalState();
+  const { userInformation, usersIBlocked } = useGlobalState();
   const { userIsTyping } = useChatGuard();
   const { isConnected } = useSocket();
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
@@ -83,15 +83,20 @@ function ChatInput({ onSendMessage }: any) {
     }
   };
 
-  const hasCurrentConversationUserBlockedMe = React.useMemo(() => {
-    return (
-      userInformation &&
-      userInformation.BlockedFrom &&
-      userInformation.BlockedFrom.findIndex(
+  const isConversationBlocked = React.useMemo(() => {
+    const blockedFrom = userInformation.BlockedFrom ?? [];
+    const hasBlockedMe =
+      blockedFrom.findIndex(
         (user) => user.userId === currentConversation?.user.id
-      ) > -1
-    );
-  }, [userInformation, currentConversation]);
+      ) > -1;
+
+    const blockedByMe =
+      usersIBlocked.findIndex(
+        (user) => user.blockedUserId === currentConversation?.user.id
+      ) > -1;
+
+    return hasBlockedMe || blockedByMe;
+  }, [userInformation, currentConversation, usersIBlocked]);
 
   useEffect(() => {
     const uploadedFiles = form.watch('attachments');
@@ -171,15 +176,13 @@ function ChatInput({ onSendMessage }: any) {
                   <div className="relative">
                     <AutosizeTextarea
                       placeholder={
-                        hasCurrentConversationUserBlockedMe
+                        isConversationBlocked
                           ? 'You cannot send a message'
                           : 'Enter your message'
                       }
                       {...field}
                       minHeight={height}
-                      disabled={
-                        !isConnected || hasCurrentConversationUserBlockedMe
-                      }
+                      disabled={!isConnected || isConversationBlocked}
                       onKeyDown={(e) => {
                         if (
                           (e.target as HTMLTextAreaElement).value.trim()
@@ -208,7 +211,7 @@ function ChatInput({ onSendMessage }: any) {
                       }
                       className={`${form.watch('attachments').length > 0 ? 'pb-20' : 'pb-auto'} resize-none`}
                       icon={
-                        !hasCurrentConversationUserBlockedMe ? (
+                        !isConversationBlocked ? (
                           <div className="flex gap-2" ref={emojiPickerRef}>
                             <ChatFileUploader
                               files={form.getValues('attachments')}
@@ -338,9 +341,7 @@ function ChatInput({ onSendMessage }: any) {
             className=" bg-blue-100 h-[54px] w-[54px] "
             type="submit"
             disabled={
-              !isConnected ||
-              hasCurrentConversationUserBlockedMe ||
-              !allFilesUploaded
+              !isConnected || isConversationBlocked || !allFilesUploaded
             }
           >
             <SendHorizontal className="text-primary " />
