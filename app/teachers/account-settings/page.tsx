@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { TabsComponent } from '@/components/ui';
 import AccountSetting from '@/components/AccountSetting/AccountSetting';
@@ -13,22 +13,24 @@ const tabContents = [
 
 const AccountSettings = () => {
   return (
-    <div>
-      <TabsComponent
-        defaultValue="profile"
-        tabs={[
-          {
-            label: 'Profile',
-            value: 'profile',
-          },
-          {
-            label: 'Security',
-            value: 'security',
-          },
-        ]}
-        tabContent={tabContents}
-      />
-    </div>
+    <Suspense>
+      <div>
+        <TabsComponent
+          defaultValue="profile"
+          tabs={[
+            {
+              label: 'Profile',
+              value: 'profile',
+            },
+            {
+              label: 'Security',
+              value: 'security',
+            },
+          ]}
+          tabContent={tabContents}
+        />
+      </div>
+    </Suspense>
   );
 };
 

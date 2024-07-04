@@ -1,13 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import PenpalshipPage from '@/components/Penpalship/PenpalShipPage';
 
 const Penpalship = () => {
   return (
-    <div>
+    <Suspense>
       <PenpalshipPage />
-    </div>
+    </Suspense>
   );
 };
 
