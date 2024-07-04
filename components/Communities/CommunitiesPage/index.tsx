@@ -17,11 +17,11 @@ const CommunitiesPage: React.FC<CommunitiesPageProps> = (props) => {
   return (
     <div>
       <CommunityHeader
-        title={'Find your CQED Community'}
+        title={'Find your GCEd Community'}
         rightImage={'/assets/students/map.svg'}
         leftImage={'/assets/students/communityGroup.svg'}
         subtitle="From gaming, to music, to learning, there’s a place for you."
-        description="What are CQED Communities?"
+        description="What are GCEd Communities?"
         createCommunityLink={
           module === 'students'
             ? '/students/cq-communities/create'

@@ -38,7 +38,7 @@ export const PopularCommunitiesList: React.FC<PopularCommunitiesList> = ({
   return (
     <div>
       <Typography
-        variant="h4"
+        variant="h3"
         weight="semibold"
         className="flex gap-3 items-end"
       >

@@ -157,7 +157,7 @@ const PenpalshipCard: React.FC<PenpalshipCardProps> = ({
             </Typography>
           )}
           <Typography
-            variant="body"
+            variant="p"
             weight="medium"
             className="text-[#131517] mt-1 leading-relaxed"
           >
