@@ -61,8 +61,8 @@ export const MyPenpals: React.FC = () => {
 
   return (
     <div>
-      <div className="flex pt-5 justify-between flex-wrap items-center">
-        <Typography variant="h2" weight="semibold" className="mb-4 text-[24px]">
+      <div className="flex pt-5 justify-between flex-wrap items-center ">
+        <Typography variant="h3" weight="semibold" className="mb-4">
           My Global Friends
         </Typography>
         <SearchBar

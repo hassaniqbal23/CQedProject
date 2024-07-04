@@ -18,6 +18,7 @@ import Link from 'next/link';
 import { Typography } from '../common/Typography/Typography';
 import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface PopNotification {
   onOpenChange: () => void;
@@ -42,6 +43,7 @@ export const PopNotifactions: React.FC<PopNotification> = ({
   const { notifications, countUnreadNotifications } = useGlobalState();
   const client = useQueryClient();
   const route = useRouter();
+  const { module } = useModule();
 
   const {
     mutate: muateCommunityUserAcceptInvite,
@@ -130,7 +132,7 @@ export const PopNotifactions: React.FC<PopNotification> = ({
         item?.penpal_id ||
         item.notificationType === 'PENPAL_REQUEST_ACCEPTED'
       ) {
-        route.push(`/${linkType}/profile/${item?.createdById}`);
+        route.push(`/${module}/profile/${item?.createdById}`);
         onOpenChange();
       }
       if (
@@ -141,11 +143,11 @@ export const PopNotifactions: React.FC<PopNotification> = ({
         item.notificationType === 'POST_COMMENT_REPLY' ||
         item.notificationType === 'POST_SHARED'
       ) {
-        route.push(`/${linkType}/dashboard`);
+        route.push(`/${module}/dashboard`);
         onOpenChange();
       }
       if (item.community_id) {
-        route.push(`/${linkType}/cq-communities/${item.community_id}`);
+        route.push(`/${module}/cq-communities/${item.community_id}`);
         onOpenChange();
       }
     }
