@@ -96,7 +96,7 @@ export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
         <CardHeader className="p-5">
           <div className="flex items-center justify-between flex-wrap">
             <Typography
-              variant="h4"
+              variant="h3"
               weight="semibold"
               className="flex gap-3 items-end text-[24px]"
             >
@@ -202,7 +202,7 @@ export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
         <CardHeader className="p-5">
           <div className="flex items-center justify-between flex-wrap">
             <Typography
-              variant="h4"
+              variant="h3"
               weight="semibold"
               className="flex gap-3 items-end text-[24px]"
             >
@@ -237,7 +237,11 @@ export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
           {communityJoined?.data?.length === 0 &&
             isFetchingMycommunity === false && (
               <div className="flex justify-center items-center h-40">
-                <Typography variant="h5" weight="semibold">
+                <Typography
+                  variant="h5"
+                  weight="semibold"
+                  className="[#131517]"
+                >
                   You have not joined any communities yet
                 </Typography>
               </div>
@@ -289,7 +293,7 @@ export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
         <CardHeader className="p-5">
           <div className="flex items-center justify-between flex-wrap">
             <Typography
-              variant="h4"
+              variant="h3"
               weight="semibold"
               className="flex gap-3 items-end"
             >
@@ -324,7 +328,11 @@ export const YourCommunity: FC<IProps> = ({ module = 'students' }) => {
           {communitiesRequested?.data?.length === 0 &&
             isFetchingRequestedCommunities === false && (
               <div className="flex justify-center items-center h-40">
-                <Typography variant="h5" weight="semibold">
+                <Typography
+                  variant="h5"
+                  weight="semibold"
+                  className="[#131517]"
+                >
                   You have not requested to join any communities yet
                 </Typography>
               </div>
