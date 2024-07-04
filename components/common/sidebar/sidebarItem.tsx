@@ -10,13 +10,20 @@ interface IProps {
 }
 
 const SidebarItem: FC<IProps> = ({ item, pathname, isVerticalIcon }) => {
-  const currentLink = item?.path?.split('/')[2];
-  const appCurrentLink = pathname?.split('/')[2];
+  const itemPathWithoutQuery = item?.path?.split('?')[0];
+  const pathnameWithoutQuery = pathname?.split('?')[0];
+
+  const currentLinkSegment = item?.path?.split('/')[2];
+  const appCurrentLinkSegment = pathname?.split('/')[2];
+
+  const isActive =
+    pathnameWithoutQuery === itemPathWithoutQuery ||
+    currentLinkSegment === appCurrentLinkSegment;
   return (
     <>
       {isVerticalIcon ? (
         <li
-          className={`flex justify-center mb-2 hover:bg-primary-600  cursor-pointer  ${appCurrentLink === currentLink ? 'bg-primary-600' : ''}`}
+          className={`flex justify-center mb-2 hover:bg-primary-600  cursor-pointer  ${isActive ? 'bg-primary-600' : ''}`}
         >
           <Link
             href={item.path}
@@ -37,7 +44,7 @@ const SidebarItem: FC<IProps> = ({ item, pathname, isVerticalIcon }) => {
         </li>
       ) : (
         <li
-          className={`flex hover:bg-primary-600  mb-2  ${appCurrentLink === currentLink ? 'hover:bg-primary-600 ' : ''} cursor-pointer`}
+          className={`flex hover:bg-primary-600  mb-2  ${isActive ? 'hover:bg-primary-600 ' : ''} cursor-pointer`}
         >
           <Link
             href={item.path}

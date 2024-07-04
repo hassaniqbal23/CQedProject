@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import SchoolTable from '@/components/common/SchoolsTable';
 import {
   Button,
@@ -141,7 +141,7 @@ const Universities = () => {
   };
 
   return (
-    <>
+    <Suspense>
       <div className="w-full py-3 mt-7">
         <div className="w-full flex flex-wrap mb-4 items-center">
           <div>
@@ -344,7 +344,7 @@ const Universities = () => {
         onSubmit={onSubmit}
         inviteButtonTitle={'Send Invitation'}
       />
-    </>
+    </Suspense>
   );
 };
 

@@ -2,7 +2,7 @@
 
 import { Button, TabsComponent as Tabs } from '@/components/ui';
 import { Plus } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import SubjectsTable from '@/components/common/SubjectsTable/SubjectsTable';
 import GradesTable from '@/components/common/GradesTable/GradesTable';
 import { useMutation, useQuery } from 'react-query';
@@ -86,117 +86,119 @@ export default function UniversityClassRooms() {
   );
 
   return (
-    <div>
-      <div className={'flex mb-4 items-center'}>
-        <div className="mb-2">
-          <Typography variant={'h2'} weight={'semibold'}>
-            Classrooms
-          </Typography>
-          <Typography variant="p" weight="regular">
-            Subjects and Classes in your schools
-          </Typography>
-        </div>
-        <div className={'ml-auto'}>
-          <CreateSubjectModal
-            Title="Add New Subject"
-            trigger={
-              <Button
-                onClick={() => setEditSubject({ id: null, name: null })}
-                size={'md'}
-                variant="default"
-                className={'flex items-center'}
-                icon={<Plus size={20} />}
-                iconPosition={'left'}
-              >
-                Add Subject
-              </Button>
-            }
-            initialValue={editSubject.name || ''}
-            ButtonAction="Submit"
-            ButtonCancel="Cancel"
-            loading={isCreatingSubject || isUpdateSubject}
-            onOpen={() => setAddSubjectModal(true)}
-            onClose={() => {
-              setEditSubject({ id: null, name: null });
-              setAddSubjectModal(false);
-            }}
-            open={addSubjectModal}
-            onSubmit={(values) => {
-              setEditSubject({ id: null, name: null });
-              if (editSubject.id) {
-                mutateUpdateSubject({
-                  id: editSubject.id,
-                  name: values.name,
-                });
-              } else {
-                createSubject(values);
+    <Suspense>
+      <div>
+        <div className={'flex mb-4 items-center'}>
+          <div className="mb-2">
+            <Typography variant={'h2'} weight={'semibold'}>
+              Classrooms
+            </Typography>
+            <Typography variant="p" weight="regular">
+              Subjects and Classes in your schools
+            </Typography>
+          </div>
+          <div className={'ml-auto'}>
+            <CreateSubjectModal
+              Title="Add New Subject"
+              trigger={
+                <Button
+                  onClick={() => setEditSubject({ id: null, name: null })}
+                  size={'md'}
+                  variant="default"
+                  className={'flex items-center'}
+                  icon={<Plus size={20} />}
+                  iconPosition={'left'}
+                >
+                  Add Subject
+                </Button>
               }
-            }}
-          />
+              initialValue={editSubject.name || ''}
+              ButtonAction="Submit"
+              ButtonCancel="Cancel"
+              loading={isCreatingSubject || isUpdateSubject}
+              onOpen={() => setAddSubjectModal(true)}
+              onClose={() => {
+                setEditSubject({ id: null, name: null });
+                setAddSubjectModal(false);
+              }}
+              open={addSubjectModal}
+              onSubmit={(values) => {
+                setEditSubject({ id: null, name: null });
+                if (editSubject.id) {
+                  mutateUpdateSubject({
+                    id: editSubject.id,
+                    name: values.name,
+                  });
+                } else {
+                  createSubject(values);
+                }
+              }}
+            />
+          </div>
         </div>
-      </div>
 
-      <Tabs
-        defaultValue={'subjects'}
-        tabs={[
-          {
-            label: 'Subjects',
-            value: 'subjects',
-          },
-          {
-            label: 'Grades',
-            value: 'grades',
-          },
-        ]}
-        variant={'secondary'}
-        tabContent={[
-          {
-            value: 'subjects',
-            content: (
-              <div className={'pt-4 w-full'}>
-                <SubjectsTable
-                  data={data?.data?.data || []}
-                  loading={isLoading}
-                  onDeleteSubject={(id: number) => {
-                    setDeleteId(id);
-                    setOpenDeleteModal(true);
-                  }}
-                  onEditSubjectName={(id: number, name: string) => {
-                    setEditSubject({
-                      id: id,
-                      name: name,
-                    });
-                    setAddSubjectModal(true);
-                  }}
-                />
-                <DeleteClassDialog
-                  title="Delete your class"
-                  description="Are you sure want to delete your class"
-                  ButtonAction="Delete this Class"
-                  ButtonCancel="Cancel"
-                  open={openDeleteModal}
-                  onOpen={() => setOpenDeleteModal(true)}
-                  onClose={() => setOpenDeleteModal(false)}
-                  onClickOk={() => deleteSubject(deleteId)}
-                  okLoading={isDeleteing}
-                />
-              </div>
-            ),
-          },
-          {
-            value: 'grades',
-            content: (
-              <div className={'pt-4 w-full'}>
-                <GradesTable
-                  data={gradesData?.data?.data || []}
-                  loading={gradesLoading}
-                />
-              </div>
-            ),
-          },
-        ]}
-        onValueChange={() => {}}
-      ></Tabs>
-    </div>
+        <Tabs
+          defaultValue={'subjects'}
+          tabs={[
+            {
+              label: 'Subjects',
+              value: 'subjects',
+            },
+            {
+              label: 'Grades',
+              value: 'grades',
+            },
+          ]}
+          variant={'secondary'}
+          tabContent={[
+            {
+              value: 'subjects',
+              content: (
+                <div className={'pt-4 w-full'}>
+                  <SubjectsTable
+                    data={data?.data?.data || []}
+                    loading={isLoading}
+                    onDeleteSubject={(id: number) => {
+                      setDeleteId(id);
+                      setOpenDeleteModal(true);
+                    }}
+                    onEditSubjectName={(id: number, name: string) => {
+                      setEditSubject({
+                        id: id,
+                        name: name,
+                      });
+                      setAddSubjectModal(true);
+                    }}
+                  />
+                  <DeleteClassDialog
+                    title="Delete your class"
+                    description="Are you sure want to delete your class"
+                    ButtonAction="Delete this Class"
+                    ButtonCancel="Cancel"
+                    open={openDeleteModal}
+                    onOpen={() => setOpenDeleteModal(true)}
+                    onClose={() => setOpenDeleteModal(false)}
+                    onClickOk={() => deleteSubject(deleteId)}
+                    okLoading={isDeleteing}
+                  />
+                </div>
+              ),
+            },
+            {
+              value: 'grades',
+              content: (
+                <div className={'pt-4 w-full'}>
+                  <GradesTable
+                    data={gradesData?.data?.data || []}
+                    loading={gradesLoading}
+                  />
+                </div>
+              ),
+            },
+          ]}
+          onValueChange={() => {}}
+        ></Tabs>
+      </div>
+    </Suspense>
   );
 }

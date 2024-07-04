@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { TabsComponent } from '@/components/ui';
 import { UniversitySettingPage } from '@/components/Universitysetting/UniversitySettingsPages/UniSettingPage';
 import { UniversityIntegrationPage } from '@/components/Universitysetting/UniversityIntegrationPage/UniIntegrationPage';
@@ -19,27 +19,29 @@ const tabsComponent = [
 
 const UniversitySettings = () => {
   return (
-    <div>
-      <TabsComponent
-        defaultValue="Edit Profile"
-        tabs={[
-          {
-            label: 'Edit Profile',
-            value: 'Edit Profile',
-          },
-          {
-            label: 'Integration',
-            value: 'Integration',
-          },
-          {
-            label: 'Security',
-            value: 'security',
-          },
-        ]}
-        tabContent={tabsComponent}
-        variant={'secondary'}
-      />
-    </div>
+    <Suspense>
+      <div>
+        <TabsComponent
+          defaultValue="Edit Profile"
+          tabs={[
+            {
+              label: 'Edit Profile',
+              value: 'Edit Profile',
+            },
+            {
+              label: 'Integration',
+              value: 'Integration',
+            },
+            {
+              label: 'Security',
+              value: 'security',
+            },
+          ]}
+          tabContent={tabsComponent}
+          variant={'secondary'}
+        />
+      </div>
+    </Suspense>
   );
 };
 
