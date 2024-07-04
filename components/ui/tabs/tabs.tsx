@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState, forwardRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import * as RadixUITabs from '@radix-ui/react-tabs';
