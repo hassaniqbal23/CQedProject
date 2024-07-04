@@ -1,6 +1,5 @@
-// tabs.tsx
-
-import React, { forwardRef } from 'react';
+import React, { useEffect, useState, forwardRef } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import * as RadixUITabs from '@radix-ui/react-tabs';
 import { Separator } from '@/components/ui';
 
@@ -32,22 +31,20 @@ const TabsTrigger = forwardRef<
   React.ComponentPropsWithoutRef<typeof RadixUITabs.Trigger> & {
     variant?: 'primary' | 'secondary' | 'linked';
   }
->(({ className, variant, ...props }, ref) => {
-  return (
-    <RadixUITabs.Trigger
-      ref={ref}
-      className={cn(
-        `border-b-2 border-transparent inline-flex items-center justify-center whitespace-nowrap py-2.5 px-7 text-base font-medium hover:ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded data-[state=active]:text-white data-[state=active]:font-medium data-[state=active]:bg-primary data-[state=active]:shadow  `,
-        variant === 'linked' ? 'data-[state=active]:border-primary' : '',
-        variant === 'secondary'
-          ? 'rounded-md data-[state=active]:bg-background data-[state=active]:shadow data-[state=active]:text-primary'
-          : '',
-        className
-      )}
-      {...props}
-    />
-  );
-});
+>(({ className, variant, ...props }, ref) => (
+  <RadixUITabs.Trigger
+    ref={ref}
+    className={cn(
+      `border-b-2 border-transparent inline-flex items-center justify-center whitespace-nowrap py-2.5 px-7 text-base font-medium hover:ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded data-[state=active]:text-white data-[state=active]:font-medium data-[state=active]:bg-primary data-[state=active]:shadow`,
+      variant === 'linked' ? 'data-[state=active]:border-primary' : '',
+      variant === 'secondary'
+        ? 'rounded-md data-[state=active]:bg-background data-[state=active]:shadow data-[state=active]:text-primary'
+        : '',
+      className
+    )}
+    {...props}
+  />
+));
 TabsTrigger.displayName = 'TabsTrigger';
 
 const TabsContent = forwardRef<
@@ -78,7 +75,7 @@ interface TabsComponentProps {
   className?: string;
 }
 
-const TabsComponent = ({
+const TabsComponent: React.FC<TabsComponentProps> = ({
   tabs,
   tabContent,
   defaultValue,
@@ -86,15 +83,33 @@ const TabsComponent = ({
   onValueChange,
   isSeparator,
   className,
-}: TabsComponentProps) => {
+}) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<string>(
+    searchParams?.get('tab') || defaultValue || ''
+  );
+
+  useEffect(() => {
+    const currentTab = searchParams?.get('tab');
+    if (currentTab) {
+      setActiveTab(currentTab);
+    }
+  }, [searchParams]);
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    const newParams = searchParams && new URLSearchParams(searchParams);
+    newParams?.set('tab', value);
+    router.push(`?${newParams?.toString()}`);
+    if (onValueChange) onValueChange(value);
+  };
+
   const isSecondary = variant === 'secondary';
   const secondaryClass = isSecondary ? 'px-4 py-2' : '';
+
   return (
-    <Tabs
-      defaultValue={defaultValue}
-      className="w-full "
-      onValueChange={onValueChange}
-    >
+    <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
       <TabsList
         variant={variant}
         className={cn(
@@ -102,14 +117,14 @@ const TabsComponent = ({
           className
         )}
       >
-        {tabs.map((item: TabsProps, index) => (
+        {tabs.map((item, index) => (
           <TabsTrigger value={item.value} key={index} variant={variant}>
             {item.label}
           </TabsTrigger>
         ))}
       </TabsList>
       {isSeparator && <Separator />}
-      {tabContent.map((item: TabContent, index) => (
+      {tabContent.map((item, index) => (
         <TabsContent value={item.value} key={index} className="w-full">
           {item.content}
         </TabsContent>
