@@ -14,7 +14,6 @@ import { FC } from 'react';
 import Link from 'next/link';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 import SharePost from '../SharePost/SharePost';
-import ReactHlsPlayer from 'react-hls-player';
 import VideoPlayer from './VideoPlayer';
 
 dayjs.extend(relativeTime);
@@ -230,29 +229,29 @@ export const Post: FC<IProps> = ({
                   post={
                     sharePost
                       ? {
-                          userImage: sharePost.userImage,
-                          userFullName: sharePost.userFullName,
-                          username: sharePost.username,
-                          created_at: sharePost.created_at,
-                          description: sharePost.description,
-                          attachment:
-                            sharePost.attachment &&
-                            sharePost.attachment[0]?.Attachment.file_path,
-                          fileTypes:
-                            sharePost.attachment &&
-                            sharePost.attachment[0]?.Attachment.file_type,
-                        }
+                        userImage: sharePost.userImage,
+                        userFullName: sharePost.userFullName,
+                        username: sharePost.username,
+                        created_at: sharePost.created_at,
+                        description: sharePost.description,
+                        attachment:
+                          sharePost.attachment &&
+                          sharePost.attachment[0]?.Attachment.file_path,
+                        fileTypes:
+                          sharePost.attachment &&
+                          sharePost.attachment[0]?.Attachment.file_type,
+                      }
                       : {
-                          userImage,
-                          userFullName,
-                          username,
-                          created_at,
-                          description,
-                          attachment:
-                            attachment && attachment[0]?.Attachment.file_path,
-                          fileTypes:
-                            attachment && attachment[0]?.Attachment.file_type,
-                        }
+                        userImage,
+                        userFullName,
+                        username,
+                        created_at,
+                        description,
+                        attachment:
+                          attachment && attachment[0]?.Attachment.file_path,
+                        fileTypes:
+                          attachment && attachment[0]?.Attachment.file_type,
+                      }
                   }
                   openModalButton={
                     <div className="flex justify-end items-center text-gray-600 cursor-pointer ">
