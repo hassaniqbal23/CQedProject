@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import PenpalshipPage from '@/components/Penpalship/PenpalShipPage';
 
 import type { Metadata } from 'next';
@@ -10,9 +10,11 @@ export const metadata: Metadata = {
 
 const Penpalship = () => {
   return (
-    <div>
-      <PenpalshipPage />
-    </div>
+    <Suspense>
+      <div>
+        <PenpalshipPage />
+      </div>
+    </Suspense>
   );
 };
 

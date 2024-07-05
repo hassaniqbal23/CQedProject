@@ -71,7 +71,6 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
   const { flag = '', country: countryName = '' } = getCountry(country);
   const { setSelectedConversationId } = useChatProvider();
   const [report, setReport] = useState(false);
-
   const { mutate: reportUserMutation, isLoading: isReportingUser } =
     useMutation(
       ({ userId, reportText }: { userId: number; reportText: string }) =>
@@ -86,11 +85,12 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
       }
     );
 
-  const { mutate: blockProfile } = useMutation(
+  const { mutate: blockProfile, isLoading: loadingBlock } = useMutation(
     (userId: number) => blockUser(userId),
     {
       onSuccess: (data) => {
         queryClient.refetchQueries('get-users-i-blocked');
+        queryClient.refetchQueries('MyPenPals');
       },
       onError: (error) => {
         console.log('Error blocking user', error);
@@ -98,11 +98,12 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
     }
   );
 
-  const { mutate: unBlockProfile } = useMutation(
+  const { mutate: unBlockProfile, isLoading } = useMutation(
     (blockedUserId: number) => unblockUser(blockedUserId),
     {
       onSuccess: () => {
         queryClient.refetchQueries('get-users-i-blocked');
+        queryClient.refetchQueries('MyPenPals');
       },
       onError: (error) => {
         console.log('Error unblocking user', error);
@@ -142,6 +143,44 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
     !isReportingUser && setReport(false);
   };
 
+  const userBlocked = isUserBlocked(Number(profileId));
+  const dropdownOptions = [
+    !userBlocked
+      ? {
+          content: (
+            <div
+              className="text-xs text-red-500 bg-red-50"
+              onClick={buttonProps?.onClick}
+            >
+              Unfriend
+            </div>
+          ),
+        }
+      : null,
+    {
+      content: (
+        <div className="text-xs" onClick={handleBlockUnblock}>
+          {userBlocked ? 'Unblock' : 'Block'}
+        </div>
+      ),
+    },
+    {
+      content: (
+        <div
+          className="text-xs text-primary-600 font-semibold"
+          onClick={() => {
+            setReport(true);
+          }}
+        >
+          Report profile
+        </div>
+      ),
+    },
+  ].filter((option) => option !== null) as {
+    content: string | React.ReactNode;
+    command?: () => void;
+  }[];
+
   return (
     <div className="flex items-center  flex-wrap justify-between w-full bg-primary-500 rounded-2xl text-white p-3 md:p-6 shadow-md text-left md:text-left">
       <div className="flex items-center">
@@ -152,7 +191,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
           {name && (
             <div className="flex items-baseline">
               <h1 className={`font-bold mb-2 ${titleClass}`}>{name}</h1>
-              {userInformation?.role?.name === 'teacher' && (
+              {role === 'teacher' && (
                 <Image
                   height={16}
                   width={16}
@@ -209,7 +248,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
         )}
         {buttonProps?.isVisbile && (
           <>
-            {buttonProps.isFriend ? (
+            {buttonProps.isFriend || getBlockedUserId(Number(profileId)) ? (
               <div className="flex">
                 <CreateChatModal
                   defaultReceiverId={Number(profileId)}
@@ -220,7 +259,7 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                   trigger={
                     <Button
                       onClick={() => {}}
-                      disabled={isUserBlocked(Number(profileId))}
+                      disabled={userBlocked}
                       icon={<IoChatbubbleOutline size={20} />}
                       iconPosition="left"
                       className={`rounded-full bg-[#ECEDF8] text-primary-500 h-10 text-base mr-2 hover: border border-white`}
@@ -237,51 +276,19 @@ export const ProfileHeader: React.FC<HeaderProps> = ({
                         onClick={() => {}}
                         iconPosition="right"
                         icon={<IoChevronDown />}
-                        loading={buttonProps.isLoading}
+                        loading={
+                          buttonProps.isLoading || isLoading || loadingBlock
+                        }
                         className={`rounded-full bg-[#ECEDF8] text-primary-500 w-36 h-10 text-base hover: border border-white`}
                         variant={'outline'}
                         type="button"
                         size={'sm'}
                       >
-                        {isUserBlocked(Number(profileId))
-                          ? 'Blocked'
-                          : 'Friends'}
+                        {userBlocked ? 'Blocked' : 'Friends'}
                       </Button>
                     </div>
                   }
-                  options={[
-                    {
-                      content: (
-                        <div
-                          className="text-xs text-red-500 bg-red-50"
-                          onClick={buttonProps.onClick}
-                        >
-                          Unfriend
-                        </div>
-                      ),
-                    },
-                    {
-                      content: (
-                        <div className="text-xs" onClick={handleBlockUnblock}>
-                          {isUserBlocked(Number(profileId))
-                            ? 'Unblock'
-                            : 'Block'}
-                        </div>
-                      ),
-                    },
-                    {
-                      content: (
-                        <div
-                          className="text-xs text-primary-600 font-semibold"
-                          onClick={() => {
-                            setReport(true);
-                          }}
-                        >
-                          Report profile
-                        </div>
-                      ),
-                    },
-                  ]}
+                  options={dropdownOptions}
                 />
               </div>
             ) : (

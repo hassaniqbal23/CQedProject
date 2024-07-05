@@ -23,7 +23,7 @@ export const CreatePost: Story = {
     );
   },
   args: {
-    icon: '/uplode.svg',
+    icon: '/upload.svg',
     title: 'Create a post',
     buttonTrigger: 'Post',
     buttonAction: 'Publish',

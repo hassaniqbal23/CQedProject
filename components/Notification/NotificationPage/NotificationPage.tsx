@@ -14,6 +14,7 @@ import {
 } from '@/app/api/auth';
 import { ICommunityAcceptInvite, INotifications } from '@/types/auth';
 import { useRouter } from 'next/navigation';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface NotificationPageProps {
   title: string;
@@ -34,6 +35,7 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
   const { notifications } = useGlobalState();
   const client = useQueryClient();
   const route = useRouter();
+  const { module } = useModule();
 
   const {
     mutate: muateCommunityUserAcceptInvite,
@@ -120,17 +122,20 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
   const handleNotificationRedirect = (item: INotifications) => {
     if (linkType) {
       if (item?.penpal_id) {
-        route.push(`/${linkType}/profile/${item?.createdById}`);
+        route.push(`/${module}/profile/${item?.createdById}`);
       }
       if (
         item.notificationType === 'POST_COMMENT' ||
         item.notificationType === 'POST_LIKE' ||
-        item.notificationType === 'POST_COMMENT_LIKE'
+        item.notificationType === 'POST_COMMENT_LIKE' ||
+        item.notificationType === 'MENTION_IN_COMMENT' ||
+        item.notificationType === 'POST_COMMENT_REPLY' ||
+        item.notificationType === 'POST_SHARED'
       ) {
-        route.push(`/${linkType}/dashboard`);
+        route.push(`/${module}/dashboard`);
       }
       if (item.community_id) {
-        route.push(`/${linkType}/cq-communities/${item.community_id}`);
+        route.push(`/${module}/cq-communities/${item.community_id}`);
       }
     }
   };
@@ -166,7 +171,6 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
             const createdAt = notification?.created_at ?? '';
             return (
               <Notification
-                onClick={() => handleNotificationRedirect(notification)}
                 onMarkAsRead={() => handelReadNotification(notification.id)}
                 onDelete={() => muateNotificationDelete(notification.id)}
                 key={index}
@@ -176,7 +180,12 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
                 isRead={notification.isRead}
                 message={
                   <>
-                    <b>@{notification?.createdByUser?.name} </b>
+                    <b
+                      className="hover:text-primary-500 cursor-pointer"
+                      onClick={() => handleNotificationRedirect(notification)}
+                    >
+                      @{notification?.createdByUser?.name}{' '}
+                    </b>
                     {notification?.body}
                   </>
                 }

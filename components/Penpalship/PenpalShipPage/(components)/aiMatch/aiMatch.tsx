@@ -21,9 +21,11 @@ import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 const formSchema = z.object({
-  country: z.object({
-    value: z.string().min(2, { message: 'Country is required.' }),
-  }),
+  country: z
+    .object({
+      value: z.string().min(2, { message: 'Country is required.' }),
+    })
+    .optional(),
   ageRange: z.array(z.number()).min(2, { message: 'Select Age range.' }),
   interests: z
     .array(
@@ -32,7 +34,7 @@ const formSchema = z.object({
         label: z.string(),
       })
     )
-    .nonempty({ message: 'At least one interest is required.' }),
+    .optional(),
   gender: z.string().optional(),
   language: z
     .array(
@@ -41,14 +43,14 @@ const formSchema = z.object({
         label: z.string(),
       })
     )
-    .nonempty({ message: 'At least one language is required.' }),
+    .optional(),
 });
 
 interface ISearchAI {
-  ageFrom?: number;
-  ageTo?: number;
-  country?: string;
-  gender?: string;
+  ageFrom?: number | null;
+  ageTo?: number | null;
+  country?: string | null;
+  gender?: string | null;
   interests?: string[];
   languages?: string[];
 }
@@ -126,12 +128,16 @@ export const AiMatch = () => {
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = (values) => {
     const formattedValues: ISearchAI = {
-      country: values.country.value,
+      country: values.country ? values.country.value : null,
       gender: values.gender,
       ageFrom: values.ageRange[0],
       ageTo: values.ageRange[1],
-      interests: values.interests.map((interest) => interest.value),
-      languages: values.language.map((language) => language.value),
+      interests: values.interests
+        ? values.interests.map((interest) => interest.value)
+        : [],
+      languages: values.language
+        ? values.language.map((language) => language.value)
+        : [],
     };
     SearchPenpal(formattedValues);
     if (formattedValues?.interests) {
@@ -182,6 +188,13 @@ export const AiMatch = () => {
                         menuPosition={'fixed'}
                         {...field}
                         label=""
+                        onChange={(...args) => {
+                          if (!args[0]) {
+                            form.setValue('country', undefined);
+                          } else {
+                            field.onChange(...args);
+                          }
+                        }}
                         placeholder="Select a country or leave it to chance"
                       />
                     </FormControl>

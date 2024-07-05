@@ -4,6 +4,8 @@ import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 import { Button, Dropdown } from '@/components/ui';
 import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
 import { useRouter } from 'next/navigation';
+import { useMutation, useQueryClient } from 'react-query';
+import { unblockUser } from '@/app/api/users';
 
 export interface PenpalShipButtonRequestProps {
   user_id?: number | null | string;
@@ -22,9 +24,23 @@ const PenpalShipButtonRequest: React.FC<PenpalShipButtonRequestProps> = ({
 }) => {
   const { sendRequest, deleteRequest, isCreatingPenpal, isDeletingPenpal } =
     useSendPenpalRequest();
-  const { userInformation, myPenpals } = useGlobalState();
+  const { userInformation, myPenpals, usersIBlocked } = useGlobalState();
   const { module } = useModule();
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const { mutate: unBlockProfile } = useMutation(
+    (blockedUserId: number) => unblockUser(blockedUserId),
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries('get-users-i-blocked');
+        queryClient.refetchQueries('MyPenPals');
+      },
+      onError: (error) => {
+        console.log('Error unblocking user', error);
+      },
+    }
+  );
 
   const penpalInstance = useMemo(
     () =>
@@ -41,6 +57,13 @@ const PenpalShipButtonRequest: React.FC<PenpalShipButtonRequestProps> = ({
     [isMyFriend, penpalInstance]
   );
 
+  const getBlockedUserId = (userId: number | string) => {
+    const blockedUser = usersIBlocked.find(
+      (blockedUser: any) => blockedUser.blockedUserId === userId
+    );
+    return blockedUser ? blockedUser.id : null;
+  };
+
   const handleDeleteRequest = () => {
     deleteRequest({
       user_id: penpalId ? Number(penpalId) : penpalInstance?.id,
@@ -52,9 +75,13 @@ const PenpalShipButtonRequest: React.FC<PenpalShipButtonRequestProps> = ({
     sendRequest({ receiverId: user_id, searchParams });
   };
 
+  const blockedUser = getBlockedUserId(Number(user_id));
   const renderButtonContent = () => {
     if (penpalInstance?.status === 'PENDING' || penpalStatus === 'PENDING') {
       return 'Pending';
+    }
+    if ((isFriend && blockedUser) || blockedUser) {
+      return 'Blocked';
     }
     if (isFriend) {
       return 'Friends';
@@ -65,11 +92,15 @@ const PenpalShipButtonRequest: React.FC<PenpalShipButtonRequestProps> = ({
   const renderDropdownOptions = () => (
     <div
       className="font-semibold text-red-500 bg-red-50 mx-auto"
-      onClick={handleDeleteRequest}
+      onClick={
+        blockedUser ? () => unBlockProfile(blockedUser) : handleDeleteRequest
+      }
     >
-      {penpalInstance?.status === 'PENDING' || penpalStatus === 'PENDING'
-        ? 'Cancel request'
-        : 'Unfriend'}
+      {blockedUser
+        ? 'Unblock'
+        : penpalInstance?.status === 'PENDING' || penpalStatus === 'PENDING'
+          ? 'Cancel request'
+          : 'Unfriend'}
     </div>
   );
 
@@ -77,6 +108,7 @@ const PenpalShipButtonRequest: React.FC<PenpalShipButtonRequestProps> = ({
     <>
       {penpalInstance?.status === 'PENDING' ||
       isFriend ||
+      blockedUser ||
       penpalStatus === 'PENDING' ? (
         <Dropdown
           trigger={

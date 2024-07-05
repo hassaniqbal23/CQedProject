@@ -18,6 +18,7 @@ import Link from 'next/link';
 import { Typography } from '../common/Typography/Typography';
 import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 
 interface PopNotification {
   onOpenChange: () => void;
@@ -42,6 +43,7 @@ export const PopNotifactions: React.FC<PopNotification> = ({
   const { notifications, countUnreadNotifications } = useGlobalState();
   const client = useQueryClient();
   const route = useRouter();
+  const { module } = useModule();
 
   const {
     mutate: muateCommunityUserAcceptInvite,
@@ -130,20 +132,22 @@ export const PopNotifactions: React.FC<PopNotification> = ({
         item?.penpal_id ||
         item.notificationType === 'PENPAL_REQUEST_ACCEPTED'
       ) {
-        route.push(`/${linkType}/profile/${item?.createdById}`);
+        route.push(`/${module}/profile/${item?.createdById}`);
         onOpenChange();
       }
       if (
-        (item.notificationType === 'POST_COMMENT' ||
-          item.notificationType === 'POST_LIKE' ||
-          item.notificationType === 'POST_COMMENT_LIKE',
-        item.notificationType === 'POST_SHARED')
+        item.notificationType === 'POST_COMMENT' ||
+        item.notificationType === 'POST_LIKE' ||
+        item.notificationType === 'POST_COMMENT_LIKE' ||
+        item.notificationType === 'MENTION_IN_COMMENT' ||
+        item.notificationType === 'POST_COMMENT_REPLY' ||
+        item.notificationType === 'POST_SHARED'
       ) {
-        route.push(`/${linkType}/dashboard`);
+        route.push(`/${module}/dashboard`);
         onOpenChange();
       }
       if (item.community_id) {
-        route.push(`/${linkType}/cq-communities/${item.community_id}`);
+        route.push(`/${module}/cq-communities/${item.community_id}`);
         onOpenChange();
       }
     }
@@ -183,7 +187,14 @@ export const PopNotifactions: React.FC<PopNotification> = ({
                     isRead={notification.isRead}
                     message={
                       <>
-                        <b>@{notification?.createdByUser?.name} </b>
+                        <b
+                          className="hover:text-primary-500 cursor-pointer"
+                          onClick={() =>
+                            handleNotificationRedirect(notification)
+                          }
+                        >
+                          @{notification?.createdByUser?.name}{' '}
+                        </b>
                         {notification?.body}
                       </>
                     }

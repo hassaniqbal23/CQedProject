@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { Suspense } from 'react';
 import ProfileSettings from '@/components/common/ProfileSettings';
 import SecuritySettings from '@/components/common/SecuritySettings';
 import { TabsComponent } from '@/components/ui';
@@ -11,22 +11,24 @@ const tabContents = [
 
 const Profile = () => {
   return (
-    <div className="!bg-white">
-      <TabsComponent
-        defaultValue="profile"
-        tabs={[
-          {
-            label: 'Profile',
-            value: 'profile',
-          },
-          {
-            label: 'Security',
-            value: 'security',
-          },
-        ]}
-        tabContent={tabContents}
-      />
-    </div>
+    <Suspense>
+      <div className="!bg-white">
+        <TabsComponent
+          defaultValue="profile"
+          tabs={[
+            {
+              label: 'Profile',
+              value: 'profile',
+            },
+            {
+              label: 'Security',
+              value: 'security',
+            },
+          ]}
+          tabContent={tabContents}
+        />
+      </div>
+    </Suspense>
   );
 };
 

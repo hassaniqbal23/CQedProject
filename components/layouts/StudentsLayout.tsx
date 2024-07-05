@@ -77,7 +77,7 @@ export const StudentsLayout: FC<IProps> = ({ children, className }) => {
     {
       icon: '/assets/sidebaricons/penpalship.svg',
       title: 'Global Friends',
-      path: '/students/globalfriends',
+      path: '/students/globalfriends?tab=GlobalCommunity',
     },
     {
       icon: '/assets/sidebaricons/CQCommunities.svg',

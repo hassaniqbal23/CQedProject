@@ -179,7 +179,7 @@ function DashboardFeeds() {
     <div className="w-full px-2 gap-10 ">
       <div className="mb-4 flex flex-col gap-4">
         <CreatePostModal
-          icon="/uplode.svg"
+          icon="/upload.svg"
           title="Create a post"
           buttonTrigger={'Add Post'}
           buttonAction="Publish"

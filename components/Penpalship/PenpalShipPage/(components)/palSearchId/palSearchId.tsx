@@ -67,7 +67,11 @@ export const PalSearchId = () => {
 
   return (
     <div>
-      <Typography variant={'h3'} weight={'semibold'} className="mb-4 !text-[24px]">
+      <Typography
+        variant={'h3'}
+        weight={'semibold'}
+        className="mb-4 !text-[24px]"
+      >
         Search with an ID
       </Typography>
       <div className="pt-5">
@@ -75,7 +79,7 @@ export const PalSearchId = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <div className="flex gap-4 items-center flex-wrap">
               <div className="mb-3 flex-1">
-                <Label className='text-lg'>Member ID</Label>
+                <Label className="text-lg">Member ID</Label>
                 <FormInput
                   type="text"
                   form={form}
@@ -84,7 +88,7 @@ export const PalSearchId = () => {
                 />
               </div>
               <div className="mb-3 flex-1">
-                <Label className='text-lg'>User Name</Label>
+                <Label className="text-lg">User Name</Label>
                 <FormInput
                   type="text"
                   form={form}
@@ -105,9 +109,10 @@ export const PalSearchId = () => {
         {isLoading ? (
           <SkeletonCard noOfCards={3} />
         ) : penpalSearchResult &&
-          penpalSearchResult?.data?.data.length !== 0 ? (
+          penpalSearchResult?.data?.data?.length !== 0 &&
+          penpalSearchResult.data.data !== undefined ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {penpalSearchResult?.data?.data.map(
+            {penpalSearchResult?.data?.data?.map(
               (item: IPenpalSearchResult, index: number) => (
                 <div key={index}>
                   <PenpalshipCard

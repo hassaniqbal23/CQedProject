@@ -453,12 +453,12 @@ const MultipleSelector = React.forwardRef<
                                   const newOptions = [...selected, option];
                                   setSelected(newOptions);
                                   onChange?.(newOptions);
-                                  inputRef.current?.blur();
+                                  // inputRef.current?.blur();
                                 }}
                                 className={cn(
                                   'cursor-pointer',
                                   option.disable &&
-                                    'cursor-default text-muted-foreground'
+                                  'cursor-default text-muted-foreground'
                                 )}
                               >
                                 {option.render ? option.render() : option.label}
