@@ -85,8 +85,8 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
   const { mutate: uploadCommunityImage, isLoading: isUploadingCommunity } =
     useMutation((file: FormData) => uploadImage(file), {
       onSuccess: (res) => {
-        setAttachment(res.data.data);
-        form.setValue('attachmentId', res.data.data.id);
+        setAttachment(res?.data?.data[0]);
+        form.setValue('attachmentId', res?.data?.data[0]?.id);
         toast.success(`${res.data.message}`, {
           position: 'bottom-center',
         });
@@ -135,7 +135,7 @@ const CreateCommunityForm = (props: CreateCommunityFormProps) => {
                     loading={
                       isUploadingCommunity || isDeletingCommunity || false
                     }
-                    attachmentFilepath={attachment?.file_path}
+                    attachmentFilepath={attachment && attachment?.file_path}
                     attachmentID={attachment?.id}
                     deleteProfile={deleteCommunityImage}
                     uploadProfile={uploadCommunityImage}
