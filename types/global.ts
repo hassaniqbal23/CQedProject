@@ -97,11 +97,11 @@ interface ISharedCommunityPost {
   status: number;
   created_at: string;
   updated_at: string;
-  community_post?: {
-    id: number;
-    file_path?: string;
-    owner_id?: number;
-  };
+  attachments?: {
+    Attachment: IAttachments;
+    attachmentId: number;
+    communityPostId: number;
+  }[];
   User: IUser;
 }
 
@@ -115,11 +115,11 @@ export interface ICommunityPost {
   updated_at: string;
   pinned_post?: ISharedCommunityPost;
   pinned_post_id?: number;
-  community_post?: {
-    id: number;
-    file_path?: string;
-    owner_id?: number;
-  };
+  attachments?: {
+    Attachment: IAttachments;
+    attachmentId: number;
+    communityPostId: number;
+  }[];
   _count: ICount;
   User: IUser;
   comments: IComment[];

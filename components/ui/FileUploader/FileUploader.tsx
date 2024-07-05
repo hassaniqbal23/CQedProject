@@ -77,9 +77,10 @@ export const FileUploader = forwardRef<
     const {
       accept = {
         'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+        'video/*': ['.mp4', '.mov', '.avi', '.wmv', '.flv'],
       },
       maxFiles = 1,
-      maxSize = 4 * 1024 * 1024,
+      maxSize = 50 * 1024 * 1024,
       multiple = true,
     } = dropzoneOptions;
 
@@ -176,9 +177,7 @@ export const FileUploader = forwardRef<
         if (rejectedFiles.length > 0) {
           for (let i = 0; i < rejectedFiles.length; i++) {
             if (rejectedFiles[i].errors[0]?.code === 'file-too-large') {
-              //   toast.error(
-              //     `File is too large. Max size is ${maxSize / 1024 / 1024}MB`
-              //   );
+              console.log(rejectedFiles);
               break;
             }
             if (rejectedFiles[i].errors[0]?.message) {

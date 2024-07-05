@@ -12,6 +12,7 @@ import { useGlobalState } from '@/app/globalContext/globalContext';
 import { SelectV2 } from '@/components/ui/select-v2/select-v2';
 import Image from 'next/image';
 import dayjs from 'dayjs';
+import ReactPlayer from 'react-player';
 
 interface ISharePost {
   openModalButton: React.ReactNode;
@@ -30,6 +31,7 @@ interface ISharePost {
     description: string;
     attachment?: string;
     userImage?: string;
+    fileTypes?: 'MP4' | 'JPG' | 'PNG' | 'GIF' | 'BMP' | 'JPEG' | 'MOV';
   };
 }
 
@@ -76,6 +78,8 @@ function SharePost({
     }),
   };
 
+  console.log('post', post?.attachment);
+
   return (
     <Modal
       openModalButton={openModalButton}
@@ -101,7 +105,7 @@ function SharePost({
           />
         </div>
         <div className="rounded-lg border shadow-sm w-full">
-          {post?.attachment && (
+          {post?.attachment && post.fileTypes !== 'MP4' && (
             <div className="">
               <Image
                 loading="lazy"
@@ -111,6 +115,17 @@ function SharePost({
                 height={150}
                 className="rounded-md w-full h-[150px] object-cover"
                 unoptimized={true}
+              />
+            </div>
+          )}
+          {post?.attachment && post.fileTypes === 'MP4' && (
+            <div className="w-full h-[150px]">
+              <ReactPlayer
+                url={post?.attachment}
+                autoPlay={false}
+                controls={true}
+                width="100%"
+                height="150px"
               />
             </div>
           )}

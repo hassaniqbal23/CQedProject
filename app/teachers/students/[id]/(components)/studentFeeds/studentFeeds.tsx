@@ -92,8 +92,9 @@ export const StudentFeeds = ({ userName }: IStudentsFeed) => {
         </div>
       </div>
       <div className="px-4 py-1">
-        {data?.pages.flatMap((page, pageIndex) =>
+        {/* {data?.pages.flatMap((page, pageIndex) =>
           page.data.data.map((post, index) => {
+            console.log(post)
             const isLastPost =
               pageIndex === data.pages.length - 1 &&
               index === page.data.data.length - 1;
@@ -128,7 +129,7 @@ export const StudentFeeds = ({ userName }: IStudentsFeed) => {
               />
             );
           })
-        )}
+        )} */}
         {isFetchingNextPage && <div>Loading more...</div>}
       </div>
     </>
