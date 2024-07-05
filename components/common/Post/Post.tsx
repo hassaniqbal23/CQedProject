@@ -174,7 +174,7 @@ export const Post: FC<IProps> = ({
               className={`${attachment.length === 2 || attachment.length === 4 ? 'grid grid-cols-2 gap-2' : attachment.length === 3 ? 'grid grid-cols-2 gap-2' : ''}`}
             >
               {attachment.map((image, index) => {
-                if (image.Attachment.file_type === 'MP4') {
+                if (['MP4', 'MOV', 'AVI', 'WMV', 'FLV'].includes(image.Attachment.file_type as string)) {
                   return (
                     <div className="mt-4 md:mt-0">
                       <VideoPlayer image={image} />

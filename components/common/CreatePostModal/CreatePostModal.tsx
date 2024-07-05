@@ -164,7 +164,7 @@ export const CreatePostModal = ({
             className={`relative mt-4 ${uploadedImage.length === 2 || uploadedImage.length === 4 ? 'grid grid-cols-2 gap-2' : uploadedImage.length === 3 ? 'grid grid-cols-2 gap-2' : ''}`}
           >
             {uploadedImage.map((item: IAttachments, index: number) => {
-              if (item.file_type === 'MP4') {
+              if (['MP4', 'MOV', 'AVI', 'WMV', 'FLV'].includes(item.file_type as string)) {
                 return (
                   <ReactPlayer
                     key={index}
