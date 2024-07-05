@@ -81,6 +81,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-hls-player": "^3.0.7",
     "react-hook-form": "^7.45.1",
     "react-icons": "^4.11.0",
     "react-image-lightbox": "^5.1.4",

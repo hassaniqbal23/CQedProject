@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   Avatar,
   AvatarImage,
@@ -14,6 +14,8 @@ import { FC } from 'react';
 import Link from 'next/link';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 import SharePost from '../SharePost/SharePost';
+import ReactHlsPlayer from 'react-hls-player';
+import VideoPlayer from './VideoPlayer';
 
 dayjs.extend(relativeTime);
 
@@ -24,7 +26,7 @@ interface ISharePost {
   username: string;
   created_at: string;
   description: string;
-  attachment?: string;
+  attachment?: any[];
 }
 
 interface IProps {
@@ -34,7 +36,7 @@ interface IProps {
   username: string;
   created_at: string;
   description: string;
-  attachment?: string;
+  attachment?: any[];
   likes?: number;
   comments?: number;
   handleComment?: () => void;
@@ -57,6 +59,7 @@ interface IProps {
   onDeletePost?: () => void;
   sharePost?: ISharePost;
   isSharedPost?: boolean;
+  fileType?: 'image' | 'mp4';
 }
 
 const RenderSharePost: FC<{ sharePost: ISharePost }> = ({ sharePost }) => (
@@ -90,6 +93,7 @@ export const Post: FC<IProps> = ({
   onDeletePost,
   sharePost,
   isSharedPost,
+  fileType,
 }: IProps) => {
   const { module } = useModule();
   const [showShareModel, setShowShareModel] = useState(false);
@@ -101,6 +105,8 @@ export const Post: FC<IProps> = ({
       onLike && onLike();
     }
   };
+
+  console.log(sharePost?.attachment);
 
   return (
     <div>
@@ -164,17 +170,33 @@ export const Post: FC<IProps> = ({
         <div className="flex flex-col flex-grow">
           <div className="text-gray-600 mb-2">{description}</div>{' '}
           {/* Description here */}
-          {attachment ? (
-            <div className="mt-4 md:mt-0">
-              <Image
-                className="w-full max-h-96 rounded-lg cursor-pointer"
-                loading="lazy"
-                alt={`post by ${username}`}
-                src={attachment}
-                width={1053}
-                height={342}
-                unoptimized={true}
-              />
+          {attachment && attachment?.length > 0 ? (
+            <div
+              className={`${attachment.length === 2 || attachment.length === 4 ? 'grid grid-cols-2 gap-2' : attachment.length === 3 ? 'grid grid-cols-2 gap-2' : ''}`}
+            >
+              {attachment.map((image, index) => {
+                if (image.Attachment.file_type === 'MP4') {
+                  return (
+                    <div className="mt-4 md:mt-0">
+                      <VideoPlayer image={image} />
+                    </div>
+                  );
+                } else
+                  return (
+                    <div
+                      key={index}
+                      className={`w-full relative h-[400px] object-cover rounded-2xl ${attachment.length === 3 && index === 2 ? 'col-span-2' : ''}`}
+                    >
+                      <Image
+                        src={image.Attachment.file_path}
+                        layout="fill"
+                        objectFit="cover"
+                        alt="Post Image"
+                        className="rounded-lg"
+                      />
+                    </div>
+                  );
+              })}
             </div>
           ) : null}
           {sharePost && <Separator className=" w-full space-x-10 text-sm" />}
@@ -213,7 +235,12 @@ export const Post: FC<IProps> = ({
                           username: sharePost.username,
                           created_at: sharePost.created_at,
                           description: sharePost.description,
-                          attachment: sharePost.attachment,
+                          attachment:
+                            sharePost.attachment &&
+                            sharePost.attachment[0]?.Attachment.file_path,
+                          fileTypes:
+                            sharePost.attachment &&
+                            sharePost.attachment[0]?.Attachment.file_type,
                         }
                       : {
                           userImage,
@@ -221,7 +248,10 @@ export const Post: FC<IProps> = ({
                           username,
                           created_at,
                           description,
-                          attachment,
+                          attachment:
+                            attachment && attachment[0]?.Attachment.file_path,
+                          fileTypes:
+                            attachment && attachment[0]?.Attachment.file_type,
                         }
                   }
                   openModalButton={

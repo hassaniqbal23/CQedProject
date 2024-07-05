@@ -230,6 +230,10 @@ function DashboardFeeds() {
                   myPenpals.filter((i) => i.status === 'ACCEPTED')
                 ).filter((item) => item.id !== userInformation?.id);
 
+                if (index === 0) {
+                  console.log(item.attachments);
+                }
+
                 return (
                   <div
                     key={index}
@@ -237,17 +241,14 @@ function DashboardFeeds() {
                   >
                     <Post
                       userId={item?.User?.id || 0}
+                      fileType={index === 0 ? 'mp4' : 'image'}
                       key={index}
                       userFullName={item?.User?.name}
                       username={item?.User?.name}
                       userImage={item.User?.attachment?.file_path || ''}
                       created_at={item?.created_at}
                       description={item?.content}
-                      attachment={
-                        item.community_post?.file_path
-                          ? item.community_post?.file_path
-                          : ''
-                      }
+                      attachment={item.attachments ? item.attachments : []}
                       likes={item?._count?.likes}
                       comments={item?._count?.comments}
                       hasUserLiked={liked}
@@ -300,10 +301,9 @@ function DashboardFeeds() {
                         item?.pinned_post && {
                           userId: item?.pinned_post?.User.id,
                           description: item?.pinned_post?.content || '',
-                          attachment: item?.pinned_post?.community_post
-                            ?.file_path
-                            ? item?.pinned_post?.community_post?.file_path
-                            : '',
+                          attachment: item?.pinned_post?.attachments
+                            ? item?.pinned_post?.attachments
+                            : [],
                           userFullName: item?.pinned_post?.User.name || '',
                           username: item?.pinned_post?.User.name || '',
                           created_at: item?.pinned_post?.created_at || '',

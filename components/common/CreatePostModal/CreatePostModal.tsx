@@ -13,6 +13,9 @@ import { useMutation } from 'react-query';
 import { uploadImage } from '@/app/api/communities';
 import { NewFeeds } from '@/components/NewFeeds/NewFeeds';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import ReactPlayer from 'react-player';
+import { IAttachments } from '@/types/global';
+import MulltiFileUploader from '../MultiFileUploader/MulltiFileUploader';
 
 const Picker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
@@ -42,6 +45,7 @@ export const CreatePostModal = ({
   const [searchInputFocused, setSearchInputFocused] = useState(false);
   const [uploadedImage, setUploadedImage] = useState<any | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const playerRef = useRef<HTMLVideoElement>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
@@ -78,11 +82,14 @@ export const CreatePostModal = ({
     }
   );
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
+  const handleFileChange = (files: FileList | null) => {
+    if (files && files.length > 0) {
       const formData = new FormData();
-      formData.append('file', event.target.files?.[0] as any);
+
+      Array.from(files).forEach((file) => {
+        formData.append('files', file);
+      });
+
       uploadPost(formData);
     }
   };
@@ -119,7 +126,10 @@ export const CreatePostModal = ({
 
   const handleOkClick = () => {
     onPublish &&
-      onPublish({ content: textAreaValue, attachment_id: uploadedImage?.id });
+      onPublish({
+        content: textAreaValue,
+        attachment_ids: uploadedImage.map((item: any) => item.id),
+      });
     setTextAreaValue('');
     setUploadedImage(null);
     setIsVisible(false);
@@ -149,16 +159,36 @@ export const CreatePostModal = ({
             onChange={(e) => setTextAreaValue(e.target.value)}
           />
         )}
-        {uploadedImage && (
-          <div className="relative mt-4">
-            <Image
-              src={uploadedImage?.file_path}
-              alt="Uploaded"
-              width={100}
-              height={100}
-              className="w-full h-auto max-h-[300px] object-cover rounded-2xl"
-              unoptimized={true}
-            />
+        {uploadedImage && uploadedImage?.length && (
+          <div
+            className={`relative mt-4 ${uploadedImage.length === 2 || uploadedImage.length === 4 ? 'grid grid-cols-2 gap-2' : uploadedImage.length === 3 ? 'grid grid-cols-2 gap-2' : ''}`}
+          >
+            {uploadedImage.map((item: IAttachments, index: number) => {
+              if (item.file_type === 'MP4') {
+                return (
+                  <ReactPlayer
+                    key={index}
+                    url={item.file_path}
+                    autoPlay={false}
+                    controls={true}
+                    width="100%"
+                    height="auto"
+                  />
+                );
+              } else {
+                return (
+                  <Image
+                    key={index}
+                    src={item?.file_path || ''}
+                    alt="Uploaded"
+                    width={100}
+                    height={100}
+                    className={`w-full h-auto ${uploadedImage.length === 3 ? 'max-h-[200px]' : 'max-h-[300px]'} object-cover rounded-2xl ${uploadedImage.length === 3 && index === 2 ? 'col-span-2' : ''}`}
+                    unoptimized={true}
+                  />
+                );
+              }
+            })}
             <X
               className="absolute top-2 right-2 bg-white/70 rounded-full p-1 cursor-pointer"
               onClick={() => {
@@ -199,23 +229,19 @@ export const CreatePostModal = ({
           >
             Share images or a single video in your post.
           </Typography>
-          <Button
-            variant={'default'}
-            size={'md'}
-            loading={isUploadingPost}
-            className="mt-2 rounded-full"
-            onClick={handleFileUploadClick}
+          <MulltiFileUploader
+            files={uploadedImage}
+            onFileSelect={(data) => handleFileChange(data)}
           >
-            Upload from computer
-            <Input
-              type="file"
-              id="picture"
-              accept="image/*"
-              className="hidden"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-            />
-          </Button>
+            <Button
+              variant={'default'}
+              size={'md'}
+              loading={isUploadingPost}
+              className="mt-2 rounded-full"
+            >
+              Upload from computer
+            </Button>
+          </MulltiFileUploader>
         </div>
       )}
       <div className="flex flex-wrap flex-col sm:flex-row justify-between mt-3 p-2">
