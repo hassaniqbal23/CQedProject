@@ -31,7 +31,7 @@ interface ISharePost {
     description: string;
     attachment?: string;
     userImage?: string;
-    fileTypes?: 'MP4' | 'JPG' | 'PNG' | 'GIF' | 'BMP' | 'JPEG' | 'MOV';
+    fileTypes?: 'MP4' | 'JPG' | 'PNG' | 'GIF' | 'BMP' | 'JPEG' | 'MOV' | 'AVI' | 'WMV' | 'FLV';
   };
 }
 
@@ -116,7 +116,7 @@ function SharePost({
               />
             </div>
           )}
-          {post?.attachment && post.fileTypes === 'MP4' && (
+          {post?.attachment && ['MP4', 'MOV', 'AVI', 'WMV', 'FLV'].includes(post.fileTypes as string) && (
             <div className="w-full h-[150px]">
               <ReactPlayer
                 url={post?.attachment}

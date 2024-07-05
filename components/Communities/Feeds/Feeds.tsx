@@ -298,12 +298,14 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                                 content: data.content,
                                 pinned_post_id: item?.pinned_post?.id,
                                 commentId: data.communityId,
+                                attachmentIds: []
                               };
                             } else {
                               payload = {
                                 content: data.content,
                                 pinned_post_id: item?.id,
                                 commentId: data.communityId,
+                                attachmentIds: []
                               };
                             }
 

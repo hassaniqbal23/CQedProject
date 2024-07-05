@@ -281,6 +281,7 @@ function DashboardFeeds() {
                           payload = {
                             content: data.content,
                             pinned_post_id: item?.pinned_post?.id,
+                            attachmentIds: [],
                             communityId: data.communityId
                               ? data.communityId
                               : null,
@@ -292,6 +293,7 @@ function DashboardFeeds() {
                             communityId: data.communityId
                               ? data.communityId
                               : null,
+                            attachmentIds: []
                           };
                         }
 
@@ -442,14 +444,14 @@ function DashboardFeeds() {
                                                   replyToName={
                                                     repliedComment
                                                       ? repliedComment?.User
-                                                          .name
+                                                        .name
                                                       : ''
                                                   }
                                                   replyToText={
                                                     repliedComment
                                                       ? formatMentions(
-                                                          repliedComment?.content
-                                                        )
+                                                        repliedComment?.content
+                                                      )
                                                       : ''
                                                   }
                                                 />
