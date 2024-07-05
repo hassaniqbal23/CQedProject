@@ -58,8 +58,8 @@ const TeacherProfileFeeds = () => {
                       created_at={item.created_at}
                       description={item.content}
                       attachment={
-                        item.community_post?.file_path
-                          ? item.community_post?.file_path
+                        item.attachments
+                          ? item.attachments
                           : ''
                       }
                       showCommentButton={false}
