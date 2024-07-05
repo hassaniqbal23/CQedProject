@@ -105,8 +105,6 @@ export const Post: FC<IProps> = ({
     }
   };
 
-  console.log(sharePost?.attachment);
-
   return (
     <div>
       <div className="p-3 m-1 w-full ">
@@ -192,6 +190,7 @@ export const Post: FC<IProps> = ({
                         objectFit="cover"
                         alt="Post Image"
                         className="rounded-lg"
+                        unoptimized={true}
                       />
                     </div>
                   );
