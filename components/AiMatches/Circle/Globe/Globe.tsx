@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export const Globe: FC = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen text-center ">
+    <div className="flex flex-col items-center justify-center text-center ">
       <Image
         src="/Globe.svg"
         alt="Message Icon"
@@ -13,4 +13,4 @@ export const Globe: FC = () => {
       />
     </div>
   );
-};
+}; 
