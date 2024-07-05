@@ -78,8 +78,6 @@ function SharePost({
     }),
   };
 
-  console.log('post', post?.attachment);
-
   return (
     <Modal
       openModalButton={openModalButton}

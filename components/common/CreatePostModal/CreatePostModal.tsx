@@ -276,7 +276,7 @@ export const CreatePostModal = ({
             <span
               className={`font-semibold text-sm ml-1 ${showEmojiPicker ? 'text-primary-500' : ''}`}
             >
-              Feeling
+              Reaction
             </span>
             {showEmojiPicker && !searchInputFocused && (
               <div

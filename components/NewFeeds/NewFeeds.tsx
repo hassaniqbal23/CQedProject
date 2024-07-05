@@ -51,7 +51,7 @@ export const NewFeeds: React.FC<NewFeedsProps> = ({
                 alt="simple "
                 unoptimized={true}
               />
-              <p className="cursor-pointer text-[#4E5D78] ">Feeling</p>
+              <p className="cursor-pointer text-[#4E5D78] ">Reaction</p>
             </div>
           </div>
           <div>
