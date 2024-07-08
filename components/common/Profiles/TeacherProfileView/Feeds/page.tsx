@@ -57,11 +57,7 @@ const TeacherProfileFeeds = () => {
                       username={item.User?.name}
                       created_at={item.created_at}
                       description={item.content}
-                      attachment={
-                        item.attachments
-                          ? item.attachments
-                          : ''
-                      }
+                      attachment={item.attachments ? item.attachments : ''}
                       showCommentButton={false}
                       showLikeButton={false}
                       showShareButton={false}
