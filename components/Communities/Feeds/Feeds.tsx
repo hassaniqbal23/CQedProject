@@ -256,11 +256,7 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                           userImage={item.User?.attachment?.file_path || ''}
                           created_at={item?.created_at}
                           description={item?.content}
-                          attachment={
-                            item.attachments
-                              ? item.attachments
-                              : []
-                          }
+                          attachment={item.attachments ? item.attachments : []}
                           likes={item?._count?.likes}
                           comments={item?._count?.comments}
                           hasUserLiked={liked}
@@ -298,14 +294,14 @@ export const Feeds = ({ communityId }: FeedsProps) => {
                                 content: data.content,
                                 pinned_post_id: item?.pinned_post?.id,
                                 commentId: data.communityId,
-                                attachmentIds: []
+                                attachmentIds: [],
                               };
                             } else {
                               payload = {
                                 content: data.content,
                                 pinned_post_id: item?.id,
                                 commentId: data.communityId,
-                                attachmentIds: []
+                                attachmentIds: [],
                               };
                             }
 
