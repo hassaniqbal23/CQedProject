@@ -128,7 +128,7 @@ export const CreatePostModal = ({
     onPublish &&
       onPublish({
         content: textAreaValue,
-        attachment_ids: uploadedImage.map((item: any) => item.id),
+        attachment_ids: uploadedImage?.map((item: any) => item.id),
       });
     setTextAreaValue('');
     setUploadedImage(null);
@@ -164,7 +164,11 @@ export const CreatePostModal = ({
             className={`relative mt-4 ${uploadedImage.length === 2 || uploadedImage.length === 4 ? 'grid grid-cols-2 gap-2' : uploadedImage.length === 3 ? 'grid grid-cols-2 gap-2' : ''}`}
           >
             {uploadedImage.map((item: IAttachments, index: number) => {
-              if (['MP4', 'MOV', 'AVI', 'WMV', 'FLV'].includes(item.file_type as string)) {
+              if (
+                ['MP4', 'MOV', 'AVI', 'WMV', 'FLV'].includes(
+                  item.file_type as string
+                )
+              ) {
                 return (
                   <ReactPlayer
                     key={index}
@@ -248,10 +252,11 @@ export const CreatePostModal = ({
         <div className="flex flex-col sm:flex-row ml-3">
           <div
             onClick={handleShowUpload}
-            className={`flex items-center mb-2 sm:mb-0 sm:mr-4 p-2 cursor-pointer ${showUpload || uploadedImage
-              ? 'bg-[#ECEDF8] text-primary-500 rounded-full'
-              : 'text-[#4E5D78]'
-              }`}
+            className={`flex items-center mb-2 sm:mb-0 sm:mr-4 p-2 cursor-pointer ${
+              showUpload || uploadedImage
+                ? 'bg-[#ECEDF8] text-primary-500 rounded-full'
+                : 'text-[#4E5D78]'
+            }`}
           >
             <Images
               className={`${showUpload || uploadedImage ? 'text-primary-500' : ''}`}
@@ -267,10 +272,11 @@ export const CreatePostModal = ({
               setShowEmojiPicker((prev) => !prev);
               setShowUpload(false);
             }}
-            className={`relative flex items-center mb-2 sm:mb-0 p-2 cursor-pointer ${showEmojiPicker
-              ? 'bg-[#ECEDF8] text-primary-500 rounded-full'
-              : 'text-[#4E5D78]'
-              }`}
+            className={`relative flex items-center mb-2 sm:mb-0 p-2 cursor-pointer ${
+              showEmojiPicker
+                ? 'bg-[#ECEDF8] text-primary-500 rounded-full'
+                : 'text-[#4E5D78]'
+            }`}
           >
             <Smile className={`${showEmojiPicker ? 'text-primary-500' : ''}`} />
             <span
@@ -294,7 +300,7 @@ export const CreatePostModal = ({
           size="md"
           disabled={textAreaValue || uploadedImage ? false : true}
           loading={buttonActionLoading}
-          onClick={textAreaValue || uploadedImage ? handleOkClick : () => { }}
+          onClick={textAreaValue || uploadedImage ? handleOkClick : () => {}}
         >
           {buttonAction}
         </Button>
