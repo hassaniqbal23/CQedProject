@@ -47,8 +47,8 @@ export const UniversityLayout: FC<IProps> = ({ children }) => {
       path: '/universities/teachers',
     },
     {
-      icon: '/assets/sidebaricons/settings.svg',
-      title: 'Settings',
+      icon: '/assets/sidebaricons/report.svg',
+      title: 'Reports',
       path: '/universities/reported-users',
     },
     {
