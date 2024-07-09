@@ -31,7 +31,17 @@ interface ISharePost {
     description: string;
     attachment?: string;
     userImage?: string;
-    fileTypes?: 'MP4' | 'JPG' | 'PNG' | 'GIF' | 'BMP' | 'JPEG' | 'MOV' | 'AVI' | 'WMV' | 'FLV';
+    fileTypes?:
+      | 'MP4'
+      | 'JPG'
+      | 'PNG'
+      | 'GIF'
+      | 'BMP'
+      | 'JPEG'
+      | 'MOV'
+      | 'AVI'
+      | 'WMV'
+      | 'FLV';
   };
 }
 
@@ -116,17 +126,20 @@ function SharePost({
               />
             </div>
           )}
-          {post?.attachment && ['MP4', 'MOV', 'AVI', 'WMV', 'FLV'].includes(post.fileTypes as string) && (
-            <div className="w-full h-[150px]">
-              <ReactPlayer
-                url={post?.attachment}
-                autoPlay={false}
-                controls={true}
-                width="100%"
-                height="150px"
-              />
-            </div>
-          )}
+          {post?.attachment &&
+            ['MP4', 'MOV', 'AVI', 'WMV', 'FLV'].includes(
+              post.fileTypes as string
+            ) && (
+              <div className="w-full h-[150px]">
+                <ReactPlayer
+                  url={post?.attachment}
+                  autoPlay={false}
+                  controls={true}
+                  width="100%"
+                  height="150px"
+                />
+              </div>
+            )}
           <div className="flex gap-3 items-center my-4 p-3">
             <div>
               <Avatar className="w-14 h-14 md:w-54 md:h-54 rounded-full bg-lightgray mb-3">
