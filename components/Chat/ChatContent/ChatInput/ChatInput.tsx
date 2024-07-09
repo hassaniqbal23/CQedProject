@@ -24,9 +24,14 @@ import { useUploadFile } from '@/lib/hooks';
 import Loading from '@/components/ui/button/loading';
 import { toast as sonnerToast } from 'sonner';
 
+interface ChatInputProps {
+  onSendMessage: (data: any) => void;
+  isConversationBlocked?: boolean;
+}
+
 let TypingTimeout: any;
 
-function ChatInput({ onSendMessage }: any) {
+function ChatInput({ onSendMessage, isConversationBlocked }: ChatInputProps) {
   const { currentConversation } = useChatProvider();
   const { userInformation, usersIBlocked } = useGlobalState();
   const { userIsTyping } = useChatGuard();
@@ -82,21 +87,6 @@ function ChatInput({ onSendMessage }: any) {
       setShowEmoji(false);
     }
   };
-
-  const isConversationBlocked = React.useMemo(() => {
-    const blockedFrom = userInformation.BlockedFrom ?? [];
-    const hasBlockedMe =
-      blockedFrom.findIndex(
-        (user) => user.userId === currentConversation?.user.id
-      ) > -1;
-
-    const blockedByMe =
-      usersIBlocked.findIndex(
-        (user) => user.blockedUserId === currentConversation?.user.id
-      ) > -1;
-
-    return hasBlockedMe || blockedByMe;
-  }, [userInformation, currentConversation, usersIBlocked]);
 
   useEffect(() => {
     const uploadedFiles = form.watch('attachments');

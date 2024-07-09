@@ -44,6 +44,11 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
       path: '/admin/accounts',
     },
     {
+      icon: '/assets/sidebaricons/report.svg',
+      title: 'Reports',
+      path: '/admin/reported-users',
+    },
+    {
       icon: '/assets/sidebaricons/settings.svg',
       title: 'Settings',
       path: '/admin/settings',

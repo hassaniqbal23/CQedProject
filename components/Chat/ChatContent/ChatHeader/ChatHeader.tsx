@@ -17,6 +17,7 @@ interface IProps {
   onDeleteConversations?: (id: string | number) => void;
   isTyping?: boolean;
   conversation: ChatConversation;
+  isConversationBlocked?: boolean;
 }
 
 export const ChatHeader: FC<IProps> = ({
@@ -24,6 +25,7 @@ export const ChatHeader: FC<IProps> = ({
   isTyping,
   conversation,
   onDeleteConversations,
+  isConversationBlocked,
 }: IProps) => {
   let lastOnlineDate = 'last active unknown';
   if (isValid(new Date(conversation.user.last_active))) {
@@ -52,17 +54,19 @@ export const ChatHeader: FC<IProps> = ({
                 >
                   {conversation.user.name}
                 </Typography>
-                <Typography
-                  variant="p"
-                  weight="medium"
-                  className={`text-sm  ${isOnline && !isTyping ? 'text-[#70C670]' : 'text-gray-400'}`}
-                >
-                  {isTyping
-                    ? 'Typing....'
-                    : isOnline
-                      ? 'Online'
-                      : lastOnlineDate}
-                </Typography>
+                {isConversationBlocked === false && (
+                  <Typography
+                    variant="p"
+                    weight="medium"
+                    className={`text-sm  ${isOnline && !isTyping ? 'text-[#70C670]' : 'text-gray-400'}`}
+                  >
+                    {isTyping
+                      ? 'Typing....'
+                      : isOnline
+                        ? 'Online'
+                        : lastOnlineDate}
+                  </Typography>
+                )}
               </div>
             </div>
           }

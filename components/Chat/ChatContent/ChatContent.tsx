@@ -23,9 +23,24 @@ const ChatContent: FC = () => {
     setSelectedConversationId,
   } = useChatProvider();
   const { realtimeConnectedUsersIds, realtimeTypingUsersIds } = useChatGuard();
-  const { userInformation } = useGlobalState();
+  const { userInformation, usersIBlocked } = useGlobalState();
 
   const queryClient = useQueryClient();
+
+  const isConversationBlocked = React.useMemo(() => {
+    const blockedFrom = userInformation.BlockedFrom ?? [];
+    const hasBlockedMe =
+      blockedFrom.findIndex(
+        (user) => user.userId === currentConversation?.user.id
+      ) > -1;
+
+    const blockedByMe =
+      usersIBlocked.findIndex(
+        (user) => user.blockedUserId === currentConversation?.user.id
+      ) > -1;
+
+    return hasBlockedMe || blockedByMe;
+  }, [userInformation, currentConversation, usersIBlocked]);
 
   const onSendMessage = (data: any) => {
     if (currentConversation) {
@@ -110,13 +125,17 @@ const ChatContent: FC = () => {
               onDeleteConversations={() => {
                 handleDeleteConversation(currentConversation.id);
               }}
+              isConversationBlocked={isConversationBlocked}
             />
           </div>
           <div className="flex-grow h-full overflow-auto">
             <ChatMessages conversation={currentConversation} />
           </div>
           <div className="bottom-0 bg-white py-3 px-6 border-t">
-            <ChatInput onSendMessage={onSendMessage} />
+            <ChatInput
+              onSendMessage={onSendMessage}
+              isConversationBlocked={isConversationBlocked}
+            />
           </div>
         </div>
       ) : (

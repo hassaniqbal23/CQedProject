@@ -14,7 +14,7 @@ export const chatDafualt: Story = {
   render: () => {
     return (
       <div className="flex flex-col justify-end h-screen">
-        <ChatInput />
+        <ChatInput isConversationBlocked={false} onSendMessage={() => {}} />
       </div>
     );
   },
