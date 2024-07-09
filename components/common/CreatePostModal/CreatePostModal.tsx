@@ -128,7 +128,7 @@ export const CreatePostModal = ({
     onPublish &&
       onPublish({
         content: textAreaValue,
-        attachment_ids: uploadedImage.map((item: any) => item.id),
+        attachment_ids: uploadedImage?.map((item: any) => item.id),
       });
     setTextAreaValue('');
     setUploadedImage(null);
