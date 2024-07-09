@@ -107,8 +107,9 @@ export const ChatGuardProvider = ({ children }: any) => {
     };
 
     const onUserBlocked = () => {
-      queryClient.refetchQueries('userInformation');
-      queryClient.refetchQueries('get-users-i-blocked');
+      ['userInformation', 'get-users-i-blocked', 'MyPenPals'].map((c) => {
+        queryClient.refetchQueries(c);
+      });
     };
 
     if (socket) {
