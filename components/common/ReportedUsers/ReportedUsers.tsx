@@ -1,7 +1,6 @@
 'use client';
 import React, { Suspense, useState } from 'react';
-import SchoolTable from '@/components/common/SchoolsTable';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { getReportedUsers } from '@/app/api/admin';
 import { Typography } from '@/components/common/Typography/Typography';
 import Pagination from '../pagination/pagination';
@@ -20,14 +19,14 @@ const ReportedUsers = () => {
 
   const [totalCount, setTotalCount] = useState<number>(1);
 
-  const { data, isLoading } = useQuery(
+  const { data: reportData, isLoading } = useQuery(
     ['getReportedUsers', page, limit],
     () => getReportedUsers(page, limit),
     {
       enabled: true,
       onSuccess: (res) => {
-        console.log(res, 'resss')
-        setTotalCount(res?.data?.totalCount || 0);
+        console.log(res, 'res');
+        setTotalCount(res?.totalCount || 0);
       },
       onError(err) {
         console.log(err);
@@ -35,7 +34,7 @@ const ReportedUsers = () => {
     }
   );
 
-  console.log(data?.data?.data, 'dataaaaa');
+  console.log(totalCount, 'totalCount');
   return (
     <Suspense>
       <div className="w-full py-3 mt-7">
@@ -50,7 +49,7 @@ const ReportedUsers = () => {
           </div>
         </div>
         <div className="mt-10">
-          <ReportsTable data={data?.data?.data || []} loading={isLoading} />
+          <ReportsTable data={reportData?.data || []} loading={isLoading} />
         </div>
         <div className={'flex justify-end w-full mt-4'}>
           <Pagination

@@ -113,9 +113,7 @@ function ReportsTable(props: SchoolTableProps) {
                     options={[
                       {
                         content: (
-                          <div
-                            onClick={() => handleDelete(data.id)}
-                          >
+                          <div onClick={() => handleDelete(data.id)}>
                             Delete Report
                           </div>
                         ),
