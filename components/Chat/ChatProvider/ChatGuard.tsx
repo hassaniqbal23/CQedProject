@@ -106,6 +106,11 @@ export const ChatGuardProvider = ({ children }: any) => {
       );
     };
 
+    const onUserBlocked = () => {
+      queryClient.refetchQueries('userInformation');
+      queryClient.refetchQueries('get-users-i-blocked');
+    };
+
     if (socket) {
       socket.on('SOCKET_USER_IS_TYPING', onUserIsTyping);
       socket.on('SOCKET_ONLINE_USERS_LIST', onOnlineUsersList);
@@ -115,12 +120,14 @@ export const ChatGuardProvider = ({ children }: any) => {
       socket.on('disconnect', () => {
         setRealtimeConnectedUsersIds([]);
       });
+      socket.on('SOCKET_USER_BLOCKED', onUserBlocked);
       return () => {
         socket.off('SOCKET_USER_IS_TYPING', onUserIsTyping);
         socket.off('SOCKET_ONLINE_USERS_LIST', onOnlineUsersList);
         socket.off('SOCKET_USER_IS_NOT_TYPING', onUserIsNotTyping);
         socket.off('MESSAGE', onMessage);
         socket.off('DELETE_MESSAGE', onMessageDelete);
+        socket.off('SOCKET_USER_BLOCKED', onUserBlocked);
       };
     }
   }, [isAuthenticated]);
