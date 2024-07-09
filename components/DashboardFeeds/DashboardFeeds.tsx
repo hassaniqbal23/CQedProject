@@ -293,7 +293,7 @@ function DashboardFeeds() {
                             communityId: data.communityId
                               ? data.communityId
                               : null,
-                            attachmentIds: []
+                            attachmentIds: [],
                           };
                         }
 
@@ -444,14 +444,14 @@ function DashboardFeeds() {
                                                   replyToName={
                                                     repliedComment
                                                       ? repliedComment?.User
-                                                        .name
+                                                          .name
                                                       : ''
                                                   }
                                                   replyToText={
                                                     repliedComment
                                                       ? formatMentions(
-                                                        repliedComment?.content
-                                                      )
+                                                          repliedComment?.content
+                                                        )
                                                       : ''
                                                   }
                                                 />

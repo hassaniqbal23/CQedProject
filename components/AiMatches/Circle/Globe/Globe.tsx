@@ -13,4 +13,4 @@ export const Globe: FC = () => {
       />
     </div>
   );
-}; 
+};

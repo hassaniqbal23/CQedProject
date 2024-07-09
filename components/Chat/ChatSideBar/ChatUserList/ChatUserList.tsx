@@ -12,7 +12,7 @@ interface IProps {
 }
 
 export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
-  const { userInformation } = useGlobalState();
+  const { userInformation, usersIBlocked } = useGlobalState();
   const searchParams = useSearchParams();
   const {
     joinConversation,
@@ -103,6 +103,21 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
           }
         }
 
+        const isConversationBlocked = React.useMemo(() => {
+          const blockedFrom = userInformation.BlockedFrom ?? [];
+          const hasBlockedMe =
+            blockedFrom.findIndex(
+              (user) => user.userId === currentConversation?.user.id
+            ) > -1;
+
+          const blockedByMe =
+            usersIBlocked.findIndex(
+              (user) => user.blockedUserId === currentConversation?.user.id
+            ) > -1;
+
+          return hasBlockedMe || blockedByMe;
+        }, [userInformation, currentConversation, usersIBlocked]);
+
         return (
           <div
             key={conversation.id}
@@ -123,9 +138,10 @@ export const ChatUserList: FC<IProps> = ({ conversations }: IProps) => {
                     alt="Profile Picture"
                   />
                 </Avatar>
-                {realtimeConnectedUsersIds.includes(conversation.user.id) && (
-                  <div className="w-3 h-3 bg-green-500 rounded-full absolute bottom-[5px] right-0"></div>
-                )}
+                {realtimeConnectedUsersIds.includes(conversation.user.id) &&
+                  isConversationBlocked == false && (
+                    <div className="w-3 h-3 bg-green-500 rounded-full absolute bottom-[5px] right-0"></div>
+                  )}
               </div>
               <div>
                 <Typography

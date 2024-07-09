@@ -172,7 +172,11 @@ export const Post: FC<IProps> = ({
               className={`${attachment.length === 2 || attachment.length === 4 ? 'grid grid-cols-2 gap-2' : attachment.length === 3 ? 'grid grid-cols-2 gap-2' : ''}`}
             >
               {attachment.map((image, index) => {
-                if (['MP4', 'MOV', 'AVI', 'WMV', 'FLV'].includes(image.Attachment.file_type as string)) {
+                if (
+                  ['MP4', 'MOV', 'AVI', 'WMV', 'FLV'].includes(
+                    image.Attachment.file_type as string
+                  )
+                ) {
                   return (
                     <div className="mt-4 md:mt-0">
                       <VideoPlayer image={image} />
@@ -228,29 +232,29 @@ export const Post: FC<IProps> = ({
                   post={
                     sharePost
                       ? {
-                        userImage: sharePost.userImage,
-                        userFullName: sharePost.userFullName,
-                        username: sharePost.username,
-                        created_at: sharePost.created_at,
-                        description: sharePost.description,
-                        attachment:
-                          sharePost.attachment &&
-                          sharePost.attachment[0]?.Attachment.file_path,
-                        fileTypes:
-                          sharePost.attachment &&
-                          sharePost.attachment[0]?.Attachment.file_type,
-                      }
+                          userImage: sharePost.userImage,
+                          userFullName: sharePost.userFullName,
+                          username: sharePost.username,
+                          created_at: sharePost.created_at,
+                          description: sharePost.description,
+                          attachment:
+                            sharePost.attachment &&
+                            sharePost.attachment[0]?.Attachment.file_path,
+                          fileTypes:
+                            sharePost.attachment &&
+                            sharePost.attachment[0]?.Attachment.file_type,
+                        }
                       : {
-                        userImage,
-                        userFullName,
-                        username,
-                        created_at,
-                        description,
-                        attachment:
-                          attachment && attachment[0]?.Attachment.file_path,
-                        fileTypes:
-                          attachment && attachment[0]?.Attachment.file_type,
-                      }
+                          userImage,
+                          userFullName,
+                          username,
+                          created_at,
+                          description,
+                          attachment:
+                            attachment && attachment[0]?.Attachment.file_path,
+                          fileTypes:
+                            attachment && attachment[0]?.Attachment.file_type,
+                        }
                   }
                   openModalButton={
                     <div className="flex justify-end items-center text-gray-600 cursor-pointer ">
