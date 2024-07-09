@@ -46,3 +46,20 @@ export const changePassword = (payload: {
 export const deactivateSchool = (id: number, payload: { status: number }) => {
   return http.patch(`/schools/${id}/deactive-school`, payload);
 };
+
+export const getReportedUsers = (
+  page: string | number = 1,
+  pageSize: number | string = 10
+) => {
+  return http
+    .get(`/cms/reported-users?page=${page}&limit=${pageSize}`)
+    .then((res) => {
+      return res.data;
+    });
+};
+
+export const deleteReports = (ids: number[]) => {
+  return http.delete(`/cms/reported-users`, {
+    data: { Ids: ids },
+  });
+};
