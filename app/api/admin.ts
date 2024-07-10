@@ -63,3 +63,14 @@ export const deleteReports = (ids: number[]) => {
     data: { Ids: ids },
   });
 };
+
+export const getAttachments = (
+  page: string | number = 1,
+  pageSize: number | string = 10
+) => {
+  return http
+    .get(`/cms/attachments?page=${page}&limit=${pageSize}`)
+    .then((res) => {
+      return res.data;
+    });
+};

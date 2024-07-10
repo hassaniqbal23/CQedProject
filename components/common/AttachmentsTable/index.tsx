@@ -1,14 +1,13 @@
 'use client';
 import DataTable from '@/components/ui/table/table';
-import Image from 'next/image';
 import React, { useState } from 'react';
 import { PreviewAttachmentModal } from '../PreviewAttachmentModal/PreviewAttachmentModal';
 import { useGlobalState } from '@/app/globalContext/globalContext';
-import { Button } from '@/components/ui';
+import { Avatar, AvatarImage, Button } from '@/components/ui';
 import { Typography } from '../Typography/Typography';
 import Pagination from '@/components/common/pagination/pagination';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { getAllSchools } from '@/app/api/admin';
+import { useQuery } from 'react-query';
+import { getAttachments } from '@/app/api/admin';
 
 export interface AttachmentTableProps {
   data: any;
@@ -17,24 +16,22 @@ export interface AttachmentTableProps {
 }
 
 function AttachmentTable(props: AttachmentTableProps) {
-  const { userInformation } = useGlobalState();
-  const [totalCountSchool, setTotalCountSchool] = useState<number>(1);
+  const [totalAttachment, setTotalAttachment] = useState<number>(1);
   const [paginationSchools, setPaginationSchools] = useState<{
-    schoolPage: number;
-    schoolLimit: number;
+    attachmentPage: number;
+    attachmentLimit: number;
   }>({
-    schoolPage: 1,
-    schoolLimit: 10,
+    attachmentPage: 1,
+    attachmentLimit: 10,
   });
-
-  const { schoolPage, schoolLimit } = paginationSchools;
-  const { data, isLoading } = useQuery(
-    ['getInvitedSchools', schoolPage, schoolLimit],
-    () => getAllSchools(schoolPage, schoolLimit),
+  const { attachmentPage, attachmentLimit } = paginationSchools;
+  const { data: attachmentsData, isLoading } = useQuery(
+    ['getAttachments', attachmentPage, attachmentLimit],
+    () => getAttachments(attachmentPage, attachmentLimit),
     {
       enabled: true,
       onSuccess: (res) => {
-        setTotalCountSchool(res?.data?.totalCount);
+        setTotalAttachment(res?.data?.totalCount);
       },
       onError(err) {
         console.log(err);
@@ -45,7 +42,7 @@ function AttachmentTable(props: AttachmentTableProps) {
   return (
     <div className="w-full">
       <div className="mb-3">
-        <Typography variant={'h2'} weight={'bold'}>
+        <Typography variant={'h2'} weight={'semibold'}>
           Attachments
         </Typography>
         <Typography variant={'h6'} weight={'regular'}>
@@ -53,7 +50,7 @@ function AttachmentTable(props: AttachmentTableProps) {
         </Typography>
       </div>
       <DataTable
-        data={data?.data?.data || []}
+        data={attachmentsData?.data || []}
         loading={isLoading}
         columns={[
           {
@@ -62,17 +59,18 @@ function AttachmentTable(props: AttachmentTableProps) {
             render: (data) => {
               return (
                 <div className="flex items-center gap-2 w-full">
-                  <Image
-                    src={
-                      data?.profile?.profilePicture ||
-                      '/assets/profile/profile.svg'
-                    }
-                    alt={data?.profile?.full_name || 'user profile'}
-                    width={30}
-                    height={30}
-                    unoptimized={true}
-                  />
-                  <h2>{data?.name}</h2>
+                  <Avatar className="w-9 h-9 ">
+                    <AvatarImage
+                      src={
+                        data?.User?.attachment?.file_path ||
+                        '/assets/profile/profile.svg'
+                      }
+                      alt={data?.profile?.full_name || 'user profile'}
+                    />
+                  </Avatar>
+                  <Typography variant={'body'} weight={'regular'}>
+                    {data?.User?.name}
+                  </Typography>
                 </div>
               );
             },
@@ -84,7 +82,7 @@ function AttachmentTable(props: AttachmentTableProps) {
               return (
                 <div className="flex items-center w-full">
                   <PreviewAttachmentModal
-                    attachment={data?.attachment}
+                    attachment={data.file_path}
                     buttonTrigger={
                       <Button variant={'default'} size={'sm'}>
                         Preview
@@ -99,9 +97,9 @@ function AttachmentTable(props: AttachmentTableProps) {
       />
       <div className={'flex justify-end w-full mt-4'}>
         <Pagination
-          currentPage={schoolPage}
-          totalPages={Math.ceil(totalCountSchool / schoolLimit)}
-          pageSize={schoolLimit}
+          currentPage={attachmentPage}
+          totalPages={Math.ceil(totalAttachment / attachmentLimit)}
+          pageSize={attachmentLimit}
           totalCount={0}
           onPageChange={(value: number) => {
             setPaginationSchools((prev) => ({

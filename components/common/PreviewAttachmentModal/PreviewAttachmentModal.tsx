@@ -2,9 +2,15 @@ import Modal from '@/components/common/Modal/Modal';
 import { useState } from 'react';
 import Image from 'next/image';
 
+interface Attachment {
+  id: number;
+  file_path: string;
+  upload_type: 'JPEG' | 'MP4';
+}
+
 interface PreviewAttachmentModalProps {
   buttonTrigger: React.ReactNode;
-  attachment: any;
+  attachment: string;
 }
 
 export const PreviewAttachmentModal = ({
@@ -12,6 +18,7 @@ export const PreviewAttachmentModal = ({
   attachment,
 }: PreviewAttachmentModalProps) => {
   const [isVisible, setIsVisible] = useState(false);
+  const handleCloseModal = () => setIsVisible(false);
 
   return (
     <>
@@ -19,24 +26,18 @@ export const PreviewAttachmentModal = ({
       <Modal
         isVisible={isVisible}
         isSeperator={false}
-        onOpenChange={() => setIsVisible(!isVisible)}
+        onOpenChange={handleCloseModal}
         footer={false}
       >
-        <div>
-          {attachment && attachment.upload_type === 'image' && (
-            <Image
-              src={attachment.file_path}
-              alt="Attachment"
-              width={500}
-              height={500}
-            />
-          )}
-          {attachment && attachment.upload_type === 'video' && (
-            <video controls>
-              <source src={attachment.file_path} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          )}
+        <div className="mt-1">
+          <Image
+            src={attachment || ''}
+            height={200}
+            width={200}
+            alt="user attachment"
+            unoptimized={true}
+            className="w-full rounded-md "
+          />
         </div>
       </Modal>
     </>
