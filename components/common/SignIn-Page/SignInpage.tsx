@@ -14,6 +14,7 @@ import {
   FormField,
   FormItem,
   FormMessage,
+  Separator,
 } from '@/components/ui';
 import { Avatar } from '@/components/ui/avatar/avatar';
 import { LoginCarousel } from '@/components/ui/carousel/carousel';
@@ -27,6 +28,8 @@ import { Typography } from '../Typography/Typography';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 import { useEffect } from 'react';
 import { useGlobalState } from '@/app/globalContext/globalContext';
+import { IoLogoFacebook } from 'react-icons/io5';
+import { FcGoogle } from 'react-icons/fc';
 
 interface ICarouselItems {
   title: string;
@@ -124,7 +127,7 @@ export function SignIn(props: SignInProps) {
   };
 
   return (
-    <div className="flex flex-col md:flex-row items-stretch justify-stretch min-h-screen">
+    <div className="flex flex-col md:flex-row items-stretch justify-stretch min-h-screen ">
       <div className="hidden md:block w-full md:w-1/2">
         <LoginCarousel
           carouselItems={[
@@ -144,17 +147,17 @@ export function SignIn(props: SignInProps) {
         />
       </div>
 
-      <div className="w-full md:w-1/2 m-auto flex flex-col justify-center items-center p-6 md:p-12">
+      <div className="w-full md:w-1/2 m-auto flex flex-col justify-center items-center p-6 md:p-12 relative">
         <div className="text-center mb-4 mt-12 px-4">
           <Typography variant="h2" weight="semibold">
-            Sign in to your account
+            Welcome to your Global Community{' '}
           </Typography>
           <Typography
             variant="p"
             weight="medium"
             className="text-slate-600 mt-1"
           >
-            Sign in to access your account
+            Your Gateway to Global Competence
           </Typography>
         </div>
         <div className="flex items-center justify-center mb-2">
@@ -229,8 +232,61 @@ export function SignIn(props: SignInProps) {
             >
               Login
             </Button>
+            <div className="flex justify-center items-center mt-5 w-full overflow-hidden">
+              <Separator className="w-1/2" />
+              <Typography variant="p" weight="medium" className="px-2 ">
+                Or
+              </Typography>
+              <Separator className="w-1/2" />
+            </div>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                size="md"
+                variant="outline"
+                className="w-full flex items-center justify-center "
+              >
+                <div>
+                  <FcGoogle />
+                </div>
+                Google
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="md"
+                className="w-full flex items-center justify-center  "
+              >
+                <IoLogoFacebook />
+                Facebook
+              </Button>
+            </div>
+            <Typography
+              variant="p"
+              weight="medium"
+              className="flex justify-center items-center text-[#060606]"
+            >
+              Don’t have an Account?
+              <Link
+                href="#"
+                className="text-primary-700 font-bold text-sm ml-1"
+              >
+                {' '}
+                Sign Up
+              </Link>
+            </Typography>
           </form>
         </Form>
+        <p className="absolute bottom-0  text-center text-[10px]">
+          By clicking continue to join or sign in, you agree to GCEPortal <br />{' '}
+          <Link href="#" className="text-primary">
+            Terms & Conditions
+          </Link>{' '}
+          and{' '}
+          <Link href="#" className="text-primary">
+            Privacy Policy
+          </Link>{' '}
+        </p>
       </div>
     </div>
   );
