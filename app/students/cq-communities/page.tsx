@@ -4,8 +4,8 @@ import CommunitiesPage from '@/components/Communities/CommunitiesPage';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Communities - GCED',
-  description: 'Communities - GCED',
+  title: 'Your Communities - GCED',
+  description: 'Your Communities - GCED',
 };
 
 const CQCommunities = () => {

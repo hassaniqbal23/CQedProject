@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { IoEllipsisVertical } from 'react-icons/io5';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueries, useQuery, useQueryClient } from 'react-query';
 
 export interface SchoolTableProps {
   data: any;

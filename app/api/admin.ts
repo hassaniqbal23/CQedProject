@@ -64,6 +64,17 @@ export const deleteReports = (ids: number[]) => {
   });
 };
 
+export const getAttachments = (
+  page: string | number = 1,
+  pageSize: number | string = 10
+) => {
+  return http
+    .get(`/cms/attachments?page=${page}&limit=${pageSize}`)
+    .then((res) => {
+      return res.data;
+    });
+};
+
 export const getNotifications = (
   page: string | number = 1,
   pageSize: number | string = 10

@@ -52,6 +52,12 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
       icon: '/assets/sidebaricons/notification.svg',
       title: 'Notifications',
       path: '/admin/notifications',
+
+    },
+    {
+      icon: '/assets/sidebaricons/attachment.svg',
+      title: 'Attachments',
+      path: '/admin/attachments',
     },
     {
       icon: '/assets/sidebaricons/settings.svg',
