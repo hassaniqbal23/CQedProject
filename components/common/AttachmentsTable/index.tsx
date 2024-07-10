@@ -53,8 +53,8 @@ function AttachmentTable(props: AttachmentTableProps) {
         loading={isLoading}
         columns={[
           {
-            label: 'University Name',
-            key: 'university',
+            label: 'User Name',
+            key: 'userName',
             render: (data) => {
               return (
                 <div className="flex items-center gap-2 w-full">
