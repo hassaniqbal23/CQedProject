@@ -23,9 +23,6 @@ export const CreatePost: Story = {
   },
   args: {
     buttonTrigger: 'Preview Attachments',
-    attachment: {
-      upload_type: 'image',
-      file_path: '/path/to/image',
-    },
+    attachment: '',
   },
 };
