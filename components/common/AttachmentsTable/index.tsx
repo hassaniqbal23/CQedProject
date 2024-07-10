@@ -2,7 +2,6 @@
 import DataTable from '@/components/ui/table/table';
 import React, { useState } from 'react';
 import { PreviewAttachmentModal } from '../PreviewAttachmentModal/PreviewAttachmentModal';
-import { useGlobalState } from '@/app/globalContext/globalContext';
 import { Avatar, AvatarImage, Button } from '@/components/ui';
 import { Typography } from '../Typography/Typography';
 import Pagination from '@/components/common/pagination/pagination';
@@ -17,14 +16,14 @@ export interface AttachmentTableProps {
 
 function AttachmentTable(props: AttachmentTableProps) {
   const [totalAttachment, setTotalAttachment] = useState<number>(1);
-  const [paginationSchools, setPaginationSchools] = useState<{
+  const [paginationAttachments, setPaginationAttachments] = useState<{
     attachmentPage: number;
     attachmentLimit: number;
   }>({
     attachmentPage: 1,
     attachmentLimit: 10,
   });
-  const { attachmentPage, attachmentLimit } = paginationSchools;
+  const { attachmentPage, attachmentLimit } = paginationAttachments;
   const { data: attachmentsData, isLoading } = useQuery(
     ['getAttachments', attachmentPage, attachmentLimit],
     () => getAttachments(attachmentPage, attachmentLimit),
@@ -55,7 +54,7 @@ function AttachmentTable(props: AttachmentTableProps) {
         columns={[
           {
             label: 'University Name',
-            key: 'school',
+            key: 'university',
             render: (data) => {
               return (
                 <div className="flex items-center gap-2 w-full">
@@ -102,9 +101,9 @@ function AttachmentTable(props: AttachmentTableProps) {
           pageSize={attachmentLimit}
           totalCount={0}
           onPageChange={(value: number) => {
-            setPaginationSchools((prev) => ({
+            setPaginationAttachments((prev) => ({
               ...prev,
-              schoolPage: value,
+              attachmentPage: value,
             }));
           }}
         />
