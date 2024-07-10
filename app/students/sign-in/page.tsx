@@ -11,6 +11,7 @@ export default function SchoolSignIn() {
     <SignIn
       loginSuccessLink={'/students/dashboard/'}
       forgetPasswordLink={'/students/forget-password'}
+      role="student"
     ></SignIn>
   );
 }

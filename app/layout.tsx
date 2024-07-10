@@ -18,6 +18,7 @@ import { ModuleProvider } from '@/components/ModuleProvider/ModuleProvider';
 import { ChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
 import { ClientOnly } from '@/components/GqedNotifications/ClientOnly';
 import { GqedNotifications } from '@/components/GqedNotifications/GqedNotifications';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const montserrat = Montserrat({
   weight: ['400', '500', '600', '700'],
@@ -66,14 +67,20 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 <SocketProvider>
                   <ChatGuardProvider>
                     <ChatProvider>
-                      <FormProvider {...methods}>
-                        {children}
-                        {/* </ThemeProvider> */}
-                        <ToastContainer autoClose={1000} />
-                        <ClientOnly>
-                          <GqedNotifications />
-                        </ClientOnly>
-                      </FormProvider>
+                      <GoogleOAuthProvider
+                        clientId={
+                          process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''
+                        }
+                      >
+                        <FormProvider {...methods}>
+                          {children}
+                          {/* </ThemeProvider> */}
+                          <ToastContainer autoClose={1000} />
+                          <ClientOnly>
+                            <GqedNotifications />
+                          </ClientOnly>
+                        </FormProvider>
+                      </GoogleOAuthProvider>
                     </ChatProvider>
                   </ChatGuardProvider>
                 </SocketProvider>

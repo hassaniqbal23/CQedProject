@@ -58,3 +58,6 @@ export const getNotifications = (id: number) =>
   http.get(`/notifications/${id}/index`).then((res) => {
     return res.data.data;
   });
+
+export const LoginWithGoogleAPI = (payload: { token: string; type: string }) =>
+  http.post('/auth/google-login', payload);
