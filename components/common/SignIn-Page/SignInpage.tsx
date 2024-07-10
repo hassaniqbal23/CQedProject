@@ -232,52 +232,49 @@ export function SignIn(props: SignInProps) {
             >
               Login
             </Button>
-            <div className="flex justify-center items-center mt-5 w-full overflow-hidden">
-              <Separator className="w-1/2" />
-              <Typography variant="p" weight="medium" className="px-2 ">
-                Or
-              </Typography>
-              <Separator className="w-1/2" />
-            </div>
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                size="md"
-                variant="outline"
-                className="w-full flex items-center justify-center "
-              >
-                <div>
-                  <FcGoogle />
-                </div>
-                Google
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="md"
-                className="w-full flex items-center justify-center  "
-              >
-                <IoLogoFacebook />
-                Facebook
-              </Button>
-            </div>
-            <Typography
-              variant="p"
-              weight="medium"
-              className="flex justify-center items-center text-[#060606]"
-            >
-              Don’t have an Account?
-              <Link
-                href="#"
-                className="text-primary-700 font-bold text-sm ml-1"
-              >
-                {' '}
-                Sign Up
-              </Link>
-            </Typography>
           </form>
         </Form>
-        <p className="absolute bottom-0  text-center text-[10px]">
+        <div className="w-full max-w-md flex flex-col items-center mt-4  relative">
+          <div className="flex justify-center items-center w-full overflow-hidden">
+            <Separator className="w-1/2" />
+            <Typography variant="p" weight="medium" className="px-2">
+              Or
+            </Typography>
+            <Separator className="w-1/2" />
+          </div>
+          <div className="flex gap-2 mt-4 w-full">
+            <Button
+              type="button"
+              size="md"
+              variant="outline"
+              className="flex-1 flex items-center justify-center"
+            >
+              <FcGoogle className="mr-2" />
+              Google
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="md"
+              className="flex-1 flex items-center justify-center"
+            >
+              <IoLogoFacebook className="mr-2" />
+              Facebook
+            </Button>
+          </div>
+          <Typography
+            variant="p"
+            weight="medium"
+            className="flex justify-center items-center text-[#060606] mt-4"
+          >
+            Don’t have an Account?
+            <Link href="#" className="text-primary-700 font-bold text-sm ml-1">
+              {' '}
+              Sign Up
+            </Link>
+          </Typography>
+        </div>
+        <p className="absolute bottom-0 text-center text-[10px]">
           By clicking continue to join or sign in, you agree to GCEPortal <br />{' '}
           <Link href="#" className="text-primary">
             Terms & Conditions
