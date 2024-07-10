@@ -1,12 +1,9 @@
 'use client';
+import React from 'react';
 import DataTable from '@/components/ui/table/table';
-import React, { useState } from 'react';
 import { PreviewAttachmentModal } from '../PreviewAttachmentModal/PreviewAttachmentModal';
 import { Avatar, AvatarImage, Button } from '@/components/ui';
 import { Typography } from '../Typography/Typography';
-import Pagination from '@/components/common/pagination/pagination';
-import { useQuery } from 'react-query';
-import { getAttachments } from '@/app/api/admin';
 
 export interface AttachmentTableProps {
   data: any;
@@ -15,29 +12,6 @@ export interface AttachmentTableProps {
 }
 
 function AttachmentTable(props: AttachmentTableProps) {
-  const [totalAttachment, setTotalAttachment] = useState<number>(1);
-  const [paginationAttachments, setPaginationAttachments] = useState<{
-    attachmentPage: number;
-    attachmentLimit: number;
-  }>({
-    attachmentPage: 1,
-    attachmentLimit: 10,
-  });
-  const { attachmentPage, attachmentLimit } = paginationAttachments;
-  const { data: attachmentsData, isLoading } = useQuery(
-    ['getAttachments', attachmentPage, attachmentLimit],
-    () => getAttachments(attachmentPage, attachmentLimit),
-    {
-      enabled: true,
-      onSuccess: (res) => {
-        setTotalAttachment(res?.data?.totalCount);
-      },
-      onError(err) {
-        console.log(err);
-      },
-    }
-  );
-
   return (
     <div className="w-full">
       <div className="mb-3">
@@ -49,8 +23,8 @@ function AttachmentTable(props: AttachmentTableProps) {
         </Typography>
       </div>
       <DataTable
-        data={attachmentsData?.data || []}
-        loading={isLoading}
+        data={props?.data || []}
+        loading={props?.loading}
         columns={[
           {
             label: 'User Name',
@@ -94,20 +68,6 @@ function AttachmentTable(props: AttachmentTableProps) {
           },
         ]}
       />
-      <div className={'flex justify-end w-full mt-4'}>
-        <Pagination
-          currentPage={attachmentPage}
-          totalPages={Math.ceil(totalAttachment / attachmentLimit)}
-          pageSize={attachmentLimit}
-          totalCount={0}
-          onPageChange={(value: number) => {
-            setPaginationAttachments((prev) => ({
-              ...prev,
-              attachmentPage: value,
-            }));
-          }}
-        />
-      </div>
     </div>
   );
 }
