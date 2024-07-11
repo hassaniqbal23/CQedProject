@@ -78,7 +78,7 @@ function ReportsTable(props: SchoolTableProps) {
             render: (data) => {
               return (
                 <div className="flex items-center gap-2 w-full">
-                  <h2>{data.Reporter.name}</h2>
+                  <h2>{data.User.name}</h2>
                 </div>
               );
             },
@@ -86,6 +86,17 @@ function ReportsTable(props: SchoolTableProps) {
           {
             label: 'Reporter Email',
             key: 'Reporter.email',
+            render: (data) => {
+              return (
+                <div className="flex items-center gap-2 w-full">
+                  <h2>{data.User.email}</h2>
+                </div>
+              );
+            },
+          },
+          {
+            label: 'Reported Email',
+            key: 'Reported.email',
             render: (data) => {
               return (
                 <div className="flex items-center gap-2 w-full">
