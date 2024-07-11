@@ -115,6 +115,7 @@ const DatePickerDemo: React.FC<IProps> = ({
         ) : (
           <Calendar
             mode="single"
+            disabled={(day) => day > new Date()}
             selected={date}
             onSelect={handleDateChange}
             initialFocus

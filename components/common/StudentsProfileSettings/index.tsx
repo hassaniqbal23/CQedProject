@@ -31,9 +31,7 @@ const formSchema = z.object({
   full_name: z.string().min(2, {
     message: 'Name must be at least 2 characters',
   }),
-  nick_name: z.string().min(5, {
-    message: 'nick name must be at least 5 characters',
-  }),
+  nick_name: z.string().optional(),
   photo: z.string(),
 });
 
