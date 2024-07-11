@@ -8,7 +8,6 @@ import { toast } from 'sonner';
 import { useMutation, useQueryClient } from 'react-query';
 import Image from 'next/image';
 
-
 export interface ReportsTableProps {
   data: any;
   noDataMessage?: string;
@@ -81,7 +80,10 @@ function ReportsTable(props: ReportsTableProps) {
               return (
                 <div className="flex items-center gap-2 w-full">
                   <Image
-                    src={data.Reporter.attachment?.file_path || '/assets/profile/profile.svg'}
+                    src={
+                      data.Reporter.attachment?.file_path ||
+                      '/assets/profile/profile.svg'
+                    }
                     alt={data.Reporter.name}
                     width={30}
                     height={30}
