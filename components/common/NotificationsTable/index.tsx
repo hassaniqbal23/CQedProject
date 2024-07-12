@@ -7,9 +7,10 @@ import { IoEllipsisVertical } from 'react-icons/io5';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient } from 'react-query';
 import Image from 'next/image';
+import { NotificationType } from '@/app/admin/Admintype';
 
 export interface NotificationsTableProps {
-  data: any;
+  data: { data: NotificationType[] };
   noDataMessage?: string;
   loading?: boolean;
 }
