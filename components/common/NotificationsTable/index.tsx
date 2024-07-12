@@ -1,5 +1,5 @@
 'use client';
-import { deleteReports } from '@/app/api/admin';
+import { deleteNotifications, deleteReports } from '@/app/api/admin';
 import { Dropdown } from '@/components/ui';
 import DataTable from '@/components/ui/table/table';
 import React from 'react';
@@ -8,107 +8,85 @@ import { toast } from 'sonner';
 import { useMutation, useQueryClient } from 'react-query';
 import Image from 'next/image';
 
-export interface ReportsTableProps {
+export interface NotificationsTableProps {
   data: any;
   noDataMessage?: string;
   loading?: boolean;
 }
 
-function ReportsTable(props: ReportsTableProps) {
+function NotificationsTable(props: NotificationsTableProps) {
   const { data, noDataMessage, loading } = props;
   const queryClient = useQueryClient();
 
-  const { mutate: deleteReportsMutation } = useMutation(
-    (ids: number[]) => deleteReports(ids),
+  const { mutate: deleteNotificationMutation } = useMutation(
+    (ids: number[]) => deleteNotifications(ids),
     {
       onSuccess: (res) => {
         toast.success(`${res.data.message}`, {
           position: 'bottom-center',
         });
-        queryClient.refetchQueries('getReportedUsers');
+        queryClient.refetchQueries('getNotifications');
       },
       onError: (error) => {
-        console.log('Error deleting reports', error);
+        console.log('Error deleting notifications', error);
       },
     }
   );
 
   const handleDelete = (id: number) => {
-    deleteReportsMutation([id]);
+    deleteNotificationMutation([id]);
   };
 
   return (
     <div className="w-full">
       <DataTable
-        data={data}
-        noDataMessage={noDataMessage || 'No Reported Users'}
+        data={data && data?.data}
+        noDataMessage={noDataMessage || 'No Notifications'}
         loading={loading}
         columns={[
-          // {
-          //     label: 'User Name',
-          //     key: 'User.name',
-          //     render: (data) => {
-          //         return (
-          //             <div className="flex items-center gap-2 w-full">
-          //                 <Image
-          //                     src={data.User.attachment?.file_path || '/assets/profile/profile.svg'}
-          //                     alt={data.User.name}
-          //                     width={30}
-          //                     height={30}
-          //                     unoptimized={true}
-          //                 />
-          //                 <h2>{data.User.name}</h2>
-          //             </div>
-          //         );
-          //     },
-          // },
-          // {
-          //     label: 'User Email',
-          //     key: 'User.email',
-          //     render: (data) => {
-          //         return (
-          //             <div className="flex items-center gap-2 w-full">
-          //                 <h2>{data.User.email}</h2>
-          //             </div>
-          //         );
-          //     },
-          // },
           {
-            label: 'Reporter Name',
-            key: 'Reporter.name',
+            label: 'Name',
+            key: 'User.name',
             render: (data) => {
               return (
-                <div className="flex items-center gap-2 w-full">
+                <div className="flex items-center  gap-2 w-full">
                   <Image
                     src={
-                      data.Reporter.attachment?.file_path ||
+                      data.createdByUser?.attachment?.file_path ||
                       '/assets/profile/profile.svg'
                     }
-                    alt={data.Reporter.name}
+                    alt={'data.user.name'}
                     width={30}
                     height={30}
                     unoptimized={true}
                     className="rounded-full h-[30px] object-cover"
                   />
-                  <h2>{data.Reporter.name}</h2>
+                  <h2>{data.createdByUser.name}</h2>
                 </div>
               );
             },
           },
           {
-            label: 'Reporter Email',
-            key: 'Reporter.email',
+            label: 'Title',
+            key: 'title',
             render: (data) => {
               return (
                 <div className="flex items-center gap-2 w-full">
-                  <h2>{data.Reporter.email}</h2>
+                  <h2>{data.title}</h2>
                 </div>
               );
             },
           },
           {
-            label: 'Report',
-            key: 'report',
+            label: 'Notification Type',
+            key: 'Notification.Type',
+            render: (data) => {
+              return (
+                <div className="flex items-center gap-2 w-full">
+                  <h2>{data.notificationType}</h2>
+                </div>
+              );
+            },
           },
           {
             label: 'Actions',
@@ -126,7 +104,7 @@ function ReportsTable(props: ReportsTableProps) {
                       {
                         content: (
                           <div onClick={() => handleDelete(data.id)}>
-                            Delete Report
+                            Delete Notifications
                           </div>
                         ),
                       },
@@ -142,4 +120,4 @@ function ReportsTable(props: ReportsTableProps) {
   );
 }
 
-export default ReportsTable;
+export default NotificationsTable;
