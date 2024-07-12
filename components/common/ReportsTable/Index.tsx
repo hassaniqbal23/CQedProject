@@ -99,10 +99,10 @@ function ReportsTable(props: SchoolTableProps) {
             label: 'Country',
             key: 'country',
             render: (data) => {
-              const country = getSingleCountry(data?.Reporter?.profile.country);
+              const country = getSingleCountry(data?.Reporter?.profile?.country);
               return (
                 <div className="flex items-center gap-2 w-full">
-                  <h2>{country.label}</h2>
+                  <h2>{country?.label}</h2>
                 </div>
               );
             },
