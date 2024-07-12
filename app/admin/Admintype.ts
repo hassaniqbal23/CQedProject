@@ -7,7 +7,7 @@ export interface User {
   attachment?: Attachment;
 }
 
-export interface notificationType {
+export interface NotificationType {
   id: number;
   tiitle: string;
   notificationType: string;
