@@ -40,8 +40,8 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
     },
     {
       icon: '/assets/sidebaricons/accounts.svg',
-      title: 'Accounts',
-      path: '/admin/accounts',
+      title: 'Users',
+      path: '/admin/users',
     },
     {
       icon: '/assets/sidebaricons/report.svg',
@@ -52,7 +52,6 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
       icon: '/assets/sidebaricons/notification.svg',
       title: 'Notifications',
       path: '/admin/notifications',
-
     },
     {
       icon: '/assets/sidebaricons/attachment.svg',

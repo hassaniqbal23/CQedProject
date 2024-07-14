@@ -1,12 +1,12 @@
 'use client';
-import React, { Suspense, useState } from 'react';
-import { useQuery } from 'react-query';
-import { getReportedUsers } from '@/app/api/admin';
+import React, { useState } from 'react';
 import { Typography } from '@/components/common/Typography/Typography';
-import Pagination from '../pagination/pagination';
-import ReportsTable from '../ReportsTable/Index';
+import Pagination from '@/components/common/pagination/pagination';
+import UsersTable from '@/components/common/UsersTable';
+import { useQuery } from 'react-query';
+import { getAllUsers, getReportedUsers } from '@/app/api/admin';
 
-const ReportedUsers = () => {
+const Accounts = () => {
   const [pagination, setPagination] = useState<{
     page: number;
     limit: number;
@@ -19,9 +19,9 @@ const ReportedUsers = () => {
 
   const [totalCount, setTotalCount] = useState<number>(1);
 
-  const { data: reportData, isLoading } = useQuery(
-    ['getReportedUsers', page, limit],
-    () => getReportedUsers(page, limit),
+  const { data: allUsersData, isLoading } = useQuery(
+    ['getAllUsers', page, limit],
+    () => getAllUsers(page, limit),
     {
       enabled: true,
       onSuccess: (res) => {
@@ -33,24 +33,23 @@ const ReportedUsers = () => {
     }
   );
 
-  console.log(totalCount, 'totalCount');
   return (
-    <Suspense>
-      <div className="w-full py-3 mt-7">
-        <div className="w-full flex flex-wrap mb-4 items-center">
-          <div>
-            <Typography variant="h3" weight="semibold">
-              Reported Users
+    <>
+      <div>
+        <div className="flex mb-4 items-center">
+          <div className="mb-2">
+            <Typography variant="h2" weight="semibold">
+              Users
             </Typography>
-            <Typography variant="p" weight="regular" className="mt-1">
-              Reported users are listed below
+            <Typography variant="p" weight="regular">
+              Users are listed below.
             </Typography>
           </div>
         </div>
-        <div className="mt-10">
-          <ReportsTable data={reportData?.data || []} loading={isLoading} />
-        </div>
-        <div className={'flex justify-end w-full mt-4'}>
+      </div>
+      <div>
+        <UsersTable data={allUsersData} loading={isLoading} />
+        <div className="flex justify-end w-full mt-4">
           <Pagination
             currentPage={page}
             totalPages={Math.ceil(totalCount / limit)}
@@ -71,8 +70,8 @@ const ReportedUsers = () => {
           />
         </div>
       </div>
-    </Suspense>
+    </>
   );
 };
 
-export default ReportedUsers;
+export default Accounts;

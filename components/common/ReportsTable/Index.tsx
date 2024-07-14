@@ -102,6 +102,17 @@ function ReportsTable(props: ReportsTableProps) {
             render: (data) => {
               return (
                 <div className="flex items-center gap-2 w-full">
+                  <h2>{data.User.email}</h2>
+                </div>
+              );
+            },
+          },
+          {
+            label: 'Reported Email',
+            key: 'Reported.email',
+            render: (data) => {
+              return (
+                <div className="flex items-center gap-2 w-full">
                   <h2>{data.Reporter.email}</h2>
                 </div>
               );
@@ -111,7 +122,9 @@ function ReportsTable(props: ReportsTableProps) {
             label: 'Country',
             key: 'country',
             render: (data) => {
-              const country = getSingleCountry(data?.Reporter?.profile?.country);
+              const country = getSingleCountry(
+                data?.Reporter?.profile?.country
+              );
               return (
                 <div className="flex items-center gap-2 w-full">
                   <h2>{country?.label}</h2>
