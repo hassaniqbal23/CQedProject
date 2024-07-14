@@ -1,7 +1,9 @@
-'use client';
-
 import { Chat } from '@/components/Chat/Chat';
-import { ChatProvider } from '@/components/Chat/ChatProvider/ChatProvider';
+import { Metadata } from 'next';
+export const metadata: Metadata = {
+  title: 'Chats - Teacher - GCED',
+  description: 'Chats - Teacher - GCED',
+};
 
 export default function TeacherChatsCommunities() {
   return (

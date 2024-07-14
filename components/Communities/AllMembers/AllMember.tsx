@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useMemo, useState } from 'react';
 import { Typography } from '@/components/common/Typography/Typography';
 import { Button, Card, Input } from '@/components/ui';

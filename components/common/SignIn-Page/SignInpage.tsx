@@ -36,6 +36,7 @@ import { IoLogoFacebook } from 'react-icons/io5';
 import { FcGoogle } from 'react-icons/fc';
 import { useGoogleLogin } from '@react-oauth/google';
 import FacebookLogin from '@greatsumini/react-facebook-login';
+import axios from 'axios';
 
 interface ICarouselItems {
   title: string;
@@ -106,13 +107,16 @@ export function SignIn(props: SignInProps) {
   const { mutate: userLogin, isLoading } = useMutation(
     (userData: IAuthentication) => LoginAPI(userData),
     {
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         toast.success(res.data.message);
         const response = res.data.result;
         router.push(props.loginSuccessLink);
         storeToken(response?.token);
         storeUserId(response?.user?.id);
         updateToken(response?.token);
+        await axios.post('/api/login', {
+          token: response?.token,
+        });
         queryClient.refetchQueries('userInformation');
         queryClient.refetchQueries('UserJoinedCommunities');
         queryClient.refetchQueries('MyPenPals');

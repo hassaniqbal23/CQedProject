@@ -1,3 +1,5 @@
+'use client';
+
 import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -21,8 +23,9 @@ import { ICommunity } from '@/types/community';
 
 interface IProps {
   module: 'teachers' | 'students';
+  initialCommunityData?: ICommunity;
 }
-const Community: FC<IProps> = ({ module }) => {
+const Community: FC<IProps> = ({ module, initialCommunityData }) => {
   const queryClient = useQueryClient();
   const { userInformation, pendingCommunitiesList } = useGlobalState();
   const [communityId, setCommunityId] = useState<number | null>(null);

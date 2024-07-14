@@ -12,5 +12,5 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: 'Token is required' }, { status: 400 });
   }
   cookies().set('token', token);
-  return NextResponse.json({ message: 'Hello World' });
+  return NextResponse.json({ ok: 'ok' });
 }

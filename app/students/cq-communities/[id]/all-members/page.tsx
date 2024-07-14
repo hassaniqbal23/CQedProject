@@ -1,4 +1,3 @@
-'use client';
 import React from 'react';
 import { AllMember } from '@/components/Communities/AllMembers/AllMember';
 
