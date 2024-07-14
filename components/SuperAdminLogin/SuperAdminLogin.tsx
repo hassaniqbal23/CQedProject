@@ -21,6 +21,7 @@ import {
   storeUserId,
 } from '@/app/utils/encryption';
 import { updateToken } from '@/app/utils/http';
+import axios from 'axios';
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -81,6 +82,9 @@ export default function SuperAdminLogin() {
         storeToken(response?.token);
         storeUserId(response?.user?.id);
         updateToken(response?.token);
+        axios.post('/api/login', {
+          token: response?.token,
+        });
         reset();
       },
       onError: (error: any) => {

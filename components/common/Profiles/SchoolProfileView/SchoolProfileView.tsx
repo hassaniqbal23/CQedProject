@@ -1,3 +1,5 @@
+'use client';
+
 import React, { FC } from 'react';
 import {
   ProfileBio,
@@ -15,6 +17,7 @@ import Link from 'next/link';
 
 interface IProps {
   id: number;
+  defaultData?: ISchoolProfile;
 }
 export const SchoolProfileView: FC<IProps> = ({ id }) => {
   const { data: getProfileData } = useQuery(['getSchoolByID', id], () =>
