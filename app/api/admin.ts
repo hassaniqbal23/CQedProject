@@ -75,17 +75,19 @@ export const getAttachments = (
     });
 };
 
-export const getAllUsers = (
+export const getNotifications = (
   page: string | number = 1,
   pageSize: number | string = 10
 ) => {
   return http
-    .get(`/cms/get-all-users?page=${page}&limit=${pageSize}`)
+    .get(`/cms/notifications?page=${page}&limit=${pageSize}`)
     .then((res) => {
       return res.data;
     });
 };
 
-export const deleteUser = (id: number) => {
-  return http.delete(`/cms/${id}/delete-user`)
+export const deleteNotifications = (ids: number[]) => {
+  return http.delete(`/cms/notifications`, {
+    data: { Ids: ids },
+  });
 };

@@ -6,14 +6,16 @@ import React from 'react';
 import { IoEllipsisVertical } from 'react-icons/io5';
 import { toast } from 'sonner';
 import { useMutation, useQueryClient } from 'react-query';
+import { getSingleCountry } from '@/lib/utils';
+import Image from 'next/image';
 
-export interface SchoolTableProps {
+export interface ReportsTableProps {
   data: any;
   noDataMessage?: string;
   loading?: boolean;
 }
 
-function ReportsTable(props: SchoolTableProps) {
+function ReportsTable(props: ReportsTableProps) {
   const { data, noDataMessage, loading } = props;
   const queryClient = useQueryClient();
 
@@ -78,7 +80,18 @@ function ReportsTable(props: SchoolTableProps) {
             render: (data) => {
               return (
                 <div className="flex items-center gap-2 w-full">
-                  <h2>{data.User.name}</h2>
+                  <Image
+                    src={
+                      data.Reporter.attachment?.file_path ||
+                      '/assets/profile/profile.svg'
+                    }
+                    alt={data.Reporter.name}
+                    width={30}
+                    height={30}
+                    unoptimized={true}
+                    className="rounded-full h-[30px] object-cover"
+                  />
+                  <h2>{data.Reporter.name}</h2>
                 </div>
               );
             },
@@ -106,8 +119,18 @@ function ReportsTable(props: SchoolTableProps) {
             },
           },
           {
-            label: 'Report',
-            key: 'report',
+            label: 'Country',
+            key: 'country',
+            render: (data) => {
+              const country = getSingleCountry(
+                data?.Reporter?.profile?.country
+              );
+              return (
+                <div className="flex items-center gap-2 w-full">
+                  <h2>{country?.label}</h2>
+                </div>
+              );
+            },
           },
           {
             label: 'Actions',
