@@ -25,7 +25,6 @@ const ReportedUsers = () => {
     {
       enabled: true,
       onSuccess: (res) => {
-        console.log(res, 'res');
         setTotalCount(res?.totalCount || 0);
       },
       onError(err) {
@@ -34,7 +33,6 @@ const ReportedUsers = () => {
     }
   );
 
-  console.log(totalCount, 'totalCount');
   return (
     <Suspense>
       <div className="w-full py-3 mt-7">

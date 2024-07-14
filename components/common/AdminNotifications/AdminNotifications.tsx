@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { getNotifications } from '@/app/api/admin';
 import { Suspense, useState } from 'react';
 import { useQuery } from 'react-query';
@@ -35,7 +35,6 @@ const AdminNotifications = () => {
   );
   return (
     <Suspense>
-
       <div>
         <div className="w-full flex flex-wrap mb-4 items-center">
           <div>
@@ -47,7 +46,9 @@ const AdminNotifications = () => {
             </Typography>
           </div>
         </div>
-        <div className='mt-10'> <NotificationsTable data={notificationsData} loading={isLoading} />
+        <div className="mt-10">
+          {' '}
+          <NotificationsTable data={notificationsData} loading={isLoading} />
           <div className={'flex justify-end w-full mt-4'}>
             <Pagination
               currentPage={page}
@@ -68,10 +69,10 @@ const AdminNotifications = () => {
               }
             />
           </div>
-        </div></div>
+        </div>
+      </div>
     </Suspense>
-
-  )
-}
+  );
+};
 
 export default AdminNotifications;
