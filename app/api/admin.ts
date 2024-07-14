@@ -74,3 +74,20 @@ export const getAttachments = (
       return res.data;
     });
 };
+
+export const getNotifications = (
+  page: string | number = 1,
+  pageSize: number | string = 10
+) => {
+  return http
+    .get(`/cms/notifications?page=${page}&limit=${pageSize}`)
+    .then((res) => {
+      return res.data;
+    });
+};
+
+export const deleteNotifications = (ids: number[]) => {
+  return http.delete(`/cms/notifications`, {
+    data: { Ids: ids },
+  });
+};

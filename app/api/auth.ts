@@ -61,3 +61,6 @@ export const getNotifications = (id: number) =>
 
 export const LoginWithGoogleAPI = (payload: { token: string; type: string }) =>
   http.post('/auth/google-login', payload);
+
+export const LoginWithFacebook = (payload: { token: string; type: string }) =>
+  http.post('/auth/facebook-login', payload);

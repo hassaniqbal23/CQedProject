@@ -20,7 +20,11 @@ import { Avatar } from '@/components/ui/avatar/avatar';
 import { LoginCarousel } from '@/components/ui/carousel/carousel';
 import { useMutation, useQueryClient } from 'react-query';
 import { IAuthentication } from '@/app/api/types';
-import { LoginAPI, LoginWithGoogleAPI } from '@/app/api/auth';
+import {
+  LoginAPI,
+  LoginWithGoogleAPI,
+  LoginWithFacebook,
+} from '@/app/api/auth';
 import { toast } from 'react-toastify';
 import { storeToken, storeUserId } from '@/app/utils/encryption';
 import http, { updateToken } from '@/app/utils/http';
@@ -31,6 +35,7 @@ import { useGlobalState } from '@/app/globalContext/globalContext';
 import { IoLogoFacebook } from 'react-icons/io5';
 import { FcGoogle } from 'react-icons/fc';
 import { useGoogleLogin } from '@react-oauth/google';
+import FacebookLogin from '@greatsumini/react-facebook-login';
 
 interface ICarouselItems {
   title: string;
@@ -143,6 +148,31 @@ export function SignIn(props: SignInProps) {
       }
     );
 
+  const { mutate: userLoginWithFacebook, isLoading: isFacebookLoading } =
+    useMutation(
+      (userData: { token: string; type: string }) =>
+        LoginWithFacebook(userData),
+      {
+        onSuccess: (res) => {
+          console.log({ res });
+          toast.success(res.data.message);
+          const response = res.data.result;
+          console.log({ response: response?.token });
+          router.push(props.loginSuccessLink);
+          storeToken(response?.token);
+          storeUserId(response?.user?.id);
+          updateToken(response?.token);
+          queryClient.refetchQueries('userInformation');
+          queryClient.refetchQueries('UserJoinedCommunities');
+          queryClient.refetchQueries('MyPenPals');
+          queryClient.refetchQueries('get-users-i-blocked');
+        },
+        onError: (error: any) => {
+          console.log(error, 'Error =====> log');
+        },
+      }
+    );
+
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       const submitValue = {
@@ -154,6 +184,15 @@ export function SignIn(props: SignInProps) {
     },
     onError: (errorResponse) => console.log(errorResponse),
   });
+
+  const facebookLogin = (response: any) => {
+    const submitValue = {
+      token: response.accessToken,
+      type: props?.role || '',
+    };
+
+    userLoginWithFacebook({ ...submitValue });
+  };
 
   const onSubmit: SubmitHandler<IAuthentication> = async (
     data: IAuthentication,
@@ -280,27 +319,37 @@ export function SignIn(props: SignInProps) {
               </Typography>
               <Separator className="w-1/2" />
             </div>
-            <div className="flex gap-2 mt-4 w-full ">
+            <div className="p-4 md:p-0 md:flex gap-2 mt-4 w-full ">
               <Button
                 type="button"
                 size="md"
                 variant="outline"
+                loading={isGoogleLoading}
                 onClick={() => googleLogin()}
-                className="flex-1 flex items-center justify-center"
+                className="w-full flex-1 flex items-center justify-center px-0"
               >
                 <FcGoogle className="mr-2" />
                 Google
               </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="md"
-                disabled
-                className="flex-1 flex items-center justify-center"
-              >
-                <IoLogoFacebook className="mr-2" />
-                Facebook
-              </Button>
+              <FacebookLogin
+                className="w-full flex-1 flex items-center justify-center"
+                children={
+                  <Button
+                    className="mt-2 md:mt-0 flex w-full items-center justify-center"
+                    type="button"
+                    variant="outline"
+                    loading={isFacebookLoading}
+                    size="md"
+                  >
+                    <IoLogoFacebook className="mr-2" />
+                    Facebook
+                  </Button>
+                }
+                appId={process?.env?.NEXT_PUBLIC_FACEBOOK_APP_ID || ''}
+                onSuccess={(response) => {
+                  facebookLogin(response);
+                }}
+              />
             </div>
             <Typography
               variant="p"

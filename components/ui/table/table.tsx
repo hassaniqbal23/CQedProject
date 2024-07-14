@@ -192,7 +192,7 @@ const DataTable = (props: DataTableProps) => {
           </>
         ) : (
           <>
-            {props.data.map((item, index: number) => (
+            {props.data?.map((item, index: number) => (
               <TableRow key={index}>
                 {props.selection && (
                   <TableCell
@@ -220,7 +220,7 @@ const DataTable = (props: DataTableProps) => {
                 ))}
               </TableRow>
             ))}
-            {props.data.length === 0 && (
+            {props.data?.length === 0 && (
               <TableRow>
                 <TableCell colSpan={99} className={'text-center'}>
                   {props.noDataMessage || 'No data'}
