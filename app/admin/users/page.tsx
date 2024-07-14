@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState } from 'react';
 import { Typography } from '@/components/common/Typography/Typography';
 import Pagination from '@/components/common/pagination/pagination';
@@ -18,7 +18,6 @@ const Accounts = () => {
   const { page, limit } = pagination;
 
   const [totalCount, setTotalCount] = useState<number>(1);
-
 
   const { data: allUsersData, isLoading } = useQuery(
     ['getAllUsers', page, limit],
@@ -49,10 +48,7 @@ const Accounts = () => {
         </div>
       </div>
       <div>
-        <UsersTable
-          data={allUsersData}
-          loading={isLoading}
-        />
+        <UsersTable data={allUsersData} loading={isLoading} />
         <div className="flex justify-end w-full mt-4">
           <Pagination
             currentPage={page}
