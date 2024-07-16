@@ -1,15 +1,14 @@
-'use client';
+import OnboardingUniversityUpdatePasswordPage from '@/components/PageContainers/University/Onboarding/UniversityUpdatePasswordPage/UniversityUpdatePasswordPage';
 
-import { UpdatePassword } from '@/components/common/UpdatePassword/UpdatePassword';
-import TopNavbar from '@/components/common/navbar/TopNavbar';
+import { Metadata } from 'next';
 
-export default function UniversityOnBoardingUpdatePassword() {
-  return (
-    <div className=" w-full h-screen">
-      <TopNavbar showLogout={false} />
-      <div className="max-w-xl mx-auto  p-5 flex justify-center items-center h-[80vh]  ">
-        <UpdatePassword updatePasswordSuccessLink={'/universities/dashboard'} />
-      </div>
-    </div>
-  );
-}
+export const metadata: Metadata = {
+  title: 'Update Password - Onboarding - University - GCED',
+  description: 'Update Password - Onboarding - University - GCED',
+};
+
+const UniversityOnBoardingUpdatePassword = () => {
+  <OnboardingUniversityUpdatePasswordPage></OnboardingUniversityUpdatePasswordPage>;
+};
+
+export default UniversityOnBoardingUpdatePassword;

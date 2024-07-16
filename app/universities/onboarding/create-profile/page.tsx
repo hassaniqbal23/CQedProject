@@ -1,21 +1,18 @@
-'use client';
+import OnboardingUniversityCreateProfilePage from '@/components/PageContainers/University/Onboarding/UniversityCreateProfilePage/UniversityCreateProfilePage';
 
-import { SchoolDetailsForm } from '@/components/common/SchoolDetailsForm/SchoolDetailsForm';
-import TopNavbar from '@/components/common/navbar/TopNavbar';
-import { removeToken, removeUserId } from '@/app/utils/encryption';
-import { useRouter } from 'next/navigation';
-import { useGlobalState } from '@/app/globalContext/globalContext';
+import { Metadata } from 'next';
 
-export default function UniversityCreateProfile() {
-  const router = useRouter();
-  const { logout } = useGlobalState();
+export const metadata: Metadata = {
+  title: 'Create Profile - Onboarding - University - GCED',
+  description: 'Create Profile - Onboarding - University - GCED',
+};
 
+const UniversityCreateProfile = () => {
   return (
-    <div className="h-screen">
-      <TopNavbar onLogout={logout}></TopNavbar>
-      <SchoolDetailsForm></SchoolDetailsForm>
-    </div>
+    <OnboardingUniversityCreateProfilePage></OnboardingUniversityCreateProfilePage>
   );
-}
+};
 
 UniversityCreateProfile.showLayout = false;
+
+export default UniversityCreateProfile;
