@@ -6,7 +6,6 @@ const Notifications = () => {
   return (
     <div>
       <NotificationPage
-        buttonOnClick={() => {}}
         buttonText="Mark all as read"
         subTitle="Your latest update"
         title="Notifications"

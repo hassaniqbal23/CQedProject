@@ -16,6 +16,5 @@ export const Defalt: Story = {
     title: 'Notifications',
     subTitle: 'The total number of Students',
     buttonText: 'Mark all as read',
-    buttonOnClick: () => {},
   },
 };
