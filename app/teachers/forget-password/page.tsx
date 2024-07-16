@@ -1,22 +1,16 @@
-'use client';
+import TeacherForgetPasswordPage from '@/components/PageContainers/Teacher/TeacherForgetPasswordPage/TeacherForgetPasswordPage';
 
-import { ForgetPassword } from '@/components/common/ForgetPassword/ForgetPassword';
-import TopNavbar from '@/components/common/navbar/TopNavbar';
-import { useRouter } from 'next/navigation';
+import { Metadata } from 'next';
 
-export default function TeacherForgetPassword() {
-  const router = useRouter();
+export const metadata: Metadata = {
+  title: 'Forget Password - GCED',
+  description: 'Forget Password - GCED',
+};
+
+export default function ForgetPassword() {
   return (
     <>
-      <TopNavbar showLogout={false}></TopNavbar>
-      <div className="max-w-md mx-auto flex justify-center items-center h-[80vh] p-2 ">
-        <ForgetPassword
-          onSubmit={() => {
-            router.push('/teachers/forget-password/email-sent');
-          }}
-          onClick={() => {}}
-        ></ForgetPassword>
-      </div>
+      <TeacherForgetPasswordPage></TeacherForgetPasswordPage>
     </>
   );
 }

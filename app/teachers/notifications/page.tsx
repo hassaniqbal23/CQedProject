@@ -1,6 +1,11 @@
-'use client';
 import React from 'react';
 import { NotificationPage } from '@/components/Notification/NotificationPage/NotificationPage';
+
+import { Metadata } from 'next';
+export const metadata: Metadata = {
+  title: 'Notifications - GCED',
+  description: 'Notifications - GCED',
+};
 
 const Notifications = () => {
   return (
