@@ -1,5 +1,4 @@
 import OnboardingTeacherAcceptInvitePage from '@/components/PageContainers/Teacher/Onboarding/TeacherAcceptInvitePage/TeacherAcceptInvitePage';
-import React from 'react';
 
 import { Metadata } from 'next';
 
@@ -14,6 +13,6 @@ const TeacherAcceptInvite = () => {
   );
 };
 
-OnboardingTeacherAcceptInvitePage.showLayout = false;
+TeacherAcceptInvite.showLayout = false;
 
 export default TeacherAcceptInvite;

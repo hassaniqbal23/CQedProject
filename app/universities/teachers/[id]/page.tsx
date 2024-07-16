@@ -1,5 +1,3 @@
-'use client';
-
 import { TeacherProfileView } from '@/components/common/Profiles/TeacherProfileView/TeacherProfileView';
 import { Metadata } from 'next';
 
