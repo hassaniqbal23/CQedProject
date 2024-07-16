@@ -1,5 +1,6 @@
 import { CardContent, Card, CardTitle, CardHeader } from '@/components/ui';
 import React, { FC } from 'react';
+import { format } from 'date-fns';
 
 interface IProps {
   cardtitle: string;
@@ -28,6 +29,11 @@ const ProfileStudent: FC<IProps> = ({
   Schedule = 'View all schedules',
   studentId = '#1223992',
 }: IProps) => {
+  const calculatedAge = React.useMemo(() => {
+    if (!birthDate) return 0;
+    return new Date().getFullYear() - new Date(birthDate).getFullYear();
+  }, []);
+
   return (
     <div className="flex flex-col md:flex-row justify-between gap-4 w-full mb-4 ">
       <Card className="w-full md:w-1/2">
@@ -48,8 +54,13 @@ const ProfileStudent: FC<IProps> = ({
             <div className="text-[#1B1F37] font-montserrat text-base ">
               <p className="mb-3">{name}</p>
               <p className="mb-3">{email}</p>
-              <p className="mb-3">{birthDate}</p>
-              <p className="mb-3">{age}</p>
+
+              {birthDate && (
+                <p className="mb-3">
+                  {format(new Date(birthDate), 'EEEE, MMMM do yyyy')}
+                </p>
+              )}
+              <p className="mb-3">{calculatedAge}</p>
               <p className="mb-3">{gender}</p>
               <p className="mb-3">{country}</p>
             </div>
