@@ -9,7 +9,6 @@ import { PublishStoryViewDialog } from '@/components/common/PublishStoryViewDial
 import { Typography } from '@/components/common/Typography/Typography';
 import { PublishStoryDialog } from '@/components/ui/PublishStoryDialog/PublishStoryDialog';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useRouter } from 'next/navigation';
 import {
   UserCreateStories,
   getAllUserStories,
@@ -23,10 +22,12 @@ import Pagination from '@/components/common/pagination/pagination';
 import SkeletonCard from '@/components/common/SkeletonCard/SkeletonCard';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import useSendPenpalRequest from '@/lib/useSendPenpalRequest';
+import { useResponsive } from '@/lib/hooks';
 
 export const PenPalCommunity = () => {
   const queryClient = useQueryClient();
   const { myPenpals, userInformation } = useGlobalState();
+  const { isMobile } = useResponsive();
   const [viewUserStoryId, setViewUserStoryId] = useState<number | null>(null);
   const [openStoryModal, setOpenStoryModal] = useState<boolean>(false);
   const [viewStoryModal, setViewStoryModal] = useState<boolean>(false);
@@ -90,20 +91,31 @@ export const PenPalCommunity = () => {
     };
   }, [getUserStory, myPenpals]);
 
-  const { data: AllUserStories, isLoading: isGettingUserStories } = useQuery(
-    ['getAllUserStories'],
-    () =>
-      getAllUserStories().then((res) => {
-        return res.data.data;
-      }),
-    {
-      enabled: true,
-      onSuccess: (res) => {},
-      onError(err) {
-        console.log(err);
-      },
-    }
-  );
+  const { data: AllUserStories = [], isLoading: isGettingUserStories } =
+    useQuery(
+      ['getAllUserStories'],
+      () =>
+        getAllUserStories().then((res) => {
+          return res.data.data;
+        }),
+      {
+        enabled: true,
+        onSuccess: (res) => {},
+        onError(err) {
+          console.log(err);
+        },
+      }
+    );
+  const stories = useMemo(() => {
+    const length = AllUserStories?.length || 0;
+    if (length > 3 || isMobile) return AllUserStories;
+    return [
+      ...AllUserStories,
+      ...Array(3 - length)
+        .fill(1)
+        .map((_, i) => i + 1),
+    ];
+  }, [AllUserStories]);
 
   const { data: suggestionsResponse, isLoading } = useQuery(
     ['penpalSuggestions', page, limit],
@@ -204,18 +216,20 @@ export const PenPalCommunity = () => {
                   }}
                 />
               </div>
-              {AllUserStories?.map((item: any, index: number) => (
+              {stories?.map((item: any, index: number) => (
                 <div key={index} className="px-3">
-                  <PenpalshipStoriesCard
-                    imgPath={item?.User?.attachment?.file_path}
-                    title={item?.User?.profile[0]?.fullname}
-                    link={'Read more'}
-                    onClickReadMore={() => {
-                      setViewUserStoryId(item?.id);
-                      setViewStoryModal(!viewStoryModal);
-                    }}
-                    description={item.story}
-                  />
+                  {item && item.User ? (
+                    <PenpalshipStoriesCard
+                      imgPath={item?.User?.attachment?.file_path}
+                      title={item?.User?.profile[0]?.fullname}
+                      link={'Read more'}
+                      onClickReadMore={() => {
+                        setViewUserStoryId(item?.id);
+                        setViewStoryModal(!viewStoryModal);
+                      }}
+                      description={item.story}
+                    />
+                  ) : null}
                 </div>
               ))}
             </Slider>
