@@ -1,13 +1,14 @@
-import React from 'react';
+import AccountsList from '@/components/PageContainers/University/AccountsList/AccountsList';
 
-import type { Metadata } from 'next';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Accounts - Dashboard - GCED',
-  description: 'Accounts - Dashboard - GCED',
+  title: 'Accounts - Admin - GCED',
+  description: 'Accounts - Admin - GCED',
 };
 
-const Accounts = () => {
-  return <div>Accounts</div>;
+const AdminAccountsPage = () => {
+  return <AccountsList></AccountsList>;
 };
-export default Accounts;
+
+export default AdminAccountsPage;
