@@ -1,15 +1,14 @@
-'use client';
-import React from 'react';
-import TopNavbar from '@/components/common/navbar/TopNavbar';
-import { GreatJob as GreatJobComponent } from '@/components/common/teacherProfile/great-job';
+import OnboardingTeacherWelcomePage from '@/components/PageContainers/Teacher/Onboarding/TeacherWelcomePage/TeacherWelcomePage';
 
-const GreatJob = () => {
-  return (
-    <div>
-      <TopNavbar onLogout={() => {}}></TopNavbar>
-      <GreatJobComponent />
-    </div>
-  );
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Welcome - Onboarding - Teacher - GCED',
+  description: 'Welcome - Onboarding - Teacher - GCED',
 };
 
-export default GreatJob;
+const TeacherWelcomePage = () => {
+  return <OnboardingTeacherWelcomePage></OnboardingTeacherWelcomePage>;
+};
+
+export default TeacherWelcomePage;

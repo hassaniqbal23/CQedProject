@@ -1,13 +1,19 @@
-'use client';
-import { AcceptInvitation } from '@/components/common/AcceptInvitation/AcceptInvitation';
+import OnboardingTeacherAcceptInvitePage from '@/components/PageContainers/Teacher/Onboarding/TeacherAcceptInvitePage/TeacherAcceptInvitePage';
 import React from 'react';
 
-export default function TeacherAcceptInvite({
-  params: { id },
-}: {
-  params: { id: string };
-}) {
-  return <AcceptInvitation routeType="teachers" />;
-}
+import { Metadata } from 'next';
 
-TeacherAcceptInvite.showLayout = false;
+export const metadata: Metadata = {
+  title: 'Accept Invite - Onboarding - Teacher - GCED',
+  description: 'Accept Invite - Onboarding - Teacher - GCED',
+};
+
+const TeacherAcceptInvite = () => {
+  return (
+    <OnboardingTeacherAcceptInvitePage></OnboardingTeacherAcceptInvitePage>
+  );
+};
+
+OnboardingTeacherAcceptInvitePage.showLayout = false;
+
+export default TeacherAcceptInvite;
