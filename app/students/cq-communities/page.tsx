@@ -2,10 +2,9 @@ import React from 'react';
 import CommunitiesPage from '@/components/Communities/CommunitiesPage';
 
 import type { Metadata } from 'next';
-
 export const metadata: Metadata = {
-  title: 'Your Communities - GCED',
-  description: 'Your Communities - GCED',
+  title: 'Communities - Students - GCED',
+  description: 'Communities - Students - GCED',
 };
 
 const CQCommunities = () => {

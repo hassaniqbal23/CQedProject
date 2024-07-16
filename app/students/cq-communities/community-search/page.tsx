@@ -1,14 +1,24 @@
-'use client';
-
 import React from 'react';
 import CommunitySearchPage from '@/components/Communities/CommunitySearchPage';
-import { Card } from '@/components/ui';
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: {
+    q: string;
+  };
+}) {
+  return {
+    title: `Showing results for ${searchParams.q} - Students - GCED`,
+    description: `Showing results for ${searchParams.q} - Students - GCED`,
+  };
+}
 
 const CommunitySearch = () => {
   return (
-    <Card className="px-10 py-5">
+    <div>
       <CommunitySearchPage module="students" />
-    </Card>
+    </div>
   );
 };
 

@@ -3,12 +3,12 @@
 import { ForgetPasswordSuccess } from '@/components/common/ForgetPasswordSuccess/ForgetPasswordSuccess';
 import TopNavbar from '@/components/common/navbar/TopNavbar';
 
-export default function TeacherForgetPassword() {
+export default function StudentForgetPasswordEmailSentPage() {
   return (
     <>
       <TopNavbar showLogout={false}></TopNavbar>
       <ForgetPasswordSuccess
-        backLink={'/teachers/sign-in'}
+        backLink={'/students/sign-in'}
       ></ForgetPasswordSuccess>
     </>
   );

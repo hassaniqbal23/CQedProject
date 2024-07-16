@@ -1,16 +1,15 @@
-'use client';
+import StudentForgetPasswordEmailSentPage from '@/components/PageContainers/Student/StudentForgetPasswordEmailSentPage/StudentForgetPasswordEmailSentPage';
+import { Metadata } from 'next';
 
-import { ForgetPasswordSuccess } from '@/components/common/ForgetPasswordSuccess/ForgetPasswordSuccess';
-import TopNavbar from '@/components/common/navbar/TopNavbar';
+export const metadata: Metadata = {
+  title: 'Email Sent - GCED',
+  description: 'Email Sent - GCED',
+};
 
 export default function SchoolForgetPassword() {
   return (
     <>
-      <TopNavbar showLogout={false}></TopNavbar>
-      <ForgetPasswordSuccess
-        email={'jonhn@gmail.com'}
-        backLink={'/students/sign-in'}
-      ></ForgetPasswordSuccess>
+      <StudentForgetPasswordEmailSentPage></StudentForgetPasswordEmailSentPage>
     </>
   );
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { FC, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Typography } from '@/components/common/Typography/Typography';

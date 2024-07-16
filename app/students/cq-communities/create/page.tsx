@@ -1,11 +1,10 @@
 import CreateCommunityPage from '@/components/Communities/CreateCommunityPage';
 import React from 'react';
 
-import type { Metadata } from 'next';
-
+import { Metadata } from 'next';
 export const metadata: Metadata = {
-  title: 'Create your Community - GCED',
-  description: 'Create your Community - GCED',
+  title: 'Create Community - Student - GCED',
+  description: 'Create Community - Student - GCED',
 };
 
 const CreateCommunity = () => {

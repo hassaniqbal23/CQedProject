@@ -1,37 +1,16 @@
-'use client';
+import TeacherAccountSettingsPage from '@/components/PageContainers/Profile/TeacherAccountSettingsPage/TeacherAccountSettingsPage';
 
-import React, { Suspense } from 'react';
+import { Metadata } from 'next';
 
-import { TabsComponent } from '@/components/ui';
-import AccountSetting from '@/components/AccountSetting/AccountSetting';
-import ProfileSetting from '@/components/ProfileSetting/ProfileSetting';
-
-const tabContents = [
-  { value: 'profile', content: <ProfileSetting></ProfileSetting> },
-  { value: 'security', content: <AccountSetting></AccountSetting> },
-];
-
-const AccountSettings = () => {
-  return (
-    <Suspense>
-      <div>
-        <TabsComponent
-          defaultValue="profile"
-          tabs={[
-            {
-              label: 'Profile',
-              value: 'profile',
-            },
-            {
-              label: 'Security',
-              value: 'security',
-            },
-          ]}
-          tabContent={tabContents}
-        />
-      </div>
-    </Suspense>
-  );
+export const metadata: Metadata = {
+  title: 'Account Settings - Teachers - GCED',
+  description: 'Account Settings - Teachers - GCED',
 };
 
-export default AccountSettings;
+export default function AccountSettingsStudents() {
+  return (
+    <div>
+      <TeacherAccountSettingsPage></TeacherAccountSettingsPage>
+    </div>
+  );
+}

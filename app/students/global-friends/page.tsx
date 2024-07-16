@@ -1,11 +1,10 @@
 import React, { Suspense } from 'react';
 import PenpalshipPage from '@/components/Penpalship/PenpalShipPage';
-
-import type { Metadata } from 'next';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Global Friends - GCED',
-  description: 'Global Friends - GCED',
+  title: 'Global Friends - Students - GCED',
+  description: 'Global Friends - Students - GCED',
 };
 
 const Penpalship = () => {
