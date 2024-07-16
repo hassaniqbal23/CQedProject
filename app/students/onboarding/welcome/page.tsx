@@ -1,13 +1,19 @@
-'use client';
-import { GreatJob as GreatJobComponent } from '@/components/common/teacherProfile/great-job';
-
 import React from 'react';
-function Success() {
+import StudentOnBoardingWelcome from '@/components/PageContainers/Student/Onboarding/StudentWelcomePage/StudentWelcomePage';
+
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Welcome - Onboarding - GCED',
+  description: 'Welcome - Onboarding - GCED',
+};
+
+function Welcome() {
   return (
     <div>
-      <GreatJobComponent />
+      <StudentOnBoardingWelcome />
     </div>
   );
 }
 
-export default Success;
+export default Welcome;

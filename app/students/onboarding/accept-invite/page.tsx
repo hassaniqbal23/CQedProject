@@ -1,13 +1,11 @@
-'use client';
-import { AcceptInvitation } from '@/components/common/AcceptInvitation/AcceptInvitation';
-import React from 'react';
+import OnBoardingStudentAcceptInvite from '@/components/PageContainers/Student/Onboarding/StudentAcceptInvitePage/StudentAcceptInvitePage';
+import { Metadata } from 'next';
 
-export default function StudentAcceptInvite({
-  params: { id },
-}: {
-  params: { id: string };
-}) {
-  return <AcceptInvitation routeType="students" />;
+export const metadata: Metadata = {
+  title: 'Accept Invite - Onboarding - GCED',
+  description: 'Accept Invite - Onboarding - GCED',
+};
+
+export default async function StudentAcceptInvite() {
+  return <OnBoardingStudentAcceptInvite />;
 }
-
-StudentAcceptInvite.showLayout = false;

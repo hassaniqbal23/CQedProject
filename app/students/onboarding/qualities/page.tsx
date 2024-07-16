@@ -1,13 +1,15 @@
-'use client';
+import OnBoardingStudentQualitiesPage from '@/components/PageContainers/Student/Onboarding/StudentQualitiesPage/StudentQualitiesPage';
 
-import React from 'react';
-import TopNavbar from '@/components/common/navbar/TopNavbar';
-import StudentsQualities from '@/components/common/StudentsQualities';
+import { Metadata } from 'next';
+export const metadata: Metadata = {
+  title: 'Student Qualities - Onboarding - GCED',
+  description: 'Student Qualities - Onboarding - GCED',
+};
 
 function studentQualities() {
   return (
     <div>
-      <StudentsQualities />
+      <OnBoardingStudentQualitiesPage />
     </div>
   );
 }
