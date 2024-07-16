@@ -11,3 +11,5 @@ export const metadata: Metadata = {
 const AboutYou = () => {
   return <OnboardingTeacherAboutYouPage></OnboardingTeacherAboutYouPage>;
 };
+
+export default AboutYou;
