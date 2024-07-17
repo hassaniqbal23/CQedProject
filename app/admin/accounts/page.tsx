@@ -1,5 +1,4 @@
-import AccountsList from '@/components/PageContainers/University/AccountsList/AccountsList';
-
+import AccountsList from '@/components/PageContainers/Admin/AccountsList/AccountsList';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
