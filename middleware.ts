@@ -1,24 +1,8 @@
-import { is } from 'date-fns/locale';
 import { NextResponse, NextRequest } from 'next/server';
-
-// const ALLOWED_PATHS = [
-//   '/login',
-//   '/students/sign-in',
-//   '/teachers/sign-in',
-//   '/universities/sign-in',
-//   '/admin/forgot-password',
-//   '/teachers/forget-password',
-//   '/students/forget-password',
-//   '/universities/forget-password',
-// ];
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value;
   const url = request.nextUrl.pathname;
-
-  if (!token) {
-    return;
-  }
 
   const isAdminPage = url.startsWith('/admin');
   const isTeachersPage = url.startsWith('/teachers');
@@ -38,6 +22,10 @@ export async function middleware(request: NextRequest) {
   const isStudentRole = userRole === 'student';
 
   const isLoginPage = url.startsWith('/login') || url.endsWith('/sign-in');
+
+  if (!token && !isLoginPage) {
+    return NextResponse.redirect(new URL('/students/sign-in', request.url));
+  }
 
   if (isLoginPage) {
     if (isTeacherRole) {
