@@ -66,8 +66,24 @@ export const getNotifications = (id: number) =>
     return res.data.data;
   });
 
-export const LoginWithGoogleAPI = (payload: { token: string; type: string }) =>
-  http.post('/auth/google-login', payload);
+export const LoginWithGoogleAPI = (
+  payload: { token: string; type: string },
+  role: LoginRole
+) => {
+  return http.post('/auth/google-login', payload, {
+    headers: {
+      'x-role': role,
+    },
+  });
+};
 
-export const LoginWithFacebook = (payload: { token: string; type: string }) =>
-  http.post('/auth/facebook-login', payload);
+export const LoginWithFacebook = (
+  payload: { token: string; type: string },
+  role: LoginRole
+) => {
+  return http.post('/auth/facebook-login', payload, {
+    headers: {
+      'x-role': role,
+    },
+  });
+};

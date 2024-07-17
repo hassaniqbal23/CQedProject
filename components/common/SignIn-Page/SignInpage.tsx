@@ -129,7 +129,7 @@ export function SignIn(props: SignInProps) {
   const { mutate: userLoginWithGoogleAPI, isLoading: isGoogleLoading } =
     useMutation(
       (userData: { token: string; type: string }) =>
-        LoginWithGoogleAPI(userData),
+        LoginWithGoogleAPI(userData, props.role),
       {
         onSuccess: async (res) => {
           toast.success(res.data.message);
@@ -155,7 +155,7 @@ export function SignIn(props: SignInProps) {
   const { mutate: userLoginWithFacebook, isLoading: isFacebookLoading } =
     useMutation(
       (userData: { token: string; type: string }) =>
-        LoginWithFacebook(userData),
+        LoginWithFacebook(userData, props.role),
       {
         onSuccess: async (res) => {
           console.log({ res });
