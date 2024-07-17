@@ -74,7 +74,7 @@ export default function SuperAdminLogin() {
   }, [router]);
 
   const { mutate: userLogin, isLoading } = useMutation(
-    (userData: IAuthentication) => LoginAPI(userData),
+    (userData: IAuthentication) => LoginAPI(userData, '*'),
     {
       onSuccess: (res) => {
         toast.success(res.data.message);

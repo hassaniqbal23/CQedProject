@@ -7,8 +7,15 @@ import {
   UpdatePasswordBody,
 } from './types';
 
-export const LoginAPI = (payload: IAuthentication) =>
-  http.post('/auth/login', payload);
+export type LoginRole = '*' | 'teacher' | 'student';
+
+export const LoginAPI = (payload: IAuthentication, role: LoginRole) => {
+  return http.post('/auth/login', payload, {
+    headers: {
+      'x-role': role,
+    },
+  });
+};
 
 export const LoginOutUser = () => http.patch('/auth/logout');
 

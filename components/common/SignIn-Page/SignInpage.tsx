@@ -24,6 +24,7 @@ import {
   LoginAPI,
   LoginWithGoogleAPI,
   LoginWithFacebook,
+  LoginRole,
 } from '@/app/api/auth';
 import { toast } from 'react-toastify';
 import { storeToken, storeUserId } from '@/app/utils/encryption';
@@ -42,10 +43,6 @@ interface ICarouselItems {
   title: string;
   description: string;
   imgPath: string;
-}
-
-interface IProps {
-  carouselItems: ICarouselItems[];
 }
 
 const formSchema = z.object({
@@ -72,7 +69,7 @@ const icons = [
 interface SignInProps {
   forgetPasswordLink: string | URL;
   loginSuccessLink: string;
-  role?: string;
+  role: LoginRole;
 }
 
 export function SignIn(props: SignInProps) {
@@ -105,7 +102,7 @@ export function SignIn(props: SignInProps) {
   } = form;
 
   const { mutate: userLogin, isLoading } = useMutation(
-    (userData: IAuthentication) => LoginAPI(userData),
+    (userData: IAuthentication) => LoginAPI(userData, props.role),
     {
       onSuccess: async (res) => {
         toast.success(res.data.message);
