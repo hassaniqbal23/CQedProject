@@ -1,14 +1,16 @@
-'use client';
+import OnBoardingStudentCreateProfilePage from '@/components/PageContainers/Student/Onboarding/StudentCreateProfilePage/StudentCreateProfilePage';
 
-import BottomNavbar from '@/components/common/navbar/bottomNavbar';
-import TopNavbar from '@/components/common/navbar/TopNavbar';
-import StudentsDetailsFrom from '@/components/common/StudentDetailsForm';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Create Profile - Onboarding - GCED',
+  description: 'Create Profile - Onboarding - GCED',
+};
 
 export default function createStudentsProfile() {
   return (
     <div>
-      <TopNavbar onLogout={() => {}}></TopNavbar>
-      <StudentsDetailsFrom></StudentsDetailsFrom>
+      <OnBoardingStudentCreateProfilePage></OnBoardingStudentCreateProfilePage>
     </div>
   );
 }

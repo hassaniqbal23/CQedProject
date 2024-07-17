@@ -17,7 +17,7 @@ export const AdminLayout: FC<IProps> = ({ children }) => {
   const { logout } = useGlobalState();
   const pathname = usePathname();
   const router = useRouter();
-  const { isMobile, isTabletMini, isTabletOrMobile } = useResponsive();
+  const { isTabletMini } = useResponsive();
 
   const showLayout = useMemo(() => {
     if (!pathname) return false;

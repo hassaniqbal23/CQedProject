@@ -1,17 +1,18 @@
+'use client';
+
 import { Button } from '@/components/ui';
 import Link from 'next/link';
 
 interface ForgetPasswordSuccessProps {
   title?: string;
   description?: string;
-  email: string;
   backLink: string;
 }
 
 function ForgetPasswordSuccess(props: ForgetPasswordSuccessProps) {
   const {
     title = 'Password Reset Email Sent',
-    description = `We have  sent We've sent an email to ${props.email} with instructions to reset your password`,
+    description = `We have  sent We've sent an email with instructions to reset your password`,
   } = props;
   return (
     <div className={'text-center'}>

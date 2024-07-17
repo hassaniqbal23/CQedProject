@@ -9,7 +9,7 @@ import { Form, Label } from '@/components/ui';
 import { Button } from '@/components/ui';
 import Image from 'next/image';
 import { FormInput } from '@/components/common/From/FormInput';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import Link from 'next/link';
 import { Typography } from '@/components/common/Typography/Typography';
 import { useGlobalState } from '@/app/globalContext/globalContext';
@@ -21,6 +21,7 @@ import {
   storeUserId,
 } from '@/app/utils/encryption';
 import { updateToken } from '@/app/utils/http';
+import axios from 'axios';
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -35,6 +36,7 @@ const formSchema = z.object({
 export default function SuperAdminLogin() {
   const router = useRouter();
   const { isAuthenticated } = useGlobalState();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -72,7 +74,7 @@ export default function SuperAdminLogin() {
   }, [router]);
 
   const { mutate: userLogin, isLoading } = useMutation(
-    (userData: IAuthentication) => LoginAPI(userData),
+    (userData: IAuthentication) => LoginAPI(userData, '*'),
     {
       onSuccess: (res) => {
         toast.success(res.data.message);
@@ -81,6 +83,14 @@ export default function SuperAdminLogin() {
         storeToken(response?.token);
         storeUserId(response?.user?.id);
         updateToken(response?.token);
+        axios.post('/api/login', {
+          token: response?.token,
+        });
+
+        queryClient.refetchQueries('userInformation');
+        queryClient.refetchQueries('UserJoinedCommunities');
+        queryClient.refetchQueries('MyPenPals');
+        queryClient.refetchQueries('get-users-i-blocked');
         reset();
       },
       onError: (error: any) => {

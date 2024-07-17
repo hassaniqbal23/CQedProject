@@ -7,15 +7,12 @@ import { ProfileHeader } from '@/components/common/Profiles';
 import {
   StudentFeeds,
   StudentGroups,
-  DailyReport,
 } from '../../app/teachers/students/[id]/(components)';
 import { useParams, useRouter } from 'next/navigation';
 import { useMutation, useQuery } from 'react-query';
 import { startConversation } from '@/app/api/chat';
 import { getStudentProfile } from '@/app/api/students';
 import Loading from '../ui/button/loading';
-import { format, parseISO, differenceInYears } from 'date-fns';
-import { IStudents } from '@/types/students';
 
 const StudentProfilePage = () => {
   const params = useParams();
@@ -29,7 +26,7 @@ const StudentProfilePage = () => {
     ['getStudentProfile', params?.id],
     () =>
       getStudentProfile(Number(params?.id) as number).then((result) => {
-        return result?.data?.data as IStudents;
+        return result?.data?.data;
       }),
     {
       enabled: params?.id ? true : false,
@@ -60,13 +57,13 @@ const StudentProfilePage = () => {
         <div className="mt-3 ">
           <ProfileStudent
             cardtitle="PERSONAL INFO"
-            name={studentProfile?.user?.name || ''}
-            email={studentProfile?.user?.email || ''}
-            age={24}
-            birthDate={24 / 2000}
-            gender={studentProfile?.user?.profile?.gender || ''}
-            country={studentProfile?.user?.profile?.country || ''}
-            address={studentProfile?.user?.profile?.address || ''}
+            name={studentProfile?.profile?.full_name || ''}
+            email={studentProfile?.email || ''}
+            age={studentProfile?.profile?.dob || 0}
+            birthDate={studentProfile?.profile?.dob || ''}
+            gender={studentProfile?.profile?.gender || ''}
+            country={studentProfile?.profile?.country || ''}
+            address={studentProfile?.profile?.address || ''}
             status={studentProfile?.status === 1 ? 'Active' : 'Inactive'}
             Schedule="View all schedules"
             studentId={`#${studentProfile?.id}`}
@@ -78,9 +75,7 @@ const StudentProfilePage = () => {
       value: 'Feeds',
       content: (
         <div className="mt-3">
-          <StudentFeeds
-            userName={studentProfile?.user?.profile?.full_name || ''}
-          />
+          <StudentFeeds userName={studentProfile?.profile?.full_name || ''} />
         </div>
       ),
     },
@@ -111,7 +106,7 @@ const StudentProfilePage = () => {
   return (
     <div className="">
       <ProfileHeader
-        name={studentProfile?.user?.profile?.full_name}
+        name={studentProfile?.profile?.full_name}
         imageSize={{ width: 100, height: 100 }}
         titleClass="text-3xl"
         buttonProps={{
@@ -121,7 +116,7 @@ const StudentProfilePage = () => {
           },
           buttonText: 'Message',
         }}
-        profileIcon={studentProfile?.user?.attachment?.file_path || ''}
+        profileIcon={studentProfile?.attachment?.file_path || ''}
       />
       <div className="mt-4">
         <TabsComponent

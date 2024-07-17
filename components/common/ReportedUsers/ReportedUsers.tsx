@@ -33,7 +33,6 @@ const ReportedUsers = () => {
     }
   );
 
-  console.log(totalCount, 'totalCount');
   return (
     <Suspense>
       <div className="w-full py-3 mt-7">

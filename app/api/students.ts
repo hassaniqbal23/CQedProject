@@ -12,8 +12,11 @@ export const getAllStudents: any = (
 };
 
 export const getStudentProfile = (id: number | string) => {
-  return http.get(`/users/${id}/profile`);
+  return http.get(`/users/${id}/view-profile`);
 };
+
+export const getGetProfilePath = (id: number | string) =>
+  `/users/${id}/view-profile`;
 export const getProfile = (id: number | string) => {
   return http.get(`/users/${id}/view-profile`);
 };

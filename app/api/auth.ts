@@ -7,8 +7,15 @@ import {
   UpdatePasswordBody,
 } from './types';
 
-export const LoginAPI = (payload: IAuthentication) =>
-  http.post('/auth/login', payload);
+export type LoginRole = '*' | 'teacher' | 'student';
+
+export const LoginAPI = (payload: IAuthentication, role: LoginRole) => {
+  return http.post('/auth/login', payload, {
+    headers: {
+      'x-role': role,
+    },
+  });
+};
 
 export const LoginOutUser = () => http.patch('/auth/logout');
 
@@ -59,8 +66,24 @@ export const getNotifications = (id: number) =>
     return res.data.data;
   });
 
-export const LoginWithGoogleAPI = (payload: { token: string; type: string }) =>
-  http.post('/auth/google-login', payload);
+export const LoginWithGoogleAPI = (
+  payload: { token: string; type: string },
+  role: LoginRole
+) => {
+  return http.post('/auth/google-login', payload, {
+    headers: {
+      'x-role': role,
+    },
+  });
+};
 
-export const LoginWithFacebook = (payload: { token: string; type: string }) =>
-  http.post('/auth/facebook-login', payload);
+export const LoginWithFacebook = (
+  payload: { token: string; type: string },
+  role: LoginRole
+) => {
+  return http.post('/auth/facebook-login', payload, {
+    headers: {
+      'x-role': role,
+    },
+  });
+};

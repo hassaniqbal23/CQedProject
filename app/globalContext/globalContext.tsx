@@ -21,6 +21,7 @@ import { getBlockedUsers } from '../api/users';
 import { pendingCommunities } from '../api/communities';
 import { useRouter } from 'next/navigation';
 import { INotifications } from '@/types/auth';
+import axios from 'axios';
 
 type IGlobalState = {
   isUserGetInfo: boolean;
@@ -93,7 +94,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
 
   const userId = getUserIdLocalStorage();
 
-  const { mutate: UserLogin, isLoading: isLogOutLoading } = useMutation(
+  const { mutate: logoutUser, isLoading: isLogOutLoading } = useMutation(
     () => LoginOutUser(),
     {
       onSuccess: (res) => {
@@ -107,6 +108,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         removeFcmToken();
         setUsersIBlocked([]);
         setPendingCommunitiesList([]);
+        axios.post('/api/logout');
 
         const roleName = clonedUserInfo?.role?.name;
 
@@ -129,8 +131,9 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   );
 
   const logout = () => {
-    UserLogin();
+    logoutUser();
   };
+
   useQuery(
     ['userInformation', userId],
     () => GetUserInformation(userId as string),

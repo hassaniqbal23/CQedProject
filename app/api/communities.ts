@@ -30,8 +30,10 @@ export const getCommunityTypes = (search?: string | null) => {
     .then((res) => res.data);
 };
 
+export const getGetCommunityApiPath = (id: any) =>
+  `/community/${id}/get-community`;
 export const getCommunity = (id: any) => {
-  return http.get(`/community/${id}/get-community`).then((res) => res.data);
+  return http.get(getGetCommunityApiPath(id)).then((res) => res.data);
 };
 
 export const createCommunity = (payload: any) => {

@@ -37,7 +37,7 @@ const createHttpInstance = () => {
       }
       return response;
     },
-    (error) => {
+    async (error) => {
       const message =
         error.response?.data?.message ||
         error.response?.data?.error ||
@@ -51,6 +51,7 @@ const createHttpInstance = () => {
       });
 
       if (error.response && error.response.status === 401) {
+        await axios.post('/api/logout');
         redirectToLoginPage();
       }
       return Promise.reject(error);

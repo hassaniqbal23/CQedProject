@@ -1,13 +1,17 @@
-'use client';
-
 import React from 'react';
-import TopNavbar from '@/components/common/navbar/TopNavbar';
-import AboutStudentsForm from '@/components/common/AboutStudentsForm';
+import OnboardingStudentAboutUserPage from '@/components/PageContainers/Student/Onboarding/StudentAboutUserPage/StudentAboutUserPage';
+
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Write about yourself - Student Onboarding - GCED',
+  description: 'Write about yourself - Student Onboarding - GCED',
+};
 
 function AboutUserInfo() {
   return (
     <div>
-      <AboutStudentsForm />
+      <OnboardingStudentAboutUserPage />
     </div>
   );
 }

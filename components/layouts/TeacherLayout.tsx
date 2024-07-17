@@ -72,7 +72,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
     {
       icon: '/assets/sidebaricons/penpalship.svg',
       title: 'Global Friends',
-      path: '/teachers/penpalship?tab=GlobalCommunity',
+      path: '/teachers/global-friends?tab=GlobalCommunity',
     },
     {
       icon: '/assets/sidebaricons/CQCommunities.svg',

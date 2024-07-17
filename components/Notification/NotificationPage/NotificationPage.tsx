@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Notification } from '../Notification';
 import { Typography } from '../../common/Typography/Typography';
@@ -20,7 +22,6 @@ interface NotificationPageProps {
   title: string;
   subTitle: string;
   buttonText: string;
-  buttonOnClick: () => void;
   linkType?: string;
 }
 
@@ -28,7 +29,6 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
   title,
   subTitle,
   buttonText,
-  buttonOnClick,
   linkType,
 }) => {
   dayjs.extend(relativeTime);
@@ -158,7 +158,6 @@ export const NotificationPage: React.FC<NotificationPageProps> = ({
             className=" text-primary-900 bg-[#ECEDF8] "
             onClick={() => {
               handelReadNotification();
-              buttonOnClick;
             }}
           >
             {buttonText}

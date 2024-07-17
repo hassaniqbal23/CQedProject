@@ -10,7 +10,6 @@ export default function SchoolForgetPassword() {
         <TopNavbar showLogout={false}></TopNavbar>
         <div className="flex justify-center items-center h-[80vh] p-5">
           <ForgetPasswordSuccess
-            email={'jonhn@gmail.com'}
             backLink={'/universities/sign-in'}
           ></ForgetPasswordSuccess>
         </div>

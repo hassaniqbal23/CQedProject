@@ -1,15 +1,15 @@
-'use client';
-import TopNavbar from '@/components/common/navbar/TopNavbar';
 import React from 'react';
-import { AboutYou as AboutYouForm } from '@/components/common/teacherProfile/about-you';
+import OnboardingTeacherAboutYouPage from '@/components/PageContainers/Teacher/Onboarding/TeacherAboutYouPage/TeacherAboutYouPage';
+
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Write about yourself - Onboarding - Teacher - GCED',
+  description: 'Write about yourself - Onboarding - Teacher - GCED',
+};
 
 const AboutYou = () => {
-  return (
-    <div>
-      <TopNavbar onLogout={() => {}}></TopNavbar>
-      <AboutYouForm />
-    </div>
-  );
+  return <OnboardingTeacherAboutYouPage></OnboardingTeacherAboutYouPage>;
 };
 
 export default AboutYou;

@@ -24,6 +24,7 @@ import {
   LoginAPI,
   LoginWithGoogleAPI,
   LoginWithFacebook,
+  LoginRole,
 } from '@/app/api/auth';
 import { toast } from 'react-toastify';
 import { storeToken, storeUserId } from '@/app/utils/encryption';
@@ -36,15 +37,12 @@ import { IoLogoFacebook } from 'react-icons/io5';
 import { FcGoogle } from 'react-icons/fc';
 import { useGoogleLogin } from '@react-oauth/google';
 import FacebookLogin from '@greatsumini/react-facebook-login';
+import axios from 'axios';
 
 interface ICarouselItems {
   title: string;
   description: string;
   imgPath: string;
-}
-
-interface IProps {
-  carouselItems: ICarouselItems[];
 }
 
 const formSchema = z.object({
@@ -71,7 +69,7 @@ const icons = [
 interface SignInProps {
   forgetPasswordLink: string | URL;
   loginSuccessLink: string;
-  role?: string;
+  role: LoginRole;
 }
 
 export function SignIn(props: SignInProps) {
@@ -104,15 +102,18 @@ export function SignIn(props: SignInProps) {
   } = form;
 
   const { mutate: userLogin, isLoading } = useMutation(
-    (userData: IAuthentication) => LoginAPI(userData),
+    (userData: IAuthentication) => LoginAPI(userData, props.role),
     {
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         toast.success(res.data.message);
         const response = res.data.result;
         router.push(props.loginSuccessLink);
         storeToken(response?.token);
         storeUserId(response?.user?.id);
         updateToken(response?.token);
+        await axios.post('/api/login', {
+          token: response?.token,
+        });
         queryClient.refetchQueries('userInformation');
         queryClient.refetchQueries('UserJoinedCommunities');
         queryClient.refetchQueries('MyPenPals');
@@ -128,15 +129,18 @@ export function SignIn(props: SignInProps) {
   const { mutate: userLoginWithGoogleAPI, isLoading: isGoogleLoading } =
     useMutation(
       (userData: { token: string; type: string }) =>
-        LoginWithGoogleAPI(userData),
+        LoginWithGoogleAPI(userData, props.role),
       {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           toast.success(res.data.message);
           const response = res.data.result;
           router.push(props.loginSuccessLink);
           storeToken(response?.token);
           storeUserId(response?.user?.id);
           updateToken(response?.token);
+          await axios.post('/api/login', {
+            token: response?.token,
+          });
           queryClient.refetchQueries('userInformation');
           queryClient.refetchQueries('UserJoinedCommunities');
           queryClient.refetchQueries('MyPenPals');
@@ -151,9 +155,9 @@ export function SignIn(props: SignInProps) {
   const { mutate: userLoginWithFacebook, isLoading: isFacebookLoading } =
     useMutation(
       (userData: { token: string; type: string }) =>
-        LoginWithFacebook(userData),
+        LoginWithFacebook(userData, props.role),
       {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           console.log({ res });
           toast.success(res.data.message);
           const response = res.data.result;
@@ -162,6 +166,9 @@ export function SignIn(props: SignInProps) {
           storeToken(response?.token);
           storeUserId(response?.user?.id);
           updateToken(response?.token);
+          await axios.post('/api/login', {
+            token: response?.token,
+          });
           queryClient.refetchQueries('userInformation');
           queryClient.refetchQueries('UserJoinedCommunities');
           queryClient.refetchQueries('MyPenPals');

@@ -1,13 +1,14 @@
-'use client';
-import React from 'react';
-import { CreateProfile as Profile } from '@/components/common/teacherProfile/create-profile';
-import TopNavbar from '@/components/common/navbar/TopNavbar';
+import OnboardingTeacherCreateProfilePage from '@/components/PageContainers/Teacher/Onboarding/TeacherCreateProfilePage/TeacherCreateProfilePage';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Create Profile - Onboarding - Teacher - GCED',
+  description: 'Create Profile - Onboarding - Teacher - GCED',
+};
 
 const CreateProfile = () => {
   return (
-    <div>
-      <Profile></Profile>
-    </div>
+    <OnboardingTeacherCreateProfilePage></OnboardingTeacherCreateProfilePage>
   );
 };
 

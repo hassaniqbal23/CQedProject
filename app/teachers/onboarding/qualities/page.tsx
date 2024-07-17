@@ -1,15 +1,14 @@
-'use client';
+import OnboardingTeacherQualitiesPage from '@/components/PageContainers/Teacher/Onboarding/TeacherQualitiesPage/TeacherQualitiesPage';
 
-import React from 'react';
-import TopNavbar from '@/components/common/navbar/TopNavbar';
-import StudentsQualities from '@/components/common/StudentsQualities';
+import { Metadata } from 'next';
 
-function studentQualities() {
-  return (
-    <div>
-      <StudentsQualities />
-    </div>
-  );
-}
+export const metadata: Metadata = {
+  title: 'Teacher Qualities - Onboarding - Teacher - GCED',
+  description: 'Teacher Qualities - Onboarding - Teacher - GCED',
+};
 
-export default studentQualities;
+const TeacherQualitiesPage = () => {
+  return <OnboardingTeacherQualitiesPage></OnboardingTeacherQualitiesPage>;
+};
+
+export default TeacherQualitiesPage;

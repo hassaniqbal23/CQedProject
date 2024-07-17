@@ -91,3 +91,18 @@ export const deleteNotifications = (ids: number[]) => {
     data: { Ids: ids },
   });
 };
+
+export const getAllUsers = (
+  page: string | number = 1,
+  pageSize: number | string = 10
+) => {
+  return http
+    .get(`/cms/get-all-users?page=${page}&limit=${pageSize}`)
+    .then((res) => {
+      return res.data;
+    });
+};
+
+export const deleteUser = (id: number) => {
+  return http.delete(`/cms/${id}/delete-user`);
+};

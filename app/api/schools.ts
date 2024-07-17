@@ -13,14 +13,17 @@ export interface AcceptInvite {
 export const AcceptInvite = (payload: AcceptInvite) =>
   http.post('/schools/create-school', payload);
 
-export const getAllSubject = () => http.get('/subject/get-all');
+export const getAllSubjectPath = () => '/subject/get-all';
+export const getAllSubject = () => http.get(getAllSubjectPath());
 
-export const getSchoolDashboard = () => http.get('/dashboard/school-dashboard');
+export const getSchoolDashboardPath = () => '/dashboard/school-dashboard';
+export const getSchoolDashboard = () => http.get(getSchoolDashboardPath());
 
-export const getSchoolByID = (id: number) =>
-  http.get(`/schools/${id}/get-school`);
+export const getSchoolByIDPath = (id: number) => `/schools/${id}/get-school`;
+export const getSchoolByID = (id: number) => http.get(getSchoolByIDPath(id));
 
-export const getAllGrades = () => http.get('/grades/get-grades');
+export const getAllGradesPath = () => '/grades/get-grades';
+export const getAllGrades = () => http.get(getAllGradesPath());
 
 export const createSubject = (formValues: any) =>
   http.post('/subject/create', formValues);
