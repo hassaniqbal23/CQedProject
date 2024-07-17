@@ -97,7 +97,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
   const { mutate: logoutUser, isLoading: isLogOutLoading } = useMutation(
     () => LoginOutUser(),
     {
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         const clonedUserInfo = JSON.parse(JSON.stringify(userInformation));
         setUserInformation({} as IUserInformation);
         setIsAuthenticated(false);
@@ -108,20 +108,18 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         removeFcmToken();
         setUsersIBlocked([]);
         setPendingCommunitiesList([]);
-        axios.post('/api/logout');
+        await axios.post('/api/logout');
 
         const roleName = clonedUserInfo?.role?.name;
 
         if (roleName === 'student') {
           router.push('/students/sign-in');
-        } else if (roleName === 'university') {
-          router.push('/universities/sign-in');
-        } else if (roleName === 'school') {
-          router.push('/universities/sign-in');
         } else if (roleName === 'teacher') {
           router.push('/teachers/sign-in');
         } else if (roleName === '*') {
           router.push('/login');
+        } else {
+          router.push('/students/sign-in');
         }
       },
       onError: (error: any) => {
