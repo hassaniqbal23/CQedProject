@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { AES, enc } from 'crypto-js';
 
 const SECRET_KEY = 'secretKey123';
@@ -49,6 +50,7 @@ export const getAccessToken = (): string | null => {
 export const removeToken = (): void => {
   if (typeof window !== 'undefined') {
     localStorage.removeItem(TOKEN_KEY);
+    axios.post('/api/logout');
   }
 };
 

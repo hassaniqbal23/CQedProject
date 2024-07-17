@@ -134,13 +134,16 @@ export function SignIn(props: SignInProps) {
       (userData: { token: string; type: string }) =>
         LoginWithGoogleAPI(userData),
       {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           toast.success(res.data.message);
           const response = res.data.result;
           router.push(props.loginSuccessLink);
           storeToken(response?.token);
           storeUserId(response?.user?.id);
           updateToken(response?.token);
+          await axios.post('/api/login', {
+            token: response?.token,
+          });
           queryClient.refetchQueries('userInformation');
           queryClient.refetchQueries('UserJoinedCommunities');
           queryClient.refetchQueries('MyPenPals');
@@ -157,7 +160,7 @@ export function SignIn(props: SignInProps) {
       (userData: { token: string; type: string }) =>
         LoginWithFacebook(userData),
       {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           console.log({ res });
           toast.success(res.data.message);
           const response = res.data.result;
@@ -166,6 +169,9 @@ export function SignIn(props: SignInProps) {
           storeToken(response?.token);
           storeUserId(response?.user?.id);
           updateToken(response?.token);
+          await axios.post('/api/login', {
+            token: response?.token,
+          });
           queryClient.refetchQueries('userInformation');
           queryClient.refetchQueries('UserJoinedCommunities');
           queryClient.refetchQueries('MyPenPals');

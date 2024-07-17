@@ -1,11 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-type Data = {
-  message: string;
-};
-
-export async function POST(request: Request) {
+export async function POST() {
   cookies().delete('token');
-  return NextResponse.json({ message: 'Hello World' });
+  return NextResponse.json({ ok: 'ok' });
 }

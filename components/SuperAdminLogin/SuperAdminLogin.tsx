@@ -9,7 +9,7 @@ import { Form, Label } from '@/components/ui';
 import { Button } from '@/components/ui';
 import Image from 'next/image';
 import { FormInput } from '@/components/common/From/FormInput';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import Link from 'next/link';
 import { Typography } from '@/components/common/Typography/Typography';
 import { useGlobalState } from '@/app/globalContext/globalContext';
@@ -36,6 +36,7 @@ const formSchema = z.object({
 export default function SuperAdminLogin() {
   const router = useRouter();
   const { isAuthenticated } = useGlobalState();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -85,6 +86,11 @@ export default function SuperAdminLogin() {
         axios.post('/api/login', {
           token: response?.token,
         });
+
+        queryClient.refetchQueries('userInformation');
+        queryClient.refetchQueries('UserJoinedCommunities');
+        queryClient.refetchQueries('MyPenPals');
+        queryClient.refetchQueries('get-users-i-blocked');
         reset();
       },
       onError: (error: any) => {
