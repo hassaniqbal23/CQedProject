@@ -23,6 +23,7 @@ export const Primary: Story = {
     );
   },
   args: {
+    role: 'student',
     forgetPasswordLink: '/forget-password',
     loginSuccessLink: '/',
   },

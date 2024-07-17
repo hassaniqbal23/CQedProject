@@ -15,6 +15,7 @@ export async function middleware(request: NextRequest) {
       },
     }
   );
+  const status = responseWithFetchApi.status;
   const data = await responseWithFetchApi.json();
   const userRole = data?.data?.role?.name;
   const isAdminRole = userRole === '*';
@@ -22,6 +23,10 @@ export async function middleware(request: NextRequest) {
   const isStudentRole = userRole === 'student';
 
   const isLoginPage = url.startsWith('/login') || url.endsWith('/sign-in');
+
+  if (status === 401 && !isLoginPage) {
+    return NextResponse.redirect(new URL('/students/sign-in', request.url));
+  }
 
   if (!token && !isLoginPage) {
     return NextResponse.redirect(new URL('/students/sign-in', request.url));

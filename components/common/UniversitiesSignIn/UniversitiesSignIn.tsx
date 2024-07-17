@@ -91,7 +91,7 @@ export function SignInUni(props: SignInProps) {
   } = form;
 
   const { mutate: userLogin, isLoading } = useMutation(
-    (userData: IAuthentication) => LoginAPI(userData),
+    (userData: IAuthentication) => LoginAPI(userData, 'teacher'),
     {
       onSuccess: (res) => {
         toast.success(res.data.message);
