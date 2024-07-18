@@ -6,6 +6,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Welcome - Onboarding - GCED',
   description: 'Welcome - Onboarding - GCED',
+  icons: '/favi.png',
 };
 
 function Welcome() {

@@ -91,16 +91,6 @@ export function SignUp(props: SignUpProps) {
   const queryClient = useQueryClient();
   const { module } = useModule();
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (isAuthenticated) {
-        router.push(props.loginSuccessLink);
-      } else {
-        localStorage.clear();
-      }
-    }
-  }, [isAuthenticated, router]);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -120,13 +110,7 @@ export function SignUp(props: SignUpProps) {
       onSuccess: (res) => {
         toast.success(res.data.message);
         const response = res.data.result;
-
-        // if (response.newUser) {
-        //   router.push(props.loginSuccessLink);
-        // }
-        // if (!response.newUser) {
-        router.push(props.loginWithGoogleORFacebook);
-        // }
+        router.push(props.loginSuccessLink);
         storeToken(response?.token);
         storeUserId(response?.user?.id);
         updateToken(response?.token);

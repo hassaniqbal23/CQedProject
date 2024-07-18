@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Student Sign In - GCED',
   description: 'Student Sign In - GCED',
+  icons: '/favi.png',
 };
 
 export default function StudentSignIn() {

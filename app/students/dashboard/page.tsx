@@ -7,6 +7,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Student Dashboard - GCED',
   description: 'Student Dashboard - GCED',
+  icons: '/favi.png',
 };
 
 export default function StudentDashboard() {

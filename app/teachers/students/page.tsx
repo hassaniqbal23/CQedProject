@@ -5,6 +5,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Students - GCED',
   description: 'Students - GCED',
+  icons: '/favi.png',
 };
 
 const Students = () => {

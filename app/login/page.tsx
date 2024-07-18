@@ -6,6 +6,7 @@ import SuperAdminLogin from '@/components/SuperAdminLogin/SuperAdminLogin';
 export const metadata: Metadata = {
   title: 'Admin Login - GCED',
   description: 'Admin Login - GCED',
+  icons: '/favi.png',
 };
 
 const CQCommunities = () => {
