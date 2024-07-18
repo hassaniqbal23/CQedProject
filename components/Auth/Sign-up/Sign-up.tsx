@@ -120,7 +120,12 @@ export function SignUp(props: SignUpProps) {
       onSuccess: (res) => {
         toast.success(res.data.message);
         const response = res.data.result;
-        router.push(props.loginSuccessLink);
+        if (response.newUser) {
+          router.push(props.loginSuccessLink);
+        }
+        if (!response.newUser) {
+          router.push(props.loginWithGoogleORFacebook);
+        }
         storeToken(response?.token);
         storeUserId(response?.user?.id);
         updateToken(response?.token);
@@ -144,7 +149,12 @@ export function SignUp(props: SignUpProps) {
         onSuccess: (res) => {
           toast.success(res.data.message);
           const response = res.data.result;
-          router.push(props.loginWithGoogleORFacebook);
+          if (response.newUser) {
+            router.push(props.loginSuccessLink);
+          }
+          if (!response.newUser) {
+            router.push(props.loginWithGoogleORFacebook);
+          }
           storeToken(response?.token);
           storeUserId(response?.user?.id);
           updateToken(response?.token);
@@ -179,7 +189,12 @@ export function SignUp(props: SignUpProps) {
         onSuccess: (res) => {
           toast.success(res.data.message);
           const response = res.data.result;
-          router.push(props.loginWithGoogleORFacebook);
+          if (response.newUser) {
+            router.push(props.loginSuccessLink);
+          }
+          if (!response.newUser) {
+            router.push(props.loginWithGoogleORFacebook);
+          }
           storeToken(response?.token);
           storeUserId(response?.user?.id);
           updateToken(response?.token);
@@ -241,10 +256,11 @@ export function SignUp(props: SignUpProps) {
 
         <div className="w-full md:w-1/2 m-auto flex flex-col justify-center items-center p- md:p-1 md:mb-0 relative">
           <Image
-            src={'/icons/GCEd_logo.svg'}
+            src={'/assets/GCEd/GCEdLogo1.svg'}
             height={56}
             width={184}
             alt="GCEd Logo"
+            unoptimized={true}
           />
           <div className="text-center mb-4 mt-12 px-4">
             <Typography variant="h2" weight="semibold">
@@ -398,7 +414,7 @@ export function SignUp(props: SignUpProps) {
                 className="text-primary-700 font-bold text-sm ml-1"
               >
                 {' '}
-                Sign In
+                Login
               </Link>
             </Typography>
           </div>

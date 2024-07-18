@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import {
@@ -52,7 +52,6 @@ const formSchema = z.object({
       })
     )
     .nonempty({ message: 'Please Select one language.' }),
-  university: z.string().optional(),
 });
 
 function StudentsDetailsFrom() {
@@ -83,12 +82,6 @@ function StudentsDetailsFrom() {
       },
     }
   );
-
-  useEffect(() => {
-    if (userInformation) {
-      form.setValue('university', userInformation?.school?.name);
-    }
-  }, [userInformation]);
 
   const onSubmit: SubmitHandler<any> = async (values: ICreateStudent) => {
     const submit = {
@@ -209,26 +202,6 @@ function StudentsDetailsFrom() {
                               ),
                             },
                           ]}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="grid md:grid-cols-1 ">
-                <FormField
-                  control={form.control}
-                  name="university"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>University</FormLabel>
-                      <FormControl>
-                        <Input
-                          disabled
-                          placeholder="e.g., Stanford University"
-                          {...field}
-                          className="w-full"
                         />
                       </FormControl>
                       <FormMessage />

@@ -50,7 +50,7 @@ export const getAccessToken = (): string | null => {
 export const removeToken = (): void => {
   if (typeof window !== 'undefined') {
     localStorage.removeItem(TOKEN_KEY);
-    axios.post('/api/logout');
+    axios.post('/auth-api/logout');
   }
 };
 

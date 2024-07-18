@@ -13,6 +13,7 @@ export default function TeacherSignIn() {
       signupLink="/teachers/sign-up"
       loginSuccessLink={'/teachers/dashboard'}
       forgetPasswordLink={'/teachers/forget-password'}
+      loginWithNewUserSuccessLink={'/teachers/onboarding/create-profile'}
       role={'teacher'}
     ></SignIn>
   );

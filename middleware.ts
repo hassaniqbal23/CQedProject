@@ -4,6 +4,8 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value;
   const url = request.nextUrl.pathname;
 
+  if (url.startsWith('/auth-api')) return;
+
   const isAdminPage = url.startsWith('/admin');
   const isTeachersPage = url.startsWith('/teachers');
   const isStudentsPage = url.startsWith('/students');
@@ -22,7 +24,10 @@ export async function middleware(request: NextRequest) {
   const isTeacherRole = userRole === 'teacher';
   const isStudentRole = userRole === 'student';
 
-  const isLoginPage = url.startsWith('/login') || url.endsWith('/sign-in');
+  const isLoginPage =
+    url.startsWith('/login') ||
+    url.endsWith('/sign-in') ||
+    url.endsWith('/sign-up');
 
   if (status === 401 && !isLoginPage) {
     return NextResponse.redirect(new URL('/students/sign-in', request.url));

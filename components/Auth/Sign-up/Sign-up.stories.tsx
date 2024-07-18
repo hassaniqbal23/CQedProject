@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SignUpPage } from './Sign-up';
+import { SignUp } from './Sign-up';
 
 const meta = {
   title: 'Auth/SignUp-Page',
-  component: SignUpPage,
+  component: SignUp,
   tags: ['autodocs'],
   argTypes: {},
-} satisfies Meta<typeof SignUpPage>;
+} satisfies Meta<typeof SignUp>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -15,13 +15,14 @@ export const Primary: Story = {
   render: (args) => {
     return (
       <>
-        <SignUpPage {...args} />
+        <SignUp {...args} />
       </>
     );
   },
   args: {
     forgetPasswordLink: '/forget-password',
     loginSuccessLink: '/',
+    role: 'student',
     loginWithGoogleORFacebook: '/login-google-facebook',
     signinLink: '/sign-in',
   },
