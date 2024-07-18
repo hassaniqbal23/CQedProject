@@ -21,6 +21,7 @@ import { LoginCarousel } from '@/components/ui/carousel/carousel';
 import { useMutation, useQueryClient } from 'react-query';
 import { IAuthenticationSignUP } from '@/app/api/types';
 import {
+  LoginRole,
   LoginWithFacebook,
   LoginWithGoogleAPI,
   signupAPI,
@@ -81,7 +82,7 @@ interface SignUpProps {
   loginSuccessLink: string;
   loginWithGoogleORFacebook: string;
   signinLink: string | URL;
-  role?: string;
+  role: LoginRole;
 }
 
 export function SignUp(props: SignUpProps) {
@@ -138,7 +139,7 @@ export function SignUp(props: SignUpProps) {
   const { mutate: userLoginWithGoogleAPI, isLoading: isGoogleLoading } =
     useMutation(
       (userData: { token: string; type: string }) =>
-        LoginWithGoogleAPI(userData),
+        LoginWithGoogleAPI(userData, props.role),
       {
         onSuccess: (res) => {
           toast.success(res.data.message);
@@ -173,7 +174,7 @@ export function SignUp(props: SignUpProps) {
   const { mutate: userLoginWithFacebook, isLoading: isFacebookLoading } =
     useMutation(
       (userData: { token: string; type: string }) =>
-        LoginWithFacebook(userData),
+        LoginWithFacebook(userData, props.role),
       {
         onSuccess: (res) => {
           toast.success(res.data.message);
