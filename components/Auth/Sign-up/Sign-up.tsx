@@ -115,17 +115,18 @@ export function SignUp(props: SignUpProps) {
     formState: { errors, isValid },
   } = form;
   const { mutate: userSignUp, isLoading } = useMutation(
-    (userData: IAuthenticationSignUP) => signupAPI(userData),
+    (userData: IAuthenticationSignUP) => signupAPI(userData, props.role),
     {
       onSuccess: (res) => {
         toast.success(res.data.message);
         const response = res.data.result;
-        if (response.newUser) {
-          router.push(props.loginSuccessLink);
-        }
-        if (!response.newUser) {
-          router.push(props.loginWithGoogleORFacebook);
-        }
+
+        // if (response.newUser) {
+        //   router.push(props.loginSuccessLink);
+        // }
+        // if (!response.newUser) {
+        router.push(props.loginWithGoogleORFacebook);
+        // }
         storeToken(response?.token);
         storeUserId(response?.user?.id);
         updateToken(response?.token);
@@ -359,7 +360,7 @@ export function SignUp(props: SignUpProps) {
                 loading={isLoading}
                 disabled={isLoading}
               >
-                Login
+                Sign Up
               </Button>
             </form>
           </Form>

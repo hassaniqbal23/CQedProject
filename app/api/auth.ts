@@ -18,8 +18,12 @@ export const LoginAPI = (payload: IAuthentication, role: LoginRole) => {
   });
 };
 
-export const signupAPI = (payload: IAuthenticationSignUP) =>
-  http.post('/auth/signup', payload);
+export const signupAPI = (payload: IAuthenticationSignUP, role: LoginRole) =>
+  http.post('/auth/signup', payload, {
+    headers: {
+      'x-role': role,
+    },
+  });
 
 export const LoginOutUser = () => http.patch('/auth/logout');
 
