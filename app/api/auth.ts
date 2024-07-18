@@ -3,6 +3,7 @@ import http from '../utils/http';
 import {
   IAcceptInvitation,
   IAuthentication,
+  IAuthenticationSignUP,
   IResetPassword,
   UpdatePasswordBody,
 } from './types';
@@ -16,6 +17,9 @@ export const LoginAPI = (payload: IAuthentication, role: LoginRole) => {
     },
   });
 };
+
+export const signupAPI = (payload: IAuthenticationSignUP) =>
+  http.post('/auth/signup', payload);
 
 export const LoginOutUser = () => http.patch('/auth/logout');
 

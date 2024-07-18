@@ -19,17 +19,15 @@ import {
 import { Avatar } from '@/components/ui/avatar/avatar';
 import { LoginCarousel } from '@/components/ui/carousel/carousel';
 import { useMutation, useQueryClient } from 'react-query';
-import { IAuthentication } from '@/app/api/types';
+import { IAuthenticationSignUP } from '@/app/api/types';
 import {
-  LoginAPI,
-  LoginWithGoogleAPI,
   LoginWithFacebook,
-  LoginRole,
+  LoginWithGoogleAPI,
+  signupAPI,
 } from '@/app/api/auth';
 import { toast } from 'react-toastify';
 import { storeToken, storeUserId } from '@/app/utils/encryption';
-import http, { updateToken } from '@/app/utils/http';
-import { Typography } from '../Typography/Typography';
+import { updateToken } from '@/app/utils/http';
 import { useModule } from '@/components/ModuleProvider/ModuleProvider';
 import { useEffect } from 'react';
 import { useGlobalState } from '@/app/globalContext/globalContext';
@@ -37,7 +35,7 @@ import { IoLogoFacebook } from 'react-icons/io5';
 import { FcGoogle } from 'react-icons/fc';
 import { useGoogleLogin } from '@react-oauth/google';
 import FacebookLogin from '@greatsumini/react-facebook-login';
-import axios from 'axios';
+import { Typography } from '@/components/common/Typography/Typography';
 
 interface ICarouselItems {
   title: string;
@@ -45,14 +43,26 @@ interface ICarouselItems {
   imgPath: string;
 }
 
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: 'Username must be at least 12 characters.',
-  }),
-  password: z.string().min(2, {
-    message: 'Password must be at least 8 characters',
-  }),
-});
+interface IProps {
+  carouselItems: ICarouselItems[];
+}
+
+const formSchema = z
+  .object({
+    email: z.string().min(2, {
+      message: 'Username must be at least 12 characters.',
+    }),
+    password: z.string().min(2, {
+      message: 'Password must be at least 8 characters',
+    }),
+    confirmPassword: z.string().min(8, {
+      message: 'Password must be at least 8 characters',
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
 
 const icons = [
   '/assets/images/Ellipse 1.svg',
@@ -66,14 +76,15 @@ const icons = [
   '/assets/images/Ellipse 9.svg',
 ];
 
-interface SignInProps {
+interface SignUpProps {
   forgetPasswordLink: string | URL;
   loginSuccessLink: string;
-  role: LoginRole;
-  signupLink: string;
+  loginWithGoogleORFacebook: string;
+  signinLink: string | URL;
+  role?: string;
 }
 
-export function SignIn(props: SignInProps) {
+export function SignUp(props: SignUpProps) {
   const router = useRouter();
   const { isAuthenticated } = useGlobalState();
   const queryClient = useQueryClient();
@@ -92,8 +103,9 @@ export function SignIn(props: SignInProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
+      email: '',
       password: '',
+      confirmPassword: '',
     },
   });
   const {
@@ -101,20 +113,16 @@ export function SignIn(props: SignInProps) {
     handleSubmit,
     formState: { errors, isValid },
   } = form;
-
-  const { mutate: userLogin, isLoading } = useMutation(
-    (userData: IAuthentication) => LoginAPI(userData, props.role),
+  const { mutate: userSignUp, isLoading } = useMutation(
+    (userData: IAuthenticationSignUP) => signupAPI(userData),
     {
-      onSuccess: async (res) => {
+      onSuccess: (res) => {
         toast.success(res.data.message);
         const response = res.data.result;
         router.push(props.loginSuccessLink);
         storeToken(response?.token);
         storeUserId(response?.user?.id);
         updateToken(response?.token);
-        await axios.post('/api/login', {
-          token: response?.token,
-        });
         queryClient.refetchQueries('userInformation');
         queryClient.refetchQueries('UserJoinedCommunities');
         queryClient.refetchQueries('MyPenPals');
@@ -130,46 +138,15 @@ export function SignIn(props: SignInProps) {
   const { mutate: userLoginWithGoogleAPI, isLoading: isGoogleLoading } =
     useMutation(
       (userData: { token: string; type: string }) =>
-        LoginWithGoogleAPI(userData, props.role),
+        LoginWithGoogleAPI(userData),
       {
-        onSuccess: async (res) => {
+        onSuccess: (res) => {
           toast.success(res.data.message);
           const response = res.data.result;
-          router.push(props.loginSuccessLink);
+          router.push(props.loginWithGoogleORFacebook);
           storeToken(response?.token);
           storeUserId(response?.user?.id);
           updateToken(response?.token);
-          await axios.post('/api/login', {
-            token: response?.token,
-          });
-          queryClient.refetchQueries('userInformation');
-          queryClient.refetchQueries('UserJoinedCommunities');
-          queryClient.refetchQueries('MyPenPals');
-          queryClient.refetchQueries('get-users-i-blocked');
-        },
-        onError: (error: any) => {
-          console.log(error, 'Error =====> log');
-        },
-      }
-    );
-
-  const { mutate: userLoginWithFacebook, isLoading: isFacebookLoading } =
-    useMutation(
-      (userData: { token: string; type: string }) =>
-        LoginWithFacebook(userData, props.role),
-      {
-        onSuccess: async (res) => {
-          console.log({ res });
-          toast.success(res.data.message);
-          const response = res.data.result;
-          console.log({ response: response?.token });
-          router.push(props.loginSuccessLink);
-          storeToken(response?.token);
-          storeUserId(response?.user?.id);
-          updateToken(response?.token);
-          await axios.post('/api/login', {
-            token: response?.token,
-          });
           queryClient.refetchQueries('userInformation');
           queryClient.refetchQueries('UserJoinedCommunities');
           queryClient.refetchQueries('MyPenPals');
@@ -193,6 +170,29 @@ export function SignIn(props: SignInProps) {
     onError: (errorResponse) => console.log(errorResponse),
   });
 
+  const { mutate: userLoginWithFacebook, isLoading: isFacebookLoading } =
+    useMutation(
+      (userData: { token: string; type: string }) =>
+        LoginWithFacebook(userData),
+      {
+        onSuccess: (res) => {
+          toast.success(res.data.message);
+          const response = res.data.result;
+          router.push(props.loginWithGoogleORFacebook);
+          storeToken(response?.token);
+          storeUserId(response?.user?.id);
+          updateToken(response?.token);
+          queryClient.refetchQueries('userInformation');
+          queryClient.refetchQueries('UserJoinedCommunities');
+          queryClient.refetchQueries('MyPenPals');
+          queryClient.refetchQueries('get-users-i-blocked');
+        },
+        onError: (error: any) => {
+          console.log(error, 'Error =====> log');
+        },
+      }
+    );
+
   const facebookLogin = (response: any) => {
     const submitValue = {
       token: response.accessToken,
@@ -202,12 +202,18 @@ export function SignIn(props: SignInProps) {
     userLoginWithFacebook({ ...submitValue });
   };
 
-  const onSubmit: SubmitHandler<IAuthentication> = async (
-    data: IAuthentication,
+  const onSubmit: SubmitHandler<IAuthenticationSignUP> = async (
+    data: IAuthenticationSignUP,
     event: any
   ) => {
     event.preventDefault();
-    userLogin(data);
+
+    const submit = {
+      email: data.email,
+      password: data.password,
+      type: props.role,
+    };
+    userSignUp(submit);
   };
 
   return (
@@ -233,6 +239,12 @@ export function SignIn(props: SignInProps) {
         </div>
 
         <div className="w-full md:w-1/2 m-auto flex flex-col justify-center items-center p- md:p-1 md:mb-0 relative">
+          <Image
+            src={'/icons/GCEd_logo.svg'}
+            height={56}
+            width={184}
+            alt="GCEd Logo"
+          />
           <div className="text-center mb-4 mt-12 px-4">
             <Typography variant="h2" weight="semibold">
               Welcome to your Global Community{' '}
@@ -266,18 +278,15 @@ export function SignIn(props: SignInProps) {
             >
               <FormField
                 control={form.control}
-                name="name"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder={
-                          module === 'teachers'
-                            ? 'Teacher ID or University Email'
-                            : 'Student ID or College Email'
-                        }
+                        placeholder="Email address"
                         {...field}
                         className="w-full"
+                        type="email"
                       />
                     </FormControl>
                     <FormMessage />
@@ -291,7 +300,25 @@ export function SignIn(props: SignInProps) {
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Enter your password"
+                        placeholder="password"
+                        {...field}
+                        className="w-full"
+                        type="password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="confirm password"
                         {...field}
                         className="w-full"
                         type="password"
@@ -366,11 +393,11 @@ export function SignIn(props: SignInProps) {
             >
               Don’t have an Account?
               <Link
-                href={props.signupLink}
+                href={props.signinLink}
                 className="text-primary-700 font-bold text-sm ml-1"
               >
                 {' '}
-                Sign Up
+                Sign In
               </Link>
             </Typography>
           </div>

@@ -6,10 +6,11 @@ export const metadata: Metadata = {
   description: 'Student Sign In - GCED',
 };
 
-export default function SchoolSignIn() {
+export default function StudentSignIn() {
   return (
     <SignIn
       loginSuccessLink={'/students/dashboard/'}
+      signupLink="/students/sign-up"
       forgetPasswordLink={'/students/forget-password'}
       role="student"
     ></SignIn>

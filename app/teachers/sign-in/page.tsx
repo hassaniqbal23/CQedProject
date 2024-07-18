@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 export default function TeacherSignIn() {
   return (
     <SignIn
+      signupLink="/teachers/sign-up"
       loginSuccessLink={'/teachers/dashboard'}
       forgetPasswordLink={'/teachers/forget-password'}
       role={'teacher'}
