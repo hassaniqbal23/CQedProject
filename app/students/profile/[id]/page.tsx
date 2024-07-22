@@ -24,12 +24,14 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     return {
       title: 'Not Found - Profile - CQED',
       description: 'Not Found - Profile - CQED',
+      icons: '/favi.png',
     };
   }
 
   return {
     title: `${data?.profile?.full_name} - CQED`,
     description: data?.profile?.bio,
+    icons: '/favi.png',
   };
 }
 

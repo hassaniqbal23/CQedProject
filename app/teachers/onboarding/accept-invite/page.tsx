@@ -5,6 +5,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Accept Invite - Onboarding - Teacher - GCED',
   description: 'Accept Invite - Onboarding - Teacher - GCED',
+  icons: '/favi.png',
 };
 
 const TeacherAcceptInvite = () => {

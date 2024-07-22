@@ -5,6 +5,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Create Community - Student - GCED',
   description: 'Create Community - Student - GCED',
+  icons: '/favi.png',
 };
 
 const CreateCommunity = () => {

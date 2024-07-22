@@ -4,12 +4,15 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Student Sign In - GCED',
   description: 'Student Sign In - GCED',
+  icons: '/favi.png',
 };
 
-export default function SchoolSignIn() {
+export default function StudentSignIn() {
   return (
     <SignIn
-      loginSuccessLink={'/students/dashboard/'}
+      loginSuccessLink={'/students/dashboard'}
+      signupLink="/students/sign-up"
+      loginWithNewUserSuccessLink={'/students/onboarding/create-profile'}
       forgetPasswordLink={'/students/forget-password'}
       role="student"
     ></SignIn>

@@ -230,10 +230,6 @@ function DashboardFeeds() {
                   myPenpals.filter((i) => i.status === 'ACCEPTED')
                 ).filter((item) => item.id !== userInformation?.id);
 
-                if (index === 0) {
-                  console.log(item.attachments);
-                }
-
                 return (
                   <div
                     key={index}

@@ -53,6 +53,7 @@ export const TeacherLayout: FC<IProps> = ({ children }) => {
       '/teachers/onboarding',
       '/teachers/forget-password',
       '/teachers/sign-in',
+      '/teachers/sign-up',
     ];
 
     return routes.some((route) => pathname.startsWith(route));

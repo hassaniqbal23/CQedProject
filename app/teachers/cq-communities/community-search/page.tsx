@@ -11,6 +11,7 @@ export async function generateMetadata({
   return {
     title: `Showing results for ${searchParams.q} - Teachers - GCED`,
     description: `Showing results for ${searchParams.q} - Teachers - GCED`,
+    icons: '/favi.png',
   };
 }
 

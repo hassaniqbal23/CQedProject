@@ -5,6 +5,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Global Friends - Students - GCED',
   description: 'Global Friends - Students - GCED',
+  icons: '/favi.png',
 };
 
 const Penpalship = () => {

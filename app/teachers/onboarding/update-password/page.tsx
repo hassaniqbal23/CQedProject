@@ -5,6 +5,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Update Password - Onboarding - Teacher - GCED',
   description: 'Update Password - Onboarding - Teacher - GCED',
+  icons: '/favi.png',
 };
 
 const TeacherOnBoardingUpdatePassword = () => {

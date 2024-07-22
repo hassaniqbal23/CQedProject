@@ -47,7 +47,7 @@ export const NewFeeds: React.FC<NewFeedsProps> = ({
               <Image
                 height={17}
                 width={17}
-                src="/icons/Smile.svg"
+                src="/assets/smile.svg"
                 alt="simple "
                 unoptimized={true}
               />

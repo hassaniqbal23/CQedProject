@@ -108,7 +108,7 @@ export const GlobalProvider: FC<any> = ({ children }) => {
         removeFcmToken();
         setUsersIBlocked([]);
         setPendingCommunitiesList([]);
-        await axios.post('/api/logout');
+        await axios.post('/auth-api/logout');
 
         const roleName = clonedUserInfo?.role?.name;
 

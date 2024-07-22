@@ -14,7 +14,6 @@ import { useRouter } from 'next/navigation';
 import { TeacherCreate } from '@/app/api/teachers';
 import { SelectCountry } from '@/components/ui/select-v2/select-v2-components';
 import { Typography } from '../Typography/Typography';
-import { SelectV2Creatable } from '@/components/ui/select-v2/select-v2';
 import DatePicker from '@/components/ui/date-picker/date-picker';
 import { useGlobalState } from '@/app/globalContext/globalContext';
 import { getSingleCountry } from '@/lib/utils';
@@ -22,7 +21,7 @@ import MultipleSelector from '../From/MultiSelect';
 
 const formSchema = z.object({
   fullname: z.string().min(2).max(50).nonempty('Name is required'),
-  nickname: z.string().min(2).max(50).nonempty('Nickname is required'),
+  nick_name: z.string().min(2).max(50).nonempty('Nickname is required'),
   country: z.string().nonempty('Country is required'),
   dob: z.string().nonempty('Birthday is required'),
   languages: z
@@ -42,7 +41,7 @@ export const CreateProfile: React.FC = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullname: '',
-      nickname: '',
+      nick_name: '',
       country: '',
       gender: '',
       dob: '',
@@ -72,7 +71,6 @@ export const CreateProfile: React.FC = () => {
 
   useEffect(() => {
     if (userInformation) {
-      setValue('university', userInformation?.school?.name || '');
       setValue('email', userInformation?.email || '');
     }
   }, [userInformation]);
@@ -134,7 +132,7 @@ export const CreateProfile: React.FC = () => {
                   <FormInput
                     required={true}
                     form={form}
-                    name="nickname"
+                    name="nick_name"
                     placeholder="e.g., Moin, Lim"
                     label="Set a Nickname"
                   />
@@ -208,19 +206,7 @@ export const CreateProfile: React.FC = () => {
                   />
                 </div>
               </div>
-              <div className="px-24 grid grid-cols-1 md:grid-cols-1 gap-6 pb-6">
-                <div className="mb-4">
-                  <FormInput
-                    width={'100%'}
-                    required={true}
-                    form={form}
-                    readOnly
-                    name="university"
-                    placeholder="e.g., Stanford University"
-                    label="University"
-                  />
-                </div>
-              </div>
+
               <div className="px-24 grid grid-cols-1 md:grid-cols-1 gap-6 pb-6">
                 <div className="mb-4">
                   <FormInput

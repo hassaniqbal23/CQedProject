@@ -44,6 +44,7 @@ const ProfilesView = () => {
       },
     }
   );
+
   const handleUnfriend = (profileData: any, penpal: any) => {
     const userId = profileData?.penpalId
       ? Number(profileData?.penpalId)

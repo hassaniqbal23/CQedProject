@@ -83,7 +83,7 @@ export default function SuperAdminLogin() {
         storeToken(response?.token);
         storeUserId(response?.user?.id);
         updateToken(response?.token);
-        axios.post('/api/login', {
+        axios.post('/auth-api/login', {
           token: response?.token,
         });
 

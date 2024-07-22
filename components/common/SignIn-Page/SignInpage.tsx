@@ -68,8 +68,10 @@ const icons = [
 
 interface SignInProps {
   forgetPasswordLink: string | URL;
+  loginWithNewUserSuccessLink: string;
   loginSuccessLink: string;
   role: LoginRole;
+  signupLink: string;
 }
 
 export function SignIn(props: SignInProps) {
@@ -107,11 +109,16 @@ export function SignIn(props: SignInProps) {
       onSuccess: async (res) => {
         toast.success(res.data.message);
         const response = res.data.result;
-        router.push(props.loginSuccessLink);
+        if (response.newUser) {
+          router.push(props.loginWithNewUserSuccessLink);
+        }
+        if (!response.newUser) {
+          router.push(props.loginSuccessLink);
+        }
         storeToken(response?.token);
         storeUserId(response?.user?.id);
         updateToken(response?.token);
-        await axios.post('/api/login', {
+        await axios.post('/auth-api/login', {
           token: response?.token,
         });
         queryClient.refetchQueries('userInformation');
@@ -134,11 +141,16 @@ export function SignIn(props: SignInProps) {
         onSuccess: async (res) => {
           toast.success(res.data.message);
           const response = res.data.result;
-          router.push(props.loginSuccessLink);
+          if (response.newUser) {
+            router.push(props.loginWithNewUserSuccessLink);
+          }
+          if (!response.newUser) {
+            router.push(props.loginSuccessLink);
+          }
           storeToken(response?.token);
           storeUserId(response?.user?.id);
           updateToken(response?.token);
-          await axios.post('/api/login', {
+          await axios.post('/auth-api/login', {
             token: response?.token,
           });
           queryClient.refetchQueries('userInformation');
@@ -158,15 +170,18 @@ export function SignIn(props: SignInProps) {
         LoginWithFacebook(userData, props.role),
       {
         onSuccess: async (res) => {
-          console.log({ res });
           toast.success(res.data.message);
           const response = res.data.result;
-          console.log({ response: response?.token });
-          router.push(props.loginSuccessLink);
+          if (response.newUser) {
+            router.push(props.loginWithNewUserSuccessLink);
+          }
+          if (!response.newUser) {
+            router.push(props.loginSuccessLink);
+          }
           storeToken(response?.token);
           storeUserId(response?.user?.id);
           updateToken(response?.token);
-          await axios.post('/api/login', {
+          await axios.post('/auth-api/login', {
             token: response?.token,
           });
           queryClient.refetchQueries('userInformation');
@@ -232,6 +247,13 @@ export function SignIn(props: SignInProps) {
         </div>
 
         <div className="w-full md:w-1/2 m-auto flex flex-col justify-center items-center p- md:p-1 md:mb-0 relative">
+          <Image
+            src={'/assets/GCEd/GCEdLogo1.svg'}
+            height={56}
+            width={184}
+            alt="GCEd Logos"
+            unoptimized={true}
+          />
           <div className="text-center mb-4 mt-12 px-4">
             <Typography variant="h2" weight="semibold">
               Welcome to your Global Community{' '}
@@ -333,7 +355,7 @@ export function SignIn(props: SignInProps) {
                 variant="outline"
                 loading={isGoogleLoading}
                 onClick={() => googleLogin()}
-                className="w-full flex-1 flex items-center justify-center px-0"
+                className="w-full flex-1 flex items-center justify-center px-0 hover:bg-transparent hover:text-[#475569]"
               >
                 <FcGoogle className="mr-2" />
                 Google
@@ -342,7 +364,7 @@ export function SignIn(props: SignInProps) {
                 className="w-full flex-1 flex items-center justify-center"
                 children={
                   <Button
-                    className="mt-2 md:mt-0 flex w-full items-center justify-center"
+                    className="mt-2 md:mt-0 flex w-full items-center justify-center hover:bg-transparent hover:text-[#475569]"
                     type="button"
                     variant="outline"
                     loading={isFacebookLoading}
@@ -365,7 +387,7 @@ export function SignIn(props: SignInProps) {
             >
               Don’t have an Account?
               <Link
-                href="#"
+                href={props.signupLink}
                 className="text-primary-700 font-bold text-sm ml-1"
               >
                 {' '}

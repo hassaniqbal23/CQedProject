@@ -6,6 +6,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Notifications - Students - GCED',
   description: 'Notifications - Students - GCED',
+  icons: '/favi.png',
 };
 
 const Notifications = () => {

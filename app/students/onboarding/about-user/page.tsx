@@ -6,6 +6,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Write about yourself - Student Onboarding - GCED',
   description: 'Write about yourself - Student Onboarding - GCED',
+  icons: '/favi.png',
 };
 
 function AboutUserInfo() {

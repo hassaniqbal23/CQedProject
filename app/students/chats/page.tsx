@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Chat - GCED',
   description: 'Chat - GCED',
+  icons: '/favi.png',
 };
 
 export default function TeacherChatsCommunities() {
