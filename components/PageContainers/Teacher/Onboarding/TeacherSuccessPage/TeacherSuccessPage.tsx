@@ -42,7 +42,8 @@ function OnboardingTeacherSuccessPage() {
       <div className="fixed bottom-0 w-full">
         <BottomNavbar
           onContinue={() => {
-            router.push('/teachers/onboarding/update-password');
+            router.push('/teachers/onboarding/welcome');
+            // teachers/onboarding/welcome'
           }}
           isBackButton={true}
           onBackButton={() => {

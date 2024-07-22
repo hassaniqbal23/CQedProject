@@ -44,6 +44,8 @@ const ProfilesView = () => {
       },
     }
   );
+
+  console.log(error, 'error2222');
   const handleUnfriend = (profileData: any, penpal: any) => {
     const userId = profileData?.penpalId
       ? Number(profileData?.penpalId)

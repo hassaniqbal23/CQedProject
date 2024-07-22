@@ -37,6 +37,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { useGoogleLogin } from '@react-oauth/google';
 import FacebookLogin from '@greatsumini/react-facebook-login';
 import { Typography } from '@/components/common/Typography/Typography';
+import axios from 'axios';
 
 interface ICarouselItems {
   title: string;
@@ -87,9 +88,7 @@ interface SignUpProps {
 
 export function SignUp(props: SignUpProps) {
   const router = useRouter();
-  const { isAuthenticated } = useGlobalState();
   const queryClient = useQueryClient();
-  const { module } = useModule();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -104,16 +103,25 @@ export function SignUp(props: SignUpProps) {
     handleSubmit,
     formState: { errors, isValid },
   } = form;
+
   const { mutate: userSignUp, isLoading } = useMutation(
     (userData: IAuthenticationSignUP) => signupAPI(userData, props.role),
     {
-      onSuccess: (res) => {
-        toast.success(res.data.message);
+      onSuccess: async (res) => {
         const response = res.data.result;
+        // await axios.post('/auth-api/login', {
+        //   token: response?.token,
+        // });
+        toast.success(res.data.message);
         router.push(props.loginSuccessLink);
+
+        if (response.newUser) {
+          router.push(props.loginSuccessLink);
+        }
         storeToken(response?.token);
         storeUserId(response?.user?.id);
         updateToken(response?.token);
+
         queryClient.refetchQueries('userInformation');
         queryClient.refetchQueries('UserJoinedCommunities');
         queryClient.refetchQueries('MyPenPals');
@@ -131,7 +139,7 @@ export function SignUp(props: SignUpProps) {
       (userData: { token: string; type: string }) =>
         LoginWithGoogleAPI(userData, props.role),
       {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           toast.success(res.data.message);
           const response = res.data.result;
           if (response.newUser) {
@@ -143,6 +151,9 @@ export function SignUp(props: SignUpProps) {
           storeToken(response?.token);
           storeUserId(response?.user?.id);
           updateToken(response?.token);
+          await axios.post('/auth-api/login', {
+            token: response?.token,
+          });
           queryClient.refetchQueries('userInformation');
           queryClient.refetchQueries('UserJoinedCommunities');
           queryClient.refetchQueries('MyPenPals');
@@ -171,7 +182,7 @@ export function SignUp(props: SignUpProps) {
       (userData: { token: string; type: string }) =>
         LoginWithFacebook(userData, props.role),
       {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           toast.success(res.data.message);
           const response = res.data.result;
           if (response.newUser) {
@@ -183,6 +194,9 @@ export function SignUp(props: SignUpProps) {
           storeToken(response?.token);
           storeUserId(response?.user?.id);
           updateToken(response?.token);
+          await axios.post('/auth-api/login', {
+            token: response?.token,
+          });
           queryClient.refetchQueries('userInformation');
           queryClient.refetchQueries('UserJoinedCommunities');
           queryClient.refetchQueries('MyPenPals');
@@ -363,7 +377,7 @@ export function SignUp(props: SignUpProps) {
                 variant="outline"
                 loading={isGoogleLoading}
                 onClick={() => googleLogin()}
-                className="w-full flex-1 flex items-center justify-center px-0"
+                className="w-full flex-1 flex items-center justify-center px-0 hover:bg-transparent hover:text-[#475569]"
               >
                 <FcGoogle className="mr-2" />
                 Google
@@ -372,7 +386,7 @@ export function SignUp(props: SignUpProps) {
                 className="w-full flex-1 flex items-center justify-center"
                 children={
                   <Button
-                    className="mt-2 md:mt-0 flex w-full items-center justify-center"
+                    className="mt-2 md:mt-0 flex w-full items-center justify-center hover:bg-transparent hover:text-[#475569]"
                     type="button"
                     variant="outline"
                     loading={isFacebookLoading}

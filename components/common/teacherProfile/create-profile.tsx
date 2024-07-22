@@ -21,7 +21,7 @@ import MultipleSelector from '../From/MultiSelect';
 
 const formSchema = z.object({
   fullname: z.string().min(2).max(50).nonempty('Name is required'),
-  nickname: z.string().min(2).max(50).nonempty('Nickname is required'),
+  nick_name: z.string().min(2).max(50).nonempty('Nickname is required'),
   country: z.string().nonempty('Country is required'),
   dob: z.string().nonempty('Birthday is required'),
   languages: z
@@ -41,7 +41,7 @@ export const CreateProfile: React.FC = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullname: '',
-      nickname: '',
+      nick_name: '',
       country: '',
       gender: '',
       dob: '',
@@ -132,7 +132,7 @@ export const CreateProfile: React.FC = () => {
                   <FormInput
                     required={true}
                     form={form}
-                    name="nickname"
+                    name="nick_name"
                     placeholder="e.g., Moin, Lim"
                     label="Set a Nickname"
                   />

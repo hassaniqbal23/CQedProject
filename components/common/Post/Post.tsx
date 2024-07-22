@@ -178,7 +178,7 @@ export const Post: FC<IProps> = ({
                   )
                 ) {
                   return (
-                    <div className="mt-4 md:mt-0">
+                    <div key={index} className="mt-4 md:mt-0">
                       <VideoPlayer image={image} />
                     </div>
                   );

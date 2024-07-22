@@ -10,7 +10,7 @@ const OnboardingTeacherAboutYouPage = () => {
     <div>
       <TopNavbar
         onLogout={() => {
-          logout;
+          logout();
         }}
       ></TopNavbar>
       <AboutYouForm />

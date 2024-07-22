@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function StudentSignIn() {
   return (
     <SignIn
-      loginSuccessLink={'/students/dashboard/'}
+      loginSuccessLink={'/students/dashboard'}
       signupLink="/students/sign-up"
       loginWithNewUserSuccessLink={'/students/onboarding/create-profile'}
       forgetPasswordLink={'/students/forget-password'}

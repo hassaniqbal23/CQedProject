@@ -355,7 +355,7 @@ export function SignIn(props: SignInProps) {
                 variant="outline"
                 loading={isGoogleLoading}
                 onClick={() => googleLogin()}
-                className="w-full flex-1 flex items-center justify-center px-0"
+                className="w-full flex-1 flex items-center justify-center px-0 hover:bg-transparent hover:text-[#475569]"
               >
                 <FcGoogle className="mr-2" />
                 Google
@@ -364,7 +364,7 @@ export function SignIn(props: SignInProps) {
                 className="w-full flex-1 flex items-center justify-center"
                 children={
                   <Button
-                    className="mt-2 md:mt-0 flex w-full items-center justify-center"
+                    className="mt-2 md:mt-0 flex w-full items-center justify-center hover:bg-transparent hover:text-[#475569]"
                     type="button"
                     variant="outline"
                     loading={isFacebookLoading}

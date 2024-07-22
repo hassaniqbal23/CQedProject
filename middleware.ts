@@ -9,50 +9,67 @@ export async function middleware(request: NextRequest) {
   const isAdminPage = url.startsWith('/admin');
   const isTeachersPage = url.startsWith('/teachers');
   const isStudentsPage = url.startsWith('/students');
-  const responseWithFetchApi = await fetch(
-    `${process.env.NEXT_PUBLIC_API_HOST}/users/me`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  const isCreateStudentsPage = url.startsWith('/students/onboarding');
+  const isCreateTeachersPage = url.startsWith('/techers/onboarding');
+
+  if (token) {
+    const responseWithFetchApi = await fetch(
+      `${process.env.NEXT_PUBLIC_API_HOST}/users/me`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const status = responseWithFetchApi.status;
+    const data = await responseWithFetchApi.json();
+    const userRole = data?.data?.role?.name;
+    const isAdminRole = userRole === '*';
+    const isTeacherRole = userRole === 'teacher';
+    const isStudentRole = userRole === 'student';
+
+    const isLoginPage =
+      url.startsWith('/login') ||
+      url.endsWith('/sign-in') ||
+      url.endsWith('/sign-up');
+
+    if (status === 401 && !isLoginPage) {
+      return NextResponse.redirect(new URL('/students/sign-in', request.url));
     }
-  );
-  const status = responseWithFetchApi.status;
-  const data = await responseWithFetchApi.json();
-  const userRole = data?.data?.role?.name;
-  const isAdminRole = userRole === '*';
-  const isTeacherRole = userRole === 'teacher';
-  const isStudentRole = userRole === 'student';
 
-  const isLoginPage =
-    url.startsWith('/login') ||
-    url.endsWith('/sign-in') ||
-    url.endsWith('/sign-up');
+    if (!token && !isLoginPage) {
+      return NextResponse.redirect(new URL('/students/sign-in', request.url));
+    }
 
-  if (status === 401 && !isLoginPage) {
-    return NextResponse.redirect(new URL('/students/sign-in', request.url));
-  }
+    if (isCreateStudentsPage && isStudentRole) {
+      return NextResponse.next();
+    }
 
-  if (!token && !isLoginPage) {
-    return NextResponse.redirect(new URL('/students/sign-in', request.url));
-  }
+    if (isCreateTeachersPage && isTeacherRole) {
+      return NextResponse.next();
+    }
 
-  if (isLoginPage) {
-    if (isTeacherRole) {
-      return NextResponse.redirect(new URL('/teachers/dashboard', request.url));
-    } else if (isStudentRole) {
-      return NextResponse.redirect(new URL('/students/dashboard', request.url));
-    } else if (isAdminRole) {
+    if (!isLoginPage) {
+      if (isTeacherRole && !isCreateTeachersPage) {
+        return NextResponse.next();
+      }
+      if (isStudentRole && !isCreateStudentsPage) {
+        return NextResponse.next();
+      }
+      if (isAdminRole) {
+        return NextResponse.redirect(new URL('/admin/dashboard', request.url));
+      }
+    }
+
+    if (!isAdminPage && isAdminRole) {
       return NextResponse.redirect(new URL('/admin/dashboard', request.url));
     }
-  }
-
-  if (!isAdminPage && isAdminRole) {
-    return NextResponse.redirect(new URL('/admin/dashboard', request.url));
-  } else if (!isTeachersPage && isTeacherRole) {
-    return NextResponse.redirect(new URL('/teachers/dashboard', request.url));
-  } else if (!isStudentsPage && isStudentRole) {
-    return NextResponse.redirect(new URL('/students/dashboard', request.url));
+    if (!isTeachersPage && isTeacherRole && !isCreateTeachersPage) {
+      return NextResponse.redirect(new URL('/teachers/dashboard', request.url));
+    }
+    if (!isStudentsPage && isStudentRole && !isCreateStudentsPage) {
+      return NextResponse.redirect(new URL('/students/dashboard', request.url));
+    }
   }
 
   return NextResponse.next();

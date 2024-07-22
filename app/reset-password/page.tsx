@@ -20,7 +20,6 @@ import { IResetPassword } from '@/app/api/types';
 import { Typography } from '@/components/common/Typography/Typography';
 import { Suspense, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import type { Metadata } from 'next';
 
 const formSchema = z
   .object({
@@ -36,11 +35,11 @@ const formSchema = z
     path: ['newPassword'],
   });
 
-export const metadata: Metadata = {
-  title: 'Reset Password  - GCED',
-  description: 'Reset Password  - GCED',
-  icons: '/favi.png',
-};
+// export const metadata: Metadata = {
+//   title: 'Reset Password  - GCED',
+//   description: 'Reset Password  - GCED',
+//   icons: '/favi.png',
+// };
 
 const ResetPassword = () => {
   return (
